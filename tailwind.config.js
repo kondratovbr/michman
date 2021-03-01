@@ -1,26 +1,31 @@
 const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
 
     purge: [
-        './resources/**/*.blade.php',
-        './resources/**/*.js',
-        './resources/**/*.vue',
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './vendor/laravel/jetstream/**/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
         './resources/**/*.md',
-        './resources/**/*.php',
+        './resources/**/*.js',
+        './resource/**/*.php',
     ],
-
-    darkMode: false, // or 'media' or 'class'
 
     theme: {
         extend: {
-            //
+            fontFamily: {
+                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                //
+            },
         },
     },
 
     variants: {
         extend: {
+            opacity: ['disabled'],
             //
         },
     },
