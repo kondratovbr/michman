@@ -15,11 +15,30 @@ module.exports = {
     ],
 
     theme: {
+        colors: {
+            transparent: 'transparent',
+            current: 'currentColor',
+            black: colors.black,
+            white: colors.white,
+            navy: {
+                light: '#151EA6',
+                DEFAULT: '#1F266B',
+                dark: '#00017A',
+                darkest: '#03005B',
+            },
+            gold: {
+                light: '#FED701',
+                DEFAULT: '#FEC203',
+                dark: '#FCB305',
+                darkest: '#F08E00',
+            },
+        },
+
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
-                //
             },
+            //
         },
     },
 
