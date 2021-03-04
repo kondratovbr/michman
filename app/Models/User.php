@@ -22,6 +22,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property CarbonInterface $created_at
  * @property CarbonInterface $updated_at
  *
+ * @property-read string $name
+ *
  * @method static UserFactory factory(...$parameters)
  */
 class User extends Authenticatable implements MustVerifyEmail
@@ -51,4 +53,12 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Derive user's name from the email.
+     */
+    public function getNameAttribute(): string
+    {
+        return explode('@', $this->email, 2)[0];
+    }
 }
