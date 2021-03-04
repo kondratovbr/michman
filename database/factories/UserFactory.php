@@ -51,9 +51,37 @@ class UserFactory extends Factory
         return $this->has(
             Team::factory()
                 ->state(function (array $attributes, User $user) {
-                    return ['name' => $user->name.'\'s Team', 'user_id' => $user->id, 'personal_team' => true];
+                    return [
+                        'name' => $user->name.'\'s Team',
+                        'user_id' => $user->id,
+                        'personal_team' => true,
+                    ];
                 }),
             'ownedTeams'
         );
+    }
+
+    /**
+     * Create a predefined generic admin user.
+     *
+     * @return $this
+     */
+    public function theAdmin(): static
+    {
+        return $this->state([
+            'name' => 'admin',
+        ]);
+    }
+
+    /**
+     * Crete a predefined generic user.
+     *
+     * @return $this
+     */
+    public function theUser(): static
+    {
+        return $this->state([
+            'name' => 'user',
+        ]);
     }
 }
