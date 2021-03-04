@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Models;
 
@@ -12,30 +12,21 @@ class Team extends JetstreamTeam
 {
     use HasFactory;
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'personal_team' => 'boolean',
-    ];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
         'personal_team',
     ];
 
-    /**
-     * The event map for the model.
-     *
-     * @var array
-     */
+    /** @var string[] The attributes that should be visible in arrays and JSON. */
+    protected $visible = [];
+
+    /** @var string[] The attributes that should be cast to native types with their respective types. */
+    protected $casts = [
+        'personal_team' => 'boolean',
+    ];
+
+    /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
         'created' => TeamCreated::class,
         'updated' => TeamUpdated::class,
