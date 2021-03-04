@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Database\Factories;
 
@@ -8,19 +8,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeamFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+    /** @var string The name of the factory's corresponding model. */
     protected $model = Team::class;
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->unique()->company,
