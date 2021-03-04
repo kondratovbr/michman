@@ -3,6 +3,11 @@
 # Vendor assets
 /public/vendor
 
+# Compiled assets
+/public/css/app.css
+/public/js/app.js
+/public/mix-manifest.json
+
 
 
 ### Laravel ###
