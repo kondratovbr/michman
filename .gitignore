@@ -1,3 +1,10 @@
+### Project-specific ###
+
+# Vendor assets
+/public/vendor
+
+
+
 ### Laravel ###
 
 /node_modules
@@ -5,7 +12,8 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
+*.env
+!.env.example
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
