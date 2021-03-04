@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 class {{ class }} extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up()
     {
         Schema::create('{{ table }}', function (Blueprint $table) {
