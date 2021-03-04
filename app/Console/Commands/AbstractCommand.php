@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Exceptions\MethodNotFoundException;
 use Illuminate\Console\Command;
 
 abstract class AbstractCommand extends Command
@@ -12,9 +11,6 @@ abstract class AbstractCommand extends Command
      */
     public function handle(): int
     {
-        if (! method_exists($this, 'perform'))
-            throw new MethodNotFoundException('Inherited console commands must have a "perform" method for running the actual command.');
-
         if ($this->isForbiddenOnProduction() && $this->isInProduction()) {
             $this->error('This command cannot be run in production!');
             return 1;
@@ -55,4 +51,9 @@ abstract class AbstractCommand extends Command
 
         return $this->confirm('Are you sure you want to run this command on production?');
     }
+
+    /**
+     * Perform the console command.
+     */
+    abstract public function perform(): int;
 }
