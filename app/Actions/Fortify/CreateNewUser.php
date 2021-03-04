@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
@@ -16,11 +16,8 @@ class CreateNewUser implements CreatesNewUsers
 
     /**
      * Create a newly registered user.
-     *
-     * @param  array  $input
-     * @return \App\Models\User
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
         Validator::make($input, [
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -40,11 +37,8 @@ class CreateNewUser implements CreatesNewUsers
 
     /**
      * Create a personal team for the user.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
      */
-    protected function createTeam(User $user)
+    protected function createTeam(User $user): void
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,
