@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
@@ -12,12 +12,8 @@ class ResetUserPassword implements ResetsUserPasswords
 
     /**
      * Validate and reset the user's forgotten password.
-     *
-     * @param  mixed  $user
-     * @param  array  $input
-     * @return void
      */
-    public function reset($user, array $input)
+    public function reset($user, array $input): void
     {
         Validator::make($input, [
             'password' => $this->passwordRules(),

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Actions\Fortify;
 
@@ -8,10 +8,8 @@ trait PasswordValidationRules
 {
     /**
      * Get the validation rules used to validate passwords.
-     *
-     * @return array
      */
-    protected function passwordRules()
+    protected function passwordRules(): array
     {
         return ['required', 'string', new Password, 'confirmed'];
     }
