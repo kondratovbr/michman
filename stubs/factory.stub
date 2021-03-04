@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace {{ factoryNamespace }};
 
@@ -7,19 +7,13 @@ use {{ namespacedModel }};
 
 class {{ factory }}Factory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+    /** @var string The name of the factory's corresponding model. */
     protected $model = {{ model }}::class;
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             //
