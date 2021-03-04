@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Actions\Jetstream;
 
@@ -10,13 +10,8 @@ class UpdateTeamName implements UpdatesTeamNames
 {
     /**
      * Validate and update the given team's name.
-     *
-     * @param  mixed  $user
-     * @param  mixed  $team
-     * @param  array  $input
-     * @return void
      */
-    public function update($user, $team, array $input)
+    public function update($user, $team, array $input): void
     {
         Gate::forUser($user)->authorize('update', $team);
 

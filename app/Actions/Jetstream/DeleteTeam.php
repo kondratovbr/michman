@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Actions\Jetstream;
 
@@ -8,11 +8,8 @@ class DeleteTeam implements DeletesTeams
 {
     /**
      * Delete the given team.
-     *
-     * @param  mixed  $team
-     * @return void
      */
-    public function delete($team)
+    public function delete($team): void
     {
         $team->purge();
     }

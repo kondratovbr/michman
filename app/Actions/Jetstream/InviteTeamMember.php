@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Actions\Jetstream;
 
@@ -16,14 +16,8 @@ class InviteTeamMember implements InvitesTeamMembers
 {
     /**
      * Invite a new team member to the given team.
-     *
-     * @param  mixed  $user
-     * @param  mixed  $team
-     * @param  string  $email
-     * @param  string|null  $role
-     * @return void
      */
-    public function invite($user, $team, string $email, string $role = null)
+    public function invite($user, $team, string $email, string $role = null): void
     {
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
@@ -41,13 +35,8 @@ class InviteTeamMember implements InvitesTeamMembers
 
     /**
      * Validate the invite member operation.
-     *
-     * @param  mixed  $team
-     * @param  string  $email
-     * @param  string|null  $role
-     * @return void
      */
-    protected function validate($team, string $email, ?string $role)
+    protected function validate($team, string $email, ?string $role): void
     {
         Validator::make([
             'email' => $email,
@@ -61,11 +50,8 @@ class InviteTeamMember implements InvitesTeamMembers
 
     /**
      * Get the validation rules for inviting a team member.
-     *
-     * @param  mixed  $team
-     * @return array
      */
-    protected function rules($team)
+    protected function rules($team): array
     {
         return array_filter([
             'email' => ['required', 'email', Rule::unique('team_invitations')->where(function ($query) use ($team) {
@@ -79,12 +65,8 @@ class InviteTeamMember implements InvitesTeamMembers
 
     /**
      * Ensure that the user is not already on the team.
-     *
-     * @param  mixed  $team
-     * @param  string  $email
-     * @return \Closure
      */
-    protected function ensureUserIsNotAlreadyOnTeam($team, string $email)
+    protected function ensureUserIsNotAlreadyOnTeam($team, string $email): \Closure
     {
         return function ($validator) use ($team, $email) {
             $validator->errors()->addIf(
