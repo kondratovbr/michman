@@ -33,4 +33,15 @@ return [
         realpath(storage_path('framework/views'))
     ),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Configuration Options
+    |--------------------------------------------------------------------------
+    |
+    | Following are all the custom view-related config options,
+    | added specifically for this application.
+    |
+    */
+
+    'page_title_separator' => ' | ',
 ];
