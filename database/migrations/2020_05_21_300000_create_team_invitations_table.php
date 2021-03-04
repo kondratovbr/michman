@@ -8,10 +8,8 @@ class CreateTeamInvitationsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('team_invitations', function (Blueprint $table) {
             $table->id();
@@ -22,15 +20,5 @@ class CreateTeamInvitationsTable extends Migration
 
             $table->unique(['team_id', 'email']);
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('team_invitations');
     }
 }

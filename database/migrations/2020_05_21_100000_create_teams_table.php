@@ -8,10 +8,8 @@ class CreateTeamsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
@@ -20,15 +18,5 @@ class CreateTeamsTable extends Migration
             $table->boolean('personal_team');
             $table->timestamps();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('teams');
     }
 }

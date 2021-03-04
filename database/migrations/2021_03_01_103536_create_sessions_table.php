@@ -8,10 +8,8 @@ class CreateSessionsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
@@ -21,15 +19,5 @@ class CreateSessionsTable extends Migration
             $table->text('payload');
             $table->integer('last_activity')->index();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('sessions');
     }
 }
