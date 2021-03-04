@@ -19,7 +19,6 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
@@ -52,7 +51,7 @@ class UserFactory extends Factory
             Team::factory()
                 ->state(function (array $attributes, User $user) {
                     return [
-                        'name' => $user->name.'\'s Team',
+                        'name' => explode('@', $user->email, 2)[0]."'s Team",
                         'user_id' => $user->id,
                         'personal_team' => true,
                     ];
@@ -69,7 +68,6 @@ class UserFactory extends Factory
     public function theAdmin(): static
     {
         return $this->state([
-            'name' => 'admin',
             'email' => 'admin@example.com',
         ]);
     }
@@ -82,7 +80,6 @@ class UserFactory extends Factory
     public function theUser(): static
     {
         return $this->state([
-            'name' => 'user',
             'email' => 'user@example.com',
         ]);
     }
