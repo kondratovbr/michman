@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * User Eloquent model
+ *
+ * @property int $id
+ * @property string $email
+ * @property CarbonInterface $email_verified_at
+ * @property CarbonInterface $created_at
+ * @property CarbonInterface $updated_at
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -28,7 +35,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'name',
         'email',
         'password',
     ];
