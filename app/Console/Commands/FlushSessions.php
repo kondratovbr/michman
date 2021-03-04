@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class FlushSessions extends AbstractCommand
 {
     use ProtectedOnProduction;
-    
+
     /** @var string The name and signature of the console command. */
     protected $signature = 'session:flush';
 
