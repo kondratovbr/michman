@@ -70,6 +70,7 @@ class UserFactory extends Factory
     {
         return $this->state([
             'name' => 'admin',
+            'email' => 'admin@example.com',
         ]);
     }
 
@@ -82,6 +83,7 @@ class UserFactory extends Factory
     {
         return $this->state([
             'name' => 'user',
+            'email' => 'user@example.com',
         ]);
     }
 }
