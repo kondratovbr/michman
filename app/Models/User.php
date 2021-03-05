@@ -6,7 +6,9 @@ use App\Models\Traits\UsesCamelCaseAttributes;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -24,6 +26,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property CarbonInterface $updated_at
  *
  * @property-read string $name
+ *
+ * @property-read Collection $providers
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -62,5 +66,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute(): string
     {
         return explode('@', $this->email, 2)[0];
+    }
+
+    /**
+     * Get a relation with server providers owned by this user.
+     */
+    public function providers(): HasMany
+    {
+        return $this->hasMany(Provider::class);
     }
 }
