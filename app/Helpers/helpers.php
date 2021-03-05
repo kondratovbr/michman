@@ -9,3 +9,13 @@ if (! function_exists('version')) {
         return (string) config('app.version');
     }
 }
+
+if (! function_exists('isDebug')) {
+    /**
+     * Check if the app is in debug mode.
+     */
+    function isDebug(): bool
+    {
+        return config('app.debug') === true;
+    }
+}

@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 /*
  * Debug routes (not loaded if not in debug mode)
  */
-if (config('app.debug') === true) {
+if (isDebug()) {
     Route::prefix('debug')->group(function () {
         Route::get('routes', fn() => 'Here will be the list of routes!');
     });
