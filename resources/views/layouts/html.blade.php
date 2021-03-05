@@ -29,7 +29,7 @@
         <meta name="description" content="">
 {{--        TODO: IMPORTANT! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
     </head>
-    <body class="font-sans antialiased text-gray-900 {{ isDebug() ? 'debug-screens' : null }}">
+    <body class="font-sans antialiased text-gray-900 bg-navy-darkest {{ isDebug() ? 'debug-screens' : null }}">
         {{ $slot }}
 
         @livewireScripts

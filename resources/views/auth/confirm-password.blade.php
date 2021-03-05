@@ -7,20 +7,25 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('password.confirm') }}">
-            @csrf
+        <x-form method="POST" action="{{ route('password.confirm') }}">
 
-            <div>
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" autofocus />
-            </div>
+            <x-field>
+                <x-label for="password" value="{{ __('Password') }}" />
+                <x-inputs.password
+                    class="w-full"
+                    name="password"
+                    required
+                    autofocus
+                />
+            </x-field>
 
             <div class="flex justify-end mt-4">
-                <x-jet-button class="ml-4">
+                <x-button class="ml-4">
                     {{ __('Confirm') }}
-                </x-jet-button>
+                </x-button>
             </div>
-        </form>
+
+        </x-form>
 
     </x-auth-box>
 </x-layouts.guest>
