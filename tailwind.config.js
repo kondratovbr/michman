@@ -16,8 +16,21 @@ module.exports = {
 
     theme: {
         colors: {
+            // Special values
             transparent: 'transparent',
             current: 'currentColor',
+
+            // Default colors
+            gray: colors.coolGray,
+            red: colors.red,
+            yellow: colors.amber,
+            green: colors.emerald,
+            blue: colors.blue,
+            indigo: colors.indigo,
+            purple: colors.violet,
+            pink: colors.pink,
+
+            // Custom colors
             black: colors.black,
             white: colors.white,
             navy: {
