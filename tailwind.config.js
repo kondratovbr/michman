@@ -57,8 +57,22 @@ module.exports = {
 
     variants: {
         extend: {
+
+            backgroundColor: ['active'],
+            borderWidth: ['active'],
+            borderColor: ['active', 'focus'],
+            display: ['group-hover'],
+            margin: ['first', 'last'],
             opacity: ['disabled'],
-            //
+            padding: ['first', 'last'],
+            rotate: ['group-hover'],
+            scale: ['group-hover'],
+            textColor: ['active'],
+            transform: ['group-hover'],
+            translate: ['group-hover'],
+            visibility: ['group-hover'],
+            zIndex: ['hover', 'active'],
+
         },
     },
 
