@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\UsesCamelCaseAttributes;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -33,7 +34,8 @@ class User extends Authenticatable implements MustVerifyEmail
         HasProfilePhoto,
         HasTeams,
         Notifiable,
-        TwoFactorAuthenticatable;
+        TwoFactorAuthenticatable,
+        UsesCamelCaseAttributes;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
