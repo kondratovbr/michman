@@ -1,4 +1,4 @@
-<x-html-layout>
+<x-layouts.html>
 
     <x-jet-banner />
 
@@ -23,4 +23,4 @@
 
     @stack('modals')
 
-</x-html-layout>
+</x-layouts.html>

@@ -27,9 +27,9 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="description" content="">
-{{--        TODO: IMPORTANT! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! --}}
+{{--        TODO: IMPORTANT! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
     </head>
-    <body class="font-sans antialiased {{ isDebug() ? 'debug-screens' : null }}">
+    <body class="font-sans antialiased text-gray-900 {{ isDebug() ? 'debug-screens' : null }}">
         {{ $slot }}
 
         @livewireScripts

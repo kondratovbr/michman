@@ -1,17 +1,17 @@
 <?php declare(strict_types=1);
 
-namespace App\View\Components;
+namespace App\View\Components\Layouts;
 
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 
-class AppLayout extends Component
+class Guest extends Component
 {
     /**
      * Get the view that represents the component.
      */
     public function render(): View
     {
-        return view('layouts.app');
+        return view('layouts.guest');
     }
 }
