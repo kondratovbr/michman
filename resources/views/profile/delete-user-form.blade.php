@@ -1,4 +1,6 @@
-<x-jet-action-section>
+{{--TODO: IMPORTANT! Unfinished!--}}
+
+<x-action-section>
     <x-slot name="title">
         {{ __('Delete Account') }}
     </x-slot>
@@ -8,7 +10,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600">
+        <div class="max-w-xl text-sm">
             {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
         </div>
 
@@ -49,4 +51,4 @@
             </x-slot>
         </x-jet-dialog-modal>
     </x-slot>
-</x-jet-action-section>
+</x-action-section>

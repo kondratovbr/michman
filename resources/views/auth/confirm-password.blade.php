@@ -12,7 +12,6 @@
             <x-field>
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-inputs.password
-                    class="w-full"
                     name="password"
                     required
                     autofocus

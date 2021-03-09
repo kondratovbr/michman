@@ -20,7 +20,6 @@
             <x-field>
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-inputs.email
-                    class="w-full"
                     name="email"
                     required
                     autofocus

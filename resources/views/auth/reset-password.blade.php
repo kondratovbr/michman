@@ -10,7 +10,6 @@
             <x-field>
                 <x-label for="email" value="{{ __('Email') }}" />
                 <x-inputs.email
-                    class="w-full"
                     name="email"
                     :value="old('email', $request->email)"
                     required
@@ -21,7 +20,6 @@
             <x-field>
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-inputs.password
-                    class="w-full"
                     name="password"
                     required
                     autocomplete="new-password"
@@ -31,7 +29,6 @@
             <x-field>
                 <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
                 <x-inputs.password
-                    class="w-full"
                     name="password_confirmation"
                     required
                     autocomplete="new-password"
