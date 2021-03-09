@@ -87,12 +87,15 @@ module.exports = {
         extend: {
 
             backgroundColor: ['active'],
-            borderWidth: ['active'],
-            borderColor: ['active', 'focus'],
+            borderWidth: ['hover', 'active'],
+            borderColor: ['hover', 'active', 'focus'],
             display: ['group-hover'],
             margin: ['first', 'last'],
             opacity: ['disabled'],
             padding: ['first', 'last'],
+            ringColor: ['hover', 'active'],
+            ringOpacity: ['hover', 'active'],
+            ringWidth: ['hover', 'active'],
             rotate: ['group-hover'],
             scale: ['group-hover'],
             textColor: ['active'],
