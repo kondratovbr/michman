@@ -26,6 +26,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property CarbonInterface $updated_at
  *
  * @property-read string $name
+ * @property-read string $avatarUrl
  *
  * @property-read Collection $providers
  *
@@ -66,6 +67,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute(): string
     {
         return explode('@', $this->email, 2)[0];
+    }
+
+    /**
+     * Get the URL for the user's profile photo.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        return $this->profile_photo_url;
     }
 
     /**
