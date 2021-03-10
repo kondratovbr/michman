@@ -1,3 +1,6 @@
+{{--TODO: IMPORTANT! Needs a "Register" link/button.--}}
+{{--TODO: IMPORTANT! Needs OAuth buttons as well.--}}
+
 <x-layouts.guest>
     <x-auth-box>
 
