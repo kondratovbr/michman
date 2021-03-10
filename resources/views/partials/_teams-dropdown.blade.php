@@ -1,7 +1,7 @@
 {{--TODO: IMPORTANT! Unfinished!--}}
 {{--TODO: Add icons.--}}
 
-<x-navbar.dropdown align="right" width="60">
+<x-navbar.dropdown align="right">
 
     <x-slot name="trigger">
         <span class="inline-flex rounded-md">
@@ -18,7 +18,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <div class="w-60">
+        <div>
             {{-- Team Management --}}
             <div class="block px-4 py-2 text-xs text-gray-400">
                 {{ __('Manage Team') }}

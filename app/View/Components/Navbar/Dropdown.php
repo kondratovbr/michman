@@ -10,10 +10,10 @@ class Dropdown extends Component
     public string $alignmentClasses;
     public string $widthClass;
 
-    public function __construct(string $align = 'left', string $width = '48')
+    public function __construct(string $align = 'left', string $width = null, string $minWidth = '48')
     {
         $this->alignmentClasses = $this->alignmentClasses($align);
-        $this->widthClass = $this->widthClass($width);
+        $this->widthClass = $this->widthClass($width, $minWidth);
     }
 
     /**
@@ -40,11 +40,19 @@ class Dropdown extends Component
     /**
      * Get the width class for the dropdown menu.
      */
-    private function widthClass(string $width): string
+    private function widthClass(?string $width, string $minWidth): string
     {
-        return match ($width) {
+        $class = match ($width) {
             '48' => 'w-48',
             '60' => 'w-60',
+            null => null,
         };
+
+        $class ??= match ($minWidth) {
+            '48' => 'min-w-48',
+            '60' => 'min-w-60',
+        };
+
+        return $class;
     }
 }

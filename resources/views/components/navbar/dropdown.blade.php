@@ -1,5 +1,6 @@
 {{--TODO: IMPORTANT! Does it work on touch? Is it supposed to?--}}
 {{--TODO: Needs hover, focus. Also, a11y concerns for dropdowns.--}}
+{{--TODO: Needs different styling for links for when user is on that page. --}}
 
 <div
     class="relative"

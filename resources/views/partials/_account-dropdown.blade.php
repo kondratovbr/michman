@@ -1,6 +1,6 @@
 {{--TODO: Add icons.--}}
 
-<x-navbar.dropdown align="right" width="48">
+<x-navbar.dropdown align="right">
 
     <x-slot name="trigger">
         <button class="inline-flex items-center space-x-2 text-sm focus:outline-none focus:border-gray-300">
