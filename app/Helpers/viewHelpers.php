@@ -1,5 +1,8 @@
 <?php declare(strict_types=1);
 
+use App\Models\User;
+use App\Facades\Auth;
+
 if (! function_exists('filesize_for_humans')) {
     /**
      * Convert filesize in bytes into a human-readable formatted string with rounding.
@@ -47,5 +50,15 @@ if (! function_exists('title')) {
             return null;
 
         return (string) config('view.page_title_separator') . $title;
+    }
+}
+
+if (! function_exists('user')) {
+    /**
+     * Get the currently authenticated user.
+     */
+    function user(): ?User
+    {
+        return Auth::user();
     }
 }
