@@ -1,9 +1,9 @@
 {{--TODO: Add icons.--}}
 
-<x-jet-dropdown align="right" width="48">
+<x-navbar.dropdown align="right" width="48">
 
     <x-slot name="trigger">
-        <button class="inline-flex items-center space-x-2 text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
+        <button class="inline-flex items-center space-x-2 text-sm focus:outline-none focus:border-gray-300">
             <x-avatar class="h-8 w-8" />
             <span>{{ user()->email }}</span>
             <x-icon class="fa fa-chevron-down" />
@@ -47,4 +47,4 @@
             </x-jet-dropdown-link>
         </form>
     </x-slot>
-</x-jet-dropdown>
+</x-navbar.dropdown>

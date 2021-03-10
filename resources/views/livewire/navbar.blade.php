@@ -5,7 +5,8 @@
     {{-- Primary Navigation Menu --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+
+            <div class="flex items-stretch">
 
                 {{-- Logo --}}
                 <div class="flex-shrink-0 flex items-center">
@@ -15,7 +16,7 @@
                 </div>
 
                 {{-- Navigation Links --}}
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden sm:flex space-x-8 sm:-my-px sm:ml-10">
                     <x-navbar.link routeName="dashboard">
                         {{ __('Dashboard') }}
                     </x-navbar.link>
@@ -34,22 +35,25 @@
 
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="hidden sm:flex sm:items-stretch space-x-3">
                 {{-- Teams Dropdown --}}
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    @include('partials._teams-dropdown')
+{{--                    <div class="ml-3 relative">--}}
+                        @include('partials._teams-dropdown')
+{{--                    </div>--}}
                 @endif
 
                 {{-- Account Dropdown --}}
-                <div class="ml-3 relative">
+{{--                <div class="ml-3 relative">--}}
                     @include('partials._account-dropdown')
-                </div>
+{{--                </div>--}}
             </div>
 
             {{-- Burger Button --}}
             <div class="-mr-2 flex items-center sm:hidden">
                 @include('partials._burger-button')
             </div>
+
         </div>
     </div>
 
