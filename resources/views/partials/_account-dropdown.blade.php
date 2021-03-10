@@ -16,35 +16,35 @@
             {{ __('Manage Account') }}
         </div>
 
-        <x-jet-dropdown-link href="{{ route('profile.show') }}">
+        <x-dropdown.link href="{{ route('profile.show') }}">
             {{ __('nav.account') }}
-        </x-jet-dropdown-link>
+        </x-dropdown.link>
 
-        <x-jet-dropdown-link href="">
+        <x-dropdown.link href="">
             {{ __('nav.billing') }}
-        </x-jet-dropdown-link>
+        </x-dropdown.link>
 
         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-            <x-jet-dropdown-link href="{{ route('api-tokens.index') }}">
+            <x-dropdown.link href="{{ route('api-tokens.index') }}">
                 {{ __('API Tokens') }}
-            </x-jet-dropdown-link>
+            </x-dropdown.link>
         @endif
 
-        <div class="border-t border-gray-100"></div>
+        <x-dropdown.separator/>
 
         {{-- Authentication --}}
         <form method="POST" action="{{ route('logout') }}">
             @csrf
 
-            <x-jet-dropdown-link
+            <x-dropdown.link
                 href="{{ route('logout') }}"
-                 onclick="
+                onclick="
                     event.preventDefault();
                     this.closest('form').submit();
                 "
             >
                 {{ __('Log Out') }}
-            </x-jet-dropdown-link>
+            </x-dropdown.link>
         </form>
     </x-slot>
 </x-navbar.dropdown>

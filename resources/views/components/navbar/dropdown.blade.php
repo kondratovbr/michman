@@ -1,31 +1,5 @@
 {{--TODO: IMPORTANT! Does it work on touch? Is it supposed to?--}}
-
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white', 'dropdownClasses' => ''])
-
-@php
-    switch ($align) {
-        case 'left':
-            $alignmentClasses = 'origin-top-left left-0';
-            break;
-        case 'top':
-            $alignmentClasses = 'origin-top';
-            break;
-        case 'none':
-        case 'false':
-            $alignmentClasses = '';
-            break;
-        case 'right':
-        default:
-            $alignmentClasses = 'origin-top-right right-0';
-            break;
-    }
-
-    switch ($width) {
-        case '48':
-            $width = 'w-48';
-            break;
-    }
-@endphp
+{{--TODO: Needs hover, focus. Also, a11y concerns for dropdowns.--}}
 
 <div
     class="relative"
@@ -48,11 +22,10 @@
         x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }} {{ $dropdownClasses }}"
+        class="absolute z-50 mt-2 {{ $widthClass }} rounded-md shadow-lg {{ $alignmentClasses }}"
         style="display: none;"
-        @click="open = false"
     >
-        <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
+        <div class="rounded-md ring-1 ring-black ring-opacity-5 py-1 bg-white">
             {{ $content }}
         </div>
     </div>
