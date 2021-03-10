@@ -1,3 +1,5 @@
+{{--TODO: Add icons.--}}
+
 <nav x-data="{ open: false }" class="bg-navy-300">
 
     {{-- Primary Navigation Menu --}}
