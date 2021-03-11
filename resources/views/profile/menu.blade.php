@@ -5,6 +5,7 @@
 {{--TODO: Figure out automatic active section highlight.--}}
 {{--TODO: IMPORTANT! This menu is supposed to be a part of a big Livewire component (Maybe only Alpine?), so the page doesn't reload when these sections are changed.--}}
 {{--TODO: Active link shouldn't hover?--}}
+{{--TODO: Why are transitions a bit sluggish? Try with prod CSS (optimized)?--}}
 
 <aside>
     <ul class="space-y-2 text-gray-200">
