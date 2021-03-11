@@ -7,4 +7,11 @@ return [
     'account' => 'Account',
     'billing' => 'Billing',
 
+    'teams' => [
+        'manage' => 'Manage Team',
+        'create' => 'Create New Team',
+        'settings' => 'Team Settings',
+        'switch' => 'Switch Teams',
+    ],
+
 ];

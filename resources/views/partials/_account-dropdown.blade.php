@@ -12,9 +12,9 @@
 
     <x-slot name="content">
         {{-- Account Management --}}
-        <div class="block px-4 py-2 text-xs text-gray-400">
+        <x-dropdown.header>
             {{ __('Manage Account') }}
-        </div>
+        </x-dropdown.header>
 
         <x-dropdown.link href="{{ route('profile.show') }}">
             {{ __('nav.account') }}

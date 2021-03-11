@@ -20,27 +20,27 @@
     <x-slot name="content">
         <div>
             {{-- Team Management --}}
-            <div class="block px-4 py-2 text-xs text-gray-400">
-                {{ __('Manage Team') }}
-            </div>
+            <x-dropdown.header>
+                {{ __('nav.teams.manage') }}
+            </x-dropdown.header>
 
             {{-- Team Settings --}}
             <x-dropdown.link href="{{ route('teams.show', user()->currentTeam->id) }}">
-                {{ __('Team Settings') }}
+                {{ __('nav.teams.settings') }}
             </x-dropdown.link>
 
             @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                 <x-dropdown.link href="{{ route('teams.create') }}">
-                    {{ __('Create New Team') }}
+                    {{ __('nav.teams.create') }}
                 </x-dropdown.link>
             @endcan
 
             <x-dropdown.separator/>
 
             {{-- Team Switcher --}}
-            <div class="block px-4 py-2 text-xs text-gray-400">
-                {{ __('Switch Teams') }}
-            </div>
+            <x-dropdown.header>
+                {{ __('nav.teams.switch') }}
+            </x-dropdown.header>
 
             @foreach (user()->allTeams() as $team)
                 <x-jet-switchable-team :team="$team" />

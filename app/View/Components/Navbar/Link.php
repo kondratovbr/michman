@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 class Link extends Component
 {
     private const ACTIVE_CLASSES = 'border-gray-300 focus:outline-none focus:border-indigo-700';
-    private const INACTIVE_CLASSES = 'border-transparent hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300';
+    private const INACTIVE_CLASSES = 'border-transparent hover:bg-navy-400 hover:text-gray-100 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300';
 
     public string $routeName;
     public bool $active;
