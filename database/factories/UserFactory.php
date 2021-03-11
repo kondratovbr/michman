@@ -51,7 +51,7 @@ class UserFactory extends Factory
             Team::factory()
                 ->state(function (array $attributes, User $user) {
                     return [
-                        'name' => explode('@', $user->email, 2)[0]."'s Team",
+                        'name' => $user->getNameForPersonalTeam(),
                         'user_id' => $user->id,
                         'personal_team' => true,
                     ];

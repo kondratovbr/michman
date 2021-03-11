@@ -78,6 +78,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Generate a name for the user's automatically created personal team.
+     */
+    public function getNameForPersonalTeam(): string
+    {
+        return ucfirst(explode('@', $this->email, 2)[0]) . "'s Team";
+    }
+
+    /**
      * Get a relation with server providers owned by this user.
      */
     public function providers(): HasMany
