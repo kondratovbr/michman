@@ -16,7 +16,7 @@
             </div>
 
             {{-- Navigation Links --}}
-            <div class="hidden sm:flex space-x-4 sm:-my-px sm:ml-10">
+            <div class="hidden sm:flex sm:-my-px sm:ml-10">
                 <x-navbar.link routeName="dashboard">
                     {{ __('Dashboard') }}
                 </x-navbar.link>
@@ -36,11 +36,11 @@
         </div>
 
         {{-- Right Side --}}
-        <div class="hidden sm:flex sm:items-stretch space-x-3">
+        <div class="hidden sm:flex sm:items-stretch">
             {{-- Teams Dropdown --}}
-            @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                @include('partials._teams-dropdown')
-            @endif
+{{--            @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())--}}
+{{--                @include('partials._teams-dropdown')--}}
+{{--            @endif--}}
 
             {{-- Account Dropdown --}}
             @include('partials._account-dropdown')

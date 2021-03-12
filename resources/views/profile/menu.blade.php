@@ -8,11 +8,12 @@
 {{--TODO: Why are transitions a bit sluggish? Try with prod CSS (optimized)?--}}
 
 <aside>
-    <ul class="space-y-2 text-gray-200">
+    <ul class="flex flex-col items-stretch text-gray-200">
 
         <x-menu.item>Profile</x-menu.item>
 
         <x-menu.item
+{{--            TODO: Changed the way transitions work on the item itself. Now this approach doesn't work. Improve.--}}
             class="bg-navy-300 text-gray-100"
         >SSH Keys</x-menu.item>
         <x-menu.item>Server Provider</x-menu.item>

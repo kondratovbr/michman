@@ -9,7 +9,7 @@
     @close.stop="open = false"
 >
     <div
-        class="h-full pt-1 flex items-center"
+        class="h-full flex items-center cursor-pointer"
         @click="open = ! open"
     >
         {{ $trigger }}

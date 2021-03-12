@@ -121,29 +121,36 @@ module.exports = {
             },
             // Extending min-width utilities using a custom sizing scale (see above).
             minWidth: smallSizingScale,
+            transitionProperty: {
+                // Transition property optimized for many elements of the site
+                'ring-background': 'box-shadow, background-color',
+                'border-background': 'border-color, background-color',
+            },
         },
     },
 
     variants: {
         extend: {
 
-            backgroundColor: ['active'],
+            backgroundColor: ['hover', 'active'],
+            backgroundOpacity: ['active', 'group-hover', 'group-active'],
             borderWidth: ['hover', 'active'],
             borderColor: ['hover', 'active', 'focus'],
-            display: ['group-hover'],
+            borderOpacity: ['group-hover', 'group-active', 'group-focus'],
+            display: [],
             margin: ['first', 'last'],
-            opacity: ['disabled'],
+            opacity: ['disabled', 'group-hover', 'group-active'],
             padding: ['first', 'last'],
-            ringColor: ['hover', 'active'],
-            ringOpacity: ['hover', 'active'],
-            ringWidth: ['hover', 'active'],
-            rotate: ['group-hover'],
-            scale: ['group-hover'],
-            textColor: ['active'],
-            transform: ['group-hover'],
-            translate: ['group-hover'],
-            visibility: ['group-hover'],
-            zIndex: ['hover', 'active'],
+            ringColor: [],
+            ringOpacity: [],
+            ringWidth: [],
+            rotate: [],
+            scale: [],
+            textColor: ['active', 'group-hover', 'group-focus'],
+            transform: [],
+            translate: [],
+            visibility: [],
+            zIndex: [],
 
         },
     },
@@ -154,6 +161,30 @@ module.exports = {
         require('@tailwindcss/aspect-ratio'),
         require('@tailwindcss/line-clamp'),
         require('tailwindcss-debug-screens'),
+
+        // "group-active" variant for various interactive elements
+        plugin(function({ addVariant, e }) {
+            addVariant('group-active', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.group:active .${e(`group-active${separator}${className}`)}`;
+                });
+            });
+        }),
+
+        // "group-selected" variant for styling various toggle-switches and checkboxes
+        // TODO: Does it even work?
+        plugin(function({ addVariant, e }) {
+            addVariant('selected', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.${e(`active${separator}${className}`)}.selected`;
+                });
+            });
+            addVariant('group-selected', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.group.selected .${e(`group-selected${separator}${className}`)}`;
+                });
+            });
+        }),
     ],
 
 }

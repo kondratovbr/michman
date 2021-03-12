@@ -43,7 +43,7 @@
             </x-dropdown.header>
 
             @foreach (user()->allTeams() as $team)
-                <x-jet-switchable-team :team="$team" />
+                <x-team-switcher-item :team="$team" />
             @endforeach
         </div>
     </x-slot>

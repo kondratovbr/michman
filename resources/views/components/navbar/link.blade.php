@@ -2,10 +2,11 @@
 
 <a
     {{ $attributes->merge([
-        'class' => 'inline-flex items-center px-4 pt-1 border-b-2 text-gray-200 text-sm font-medium leading-5 transition ease-in-out duration-100' . ' '
-        . $stateClasses,
+        'class' => 'group inline-flex items-stretch px-2 py-2 text-gray-200 focus:outline-none',
         'href' => route($routeName),
     ]) }}
 >
-    {{ $slot }}
+    <div class="px-4 rounded-md text-sm font-medium leading-5 border border-gray-200 border-opacity-0 {{ $stateClasses }} group-focus:border-opacity-100 transition-border-background ease-in-out duration-100 flex items-center">
+        {{ $slot }}
+    </div>
 </a>
