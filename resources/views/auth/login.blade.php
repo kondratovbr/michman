@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <x-form method="POST" action="{{ route('login') }}">
+        <x-forms.vertical method="POST" action="{{ route('login') }}">
 
             <x-field>
                 <x-label for="email" value="{{ __('Email') }}" />
@@ -50,7 +50,7 @@
                 </x-button>
             </div>
 
-        </x-form>
+        </x-forms.vertical>
 
     </x-auth-box>
 

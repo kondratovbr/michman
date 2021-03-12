@@ -1,5 +1,9 @@
-<form
+@props(['method' => null, 'withFiles' => false])
+
+<x-form
     {{ $attributes }}
+    :method="$method"
+    :withFiles="$withFiles"
 >
     <x-box.content>
         {{ $slot }}
@@ -9,4 +13,4 @@
             {{ $actions }}
         </x-box.footer>
     @endisset
-</form>
+</x-form>

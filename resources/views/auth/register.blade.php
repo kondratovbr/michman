@@ -5,7 +5,7 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <x-form method="POST" action="{{ route('register') }}">
+        <x-forms.vertical method="POST" action="{{ route('register') }}">
 
             <x-field>
                 <x-label for="email" value="{{ __('Email') }}" />
@@ -61,7 +61,7 @@
                 </x-button>
             </div>
 
-        </x-form>
+        </x-forms.vertical>
 
     </x-auth-box>
 </x-layouts.guest>

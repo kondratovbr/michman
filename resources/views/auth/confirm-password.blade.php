@@ -9,7 +9,7 @@
 
         <x-jet-validation-errors class="mb-4" />
 
-        <x-form method="POST" action="{{ route('password.confirm') }}">
+        <x-forms.vertical method="POST" action="{{ route('password.confirm') }}">
 
             <x-field>
                 <x-label for="password" value="{{ __('Password') }}" />
@@ -26,7 +26,7 @@
                 </x-button>
             </div>
 
-        </x-form>
+        </x-forms.vertical>
 
     </x-auth-box>
 </x-layouts.guest>
