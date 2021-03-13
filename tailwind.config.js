@@ -150,7 +150,7 @@ module.exports = {
             ringOpacity: [],
             ringWidth: [],
             rotate: [],
-            scale: [],
+            scale: ['group-hover', 'group-focus'],
             textColor: ['active', 'group-hover', 'group-focus'],
             transform: [],
             translate: [],

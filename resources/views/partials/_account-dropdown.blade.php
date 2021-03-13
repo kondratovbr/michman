@@ -3,18 +3,10 @@
 <x-navbar.dropdown-new align="right">
 
     <x-slot name="trigger">
-
-{{--        <button class="inline-flex items-center space-x-2 text-sm focus:outline-none focus:border-gray-300">--}}
-{{--            <x-avatar class="h-8 w-8" />--}}
-{{--            <span>{{ user()->email }}</span>--}}
-{{--            <x-icon class="fa fa-chevron-down" />--}}
-{{--        </button>--}}
-
         <div class="flex items-center space-x-2 text-sm">
             <x-avatar class="h-8 w-8" />
             <span>{{ user()->email }}</span>
         </div>
-
     </x-slot>
 
     <x-slot name="content">
