@@ -121,6 +121,11 @@ module.exports = {
             },
             // Extending min-width utilities using a custom sizing scale (see above).
             minWidth: smallSizingScale,
+            // Reusable transition durations
+            transitionDuration: {
+                'quick': '100ms',
+                'normal': '150ms',
+            },
             transitionProperty: {
                 // Transition property optimized for many elements of the site
                 'ring-background': 'box-shadow, background-color',
