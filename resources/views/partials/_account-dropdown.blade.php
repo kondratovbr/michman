@@ -12,7 +12,7 @@
     <x-slot name="content">
         {{-- Account Management --}}
         <x-dropdown.header>
-            {{ __('Manage Account') }}
+            {{ __('nav.manage_account') }}
         </x-dropdown.header>
 
         <x-dropdown.link href="{{ route('profile.show') }}">
@@ -25,7 +25,7 @@
 
         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
             <x-dropdown.link href="{{ route('api-tokens.index') }}">
-                {{ __('API Tokens') }}
+                {{ __('nav.api_token') }}
             </x-dropdown.link>
         @endif
 
@@ -42,7 +42,7 @@
                     this.closest('form').submit();
                 "
             >
-                {{ __('Log Out') }}
+                {{ __('auth.logout') }}
             </x-dropdown.link>
         </form>
     </x-slot>
