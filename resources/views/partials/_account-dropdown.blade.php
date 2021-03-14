@@ -1,6 +1,6 @@
 {{--TODO: Add icons.--}}
 
-<x-navbar.dropdown-new align="right">
+<x-navbar.dropdown align="right">
 
     <x-slot name="trigger">
         <div class="flex items-center space-x-2 text-sm">
@@ -46,4 +46,4 @@
             </x-dropdown.link>
         </form>
     </x-slot>
-</x-navbar.dropdown-new>
+</x-navbar.dropdown>

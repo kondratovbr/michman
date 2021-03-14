@@ -5,15 +5,25 @@
 <div
     class="relative"
     x-data="{ open: false }"
-    @click.away="open = false"
-    @close.stop="open = false"
+    x-on:click.away="open = false"
+    x-on:close.stop="open = false"
 >
-    <div
-        class="h-full flex items-center cursor-pointer"
-        @click="open = ! open"
+{{--If a button is used here - in Safari the child div (inside the button) doesn't stretch vertically by any means. A bug in safari.--}}
+    <a
+        class="group py-2 h-full w-full flex items-stretch cursor-pointer focus:outline-none"
+        x-on:click="open = !open"
+        role="button"
     >
-        {{ $trigger }}
-    </div>
+        <div
+            class="px-5 rounded-md flex items-center self-stretch text-sm select-none border-2 border-gray-300 border-opacity-0 group-hover:border-opacity-100 bg-navy-400 group-active:bg-opacity-100 transition-border-background ease-in-out duration-quick"
+            x-bind:class="{'bg-opacity-0': !open, 'bg-opacity-100': open}"
+        >
+            <div class="flex items-center transform group-hover:scale-105 transition-transform ease-in-out duration-quick">
+                {{ $trigger }}
+                <x-dropdown.icon class="ml-2" />
+            </div>
+        </div>
+    </a>
 
     <div
         x-show="open"
@@ -23,7 +33,7 @@
         x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="absolute z-50 -mt-2 {{ $widthClass }} rounded-md border border-gray-600 shadow-lg-black {{ $alignmentClasses }}"
+        class="absolute z-50 -mt-1 {{ $widthClass }} rounded-md border border-gray-600 shadow-lg-black {{ $alignmentClasses }}"
         style="display: none;"
     >
         <div class="rounded-md py-2 bg-navy-300">
