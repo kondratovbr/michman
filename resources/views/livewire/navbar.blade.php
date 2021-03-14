@@ -17,19 +17,16 @@
 
             {{-- Navigation Links --}}
             <div class="hidden sm:flex sm:-my-px sm:ml-10">
-                <x-navbar.link routeName="dashboard">
-                    {{ __('Dashboard') }}
-                </x-navbar.link>
-{{--                    TODO: IMPORTANT! Remove this. This is temporary.--}}
-                <x-navbar.link routeName="profile.show">
-                    Profile Page
-                </x-navbar.link>
 {{--                    TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
                 <x-navbar.link routeName="home">
                     {{ __('nav.servers') }}
                 </x-navbar.link>
                 <x-navbar.link routeName="home">
                     {{ __('nav.projects') }}
+                </x-navbar.link>
+{{--                TODO: Add external link icon. Maybe animate it on hover/active.--}}
+                <x-navbar.link routeName="home">
+                    {{ __('nav.documentation') }}
                 </x-navbar.link>
             </div>
 
