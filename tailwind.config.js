@@ -117,6 +117,7 @@ module.exports = {
             boxShadow: {
                 'lg-black': '0 10px 15px -3px rgba(1, 1, 1, 0.1), 0 4px 6px -2px rgba(1, 1, 1, 0.05)',
                 'md-black': '0 4px 6px -1px rgba(1, 1, 1, 0.1), 0 2px 4px -1px rgba(1, 1, 1, 0.06)',
+                'xl-black': '0 20px 25px -5px rgba(1, 1, 1, 0.1), 0 10px 10px -5px rgba(1, 1, 1, 0.04)',
                 'md-gold-900': '0 4px 6px -1px rgba(255, 215, 0, 0.1), 0 2px 4px -1px rgba(255, 215, 0, 0.06)',
             },
             // Extending min-width utilities using a custom sizing scale (see above).
