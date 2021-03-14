@@ -10,14 +10,16 @@
 <aside>
     <ul class="flex flex-col items-stretch text-gray-200">
 
-        <x-menu.item>Profile</x-menu.item>
+        <x-menu.item>{{ __('account.profile.button') }}</x-menu.item>
 
         <x-menu.item
 {{--            TODO: Changed the way transitions work on the item itself. Now this approach doesn't work. Improve.--}}
             class="bg-navy-300 text-gray-100"
-        >SSH Keys</x-menu.item>
-        <x-menu.item>Server Provider</x-menu.item>
-        <x-menu.item>Source Control</x-menu.item>
-        <x-menu.item>Michman API</x-menu.item>
+        >{{ __('account.ssh.button') }}</x-menu.item>
+
+        <x-menu.item>{{ __('account.providers.button') }}</x-menu.item>
+        <x-menu.item>{{ __('account.vcs.button') }}</x-menu.item>
+        <x-menu.item>{{ __('account.api.button') }}</x-menu.item>
+
     </ul>
 </aside>

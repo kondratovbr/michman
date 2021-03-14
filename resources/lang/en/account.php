@@ -1,0 +1,44 @@
+<?php
+
+return [
+
+    'profile' => [
+
+        'button' => 'Profile',
+
+        'sessions' => [
+            'title' => 'Browser Sessions',
+            'description' => 'Manage and log out your active sessions on other browsers and devices.',
+            'explanation' => 'If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.',
+            'this-device' => 'This device',
+            'last-active' => 'Last active',
+
+        ],
+
+    ],
+
+    'ssh' => [
+
+        'button' => 'SSH Keys',
+
+    ],
+
+    'providers' => [
+
+        'button' => 'Server Providers',
+
+    ],
+
+    'vcs' => [
+
+        'button' => 'Source Control',
+
+    ],
+
+    'api' => [
+
+        'button' => 'Michman API',
+
+    ],
+
+];
