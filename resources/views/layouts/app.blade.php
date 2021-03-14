@@ -20,9 +20,17 @@
             @endisset
 
             {{-- Page Content --}}
-            <main class="md:col-start-2 md:col-end-12">
-                {{ $slot }}
-            </main>
+            <div class="md:col-start-2 md:col-end-12 md:grid md:grid-cols-12">
+                @isset($aside)
+                    <div class="md:col-span-3 px-5">
+                        {{ $aside }}
+                    </div>
+                @endisset
+                {{-- Page Content --}}
+                <main class="md:col-span-9 max-w-6xl sm:px-6 lg:px-8">
+                    {{ $slot }}
+                </main>
+            </div>
 
         </div>
 
