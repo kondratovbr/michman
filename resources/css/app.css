@@ -3,3 +3,7 @@
 @import 'tailwindcss/utilities';
 
 @import 'fa.css';
+
+@import 'components.css';
+
+@import 'tailwindcss/screens';
