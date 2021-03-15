@@ -33,10 +33,6 @@
 
         {{ $slot }}
 
-        <x-modals>
-            @stack('modals')
-        </x-modals>
-
         @livewireScripts
 
     </body>

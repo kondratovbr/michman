@@ -31,9 +31,13 @@
         <x-section-border/>
     @endif
 
-{{--    TODO: IMPORTANT! See how the list of sesions looks, probably needs updating.--}}
     <div class="mt-10 sm:mt-0">
         @livewire('profile.logout-other-browser-sessions-form')
+    </div>
+
+    <x-section-border/>
+    <div class="mt-10 sm:mt-0">
+        <livewire:profile.logout-sessions-form/>
     </div>
 
     @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())

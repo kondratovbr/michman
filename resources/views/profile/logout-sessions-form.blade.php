@@ -1,11 +1,9 @@
 {{--TODO: IMPORTANT! Unfinished!--}}
 
 <x-action-section>
-
     <x-slot name="title">
         {{ __('account.profile.sessions.title') }}
     </x-slot>
-
     <x-slot name="description">
         {{ __('account.profile.sessions.description') }}
     </x-slot>
@@ -22,19 +20,10 @@
             </div>
         @endif
 
-        <div class="flex items-center mt-5">
-            <x-button wire:click="confirmLogout" wire:loading.attr="disabled">
-                {{ __('account.profile.sessions.logout') }}
-            </x-button>
-
-{{--            TODO: Change this to some animated icon. In every single other place as well.--}}
-            <x-jet-action-message class="ml-3" on="loggedOut">
-                {{ __('Done.') }}
-            </x-jet-action-message>
-        </div>
-
-        {{-- Log Out Other Devices Confirmation Modal --}}
-        @include('profile._logout-sessions-modal')
+        <x-button class="mt-5" wire:clicl="openModal" wire:loading.attr="disabled">
+            Test new modal
+        </x-button>
+        @include('profile._logout-sessions-modal-new')
 
     </x-slot>
 
