@@ -188,6 +188,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
 
     ],
@@ -241,6 +242,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        // TODO: Do I even use this one?
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
     ],
 
