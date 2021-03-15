@@ -36,6 +36,10 @@
         {{-- Log Out Other Devices Confirmation Modal --}}
         @include('profile._logout-sessions-modal')
 
+        @push('modals')
+            @include('profile._logout-sessions-modal-new')
+        @endpush
+
     </x-slot>
 
 </x-action-section>
