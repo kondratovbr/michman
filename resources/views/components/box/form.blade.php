@@ -5,8 +5,11 @@
     :method="$method"
     :withFiles="$withFiles"
 >
+    @isset($header)
+        <x-box.header>{{ $header }}</x-box.header>
+    @endisset
     <x-box.content>
-        {{ $slot }}
+        {{ $content ?? $slot }}
     </x-box.content>
     @isset($actions)
         <x-box.footer>

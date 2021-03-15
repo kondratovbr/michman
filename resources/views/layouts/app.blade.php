@@ -36,6 +36,4 @@
 
     </div>
 
-    @stack('modals')
-
 </x-layouts.html>

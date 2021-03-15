@@ -30,8 +30,14 @@
 {{--        TODO: IMPORTANT! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
     </head>
     <body class="font-sans antialiased text-gray-100 bg-navy-100 {{ isDebug() ? 'debug-screens' : null }}">
+
         {{ $slot }}
 
+        <x-modals>
+            @stack('modals')
+        </x-modals>
+
         @livewireScripts
+
     </body>
 </html>

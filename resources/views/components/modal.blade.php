@@ -13,6 +13,7 @@
 @endphp
 
 <div
+    {{-- Focucables are functions that handle focus changes (Tab button), so that when modal is shown focus is kept inside the modal. --}}
     x-data="{
         show: @entangle($attributes->wire('model')),
         focusables() {
@@ -30,6 +31,11 @@
         nextFocusableIndex() { return (this.focusables().indexOf(document.activeElement) + 1) % (this.focusables().length + 1) },
         prevFocusableIndex() { return Math.max(0, this.focusables().indexOf(document.activeElement)) -1 },
     }"
+
+    {{-- This directives override focus-changing buttons (tab, shift+tab) to use previously declared handlers instead of default logic. --}}
+    x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
+    x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
+
     x-init="$watch('show', value => {
         if (value) {
             document.body.classList.add('overflow-y-hidden');
@@ -37,15 +43,16 @@
             document.body.classList.remove('overflow-y-hidden');
         }
     })"
+
     x-on:close.stop="show = false"
     x-on:keydown.escape.window="show = false"
-    x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
-    x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
+
     x-show="show"
     id="{{ $id }}"
     class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
     style="display: none;"
 >
+    {{-- Opaque Background For Modals --}}
     <div
         x-show="show"
         class="fixed inset-0 transform transition-all"
@@ -60,6 +67,7 @@
         <div class="absolute inset-0 bg-navy-100 opacity-75"></div>
     </div>
 
+    {{-- The Modal Box Itself --}}
     <div
         x-show="show"
         class="mb-6 bg-navy-300 rounded-lg overflow-hidden shadow-xl-black transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto"
