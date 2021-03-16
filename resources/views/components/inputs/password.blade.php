@@ -1,6 +1,4 @@
-<x-input
-    {{ $attributes->merge([
-        'autocomplete' => 'current-password',
-    ]) }}
-    type="password"
-/>
+<x-input {{ $attributes->merge([
+    'autocomplete' => 'current-password',
+    'type' => 'password',
+]) }} />
