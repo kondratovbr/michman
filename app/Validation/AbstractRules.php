@@ -49,7 +49,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
      *
      * @var string[]
      */
-    protected array $namedRules = ['name' => 'rule'];
+    protected array $namedRules = [];
 
     /**
      * Actual custom rules (objects) that will be applied
