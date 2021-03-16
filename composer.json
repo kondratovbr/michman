@@ -26,6 +26,7 @@
         "livewire/livewire": "^2.0"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.7",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.4",
