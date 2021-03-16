@@ -114,4 +114,15 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+     * Custom configuration parameters
+     */
+
+    'password' => [
+        // Password lengths are used for validation.
+        // TODO: Figure out instant client-side validation for this.
+        'min_length' => 8,
+        'max_length' => 255,
+    ],
+
 ];
