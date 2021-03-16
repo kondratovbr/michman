@@ -23,6 +23,16 @@ namespace App\Validation;
  */
 class Rules extends AbstractBaseRules
 {
+    static public function currentUserPassword(): static
+    {
+        // We don't validate against the lower length limit just so we
+        // can display a more appropriate validation message.
+        return (new static([
+            'string',
+            'password'
+        ]))->max((int) config('auth.password.max_length'));;
+    }
+
     /**
      * Default validation rules for weird HTML checkboxes.
      */
@@ -56,7 +66,7 @@ class Rules extends AbstractBaseRules
     /**
      * Validation rules for strings used as a user's password.
      */
-    static public function password(): static
+    static public function genericPassword(): static
     {
         return static::string()
             ->min((int) config('auth.password.min_length'))

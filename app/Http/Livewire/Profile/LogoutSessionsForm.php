@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Profile;
 
+use App\Validation\Rules;
 use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection as BasicCollection;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,15 @@ class LogoutSessionsForm extends Component
     /** @var string Currently typed user's password. */
     public string $password = '';
 
+    public string $foo = '';
+
+    protected function rules(): array
+    {
+        return [
+            'password' => Rules::currentUserPassword()->required(),
+        ];
+    }
+
     /**
      * Open modal confirmation dialog.
      */
@@ -26,9 +37,51 @@ class LogoutSessionsForm extends Component
         $this->modalOpened = true;
     }
 
-    public function logoutOtherSessions(): void
+    /**
+     * Invalidate all browser sessions of the current user,
+     * beside the current one.
+     */
+    public function logoutOtherSessions(StatefulGuard $guard): void
     {
+        $this->validate();
 
+        DB::beginTransaction();
+
+        /*
+         * Here's a decent explanation of how it actually happens:
+         * https://laracasts.com/series/whats-new-in-laravel-5-6/episodes/7
+         * Also, see Illuminate\Session\Middleware\AuthenticateSession.
+         * Btw, this middleware should be enabled for this to work.
+         */
+        $guard->logoutOtherDevices($this->password);
+
+        /*
+         * We have to manually delete other session records,
+         * because they're invalidated by changing the user's password hash,
+         * so sessions records will only be automatically cleaned
+         * after they expire on their own.
+         */
+        $this->deleteOtherSessionRecords();
+
+        DB::commit();
+
+        $this->modalOpened = false;
+    }
+
+    /**
+     * Delete the other browser session records from storage.
+     */
+    protected function deleteOtherSessionRecords(): void
+    {
+        if (config('session.driver') !== 'database') {
+            return;
+        }
+
+        DB::connection(config('session.connection'))
+            ->table(config('session.table', 'sessions'))
+            ->where('user_id', Auth::user()->getAuthIdentifier())
+            ->where('id', '!=', request()->session()->getId())
+            ->delete();
     }
 
     /**
