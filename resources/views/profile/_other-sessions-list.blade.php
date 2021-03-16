@@ -19,14 +19,15 @@
                 </div>
                 <div>
                     {{ $session->ip_address }},
-
                     @if ($session->is_current_device)
                         <span class="text-green-400 font-semibold">
-                                            {{ __('account.profile.sessions.this_device') }}
-                                        </span>
+                            {{ __('account.profile.sessions.this_device') }}
+                        </span>
                     @else
-                        {{ __('account.profile.sessions.last_active') }}
-                        {{ $session->last_active }}
+                        <span class="text-gray-400">
+                            {{ __('account.profile.sessions.last_active') }}
+                            {{ $session->last_active }}
+                        </span>
                     @endif
                 </div>
             </div>
