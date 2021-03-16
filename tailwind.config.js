@@ -131,6 +131,7 @@ module.exports = {
                 // Transition property optimized for many elements of the site
                 'ring-background': 'box-shadow, background-color',
                 'border-background': 'border-color, background-color',
+                'opacity-transform': 'opacity, transform',
             },
         },
     },

@@ -1,3 +1,5 @@
+{{--TODO: IMPORTANT! Unfinished. Take a good look at its styling. Also, maybe refactor for different buttons. Also, optimize transitions.--}}
+
 <button
     {{ $attributes->merge([
         'type' => 'submit',

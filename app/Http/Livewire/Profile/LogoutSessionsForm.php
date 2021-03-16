@@ -12,6 +12,25 @@ use Livewire\Component;
 
 class LogoutSessionsForm extends Component
 {
+    /** @var bool Indicates if a confirmation modal should currently be opened. */
+    public bool $modalOpened = false;
+    /** @var string Currently typed user's password. */
+    public string $password = '';
+
+    /**
+     * Open modal confirmation dialog.
+     */
+    public function openModal(): void
+    {
+        $this->password = '';
+        $this->modalOpened = true;
+    }
+
+    public function logoutOtherSessions(): void
+    {
+
+    }
+
     /**
      * Get a list of auth'ed user's currently active sessions.
      */

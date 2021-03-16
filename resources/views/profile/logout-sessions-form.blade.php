@@ -9,7 +9,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <div class="max-w-xl text-sm">
+        <div class="max-w-prose text-sm">
             {{ __('account.profile.sessions.explanation') }}
         </div>
 
@@ -20,7 +20,11 @@
             </div>
         @endif
 
-        <x-button class="mt-5" wire:clicl="openModal" wire:loading.attr="disabled">
+        <x-button
+            class="mt-5"
+            wire:click="openModal"
+            wire:loading.attr="disabled"
+        >
             Test new modal
         </x-button>
         @include('profile._logout-sessions-modal-new')
