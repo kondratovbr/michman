@@ -27,7 +27,7 @@
                     required
                 />
 {{--                TODO: IMPORTANT! Verify that it even works. Don't forget that this needs improvement.--}}
-                <x-jet-input-error for="password" class="mt-2" />
+                <x-input-error for="password" class="mt-2" />
             </x-field>
 
         </div>
