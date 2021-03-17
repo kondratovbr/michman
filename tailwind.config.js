@@ -132,6 +132,7 @@ module.exports = {
                 'ring-background': 'box-shadow, background-color',
                 'border-background': 'border-color, background-color',
                 'opacity-transform': 'opacity, transform',
+                'border-ring': 'border-color, box-shadow',
             },
         },
     },

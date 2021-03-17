@@ -1,8 +1,12 @@
 {{--TODO: IMPORTANT! Unfinished. Responsiveness, mobile. Test on touch - both tablet and mobile.--}}
+{{--TODO: Can I make this generic modal to be one single element with various modal boxes inside? I will have to decouple the normal components from the modal parts of it though.--}}
 
 {{-- Container for a modal --}}
 <div
+    {{-- Some Livewire functions require a unique ID here. --}}
+{{--    id="{{ $id ?? md5($attributes->wire('model')) }}"--}}
     class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-40"
+    {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
     x-data="{ show: @entangle($attributes->wire('model')) }"
     x-show="show"
     {{-- Close modal on ESC button and similar actions --}}
@@ -14,7 +18,7 @@
         x-show="show"
         class="fixed inset-0 transition-opacity"
         {{-- Close modal on click on the background --}}
-        x-on:click="show = false"
+        x-on:click.stop="show = false"
         {{-- Transitions for opening the modal --}}
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0"
@@ -33,6 +37,8 @@
     <div
         x-show="show"
         class="container mx-auto transform transition-opacity-transform"
+        {{-- Close modal on click on the background --}}
+        x-on:click.stop="show = false"
         {{-- Transitions for opening the modal --}}
         x-transition:enter="ease-out duration-300"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"

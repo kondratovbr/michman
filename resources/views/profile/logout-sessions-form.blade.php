@@ -25,7 +25,7 @@
             wire:click="openModal"
             wire:loading.attr="disabled"
         >
-            Test new modal
+            {{ __('account.profile.sessions.logout') }} [NEW MODAL]
         </x-button>
         @include('profile._logout-sessions-modal-new')
 

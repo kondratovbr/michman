@@ -1,11 +1,15 @@
-@props(['wireModel'])
+@props(['wireModel', 'modalId'])
 
-<x-modal-new wire:model="{{ $wireModel }}">
+<x-modal-new wire:model="{{ $wireModel }}" id="{{ $modalId ?? md5($attributes->wire('model')) }}">
 
 {{--    TODO: IMPORTANT! Unfinished! Figure out responsiveness and mobile/touch!--}}
     <div class="grid grid-cols-12">
         <x-box class="col-start-4 col-end-10">
-            <x-box.form {{ $attributes }}>
+            <x-box.form
+                {{ $attributes }}
+                {{-- To prevent the modal closing on clicks inside the modal box itself --}}
+                x-on:click.stop=""
+            >
 
                 @isset($header)
                     <x-slot name="header">{{ $header }}</x-slot>

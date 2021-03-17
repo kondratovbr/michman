@@ -19,8 +19,6 @@ class LogoutSessionsForm extends Component
     /** @var string Currently typed user's password. */
     public string $password = '';
 
-    public string $foo = '';
-
     protected function rules(): array
     {
         return [
@@ -33,7 +31,12 @@ class LogoutSessionsForm extends Component
      */
     public function openModal(): void
     {
+        // We have to reset validation errors, otherwise errors
+        // are still displayed when the modal is closed and the opened again.
+        $this->resetErrorBag();
         $this->password = '';
+        // We're using this event for focusing the password input.
+        $this->dispatchBrowserEvent('confirming-logout-sessions');
         $this->modalOpened = true;
     }
 

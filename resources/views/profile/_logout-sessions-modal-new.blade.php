@@ -1,4 +1,6 @@
-<x-modals.form wireModel="modalOpened">
+{{--TODO: Figure out how to put small modals (like this one) on the middle of the screen, when the screen allows for it.--}}
+
+<x-modals.form wireModel="modalOpened" modalId="logoutSessionsModal">
 
     <x-slot name="header">
         {{ __('account.profile.sessions.logout') }}
@@ -8,12 +10,19 @@
         <div class="max-w-prose">
             {{ __('account.profile.sessions.enter_password') }}
 
-            <x-field>
+            <x-field
+                x-data="{}"
+                class="mt-4"
+                {{-- When modal opens - Livewire fires a browser event "confirming-logout-sessions", which we use here to autofocus the password field using x-ref on it. --}}
+                {{-- I don't know why it doesn't work without timeout regardless of where I put this line. --}}
+                x-on:confirming-logout-sessions.window="setTimeout(() => $refs.password.focus(), 50)"
+            >
                 <x-label>{{ __('forms.password.label') }}</x-label>
                 <x-inputs.password
+                    class="max-w-md"
                     name="password"
                     id="password_modal"
-{{--                    x-ref="password"--}}
+                    x-ref="password"
                     wire:model.defer="password"
                     required
                 />
@@ -22,8 +31,6 @@
             </x-field>
 
         </div>
-
-        <div>Foo: {{ $this->foo }}</div>
 
     </x-slot>
 
