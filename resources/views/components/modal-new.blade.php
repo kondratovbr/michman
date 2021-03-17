@@ -9,13 +9,18 @@
     {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
     x-data="{ show: @entangle($attributes->wire('model')) }"
     x-show="show"
+    {{-- This is needed so the modal doesn't flash during page load (before Alpine kicks in and hides the thing). --}}
+    {{-- Tailwind "hidden" doesn't cut it - Alpine has no idea how to handle it. --}}
+    style="display: none"
     {{-- Close modal on ESC button and similar actions --}}
     x-on:close.stop="show = false"
     x-on:keydown.escape.window="show = false"
 >
     {{-- Opaque background container - needed for proper transitions. --}}
+    {{-- Separated from the modal box itself to be able to have different transitions on them. --}}
     <div
         x-show="show"
+        style="display: none"
         class="fixed inset-0 transition-opacity"
         {{-- Close modal on click on the background --}}
         x-on:click.stop="show = false"
@@ -36,6 +41,7 @@
     {{-- Container for the modal box --}}
     <div
         x-show="show"
+        style="display: none"
         class="container mx-auto transform transition-opacity-transform"
         {{-- Close modal on click on the background --}}
         x-on:click.stop="show = false"

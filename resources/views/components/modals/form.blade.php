@@ -1,6 +1,9 @@
 @props(['wireModel', 'modalId'])
 
-<x-modal-new wire:model="{{ $wireModel }}" id="{{ $modalId ?? md5($attributes->wire('model')) }}">
+<x-modal-new
+    wire:model="{{ $wireModel }}"
+    id="{{ $modalId ?? md5($attributes->wire('model')) }}"
+>
 
 {{--    TODO: IMPORTANT! Unfinished! Figure out responsiveness and mobile/touch!--}}
     <div class="grid grid-cols-12">
