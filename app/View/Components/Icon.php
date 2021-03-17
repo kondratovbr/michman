@@ -15,14 +15,6 @@ class Icon extends Component
     }
 
     /**
-     * Get the view that represents the component.
-     */
-    public function render(): View
-    {
-        return view('components.icon');
-    }
-
-    /**
      * Get CSS classes for the icon container size.
      */
     private function getSizeClasses(string $size): string
@@ -33,5 +25,13 @@ class Icon extends Component
             '10' => 'w-10 h-10',
             '12' => 'w-12 h-12',
         };
+    }
+
+    /**
+     * Get the view that represents the component.
+     */
+    public function render(): View
+    {
+        return view('components.icon');
     }
 }

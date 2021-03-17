@@ -17,14 +17,6 @@ class Dropdown extends Component
     }
 
     /**
-     * Get the view that represents the component.
-     */
-    public function render(): View
-    {
-        return view('components.navbar.dropdown');
-    }
-
-    /**
      * Get the alignment classes for the dropdown menu.
      */
     private function alignmentClasses(string $align): string
@@ -54,5 +46,13 @@ class Dropdown extends Component
         };
 
         return $class;
+    }
+
+    /**
+     * Get the view that represents the component.
+     */
+    public function render(): View
+    {
+        return view('components.navbar.dropdown');
     }
 }
