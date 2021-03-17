@@ -13,7 +13,7 @@ return [
             'this_device' => 'This device',
             'last_active' => 'Last active',
             'enter_password' => 'Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.',
-            'logout' => 'Log out other browser sessions',
+            'logout' => 'Log out other sessions',
 
         ],
 

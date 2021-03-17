@@ -1,0 +1,27 @@
+@layer utilities {
+    @variants responsive {
+
+        /* Horizontal spacing using right margins instead of built-in left margins */
+        .space-x-2-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+            margin-right: 0.5rem;
+        }
+        .space-x-2\.5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+            margin-right: 0.625rem;
+        }
+        .space-x-3-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+            margin-right: 0.75rem;
+        }
+
+        /* Vertical spacing using bottom margins instead of built-in top margins */
+        .space-y-2-bottom > :not(:only-child) {
+            margin-bottom: 0.5rem;
+        }
+        .space-y-2\.5-bottom > :not(:only-child) {
+            margin-bottom: 0.625rem;
+        }
+        .space-y-3-bottom > :not(:only-child) {
+            margin-bottom: 0.75rem;
+        }
+
+    }
+}

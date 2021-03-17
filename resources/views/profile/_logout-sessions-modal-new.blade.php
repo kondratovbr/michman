@@ -3,7 +3,9 @@
 <x-modals.form wireModel="modalOpened" modalId="logoutSessionsModal">
 
     <x-slot name="header">
+        <h3 class="text-lg font-medium">
         {{ __('account.profile.sessions.logout') }}
+        </h3>
     </x-slot>
 
     <x-slot name="content">
@@ -35,22 +37,23 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-button
-            wire:click.prevent="logoutOtherSessions"
-            wire:loading.attr="disabled"
-        >
-            {{ __('account.profile.sessions.logout') }}
-        </x-button>
-{{--        TODO: IMPORTANT! Re-do and restyle this button. All other places with these secondary buttons as well. Also, create a "buttons" container.--}}
-        <x-jet-secondary-button
-            class="ml-2"
-            {{-- "show" Alpine variable is @entangled with the Livewire model. See above. --}}
-            {{-- Triggering the Alpines one first ensures no delay between a button press and the modal closing. --}}
-            x-on:click.prevent="show = false"
-            wire:loading.attr="disabled"
-        >
-            {{ __('buttons.cancel') }}
-        </x-jet-secondary-button>
+        <x-buttons>
+            <x-buttons.primary
+                wire:click.prevent="logoutOtherSessions"
+                wire:loading.attr="disabled"
+            >
+                {{ __('account.profile.sessions.logout') }}
+            </x-buttons.primary>
+    {{--        TODO: IMPORTANT! Re-do and restyle this button. All other places with these secondary buttons as well. Also, create a "buttons" container with proper spacing.--}}
+            <x-buttons.secondary
+                {{-- "show" Alpine variable is @entangled with the Livewire model. See above. --}}
+                {{-- Triggering the Alpines one first ensures no delay between a button press and the modal closing. --}}
+                x-on:click.prevent="show = false"
+                wire:loading.attr="disabled"
+            >
+                {{ __('buttons.cancel') }}
+            </x-buttons.secondary>
+        </x-buttons>
     </x-slot>
 
 </x-modals.form>

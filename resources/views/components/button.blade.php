@@ -1,4 +1,4 @@
-{{--TODO: IMPORTANT! Unfinished. Take a good look at its styling. Also, maybe refactor for different buttons. Also, optimize transitions.--}}
+{{--TODO: IMPORTANT! Don't forget to switch for the button-new!--}}
 
 <button
     {{ $attributes->merge([

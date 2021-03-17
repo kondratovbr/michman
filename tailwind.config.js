@@ -114,6 +114,9 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            borderWidth: {
+                '3': '3px',
+            },
             boxShadow: {
                 'lg-black': '0 10px 15px -3px rgba(1, 1, 1, 0.1), 0 4px 6px -2px rgba(1, 1, 1, 0.05)',
                 'md-black': '0 4px 6px -1px rgba(1, 1, 1, 0.1), 0 2px 4px -1px rgba(1, 1, 1, 0.06)',
@@ -140,11 +143,12 @@ module.exports = {
     variants: {
         extend: {
 
-            backgroundColor: ['hover', 'active'],
+            backgroundColor: ['hover', 'active', 'disabled'],
             backgroundOpacity: ['active', 'group-hover', 'group-active'],
             borderWidth: ['hover', 'active'],
             borderColor: ['hover', 'active', 'focus'],
             borderOpacity: ['group-hover', 'group-active', 'group-focus'],
+            cursor: ['disabled'],
             display: [],
             margin: ['first', 'last'],
             opacity: ['disabled', 'group-hover', 'group-active'],
@@ -154,7 +158,7 @@ module.exports = {
             ringWidth: [],
             rotate: [],
             scale: ['group-hover', 'group-focus'],
-            textColor: ['active', 'group-hover', 'group-focus'],
+            textColor: ['active', 'group-hover', 'group-focus', 'disabled'],
             transform: [],
             translate: [],
             visibility: [],

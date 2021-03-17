@@ -20,13 +20,14 @@
             </div>
         @endif
 
-        <x-button
+        <x-buttons.primary
             class="mt-5"
             wire:click="openModal"
             wire:loading.attr="disabled"
         >
+{{--            TODO: Don't forget to remove that last part!--}}
             {{ __('account.profile.sessions.logout') }} [NEW MODAL]
-        </x-button>
+        </x-buttons.primary>
         @include('profile._logout-sessions-modal-new')
 
     </x-slot>

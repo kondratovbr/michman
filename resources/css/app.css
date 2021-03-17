@@ -4,6 +4,7 @@
 
 @import 'fa.css';
 
+@import 'utilities.css';
 @import 'components.css';
 
 @import 'tailwindcss/screens';
