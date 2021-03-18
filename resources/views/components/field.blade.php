@@ -1,1 +1,1 @@
-<div {{ $attributes }}>{{ $slot }}</div>
+<fieldset {{ $attributes }}>{{ $slot }}</fieldset>
