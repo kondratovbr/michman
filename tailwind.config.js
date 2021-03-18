@@ -115,6 +115,7 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
             borderWidth: {
+                '1.5': '1.5px',
                 '3': '3px',
             },
             boxShadow: {
