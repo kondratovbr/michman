@@ -1,7 +1,10 @@
 const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
+
+    // TODO: Are comments dropped from the resulting CSS on prod?
+
+    .postCss('resources/css/app.pcss', 'public/css', [
         require('postcss-import'),
         require('postcss-nested'),
         require('tailwindcss'),
