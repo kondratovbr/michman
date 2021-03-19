@@ -43,6 +43,10 @@ smallSizingScale = {
 
 module.exports = {
 
+    // Utilities (NOT including custom ones) will be generated with "!important",
+    // so they will override components styling and defaults.
+    important: true,
+
     purge: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
@@ -54,6 +58,7 @@ module.exports = {
     ],
 
     theme: {
+
         colors: {
             // Special values
             transparent: 'transparent',
@@ -139,13 +144,14 @@ module.exports = {
                 'border-ring': 'border-color, box-shadow',
             },
         },
+
     },
 
     variants: {
         extend: {
 
-            backgroundColor: ['hover', 'active', 'disabled'],
-            backgroundOpacity: ['active', 'group-hover', 'group-active'],
+            backgroundColor: ['hover', 'active', 'disabled', 'checked'],
+            backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked'],
             borderWidth: ['hover', 'active'],
             borderColor: ['hover', 'active', 'focus'],
             borderOpacity: ['group-hover', 'group-active', 'group-focus'],

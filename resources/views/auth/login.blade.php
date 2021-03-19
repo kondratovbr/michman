@@ -32,9 +32,19 @@
             </x-field>
 
             <x-field>
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
+                <label for="" class="flex items-center">
+                    <x-checkbox id="" name="remember" />
                     <span class="ml-2 text-sm">{{ __('Remember me') }}</span>
+                </label>
+            </x-field>
+
+            <x-field>
+                <label
+                    for="remember_me"
+                    class="-ml-2 py-1 px-2 inline-flex items-center cursor-pointer rounded border border-gray-300 border-opacity-0 hover:border-opacity-100 hover:text-gray-100"
+                >
+                    <x-checkbox-new id="remember_me" name="remember" />
+                    <span class="ml-2 text-sm">New checkbox</span>
                 </label>
             </x-field>
 
