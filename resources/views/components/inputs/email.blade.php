@@ -6,7 +6,13 @@
 ]) }}
     :showErrors="$showErrors"
 >
-    <x-slot name="iconLeft">
-        <i class="fa fa-envelope"></i>
-    </x-slot>
+    @isset($iconLeft)
+        <x-slot name="iconLeft">
+            {{ $iconLeft }}
+        </x-slot>
+    @else
+        <x-slot name="iconLeft">
+            <i class="fa fa-envelope"></i>
+        </x-slot>
+    @endisset
 </x-inputs.text>
