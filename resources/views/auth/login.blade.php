@@ -4,7 +4,7 @@
 <x-layouts.guest>
     <x-auth-box>
 
-        <x-jet-validation-errors class="mb-4" />
+        <x-validation-errors class="mb-4" />
 
         @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
@@ -15,7 +15,7 @@
         <x-forms.vertical method="POST" action="{{ route('login') }}">
 
             <x-field>
-                <x-label for="email" value="{{ __('Email') }}" />
+                <x-label for="email" value="{{ __('forms.email.label') }}" />
                 <x-inputs.email
                     name="email"
                     required
@@ -24,7 +24,7 @@
             </x-field>
 
             <x-field>
-                <x-label for="password" value="{{ __('Password') }}" />
+                <x-label for="password" value="{{ __('forms.password.label') }}" />
                 <x-inputs.password
                     name="password"
                     required
@@ -43,7 +43,7 @@
                 @endif
 
                 <x-button class="ml-4">
-                    {{ __('Log in') }}
+                    {{ __('buttons.login') }}
                 </x-button>
             </div>
 
