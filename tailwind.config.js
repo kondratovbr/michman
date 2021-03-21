@@ -116,9 +116,6 @@ module.exports = {
         },
 
         extend: {
-            fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
-            },
             borderWidth: {
                 '1.5': '1.5px',
                 '3': '3px',
@@ -129,19 +126,28 @@ module.exports = {
                 'xl-black': '0 20px 25px -5px rgba(1, 1, 1, 0.1), 0 10px 10px -5px rgba(1, 1, 1, 0.04)',
                 'md-gold-900': '0 4px 6px -1px rgba(255, 215, 0, 0.1), 0 2px 4px -1px rgba(255, 215, 0, 0.06)',
             },
+            fontFamily: {
+                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+            },
             // Extending min-width utilities using a custom sizing scale (see above).
             minWidth: smallSizingScale,
+            // Add some specific padding values
+            padding: {
+                '11-sub-2': 'calc(2.75rem - 2px)',
+            },
             // Reusable transition durations
             transitionDuration: {
                 'quick': '100ms',
                 'normal': '150ms',
             },
+            // Transition properties specifically optimized for each use-case
             transitionProperty: {
-                // Transition property optimized for many elements of the site
                 'ring-background': 'box-shadow, background-color',
                 'border-background': 'border-color, background-color',
                 'opacity-transform': 'opacity, transform',
                 'border-ring': 'border-color, box-shadow',
+                'border': 'border-color',
+                'text': 'color',
             },
         },
 
@@ -165,7 +171,7 @@ module.exports = {
             ringWidth: [],
             rotate: [],
             scale: ['group-hover', 'group-focus'],
-            textColor: ['active', 'group-hover', 'group-focus', 'disabled'],
+            textColor: ['active', 'group-hover', 'group-focus', 'disabled', 'sibling-focus'],
             transform: [],
             translate: [],
             visibility: [],
@@ -186,6 +192,15 @@ module.exports = {
             addVariant('group-active', ({ modifySelectors, separator }) => {
                 modifySelectors(({ className }) => {
                     return `.group:active .${e(`group-active${separator}${className}`)}`;
+                });
+            });
+        }),
+
+        // "sibling-focus" variant for various interactive elements (mostly for transitioning icons on inputs)
+        plugin(function({ addVariant, e }) {
+            addVariant('sibling-focus', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.sibling:focus ~ .${e(`sibling-focus${separator}${className}`)}`;
                 });
             });
         }),
