@@ -14,6 +14,7 @@
                     required
                     autofocus
                 />
+                <x-input-error for="email" />
             </x-field>
 
             <x-field>
@@ -23,41 +24,39 @@
                     autocomplete="new-password"
                     required
                 />
+                <x-input-error for="password" />
             </x-field>
 
             <x-field>
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}">{{ __() }}</x-label>
                 <x-inputs.password
                     name="password_confirmation"
                     autocomplete="new-password"
                     required
                 />
+                <x-input-error for="password_confirmation" />
             </x-field>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div>
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" />
-
-                            <div class="ml-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-400 hover:text-gray-100">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-400 hover:text-gray-100">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
+                <x-field>
+                    <x-checkbox-new
+                        name="terms"
+                        defaultState="on"
+                        labelClass="text-sm"
+                    >
+                        <x-lang key="i-agree-terms-service"/>
+                    </x-checkbox-new>
+                    <x-input-error for="terms" />
+                </x-field>
             @endif
 
             <div class="flex items-center justify-end">
-                <a class="underline text-sm text-gray-400 hover:text-gray-100" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
+                <a class="underline text-gray-400 hover:text-gray-100" href="{{ route('login') }}">
+                    {{ __('auth.already-registered') }}
                 </a>
 
                 <x-button class="ml-4">
-                    {{ __('Register') }}
+                    {{ __('buttons.register') }}
                 </x-button>
             </div>
 

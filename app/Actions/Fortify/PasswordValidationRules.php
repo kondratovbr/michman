@@ -2,6 +2,8 @@
 
 namespace App\Actions\Fortify;
 
+use App\Validation\Rules;
+use Illuminate\Contracts\Support\Arrayable;
 use Laravel\Fortify\Rules\Password;
 
 trait PasswordValidationRules
@@ -9,8 +11,15 @@ trait PasswordValidationRules
     /**
      * Get the validation rules used to validate passwords.
      */
-    protected function passwordRules(): array
+    protected function passwordRules(): Arrayable|array
     {
-        return ['required', 'string', new Password, 'confirmed'];
+        return Rules::string()
+            ->addRule((new Password)
+                ->length((int) config('auth.password.min_length'))
+                ->withMessage(trans_choice('errors.new_password', (int) config('auth.password.min_length')))
+            )
+            ->max((int) config('auth.password.max_length'))
+            ->required()
+            ->confirmed();
     }
 }

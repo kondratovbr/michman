@@ -37,6 +37,7 @@
                 <x-checkbox-new
                     name="remember"
                     defaultState="on"
+                    labelClass="text-sm"
                 >{{ __('auth.remember') }}</x-checkbox-new>
             </x-field>
 
