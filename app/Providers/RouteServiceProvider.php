@@ -20,31 +20,68 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/';
 
     /**
-     * The controller namespace for the application.
-     *
-     * When present, controller route declarations will automatically be prefixed with this namespace.
-     *
-     * @var string|null
-     */
-    // protected $namespace = 'App\\Http\\Controllers';
-
-    /**
      * Define your route model bindings, pattern filters, etc.
      */
     public function boot(): void
     {
         $this->configureRateLimiting();
+        $this->registerRoutes();
+    }
 
+    /**
+     * Register application routes
+     */
+    protected function registerRoutes(): void
+    {
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
+
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(function () {
+                    $this->registerApiRoutes();
+                });
 
             Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
+                ->group(function () {
+                    $this->registerWebRoutes();
+                });
+
         });
+    }
+
+    /**
+     * Register API routes
+     */
+    protected function registerApiRoutes(): void
+    {
+        Route::group([], base_path('routes/api.php'));
+    }
+
+    /**
+     * Register web routes
+     */
+    protected function registerWebRoutes(): void
+    {
+        // Register general routes
+        Route::group([], base_path('routes/web.php'));
+
+        // Register guest routes
+        Route::middleware('guest')
+            ->group(base_path('routes/guest.php'));
+
+        // Register auth'ed user routes
+        Route::middleware(['auth:sanctum', 'verified'])
+            ->group(base_path('routes/app.php'));
+
+        // Register debug web routes
+        // "if" is important here - this way the debug routes
+        // won't even be registered in production,
+        // including when caching by "artisan route:cache".
+        if (isDebug()) {
+            Route::middleware('debug')
+                ->prefix('debug')
+                ->group(base_path('routes/debug.php'));
+        }
     }
 
     /**

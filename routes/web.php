@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\DebugController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -37,18 +38,3 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->only(['index', 'show', 'create', 'store']);
 
 });
-
-
-
-/*
- * Debug routes (not loaded if not in debug mode)
- */
-if (isDebug()) {
-    Route::prefix('debug')->group(function () {
-        // TODO: Implement.
-        Route::get('routes', fn() => 'Here will be the list of routes!');
-
-        Route::get('test', TestController::class);
-
-    });
-}
