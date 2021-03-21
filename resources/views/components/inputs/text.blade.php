@@ -1,9 +1,13 @@
+@props(['showErrors' => true])
+
 <div class="relative">
 
     <x-input {{ $attributes->merge([
         'class' => 'sibling px-3' . (isset($iconLeft) ? ' pl-11-sub-2' : ' pl-2') . (isset($iconRight) ? ' pr-11-sub-2' : ' pr-2'),
         'type' => 'text',
-    ]) }}/>
+    ]) }}
+        :showErrors="$showErrors"
+    />
 
     @isset($iconLeft)
         <x-icon

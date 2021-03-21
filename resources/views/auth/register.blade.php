@@ -3,7 +3,7 @@
 <x-layouts.guest>
     <x-auth-box>
 
-        <x-jet-validation-errors class="mb-4" />
+        <x-validation-errors class="mb-4" />
 
         <x-forms.vertical method="POST" action="{{ route('register') }}">
 

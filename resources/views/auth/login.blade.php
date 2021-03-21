@@ -20,6 +20,8 @@
                     name="email"
                     required
                     autofocus
+                    {{-- Laravel Fortify returns an error tied to "email" field on failed login attempt (for some reason), which don't want to show here - it will be showed on the top block instead. --}}
+                    :showErrors="false"
                 />
             </x-field>
 
@@ -32,7 +34,10 @@
             </x-field>
 
             <x-field>
-                <x-checkbox-new name="remember">{{ __('auth.remember') }}</x-checkbox-new>
+                <x-checkbox-new
+                    name="remember"
+                    defaultState="on"
+                >{{ __('auth.remember') }}</x-checkbox-new>
             </x-field>
 
             <div class="flex items-center justify-end">
