@@ -30,7 +30,7 @@ class Rules extends AbstractBaseRules
         return (new static([
             'string',
             'password'
-        ]))->max((int) config('auth.password.max_length'));;
+        ]))->max((int) config('auth.password.max_length'));
     }
 
     /**
