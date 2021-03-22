@@ -25,13 +25,12 @@
                 wire:click="openModal"
                 wire:loading.attr="disabled"
             >
-    {{--            TODO: IMPORTANT! Don't forget to remove that last part!--}}
-                {{ __('account.profile.sessions.logout') }} [NEW MODAL]
+                {{ __('account.profile.sessions.logout') }}
             </x-buttons.primary>
             <x-action-message on="loggedOut">{{ __('misc.done') }}</x-action-message>
         </div>
 
-        @include('profile._logout-sessions-modal-new')
+        @include('profile._logout-sessions-modal')
 
     </x-slot>
 

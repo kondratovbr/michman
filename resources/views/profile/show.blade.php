@@ -32,11 +32,6 @@
     @endif
 
     <div class="mt-10 sm:mt-0">
-        @livewire('profile.logout-other-browser-sessions-form')
-    </div>
-
-    <x-section-border/>
-    <div class="mt-10 sm:mt-0">
         <livewire:profile.logout-sessions-form/>
     </div>
 
