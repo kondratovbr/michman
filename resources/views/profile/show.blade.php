@@ -11,6 +11,12 @@
     </x-slot>
 
     <div class="space-y-10 sm:space-y-0">
+
+        @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+            <livewire:profile.tfa-form/>
+            <x-section-border/>
+        @endif
+
         @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
             @livewire('profile.two-factor-authentication-form')
             <x-section-border/>
@@ -30,6 +36,7 @@
             <x-section-border/>
             @livewire('profile.delete-user-form')
         @endif
+
     </div>
 
 </x-layouts.app-with-menu>
