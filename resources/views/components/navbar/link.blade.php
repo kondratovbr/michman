@@ -1,5 +1,3 @@
-{{--TODO: Make the background change on hover better - rounded edges and wider, like proper buttons - give it some space. Maybe remove bottom border on hover, leave it only for the current page. Should probably be done in the corresponding component class.--}}
-
 <a
     {{ $attributes->merge([
         'class' => 'group inline-flex items-stretch px-2 py-2 focus:outline-none',
