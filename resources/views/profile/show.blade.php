@@ -7,7 +7,7 @@
     </x-slot>
 
     <x-slot name="menu">
-        @include('profile.menu')
+        @include('profile._menu')
     </x-slot>
 
     @if (Laravel\Fortify\Features::canUpdateProfileInformation())
