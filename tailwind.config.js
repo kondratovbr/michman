@@ -129,6 +129,14 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            // Some specific additional inset (top/right/bottom/left) values
+            inset: {
+                '2px': '2px',
+            },
+            // Some specific additional margin values
+            margin: {
+                '2px': '2px',
+            },
             // Extending min-width utilities using a custom sizing scale (see above).
             minWidth: smallSizingScale,
             // Add some specific padding values
