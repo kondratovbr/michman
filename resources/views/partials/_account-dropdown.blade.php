@@ -1,9 +1,7 @@
-{{--TODO: Add icons.--}}
-
 <x-navbar.dropdown align="right">
 
     <x-slot name="trigger">
-        <div class="flex items-center space-x-2 text-sm">
+        <div class="flex items-center space-x-2">
             <x-avatar class="h-8 w-8" />
             <span>{{ user()->email }}</span>
         </div>
