@@ -12,7 +12,7 @@
         </x-slot>
     @else
         <x-slot name="iconLeft">
-            <i class="fa fa-envelope"></i>
+            <i class="far fa-envelope"></i>
         </x-slot>
     @endisset
 </x-inputs.text>

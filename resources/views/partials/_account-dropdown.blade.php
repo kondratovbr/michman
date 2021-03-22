@@ -16,15 +16,18 @@
         </x-dropdown.header>
 
         <x-dropdown.link href="{{ route('profile.show') }}">
+            <x-slot name="icon"><i class="far fa-user"></i></x-slot>
             {{ __('nav.account') }}
         </x-dropdown.link>
 
         <x-dropdown.link href="">
+            <x-slot name="icon"><i class="far fa-money-bill-alt"></i></x-slot>
             {{ __('nav.billing') }}
         </x-dropdown.link>
 
         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
             <x-dropdown.link href="{{ route('api-tokens.index') }}">
+                <x-slot name="icon"><i class="far fa-ship"></i></x-slot>
                 {{ __('nav.api_token') }}
             </x-dropdown.link>
         @endif
@@ -42,6 +45,7 @@
                     this.closest('form').submit();
                 "
             >
+                <x-slot name="icon"><i class="far fa-sign-out-alt fa-flip-horizontal"></i></x-slot>
                 {{ __('auth.logout') }}
             </x-dropdown.link>
         </form>
