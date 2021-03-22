@@ -6,6 +6,11 @@ return [
 
         'button' => 'Profile',
 
+        'email' => [
+            'title' => 'Email',
+            'description' => 'Change your account\'s email address.',
+        ],
+
         'sessions' => [
             'title' => 'Browser Sessions',
             'description' => 'Manage and log out your active sessions on other browsers and devices.',

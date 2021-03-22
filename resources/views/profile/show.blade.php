@@ -10,36 +10,26 @@
         @include('profile._menu')
     </x-slot>
 
-    @if (Laravel\Fortify\Features::canUpdateProfileInformation())
-        <div class="mt-0">
-            @livewire('profile.update-profile-information-form')
-        </div>
-        <x-section-border/>
-    @endif
-
-    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-        <div class="mt-10 sm:mt-0">
-            @livewire('profile.update-password-form')
-        </div>
-        <x-section-border/>
-    @endif
-
-    @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-        <div class="mt-10 sm:mt-0">
+    <div class="space-y-10 sm:space-y-0">
+        @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
             @livewire('profile.two-factor-authentication-form')
-        </div>
-        <x-section-border/>
-    @endif
+            <x-section-border/>
+        @endif
 
-    <div class="mt-10 sm:mt-0">
+        <livewire:profile.change-email-form/>
+        <x-section-border/>
+
+        @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+            @livewire('profile.update-password-form')
+            <x-section-border/>
+        @endif
+
         <livewire:profile.logout-sessions-form/>
-    </div>
 
-    @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-        <x-section-border/>
-        <div class="mt-10 sm:mt-0">
+        @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+            <x-section-border/>
             @livewire('profile.delete-user-form')
-        </div>
-    @endif
+        @endif
+    </div>
 
 </x-layouts.app-with-menu>

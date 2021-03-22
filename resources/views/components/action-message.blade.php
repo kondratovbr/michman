@@ -5,7 +5,7 @@
         'class' => 'text-sm',
     ]) }}
     x-data="{ shown: false, timeout: null }"
-    {{-- Alpine is going to catch a global browser event declared as $on parameter,
+    {{-- Alpine is going to catch a Livewire event declared as $on parameter,
      set "shown" to true and start a timeout to get it back to false. --}}
     x-init="@this.on('{{ $on }}', () => {
         clearTimeout(timeout);

@@ -9,6 +9,7 @@ class Navbar extends Component
 {
     /** @var string[] The component's listeners. */
     protected $listeners = [
+        'refresh-navbar' => '$refresh',
         'refresh-navigation-menu' => '$refresh',
     ];
 
