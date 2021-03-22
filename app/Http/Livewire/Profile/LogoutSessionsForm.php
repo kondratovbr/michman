@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 use Jenssegers\Agent\Agent;
 use Livewire\Component;
 
+/**
+ * @property-read BasicCollection $sessions
+ */
 class LogoutSessionsForm extends Component
 {
     /** @var bool Indicates if a confirmation modal should currently be opened. */
@@ -32,7 +35,7 @@ class LogoutSessionsForm extends Component
     public function openModal(): void
     {
         // We have to reset validation errors, otherwise errors
-        // are still displayed when the modal is closed and the opened again.
+        // are still displayed when the modal is closed and then opened again.
         $this->resetErrorBag();
         $this->password = '';
         // We're using this event for focusing the password input.
