@@ -6,7 +6,7 @@
         'focus:bg-gray-700 active:bg-gray-600',
         'focus:border-opacity-100',
         'disabled:bg-transparent',
-        'transition-ring-background',
+        'transition-border-background',
     ]),
     'type' => 'button',
 ]) }}
