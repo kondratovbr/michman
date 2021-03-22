@@ -20,14 +20,17 @@
             </div>
         @endif
 
-        <x-buttons.primary
-            class="mt-5"
-            wire:click="openModal"
-            wire:loading.attr="disabled"
-        >
-{{--            TODO: Don't forget to remove that last part!--}}
-            {{ __('account.profile.sessions.logout') }} [NEW MODAL]
-        </x-buttons.primary>
+        <div class="flex items-center mt-5 space-x-3">
+            <x-buttons.primary
+                wire:click="openModal"
+                wire:loading.attr="disabled"
+            >
+    {{--            TODO: IMPORTANT! Don't forget to remove that last part!--}}
+                {{ __('account.profile.sessions.logout') }} [NEW MODAL]
+            </x-buttons.primary>
+            <x-action-message on="loggedOut">{{ __('misc.done') }}</x-action-message>
+        </div>
+
         @include('profile._logout-sessions-modal-new')
 
     </x-slot>

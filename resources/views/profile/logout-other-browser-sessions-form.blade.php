@@ -1,5 +1,3 @@
-{{--TODO: IMPORTANT! Unfinished!--}}
-
 <x-action-section>
 
     <x-slot name="title">
@@ -29,7 +27,7 @@
 
 {{--            TODO: Change this to some animated icon. In every single other place as well.--}}
             <x-jet-action-message class="ml-3" on="loggedOut">
-                {{ __('Done.') }}
+                {{ __('misc.done') }}
             </x-jet-action-message>
         </div>
 

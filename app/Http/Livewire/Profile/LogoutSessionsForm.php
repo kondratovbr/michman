@@ -36,6 +36,8 @@ class LogoutSessionsForm extends Component
         $this->resetErrorBag();
         $this->password = '';
         // We're using this event for focusing the password input.
+        // We need a browser event here specifically,
+        // because it will be caught by Alpine.
         $this->dispatchBrowserEvent('confirming-logout-sessions');
         $this->modalOpened = true;
     }
@@ -68,7 +70,11 @@ class LogoutSessionsForm extends Component
 
         DB::commit();
 
+        // Close the modal.
         $this->modalOpened = false;
+
+        // Emit a component event that will trigger the success message.
+        $this->emit('loggedOut');
     }
 
     /**

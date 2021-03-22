@@ -44,7 +44,6 @@
             >
                 {{ __('account.profile.sessions.logout') }}
             </x-buttons.primary>
-    {{--        TODO: IMPORTANT! Re-do and restyle this button. All other places with these secondary buttons as well. Also, create a "buttons" container with proper spacing.--}}
             <x-buttons.secondary
                 {{-- "show" Alpine variable is @entangled with the Livewire model. See above. --}}
                 {{-- Triggering the Alpines one first ensures no delay between a button press and the modal closing. --}}
