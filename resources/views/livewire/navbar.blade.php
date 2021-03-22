@@ -9,10 +9,10 @@
         <div class="flex items-stretch">
 
             {{-- Logo --}}
-            <div class="flex-shrink-0 flex items-center">
-                <a href="{{ route('home') }}">
+            <div class="flex-shrink-0 flex">
+                <x-navbar.link routeName="home">
                     <x-logo class="block h-9 w-auto" />
-                </a>
+                </x-navbar.link>
             </div>
 
             {{-- Navigation Links --}}
