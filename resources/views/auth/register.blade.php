@@ -8,7 +8,7 @@
         <x-forms.vertical method="POST" action="{{ route('register') }}">
 
             <x-field>
-                <x-label for="email" value="{{ __('Email') }}" />
+                <x-label for="email">{{ __('forms.email.label') }}</x-label>
                 <x-inputs.email
                     name="email"
                     required
@@ -18,7 +18,7 @@
             </x-field>
 
             <x-field>
-                <x-label for="password" value="{{ __('Password') }}" />
+                <x-label for="password">{{ __('forms.password.label') }}</x-label>
                 <x-inputs.password
                     name="password"
                     autocomplete="new-password"
@@ -28,7 +28,7 @@
             </x-field>
 
             <x-field>
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}">{{ __() }}</x-label>
+                <x-label for="password_confirmation">{{ __('forms.password_confirmation.label') }}</x-label>
                 <x-inputs.password
                     name="password_confirmation"
                     autocomplete="new-password"
@@ -51,10 +51,7 @@
             @endif
 
             <div class="flex items-center justify-end">
-                <a class="underline text-gray-400 hover:text-gray-100" href="{{ route('login') }}">
-                    {{ __('auth.already-registered') }}
-                </a>
-
+                <x-link href="{{ route('login') }}">{{ __('auth.already-registered') }}</x-link>
                 <x-button class="ml-4">
                     {{ __('buttons.register') }}
                 </x-button>

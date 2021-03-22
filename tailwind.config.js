@@ -171,7 +171,7 @@ module.exports = {
             ringWidth: [],
             rotate: [],
             scale: ['group-hover', 'group-focus'],
-            textColor: ['active', 'group-hover', 'group-focus', 'disabled', 'sibling-focus'],
+            textColor: ['hover', 'active', 'group-hover', 'group-focus', 'disabled', 'sibling-focus'],
             transform: [],
             translate: [],
             visibility: [],
