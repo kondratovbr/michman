@@ -5,33 +5,9 @@
 <div
     {{-- Some Livewire functions require a unique ID here. --}}
 {{--    id="{{ $id ?? md5($attributes->wire('model')) }}"--}}
-
     class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-40"
-
     {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
-    {{-- Focucables are functions that handle focus changes (Tab button), so that when modal is shown focus is kept inside the modal. --}}
-    x-data="{
-        show: @entangle($attributes->wire('model')),
-        focusables() {
-            // All focusable element types...
-            let selector = 'a, button, input, textarea, select, details, [tabindex]:not([tabindex=\'-1\'])'
-
-            return [...$el.querySelectorAll(selector)]
-                // All non-disabled elements...
-                .filter(el => ! el.hasAttribute('disabled'))
-        },
-        firstFocusable() { return this.focusables()[0] },
-        lastFocusable() { return this.focusables().slice(-1)[0] },
-        nextFocusable() { return this.focusables()[this.nextFocusableIndex()] || this.firstFocusable() },
-        prevFocusable() { return this.focusables()[this.prevFocusableIndex()] || this.lastFocusable() },
-        nextFocusableIndex() { return (this.focusables().indexOf(document.activeElement) + 1) % (this.focusables().length + 1) },
-        prevFocusableIndex() { return Math.max(0, this.focusables().indexOf(document.activeElement)) -1 },
-    }"
-
-    {{-- This directives override focus-changing buttons (tab, shift+tab) to use previously declared handlers instead of default logic. --}}
-    x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
-    x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
-
+    x-data="{ show: @entangle($attributes->wire('model')) }"
     x-show="show"
     {{-- This is needed so the modal doesn't flash during page load (before Alpine kicks in and hides the thing). --}}
     {{-- Tailwind "hidden" doesn't cut it - Alpine has no idea how to handle it. --}}
@@ -78,7 +54,19 @@
         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
-        {{ $slot }}
+        <div
+            {{-- This component contains functions that handle focus changes (Tab button),
+            so that when modal is shown focus is kept inside the modal. --}}
+            x-data="focusableDialog()"
+            x-init="init()"
+            {{-- These directives overrides focus-changing buttons (tab, shift+tab)
+            to use previously declared handlers instead of default logic. --}}
+            x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
+            x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
+        >
+            {{ $slot }}
+        </div>
+
     </div>
 
 </div>
