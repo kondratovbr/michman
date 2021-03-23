@@ -12,8 +12,10 @@ export default () => { return {
         this.focusables = () => {
             // List all types of focusable elements,...
             let selector = 'a, button, input, textarea, select, details, [tabindex]:not([tabindex=\'-1\'])';
-            // ...take them filtering out the disabled ones.
-            return [...this.$el.querySelectorAll(selector)].filter(el => !el.hasAttribute('disabled'));
+            // ...take them filtering out the disabled and hidden ones.
+            return [...this.$el.querySelectorAll(selector)].filter(
+                el => ! (el.hasAttribute('disabled') || el.hasAttribute('hidden'))
+            );
         };
 
         /**
