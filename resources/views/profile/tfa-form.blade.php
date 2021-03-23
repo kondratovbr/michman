@@ -29,8 +29,29 @@
                     </p>
                 </div>
 
-                <div class="mt-4 dark:p-4 dark:w-56 dark:bg-white">
-                    {!! $this->user->twoFactorQrCodeSvg() !!}
+{{--                <div class="mt-4 dark:p-4 dark:w-56 dark:bg-white">--}}
+                <div class="flex justify-center">
+                    <div class="mt-4 p-4 w-56 bg-white">
+                        {!! $this->user->twoFactorQrCodeSvg() !!}
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <figure class="block relative w-12 h-12">
+                        <img
+                            class="block h-auto w-full"
+                            src="data:image/png;base64, {!!
+                                base64_encode(
+                                    QrCode::format('png')
+                                        ->size(400)
+                                        ->margin(0)
+                                        ->errorCorrection('H')
+                                        ->generate($this->user->twoFactorQrCodeUrl())
+                                )
+                            !!}"
+                            alt=""
+                        >
+                    </figure>
                 </div>
             @endif
 
@@ -41,7 +62,7 @@
                     </p>
                 </div>
 
-                <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 rounded-lg">
+                <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-900 rounded-lg">
                     @foreach (json_decode(decrypt($this->user->two_factor_recovery_codes), true) as $code)
                         <div>{{ $code }}</div>
                     @endforeach
@@ -51,31 +72,31 @@
 
         <div class="mt-5">
             @if (! $this->enabled)
-                <x-jet-confirms-password wire:then="enableTwoFactorAuthentication">
+                <x-password-confirmation wire:then="enableTwoFactorAuthentication">
                     <x-buttons.primary type="button" wire:loading.attr="disabled">
                         {{ __('account.profile.tfa.enable') }}
                     </x-buttons.primary>
-                </x-jet-confirms-password>
+                </x-password-confirmation>
             @else
                 @if ($showingRecoveryCodes)
-                    <x-jet-confirms-password wire:then="regenerateRecoveryCodes">
+                    <x-password-confirmation wire:then="regenerateRecoveryCodes">
                         <x-buttons.secondary class="mr-3">
                             {{ __('account.profile.tfa.regenerate-recovery') }}
                         </x-buttons.secondary>
-                    </x-jet-confirms-password>
+                    </x-password-confirmation>
                 @else
-                    <x-jet-confirms-password wire:then="showRecoveryCodes">
+                    <x-password-confirmation wire:then="showRecoveryCodes">
                         <x-buttons.secondary class="mr-3">
                             {{ __('account.profile.tfa.show-recovery') }}
                         </x-buttons.secondary>
-                    </x-jet-confirms-password>
+                    </x-password-confirmation>
                 @endif
 
-                <x-jet-confirms-password wire:then="disableTwoFactorAuthentication">
+                <x-password-confirmation wire:then="disableTwoFactorAuthentication">
                     <x-buttons.danger wire:loading.attr="disabled">
                         {{ __('account.profile.tfa.disable') }}
                     </x-buttons.danger>
-                </x-jet-confirms-password>
+                </x-password-confirmation>
             @endif
         </div>
     </x-slot>

@@ -7,5 +7,6 @@ return [
     'login' => 'Log in',
     'register' => 'Register',
     'enable' => 'Enable',
+    'confirm' => 'Confirm',
 
 ];
