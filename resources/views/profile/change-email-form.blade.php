@@ -9,7 +9,7 @@
     </x-slot>
 
     <x-slot name="form">
-        <div class="col-span-6 sm:col-span-4">
+        <x-field>
             <x-label for="email">{{ __('forms.email.label') }}</x-label>
             <x-inputs.email
                 name="email"
@@ -17,7 +17,7 @@
                 autocomplete="email"
             />
             <x-input-error for="email" />
-        </div>
+        </x-field>
     </x-slot>
 
     <x-slot name="actions">

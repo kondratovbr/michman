@@ -5,6 +5,7 @@
     'autocomplete' => 'email',
 ]) }}
     :showErrors="$showErrors"
+    widthClass="max-w-md"
 >
     @isset($iconLeft)
         <x-slot name="iconLeft">

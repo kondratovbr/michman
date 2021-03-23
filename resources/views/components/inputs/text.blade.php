@@ -1,6 +1,6 @@
-@props(['showErrors' => true])
+@props(['showErrors' => true, 'widthClass' => ''])
 
-<div class="relative">
+<div class="relative {{ $widthClass }}">
 
     <x-input {{ $attributes->merge([
         'class' => 'sibling px-3' . (isset($iconLeft) ? ' pl-11' : ' pl-2') . (isset($iconRight) ? ' pr-11' : ' pr-2'),

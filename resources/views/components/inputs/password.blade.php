@@ -1,7 +1,9 @@
 <x-inputs.text {{ $attributes->merge([
     'type' => 'password',
     'autocomplete' => 'current-password',
-]) }}>
+]) }}
+    widthClass="max-w-md"
+>
     @isset($iconLeft)
         <x-slot name="iconLeft">{{ $iconLeft }}</x-slot>
     @else

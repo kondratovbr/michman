@@ -1,12 +1,10 @@
-@props(['submit'])
+@props(['submit', 'formType' => 'basic'])
 
 <div {{ $attributes->merge(['class' => 'md:grid md:grid-cols-3 md:gap-6']) }}>
 
     <x-box class="mt-5 md:mt-0 md:col-span-2">
-        <x-box.form wire:submit.prevent="{{ $submit }}">
-            <div class="grid grid-cols-6 gap-6">
-                {{ $form }}
-            </div>
+        <x-box.form :type="$formType" wire:submit.prevent="{{ $submit }}">
+            {{ $form }}
             <x-slot name="actions">
                 {{ $actions }}
             </x-slot>
