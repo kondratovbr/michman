@@ -11,6 +11,11 @@ return [
             'description' => 'Change your account\'s email address.',
         ],
 
+        'password' => [
+            'title' => 'Update Password',
+            'description' => 'Ensure your account is using a long, random password to stay secure.',
+        ],
+
         'sessions' => [
             'title' => 'Browser Sessions',
             'description' => 'Manage and log out your active sessions on other browsers and devices.',
