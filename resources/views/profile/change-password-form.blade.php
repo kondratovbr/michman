@@ -16,7 +16,7 @@
                 <x-label for="current_password">{{ __('forms.current-password.label') }}</x-label>
                 <x-inputs.password
                     name="current_password"
-                    wire:model.defer="state.current_password"
+                    wire:model.defer="current_password"
                 />
                 <x-input-error for="current_password" />
             </x-field>
@@ -25,7 +25,7 @@
                 <x-label for="password">{{ __('forms.new-password.label') }}</x-label>
                 <x-inputs.password
                     name="password"
-                    wire:model.defer="state.password"
+                    wire:model.defer="password"
                     autocomplete="new-password"
                 />
                 <x-input-error for="password" />
@@ -35,10 +35,11 @@
                 <x-label for="password_confirmation">{{ __('forms.password_confirmation.label') }}</x-label>
                 <x-inputs.password
                     name="password_confirmation"
-                    wire:model.defer="state.password_confirmation"
+                    errorName="password"
+                    wire:model.defer="password_confirmation"
                     autocomplete="new-password"
                 />
-                <x-input-error for="password_confirmation" />
+                <x-input-error for="password" />
             </x-field>
 
         </div>

@@ -11,12 +11,12 @@ use Livewire\Component;
 
 class ChangePasswordForm extends Component
 {
-    /** The component's current state. */
-    public array $state = [
-        'current_password' => '',
-        'password' => '',
-        'password_confirmation' => '',
-    ];
+    /** Currently typed user's current password. */
+    public string $current_password = '';
+    /** Currently typed new password. */
+    public string $password = '';
+    /** Currently typed new password confirmation. */
+    public string $password_confirmation = '';
 
     /**
      * Get the validation rules.
@@ -25,6 +25,7 @@ class ChangePasswordForm extends Component
     {
         return [
             'current_password' => Rules::currentUserPassword()->required(),
+            'password' => Rules::genericPassword()->required()->confirmed(),
         ];
     }
 
@@ -33,17 +34,17 @@ class ChangePasswordForm extends Component
      */
     public function updatePassword(UpdatesUserPasswords $updater): void
     {
-        dd('Foobar?');
-
         $this->validate();
 
-        $updater->update(Auth::user(), $this->state);
+        $updater->update(Auth::user(), [
+            'current_password' => $this->current_password,
+            'password' => $this->password,
+            'password_confirmation' => $this->password_confirmation,
+        ]);
 
-        $this->state = [
-            'current_password' => '',
-            'password' => '',
-            'password_confirmation' => '',
-        ];
+        $this->current_password = '';
+        $this->password = '';
+        $this->password_confirmation = '';
 
         $this->emit('saved');
     }
