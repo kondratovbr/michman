@@ -19,13 +19,13 @@
 
         <div class="mt-4 flex items-center justify-between">
 
-            <x-form action="{{ route('verification.send') }}" method="POST">
+            <x-form method="POST" action="{{ route('verification.send') }}">
                 <x-buttons.secondary type="submit">
                     {{ __('auth.resend-verification-link-button') }}
                 </x-buttons.secondary>
             </x-form>
 
-            <x-form action="{{ route('logout') }}" method="POST">
+            <x-form method="POST" action="{{ route('logout') }}">
                 <x-buttons.text type="submit">
                     {{ __('auth.logout') }}
                 </x-buttons.text>
