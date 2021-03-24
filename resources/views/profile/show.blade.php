@@ -17,16 +17,11 @@
             <x-section-border/>
         @endif
 
-        @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-            @livewire('profile.two-factor-authentication-form')
-            <x-section-border/>
-        @endif
-
         <livewire:profile.change-email-form/>
         <x-section-border/>
 
         @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-            @livewire('profile.update-password-form')
+            <livewire:profile.change-password-form/>
             <x-section-border/>
         @endif
 
@@ -34,7 +29,7 @@
 
         @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
             <x-section-border/>
-            @livewire('profile.delete-user-form')
+            <livewire:profile.delete-account-form/>
         @endif
 
     </div>
