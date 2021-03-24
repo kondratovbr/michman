@@ -5,6 +5,7 @@
             <table class="table-auto text-left w-full border-collapse">
                 <thead>
                     <tr>
+                        <x-th>Name</x-th>
                         <x-th>Domain</x-th>
                         <x-th>Methods</x-th>
                         <x-th>URI</x-th>
@@ -15,6 +16,7 @@
                 <tbody>
                     @foreach($routes as $route)
                         <tr class="hover:bg-gray-100">
+                            <x-td>{{ $route->getName() }}</x-td>
                             <x-td>{{ $route->domain() }}</x-td>
                             <x-td>{{ implode(', ', $route->methods()) }}</x-td>
                             <x-td>{{ $route->uri() }}</x-td>
