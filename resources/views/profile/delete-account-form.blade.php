@@ -23,10 +23,31 @@
             </x-buttons.danger>
         </div>
 
-{{--        TODO: Actually implement the feature. It isn't that simple.--}}
+        {{--        TODO: Actually implement the feature. It isn't that simple.--}}
         {{-- Temorary Sorry Modal --}}
         <x-modals.dialog wireModel="confirmingUserDeletion">
-            <x-slot name="header"></x-slot>
+            <x-slot name="header">
+                {{ __('account.profile.delete.sorry.title') }}
+            </x-slot>
+
+            <x-slot name="content">
+                {{ __('account.profile.delete.sorry.content') }}
+            </x-slot>
+
+            <x-slot name="actions">
+                <x-buttons>
+{{--                    TODO: IMPORTANT! Implement tech support and this button.--}}
+                    <x-buttons.primary>
+                        {{ __('account.profile.delete.sorry.contact-button') }}
+                    </x-buttons.primary>
+                    <x-buttons.secondary
+                        wire:click="$toggle('confirmingUserDeletion')"
+                        wire:loading.attr="disabled"
+                    >
+                        {{ __('buttons.cancel') }}
+                    </x-buttons.secondary>
+                </x-buttons>
+            </x-slot>
         </x-modals.dialog>
 
         {{-- Actual Delete User Confirmation Modal --}}
@@ -64,12 +85,12 @@
                         {{ __('buttons.cancel') }}
                     </x-buttons.secondary>
 
-                    <x-jet-danger-button
+                    <x-buttons.danger
                         wire:click="deleteUser"
                         wire:loading.attr="disabled"
                     >
                         {{ __('account.profile.delete.delete-button') }}
-                    </x-jet-danger-button>
+                    </x-buttons.danger>
                 </x-buttons>
             </x-slot>
         </x-modals.dialog>

@@ -35,6 +35,22 @@ return [
             'recovery-explanation' => 'Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.',
         ],
 
+        'delete' => [
+
+            'sorry' => [
+                'title' => 'Sorry',
+                'content' => 'Sorry, this feature is currently unavailable.',
+                'contact-button' => 'Contact Support',
+            ],
+
+            'title' => 'Delete Account',
+            'description' => 'Permanently delete your account.',
+            'explanation' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please save any data or information that you wish to retain.',
+            'are-you-sure' => 'Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+            'delete-button' => 'Delete Account',
+            'modal-title' => 'Delete Account',
+        ],
+
     ],
 
     'ssh' => [
