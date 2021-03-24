@@ -2,54 +2,56 @@
 
 <x-form-section submit="updatePassword">
     <x-slot name="title">
-        {{ __('Update Password') }}
+        {{ __('account.profile.password.title') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Ensure your account is using a long, random password to stay secure.') }}
+        {{ __('account.profile.password.description') }}
     </x-slot>
 
     <x-slot name="form">
         <div class="space-y-4">
 
             <x-field>
-                <x-label for="current_password" value="{{ __('Current Password') }}" />
+                <x-label for="current_password">{{ __('forms.current-password.label') }}</x-label>
                 <x-inputs.password
                     name="current_password"
                     wire:model.defer="state.current_password"
                 />
-                <x-jet-input-error for="current_password" class="mt-2" />
+                <x-input-error for="current_password" />
             </x-field>
 
             <x-field>
-                <x-label for="password" value="{{ __('New Password') }}" />
+                <x-label for="password">{{ __('forms.new-password.label') }}</x-label>
                 <x-inputs.password
                     name="password"
                     wire:model.defer="state.password"
                     autocomplete="new-password"
                 />
-                <x-jet-input-error for="password" class="mt-2" />
+                <x-input-error for="password" />
             </x-field>
 
             <x-field>
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
+                <x-label for="password_confirmation">{{ __('forms.password_confirmation.label') }}</x-label>
                 <x-inputs.password
                     name="password_confirmation"
                     wire:model.defer="state.password_confirmation"
                     autocomplete="new-password"
                 />
-                <x-jet-input-error for="password_confirmation" class="mt-2" />
+                <x-input-error for="password_confirmation" />
             </x-field>
 
         </div>
     </x-slot>
 
     <x-slot name="actions">
-        <x-button>
-            {{ __('Save') }}
-        </x-button>
-        <x-jet-action-message class="ml-3" on="saved">
-            {{ __('Saved.') }}
-        </x-jet-action-message>
+        <div class="flex space-x-3">
+            <x-buttons.primary>
+                {{ __('buttons.save') }}
+            </x-buttons.primary>
+            <x-action-message on="saved">
+                {{ __('misc.saved') }}
+            </x-action-message>
+        </div>
     </x-slot>
 </x-form-section>
