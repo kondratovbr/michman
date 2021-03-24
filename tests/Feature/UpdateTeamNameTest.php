@@ -3,15 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Http\Livewire\UpdateTeamNameForm;
 use Livewire\Livewire;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class UpdateTeamNameTest extends TestCase
+class UpdateTeamNameTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_team_names_can_be_updated()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());

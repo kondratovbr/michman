@@ -3,17 +3,14 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Jetstream\Http\Livewire\TeamMemberManager;
 use Laravel\Jetstream\Mail\TeamInvitation;
 use Livewire\Livewire;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class InviteTeamMemberTest extends TestCase
+class InviteTeamMemberTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_team_members_can_be_invited_to_team()
     {
         Mail::fake();

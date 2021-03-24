@@ -3,15 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Http\Livewire\TeamMemberManager;
 use Livewire\Livewire;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class RemoveTeamMemberTest extends TestCase
+class RemoveTeamMemberTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_team_members_can_be_removed_from_teams()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());

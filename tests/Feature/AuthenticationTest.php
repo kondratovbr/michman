@@ -4,13 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class AuthenticationTest extends TestCase
+class AuthenticationTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_login_screen_can_be_rendered()
     {
         $response = $this->get('/login');

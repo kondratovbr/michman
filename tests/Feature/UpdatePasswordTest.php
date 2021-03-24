@@ -3,16 +3,13 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Jetstream\Http\Livewire\UpdatePasswordForm;
 use Livewire\Livewire;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class UpdatePasswordTest extends TestCase
+class UpdatePasswordTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_password_can_be_updated()
     {
         $this->actingAs($user = User::factory()->create());

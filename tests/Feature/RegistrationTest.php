@@ -3,14 +3,11 @@
 namespace Tests\Feature;
 
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Jetstream;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class RegistrationTest extends TestCase
+class RegistrationTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_registration_screen_can_be_rendered()
     {
         $response = $this->get('/register');

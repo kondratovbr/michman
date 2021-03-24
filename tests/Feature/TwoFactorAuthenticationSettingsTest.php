@@ -4,14 +4,11 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\Profile\TfaForm;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class TwoFactorAuthenticationSettingsTest extends TestCase
+class TwoFactorAuthenticationSettingsTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_two_factor_authentication_can_be_enabled()
     {
         $this->actingAs($user = User::factory()->create());

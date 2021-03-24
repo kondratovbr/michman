@@ -3,15 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Http\Livewire\CreateTeamForm;
 use Livewire\Livewire;
-use Tests\TestCase;
+use Tests\AbstractFeatureTest;
 
-class CreateTeamTest extends TestCase
+class CreateTeamTest extends AbstractFeatureTest
 {
-    use RefreshDatabase;
-
     public function test_teams_can_be_created()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
