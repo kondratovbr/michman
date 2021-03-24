@@ -22,4 +22,8 @@ return [
         'label' => 'Confirm Password',
     ],
 
+    'tfa' => [
+        'label' => 'Code',
+    ],
+
 ];

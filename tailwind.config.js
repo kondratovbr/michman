@@ -137,6 +137,13 @@ module.exports = {
             margin: {
                 '2px': '2px',
             },
+            // Some specific max-width utilities
+            maxWidth: {
+                '5xs': '4rem',
+                '4xs': '8rem',
+                '3xs': '12rem',
+                '2xs': '16rem',
+            },
             // Extending min-width utilities using a custom sizing scale (see above).
             minWidth: smallSizingScale,
             // Add some specific padding values

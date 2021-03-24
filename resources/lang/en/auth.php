@@ -13,4 +13,11 @@ return [
     'verification-link-sent' => 'A new verification link has been sent to the email address you provided during registration.',
     'resend-verification-link-button' => 'Resend Verification Email',
 
+    'tfa' => [
+        'please-confirm' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',
+        'please-confirm-recovery' => 'Please confirm access to your account by entering one of your emergency recovery codes.',
+        'use-recovery-button' => 'Use a recovery code',
+        'use-code-button' => 'Use an authentication code',
+    ],
+
 ];

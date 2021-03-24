@@ -4,53 +4,74 @@
     <x-auth-box>
 
         <div x-data="{ recovery: false }">
-            <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
-                {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
+            <div class="mb-4" x-show="! recovery">
+                {{ __('auth.tfa.please-confirm') }}
             </div>
 
-            <div class="mb-4 text-sm text-gray-600" x-show="recovery">
-                {{ __('Please confirm access to your account by entering one of your emergency recovery codes.') }}
+            <div class="mb-4" x-show="recovery">
+                {{ __('auth.tfa.please-confirm-recovery') }}
             </div>
 
-            <x-jet-validation-errors class="mb-4" />
+            <x-validation-errors class="mb-4" />
 
-            <form method="POST" action="{{ route('two-factor.login') }}">
-                @csrf
+            <x-form method="POST" action="{{ route('two-factor.login') }}">
 
-                <div class="mt-4" x-show="! recovery">
-                    <x-jet-label for="code" value="{{ __('Code') }}" />
-                    <x-jet-input id="code" class="block mt-1 w-full" type="text" inputmode="numeric" name="code" autofocus x-ref="code" autocomplete="one-time-code" />
-                </div>
+                <x-field
+                    class="mt-4"
+                    x-show="!recovery"
+                >
+                    <x-label for="code">{{ __('forms.tfa.label') }}</x-label>
+                    <x-inputs.tfa-code
+                        name="code"
+                        x-ref="code"
+                        autofocus
+                        x-bind:required="!recovery"
+                    />
+                </x-field>
 
-                <div class="mt-4" x-show="recovery">
-                    <x-jet-label for="recovery_code" value="{{ __('Recovery Code') }}" />
-                    <x-jet-input id="recovery_code" class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
-                </div>
+                <x-field
+                    class="mt-4"
+                    x-show="recovery"
+                    x-cloak
+                >
+                    <x-label for="recovery_code">{{ __('Recovery Code') }}</x-label>
+                    <x-inputs.tfa-recovery
+                        name="recovery_code"
+                        x-ref="recovery_code"
+                        x-bind:required="recovery"
+                    />
+                </x-field>
 
-                <div class="flex items-center justify-end mt-4">
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-show="! recovery"
-                                    x-on:click="
-                                        recovery = true;
-                                        $nextTick(() => { $refs.recovery_code.focus() })
-                                    ">
-                        {{ __('Use a recovery code') }}
-                    </button>
+                <x-buttons class="mt-4">
 
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-show="recovery"
-                                    x-on:click="
-                                        recovery = false;
-                                        $nextTick(() => { $refs.code.focus() })
-                                    ">
-                        {{ __('Use an authentication code') }}
-                    </button>
+                    <x-buttons.primary>
+                        {{ __('buttons.login') }}
+                    </x-buttons.primary>
 
-                    <x-jet-button class="ml-4">
-                        {{ __('Log in') }}
-                    </x-jet-button>
-                </div>
-            </form>
+                    <x-buttons.text
+                        x-bind:class="{'inline-flex': !recovery, 'hidden': recovery}"
+                        x-on:click="
+                            recovery = true;
+                            $nextTick(() => { $refs.recovery_code.focus() })
+                        "
+                    >
+                        {{ __('auth.tfa.use-recovery-button') }}
+                    </x-buttons.text>
+
+                    <x-buttons.text
+                        x-bind:class="{'inline-flex': recovery, 'hidden': !recovery}"
+                        x-on:click="
+                            recovery = false;
+                            $nextTick(() => { $refs.code.focus() })
+                        "
+                        x-cloak
+                    >
+                        {{ __('auth.tfa.use-code-button') }}
+                    </x-buttons.text>
+
+                </x-buttons>
+            </x-form>
+
         </div>
     </x-auth-box>
 </x-layouts.guest>
