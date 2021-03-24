@@ -22,6 +22,9 @@ class LogoutSessionsForm extends Component
     /** @var string Currently typed user's password. */
     public string $password = '';
 
+    /**
+     * Get the validation rules.
+     */
     protected function rules(): array
     {
         return [
