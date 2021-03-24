@@ -46,7 +46,7 @@
     </x-slot>
 
     <x-slot name="actions">
-        <div class="flex space-x-3">
+        <div class="flex items-center space-x-3">
             <x-buttons.primary>
                 {{ __('buttons.save') }}
             </x-buttons.primary>
