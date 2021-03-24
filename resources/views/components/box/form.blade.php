@@ -1,22 +1,21 @@
-@isset($header)
-    <x-box.header>
-        {{ $header }}
-    </x-box.header>
-@endisset
+<x-form
+    {{ $attributes }}
+    :method="$method"
+    :withFiles="$withFiles"
+>
+    @isset($header)
+        <x-box.header>
+            {{ $header }}
+        </x-box.header>
+    @endisset
 
-<x-box.content>
-    <x-dynamic-component
-        :component="$formComponent"
-        {{ $attributes }}
-        :method="$method"
-        :withFiles="$withFiles"
-    >
+    <x-box.content>
         {{ $content ?? $slot }}
-    </x-dynamic-component>
-</x-box.content>
+    </x-box.content>
 
-@isset($actions)
-    <x-box.footer>
-        {{ $actions }}
-    </x-box.footer>
-@endisset
+    @isset($actions)
+        <x-box.footer>
+            {{ $actions }}
+        </x-box.footer>
+    @endisset
+</x-form>
