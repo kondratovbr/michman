@@ -142,6 +142,7 @@ module.exports = {
             // Add some specific padding values
             padding: {
                 '11-sub-2': 'calc(2.75rem - 2px)',
+                '1.25': '0.3125rem',
             },
             // Reusable transition durations
             transitionDuration: {
@@ -152,6 +153,7 @@ module.exports = {
             transitionProperty: {
                 'ring-background': 'box-shadow, background-color',
                 'border-background': 'border-color, background-color',
+                'border-ring-background': 'border-color, box-shadow, background-color',
                 'opacity-transform': 'opacity, transform',
                 'border-ring': 'border-color, box-shadow',
                 'border': 'border-color',
@@ -168,14 +170,14 @@ module.exports = {
             backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked'],
             borderWidth: ['hover', 'active'],
             borderColor: ['hover', 'active', 'focus'],
-            borderOpacity: ['group-hover', 'group-active', 'group-focus'],
+            borderOpacity: ['focus', 'group-hover', 'group-active', 'group-focus'],
             cursor: ['disabled'],
             display: [],
             margin: ['first', 'last'],
             opacity: ['disabled', 'group-hover', 'group-active'],
             padding: ['first', 'last'],
             ringColor: [],
-            ringOpacity: [],
+            ringOpacity: ['hover', 'focus', 'disabled'],
             ringWidth: [],
             rotate: [],
             scale: ['group-hover', 'group-focus'],

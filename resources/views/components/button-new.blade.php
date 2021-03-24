@@ -1,15 +1,15 @@
-{{--TODO: IMPORTANT! Unfinished. Take a good look at its styling. Also, maybe refactor for different buttons. Also, optimize transitions.--}}
+{{--TODO: Maybe extract buttons as a component.--}}
 {{--TODO: Add a loading spinner, like Bulma does.--}}
 {{--TODO: Maybe use cursor-wait option for when the loading spinner is showing.--}}
 {{--TODO: See how it looks when "disabled". Maybe needs an update.--}}
-{{--TODO: IMPORTANT! Unfinished. Take a good look at its styling. Also, maybe refactor for different buttons. Also, optimize transitions (Move it to specific buttons maybe - they have different styling).--}}
 
-@props(['border' => true, 'paddingY' => true])
+@props(['border' => true, 'paddingY' => true, 'textClasses'])
 
 <button {{ $attributes->merge([
     'class' => implode(' ', [
-        'inline-flex items-center px-4 rounded-md font-semibold text-xs uppercase tracking-widest outline-none cursor-pointer select-none',
+        'inline-flex items-center px-4 rounded-md outline-none cursor-pointer select-none',
         $paddingY ? 'py-2' : '',
+        $textClasses ?? 'font-semibold text-xs uppercase tracking-widest',
         'focus:outline-none focus:ring focus:ring-opacity-50',
         'disabled:opacity-50 disabled:cursor-default',
         'ease-in-out duration-quick',

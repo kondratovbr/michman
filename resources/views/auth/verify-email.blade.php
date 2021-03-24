@@ -3,34 +3,34 @@
 <x-layouts.guest>
     <x-auth-box>
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+        <h3 class="text-lg font-medium">
+            {{ __('auth.thanks-for-registration') }}
+        </h3>
+
+        <p class="mt-4">
+            {{ __('auth.verify-email') }}
+        </p>
 
         @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+            <div class="mt-4 text-green-500">
+                {{ __('auth.verification-link-sent') }}
             </div>
         @endif
 
         <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
 
-                <div>
-                    <x-jet-button type="submit">
-                        {{ __('Resend Verification Email') }}
-                    </x-jet-button>
-                </div>
-            </form>
+            <x-form action="{{ route('verification.send') }}" method="POST">
+                <x-buttons.secondary type="submit">
+                    {{ __('auth.resend-verification-link-button') }}
+                </x-buttons.secondary>
+            </x-form>
 
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+            <x-form action="{{ route('logout') }}" method="POST">
+                <x-buttons.text type="submit">
+                    {{ __('auth.logout') }}
+                </x-buttons.text>
+            </x-form>
 
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Log Out') }}
-                </button>
-            </form>
         </div>
     </x-auth-box>
 </x-layouts.guest>
