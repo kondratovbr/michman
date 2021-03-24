@@ -7,6 +7,6 @@
     @isset($iconLeft)
         <x-slot name="iconLeft">{{ $iconLeft }}</x-slot>
     @else
-        <x-slot name="iconLeft"><i class="far fa-lock"></i></x-slot>
+        <x-slot name="iconLeft"><i class="fa fa-lock"></i></x-slot>
     @endisset
 </x-inputs.text>

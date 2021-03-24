@@ -19,11 +19,11 @@
             <div class="hidden sm:flex sm:-my-px sm:ml-10">
 {{--                    TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
                 <x-navbar.link routeName="home">
-                    <x-slot name="icon"><i class="far fa-server"></i></x-slot>
+                    <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
                     {{ __('nav.servers') }}
                 </x-navbar.link>
                 <x-navbar.link routeName="home">
-                    <x-slot name="icon"><i class="far fa-hard-hat"></i></x-slot>
+                    <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
                     {{ __('nav.projects') }}
                 </x-navbar.link>
 {{--                TODO: Add external link icon. Maybe animate it on hover/active.--}}

@@ -25,7 +25,7 @@
 
         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
             <x-dropdown.link href="{{ route('api-tokens.index') }}">
-                <x-slot name="icon"><i class="far fa-ship"></i></x-slot>
+                <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
                 {{ __('nav.api_token') }}
             </x-dropdown.link>
         @endif
@@ -43,7 +43,7 @@
                     this.closest('form').submit();
                 "
             >
-                <x-slot name="icon"><i class="far fa-sign-out-alt fa-flip-horizontal"></i></x-slot>
+                <x-slot name="icon"><i class="fa fa-sign-out-alt fa-flip-horizontal"></i></x-slot>
                 {{ __('auth.logout') }}
             </x-dropdown.link>
         </form>

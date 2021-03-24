@@ -4,11 +4,11 @@
             <div>
                 @if ($session->agent->isDesktop())
                     <x-icon size="10">
-                        <i class="far fa-2x fa-desktop"></i>
+                        <i class="fa fa-2x fa-desktop"></i>
                     </x-icon>
                 @else
                     <x-icon size="10">
-                        <i class="far fa-2x fa-mobile-alt"></i>
+                        <i class="fa fa-2x fa-mobile-alt"></i>
                     </x-icon>
                 @endif
             </div>
