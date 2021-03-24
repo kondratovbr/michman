@@ -3,6 +3,12 @@
 namespace App\Models;
 
 use App\Models\Traits\UsesCamelCaseAttributes;
+use BaconQrCode\Renderer\Color\Rgb;
+use BaconQrCode\Renderer\Image\SvgImageBackEnd;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\Fill;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,10 +17,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\HtmlString;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use App\Facades\QrCode;
 
 /**
  * User Eloquent model
@@ -83,6 +91,27 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameForPersonalTeam(): string
     {
         return ucfirst(explode('@', $this->email, 2)[0]) . "'s Team";
+    }
+
+    /**
+     * Get the 2FA QR code as a more flexible SVG string.
+     */
+    public function twoFactorQrCodeSvg(
+        int $size = 192,
+        int $margin = 0,
+        Rgb $background = null,
+        Rgb $color = null
+    ): HtmlString|string {
+        $background ??= new Rgb(255, 255, 255);
+        $color ??= new Rgb(0, 0, 0);
+
+        return QrCode::format('svg')
+            ->size($size)
+            ->margin($margin)
+            ->errorCorrection('M')
+            ->backgroundColor($background->getRed(), $background->getGreen(), $background->getBlue())
+            ->color($color->getRed(), $color->getGreen(), $color->getBlue())
+            ->generate($this->twoFactorQrCodeUrl());
     }
 
     /**

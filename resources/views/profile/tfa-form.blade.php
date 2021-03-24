@@ -1,4 +1,6 @@
 {{--TODO: IMPORTANT! Unfinished!--}}
+{{--TODO: Add links to TOTP apps for iOS/Android. And maybe for a CLI app as well.--}}
+{{--TODO: Definitely needs some loading animation and some transitions. Maybe just move most of it into a modal.--}}
 
 <x-action-section>
 
@@ -29,29 +31,16 @@
                     </p>
                 </div>
 
+                <div class="my-4 flex justify-center">
+{{--                    TODO: Don't forget to disable bg and p in light mode, as it was in Jetstream.--}}
 {{--                <div class="mt-4 dark:p-4 dark:w-56 dark:bg-white">--}}
-                <div class="flex justify-center">
-                    <div class="mt-4 p-4 w-56 bg-white">
-                        {!! $this->user->twoFactorQrCodeSvg() !!}
+                    <div class="w-full max-w-md p-4 bg-white">
+                        <figure class="block relative w-full aspect-h-1 aspect-w-1">
+{{--                        TODO: Make the thing a bit more colorful. Maybe more interesting design-wise. To fit the branding.
+                                See docs: https://www.simplesoftware.io/#/docs/simple-qrcode--}}
+                            {!! $this->user->twoFactorQrCodeSvg(size: 192, margin: 0) !!}
+                        </figure>
                     </div>
-                </div>
-
-                <div class="flex justify-center">
-                    <figure class="block relative w-12 h-12">
-                        <img
-                            class="block h-auto w-full"
-                            src="data:image/png;base64, {!!
-                                base64_encode(
-                                    QrCode::format('png')
-                                        ->size(400)
-                                        ->margin(0)
-                                        ->errorCorrection('H')
-                                        ->generate($this->user->twoFactorQrCodeUrl())
-                                )
-                            !!}"
-                            alt=""
-                        >
-                    </figure>
                 </div>
             @endif
 
@@ -62,6 +51,7 @@
                     </p>
                 </div>
 
+{{--                TODO: Add a small "Copy to clipboard" button.--}}
                 <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-900 rounded-lg">
                     @foreach (json_decode(decrypt($this->user->two_factor_recovery_codes), true) as $code)
                         <div>{{ $code }}</div>

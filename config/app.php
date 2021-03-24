@@ -246,6 +246,8 @@ return [
         // TODO: Do I even use this one?
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
+        'Rgb' => BaconQrCode\Renderer\Color\Rgb::class,
+
     ],
 
 ];
