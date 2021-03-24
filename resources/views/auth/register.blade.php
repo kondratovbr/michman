@@ -31,10 +31,11 @@
                 <x-label for="password_confirmation">{{ __('forms.password_confirmation.label') }}</x-label>
                 <x-inputs.password
                     name="password_confirmation"
+                    errorName="password"
                     autocomplete="new-password"
                     required
                 />
-                <x-input-error for="password_confirmation" />
+                <x-input-error for="password" />
             </x-field>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
