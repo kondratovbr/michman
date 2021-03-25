@@ -1,6 +1,6 @@
 <x-layouts.html>
 
-{{--    TODO: IMPORTANT! WTF is this?--}}
+{{--    TODO: IMPORTANT! WTF is this? Does it even work?--}}
     <x-jet-banner/>
 
     <div class="min-h-screen">
@@ -19,8 +19,5 @@
         </div>
 
     </div>
-
-{{--    TODO: IMPORTANT! WTF is this? How does it work?--}}
-    @stack('modals')
 
 </x-layouts.html>

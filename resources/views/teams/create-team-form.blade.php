@@ -1,3 +1,5 @@
+{{--TODO: IMPORTANT! Terribly unfinished. Non even started.--}}
+
 <x-jet-form-section submit="createTeam">
     <x-slot name="title">
         {{ __('Team Details') }}

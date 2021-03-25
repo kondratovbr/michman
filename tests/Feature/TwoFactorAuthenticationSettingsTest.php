@@ -49,7 +49,7 @@ class TwoFactorAuthenticationSettingsTest extends AbstractFeatureTest
         $this->withSession(['auth.password_confirmed_at' => time()]);
 
         $component = Livewire::test(TfaForm::class)
-                ->call('enableTwoFactorAuthentication');
+            ->call('enableTwoFactorAuthentication');
 
         $this->assertNotNull($user->fresh()->two_factor_secret);
 

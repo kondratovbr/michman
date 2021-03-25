@@ -1,3 +1,5 @@
+{{--TODO: IMPORTANT! Terribly unfinished. Non even started.--}}
+
 <div>
     @if (Gate::check('addTeamMember', $team))
         <x-jet-section-border />

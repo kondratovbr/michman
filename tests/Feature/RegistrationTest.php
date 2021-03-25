@@ -21,7 +21,7 @@ class RegistrationTest extends AbstractFeatureTest
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
+            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? 'on' : null,
         ]);
 
         $this->assertAuthenticated();

@@ -30,9 +30,8 @@ Route::redirect('/', '/servers')->name('home');
  */
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    // TODO: Don't forget to remove this - I don't have a dashboard at all. Maybe later.
+    Route::redirect('/dashboard', '/')->name('dashboard');
 
     Route::resource('servers', ServerController::class)
         ->only(['index', 'show', 'create', 'store']);
