@@ -5,13 +5,40 @@
 <div
     {{-- Some Livewire functions require a unique ID here. --}}
 {{--    id="{{ $id ?? md5($attributes->wire('model')) }}"--}}
-    class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-40"
+    class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
     {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
-    x-data="{ show: @entangle($attributes->wire('model')) }"
+{{--        TODO: IMPORTANT! Test the scroll prevention om mobile. I still haven't figured it out for desktop. --}}
+{{--        TODO: If this thing even works - extract it to a componnt.--}}
+    x-data="{ show: @entangle($attributes->wire('model')),
+        preventDefault(e){
+            e.preventDefault();
+        },
+        disableScroll(){
+            document.body.addEventListener('touchmove', this.preventDefault, { passive: false });
+        },
+        enableScroll(){
+            document.body.removeEventListener('touchmove', this.preventDefault);
+        },
+    }"
+    x-init="
+        $watch('show', value => {
+            if (value) {
+                disableScroll();
+            } else {
+                enableScroll();
+            }
+        });
+
+        $watch('show', value => {
+            if (value) {
+                document.body.classList.add('overflow-y-hidden');
+            } else {
+                document.body.classList.remove('overflow-y-hidden');
+            }
+        })
+    "
     x-show="show"
-    {{-- This is needed so the modal doesn't flash during page load (before Alpine kicks in and hides the thing). --}}
-    {{-- Tailwind "hidden" doesn't cut it - Alpine has no idea how to handle it. --}}
-    style="display: none"
+    x-cloak
     {{-- Close modal on ESC button and similar actions --}}
     x-on:close.stop="show = false"
     x-on:keydown.escape.window="show = false"
@@ -20,7 +47,7 @@
     {{-- Separated from the modal box itself to be able to have different transitions on them. --}}
     <div
         x-show="show"
-        style="display: none"
+        x-cloak
         class="fixed inset-0 transition-opacity"
         {{-- Close modal on click on the background --}}
         x-on:click.stop="show = false"
@@ -37,11 +64,10 @@
         <div class="absolute inset-0 bg-navy-100 opacity-75"></div>
     </div>
 
-
     {{-- Container for the modal box --}}
     <div
         x-show="show"
-        style="display: none"
+        x-cloak
         class="container mx-auto transform transition-opacity-transform"
         {{-- Close modal on click on the background --}}
         x-on:click.stop="show = false"
