@@ -41,6 +41,7 @@ if (! function_exists('siteName')) {
 }
 
 if (! function_exists('title')) {
+    // TODO: Do I really use it?
     /**
      * Create a properly formatted page title with a separator.
      */
@@ -60,5 +61,26 @@ if (! function_exists('user')) {
     function user(): ?User
     {
         return Auth::user();
+    }
+}
+
+if (! function_exists('classes')) {
+    // TODO: Would be nice to also properly "merge" them?
+    /**
+     * Combine all provided CSS classes into a single space-separated string.
+     */
+    function classes(string|array ...$classes): string
+    {
+        return array_reduce($classes, function (string $carry, string|array $item) {
+            if ($carry !== '')
+                $carry .= ' ';
+
+            if (is_string($item))
+                $carry .= $item;
+            else
+                $carry .= classes(...$item);
+
+            return $carry;
+        }, '');
     }
 }
