@@ -1,1 +1,1 @@
-<div class="border-t border-gray-200"></div>
+<div class="my-2 border-t border-gray-600"></div>

@@ -2,7 +2,7 @@
 
 <nav
     class="relative bg-navy-300 z-40"
-    x-data="{ open: true }"
+    x-data="{ open: open }"
 >
 
     {{-- Primary Navigation Menu --}}
@@ -103,7 +103,7 @@
             x-transition:leave-end="translate-x-full"
         >
             {{-- Menu content --}}
-            <div class="bg-navy-300">
+            <div class="py-2 bg-navy-300 rounded-bl-md border-b border-l border-gray-600 shadow-lg-black">
                 @include('partials._burger-menu')
             </div>
         </div>
