@@ -1,6 +1,6 @@
 <a
     {{ $attributes->merge([
-        'class' => 'group inline-flex items-stretch px-2 py-2 focus:outline-none',
+        'class' => 'group inline-flex items-stretch p-2 focus:outline-none',
         'href' => route($routeName),
     ]) }}
 >

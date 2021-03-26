@@ -15,7 +15,7 @@
         role="button"
     >
         <div
-            class="px-5 rounded-md flex items-center self-stretch select-none border-2 border-gray-300 border-opacity-0 group-hover:border-opacity-100 bg-navy-400 group-active:bg-opacity-100 transition-border-background ease-in-out duration-quick"
+            class="px-5 rounded-md flex items-center self-stretch select-none border border-gray-300 border-opacity-0 group-hover:border-opacity-100 bg-navy-400 group-active:bg-opacity-100 transition-border-background ease-in-out duration-quick"
             x-bind:class="{'bg-opacity-0': !open, 'bg-opacity-100': open}"
         >
             <div class="flex items-center transform group-hover:scale-105 transition-transform ease-in-out duration-quick">
