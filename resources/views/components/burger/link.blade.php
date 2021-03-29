@@ -13,7 +13,7 @@
         //     : 'border-transparent hover:bg-navy-400 hover:border-gray-300 focus:outline-none focus:bg-gray-50 focus:border-gray-300',
     ])
 ]) }}>
-    <div class="py-3 px-4 text-gray-200 rounded-md border border-gray-300 border-opacity-0 bg-navy-400 bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100 group-hover:text-gray-100 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick">
+    <div class="py-3 px-4 text-gray-200 capitalize rounded-md border border-gray-300 border-opacity-0 bg-navy-400 bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100 group-hover:text-gray-100 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick">
         @isset($icon)
             <x-icon class="mr-2">{{ $icon }}</x-icon>
         @endisset
