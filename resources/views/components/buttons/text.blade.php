@@ -12,7 +12,7 @@
 ]) }}
     :paddingY="false"
     :border="false"
-    textClasses="underline text-sm"
+    textClasses="underline"
 >
     {{ $slot }}
 </x-button-new>

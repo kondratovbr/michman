@@ -1,6 +1,6 @@
 <x-button-new {{ $attributes->merge([
     'class' => implode(' ', [
-        'py-1.5 mt-2px',
+        'py-1 mt-2px',
         'bg-transparent ring-2 ring-gray-400 border-2 border-gray-400 border-opacity-0',
         'hover:bg-gray-700',
         'active:bg-gray-600',

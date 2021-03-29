@@ -7,9 +7,10 @@
 
 <button {{ $attributes->merge([
     'class' => implode(' ', [
-        'inline-flex items-center justify-center min-w-16 px-4 rounded-md outline-none cursor-pointer select-none',
-        $paddingY ? 'py-2' : '',
-        $textClasses ?? 'font-semibold text-xs uppercase tracking-widest',
+        'inline-flex items-center justify-center min-w-16 px-4 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
+        $paddingY ? 'py-1.5' : '',
+        'capitalize',
+        $textClasses ?? '',
         'focus:outline-none focus:ring focus:ring-opacity-50',
         'disabled:opacity-50 disabled:cursor-default',
         'ease-in-out duration-quick',
@@ -18,3 +19,5 @@
 ]) }}>
     {{ $slot }}
 </button>
+
+{{--font-semibold text-xs uppercase tracking-widest--}}
