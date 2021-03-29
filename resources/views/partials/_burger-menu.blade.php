@@ -1,7 +1,7 @@
 {{--TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
 {{--TODO: CRITICAL! Don't forget to put real routes here!--}}
 
-<div class="h-full w-full flex justify-end">
+<div class="h-full w-full flex justify-start">
     <button
         class="group flex flex-col items-stretch py-1 px-2 cursor-pointer select-none focus:outline-none"
         x-on:click="open = !open"
