@@ -203,6 +203,9 @@ module.exports = {
         require('@tailwindcss/aspect-ratio'),
         require('@tailwindcss/line-clamp'),
         require('tailwindcss-debug-screens'),
+        // Yep, the author screwed up a bit and this should be called as a function.
+        // https://github.com/desaintflorent/tailwindcss-padding-safe
+        require("tailwindcss-padding-safe")(),
 
         // "group-active" variant for various interactive elements
         plugin(function({ addVariant, e }) {
