@@ -7,7 +7,7 @@
 
 <button {{ $attributes->merge([
     'class' => implode(' ', [
-        'inline-flex items-center px-4 rounded-md outline-none cursor-pointer select-none',
+        'inline-flex items-center justify-center min-w-16 px-4 rounded-md outline-none cursor-pointer select-none',
         $paddingY ? 'py-2' : '',
         $textClasses ?? 'font-semibold text-xs uppercase tracking-widest',
         'focus:outline-none focus:ring focus:ring-opacity-50',

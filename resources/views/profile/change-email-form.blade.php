@@ -22,9 +22,12 @@
 
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
-            <x-button wire:loading.attr="disabled" wire:target="photo">
+            <x-buttons.primary
+                wire:loading.attr="disabled"
+                wire:target="photo"
+            >
                 {{ __('buttons.save') }}
-            </x-button>
+            </x-buttons.primary>
             <x-action-message on="saved">
                 {{ __('misc.saved') }}
             </x-action-message>
