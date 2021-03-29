@@ -1,4 +1,4 @@
-{{--TODO: IMPORTANT! Don't forget to switch for the button-new!--}}
+{{--TODO: IMPORTANT! This one shouldn't be used! Don't forget to switch for the button-new!--}}
 
 <button
     {{ $attributes->merge([

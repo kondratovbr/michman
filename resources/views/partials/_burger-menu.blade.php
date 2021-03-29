@@ -101,7 +101,7 @@
 </x-form>
 
 {{-- Team Management --}}
-{{--        TODO: Temporaryli disabled. Don't forget to implement with the teams feature.--}}
+{{--        TODO: Temporarily disabled by this "false &&" thing. Don't forget to implement with the teams feature.--}}
 @if (false && Laravel\Jetstream\Jetstream::hasTeamFeatures())
     <x-burger.separator/>
 
