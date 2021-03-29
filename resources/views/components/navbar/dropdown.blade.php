@@ -34,7 +34,7 @@
         x-transition:leave="transition ease-in duration-75"
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="absolute z-50 -mt-1 {{ $widthClass }} rounded-md border border-gray-600 shadow-lg-black {{ $alignmentClasses }}"
+        class="absolute z-50 -mt-1 {{ $widthClass }} rounded-md border border-gray-600 shadow-lg {{ $alignmentClasses }}"
     >
         <div class="rounded-md py-2 bg-navy-300">
             {{ $content }}

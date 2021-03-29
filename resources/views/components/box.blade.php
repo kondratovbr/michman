@@ -1,4 +1,4 @@
-@props(['shadow' => 'shadow-md-black'])
+@props(['shadow' => 'shadow-md'])
 
 <div
     {{ $attributes->merge([
