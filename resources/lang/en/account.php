@@ -45,6 +45,7 @@ return [
             'sorry' => [
                 'title' => 'Sorry',
                 'content' => 'Sorry, this feature is currently unavailable.',
+                'contact-support' => 'Please, contact support to delete your account.',
                 'contact-button' => 'Contact Support',
             ],
 

@@ -31,7 +31,10 @@
             </x-slot>
 
             <x-slot name="content">
-                {{ __('account.profile.delete.sorry.content') }}
+                <div class="space-y-4">
+                    <p>{{ __('account.profile.delete.sorry.content') }}</p>
+                    <p>{{ __('account.profile.delete.sorry.contact-support') }}</p>
+                </div>
             </x-slot>
 
             <x-slot name="actions">
