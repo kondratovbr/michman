@@ -1,5 +1,7 @@
 <x-navbar.dropdown align="right">
 
+{{--    TODO: CRITICAL! Don't forget to put real routes here!--}}
+
     <x-slot name="trigger">
         <div class="flex items-center space-x-2">
             <x-avatar class="h-8 w-8" />
@@ -26,7 +28,7 @@
         @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
             <x-dropdown.link href="{{ route('api-tokens.index') }}">
                 <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
-                {{ __('nav.api_token') }}
+                {{ __('nav.api-tokens') }}
             </x-dropdown.link>
         @endif
 

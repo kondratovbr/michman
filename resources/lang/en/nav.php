@@ -6,7 +6,7 @@ return [
     'projects' => 'Projects',
     'account' => 'Account',
     'billing' => 'Billing',
-    'api_token' => 'API Tokens',
+    'api-tokens' => 'API Tokens',
     'manage_account' => 'Manage Account',
     'documentation' => 'Documentation',
 

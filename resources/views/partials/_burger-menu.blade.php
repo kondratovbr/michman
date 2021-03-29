@@ -1,4 +1,5 @@
 {{--TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
+{{--TODO: CRITICAL! Don't forget to put real routes here!--}}
 
 <div class="h-full w-full flex justify-end">
     <button
@@ -63,15 +64,23 @@
     href="{{ route('profile.show') }}"
     :active="request()->routeIs('profile.show')"
 >
-    {{ __('Profile') }}
+    <x-slot name="icon"><i class="far fa-user"></i></x-slot>
+    {{ __('nav.account') }}
 </x-burger.link>
-
+<x-burger.link
+    href="{{ route('profile.show') }}"
+    :active="request()->routeIs('profile.show')"
+>
+    <x-slot name="icon"><i class="far fa-money-bill-alt"></i></x-slot>
+    {{ __('nav.billing') }}
+</x-burger.link>
 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
     <x-burger.link
         href="{{ route('api-tokens.index') }}"
         :active="request()->routeIs('api-tokens.index')"
     >
-        {{ __('API Tokens') }}
+        <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
+        {{ __('nav.api-tokens') }}
     </x-burger.link>
 @endif
 
@@ -85,7 +94,10 @@
             event.preventDefault();
             this.closest('form').submit();
         "
-    >{{ __('auth.logout') }}</x-burger.link>
+    >
+        <x-slot name="icon"><i class="fa fa-sign-out-alt fa-flip-horizontal"></i></x-slot>
+        {{ __('auth.logout') }}
+    </x-burger.link>
 </x-form>
 
 {{-- Team Management --}}
