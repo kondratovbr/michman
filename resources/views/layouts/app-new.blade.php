@@ -18,6 +18,8 @@
             </div>
         </div>
 
+        <livewire:bottombar/>
+
     </div>
 
 </x-layouts.html>
