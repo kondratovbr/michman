@@ -3,13 +3,13 @@
 {{--TODO: Maybe use cursor-wait option for when the loading spinner is showing.--}}
 {{--TODO: See how it looks when "disabled". Maybe needs an update.--}}
 
-@props(['border' => true, 'paddingY' => true, 'textClasses'])
+@props(['border' => true, 'paddingY' => true, 'textClasses', 'capitalize' => true])
 
 <button {{ $attributes->merge([
     'class' => implode(' ', [
         'inline-flex items-center justify-center min-w-16 px-4 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
         $paddingY ? 'py-1.5' : '',
-        'capitalize',
+        $capitalize ? 'capitalize' : '',
         $textClasses ?? '',
         'focus:outline-none focus:ring focus:ring-opacity-50',
         'disabled:opacity-50 disabled:cursor-default',
@@ -19,5 +19,3 @@
 ]) }}>
     {{ $slot }}
 </button>
-
-{{--font-semibold text-xs uppercase tracking-widest--}}
