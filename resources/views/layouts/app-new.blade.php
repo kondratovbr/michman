@@ -5,7 +5,13 @@
 
     <div class="min-h-screen">
 
+{{--        TODO: Maybe turn the navbar and bottombar into a Livewire component and don't reload the whole page on navigation at all?--}}
+
         <livewire:navbar/>
+
+        {{-- Bottombar has "fixed" positioning to the bottom.
+        It is placed here so it loads before the rest of the page. --}}
+{{--        <livewire:bottombar/>--}}
 
         {{-- Main Layout Container --}}
         <div class="container mx-auto pb-20 md:grid md:grid-cols-12">
@@ -17,8 +23,6 @@
 
             </div>
         </div>
-
-        <livewire:bottombar/>
 
     </div>
 

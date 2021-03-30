@@ -1,10 +1,10 @@
 @props(['routeName'])
 
 <a {{ $attributes->merge([
-    'class' => 'group inline-flex items-stretch p-2 focus:outline-none',
+    'class' => 'w-full h-full group inline-flex items-stretch p-2 focus:outline-none cursor-pointer select-none',
 ]) }}
     @isset($routeName)
-        href="{{ $routeName }}"
+        href="{{ route($routeName) }}"
     @endisset
 >
     <div
@@ -13,6 +13,9 @@
         @isset($icon)
             <x-icon class="mr-2 text-2xl" size="8">{{ $icon }}</x-icon>
         @endisset
-        <span class="text-sm">{{ $slot }}</span>
+        @isset($content)
+            <span class="text-sm">{{ $content }}</span>
+        @endisset
+        {{ $slot }}
     </div>
 </a>
