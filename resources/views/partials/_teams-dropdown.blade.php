@@ -20,9 +20,9 @@
     <x-slot name="content">
         <div>
             {{-- Team Management --}}
-            <x-dropdown.header>
+            <x-dropdown.title>
                 {{ __('nav.teams.manage') }}
-            </x-dropdown.header>
+            </x-dropdown.title>
 
             {{-- Team Settings --}}
             <x-dropdown.link href="{{ route('teams.show', user()->currentTeam->id) }}">
@@ -38,9 +38,9 @@
             <x-dropdown.separator/>
 
             {{-- Team Switcher --}}
-            <x-dropdown.header>
+            <x-dropdown.title>
                 {{ __('nav.teams.switch') }}
-            </x-dropdown.header>
+            </x-dropdown.title>
 
             @foreach (user()->allTeams() as $team)
                 <x-team-switcher-item :team="$team" />

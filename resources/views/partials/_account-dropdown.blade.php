@@ -12,9 +12,9 @@
     <x-dropdown.menu align="right">
 
         {{-- Account Management --}}
-        <x-dropdown.header>
+        <x-dropdown.title>
             {{ __('nav.manage_account') }}
-        </x-dropdown.header>
+        </x-dropdown.title>
 
         <x-dropdown.link href="{{ route('profile.show') }}">
             <x-slot name="icon"><i class="far fa-user"></i></x-slot>

@@ -8,5 +8,6 @@ return [
     'register' => 'Register',
     'enable' => 'Enable',
     'confirm' => 'Confirm',
+    'back' => 'Back',
 
 ];

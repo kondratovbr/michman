@@ -11,6 +11,7 @@ class Menu extends Component
     public string $alignmentClasses;
     public string $widthClass;
     public string $marginClasses;
+    public string $shadowClass;
 
     public function __construct(
         string $show = 'open',
@@ -23,6 +24,7 @@ class Menu extends Component
         $this->alignmentClasses = $this->alignmentClasses($drop, $align);
         $this->widthClass = $this->widthClass($width, $minWidth);
         $this->marginClasses = $this->marginClasses($drop);
+        $this->shadowClass = $this->shadowClass($drop);
     }
 
     /**
@@ -55,12 +57,14 @@ class Menu extends Component
         $class = match ($width) {
             '48' => 'w-48',
             '60' => 'w-60',
+            '64' => 'w-64',
             null => null,
         };
 
         $class ??= match ($minWidth) {
             '48' => 'min-w-48',
             '60' => 'min-w-60',
+            '64' => 'min-w-64',
         };
 
         return $class;
@@ -75,6 +79,17 @@ class Menu extends Component
         return match ($drop) {
             'down' => '-mt-1',
             'up' => '-mb-1',
+        };
+    }
+
+    /**
+     * Get the shadow class for the dropdown menu.
+     */
+    private function shadowClass(string $drop): string
+    {
+        return match ($drop) {
+            'up' => 'shadow-lg-top',
+            'down' => 'shadow-lg',
         };
     }
 

@@ -3,24 +3,22 @@
 <div {{ $attributes->merge([
     'class' => 'relative',
 ]) }}
-    x-data="{ open: true }"
+    x-data="{ open: false, sub: 'account' }"
     {{-- TODO: IMPORTANT! Does this work on touch? --}}
-    x-on:click.away="open = false"
-    x-on:close.stop="open = false"
+    x-on:click.away="open = false; sub = ''"
+    x-on:close.stop="open = false; sub = ''"
 >
 
     {{-- Dropup button --}}
     <x-bottombar.link
         {{-- TODO: IMPORTANT! Does this work on touch? --}}
-        x-on:click.prevent="open = !open"
+        x-on:click.prevent="open = !open; sub = ''"
         role="button"
     >
         {{ $trigger }}
     </x-bottombar.link>
 
-    {{-- Dropup menu --}}
-    <x-dropdown.menu drop="up" :align="$align" :minWidth="$minWidth" class="">
-        {{ $slot }}
-    </x-dropdown.menu>
+    {{-- Dropup menus --}}
+    {{ $slot }}
 
 </div>
