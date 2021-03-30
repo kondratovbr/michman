@@ -1,4 +1,4 @@
-<x-navbar.dropdown align="right">
+<x-navbar.dropdown>
 
 {{--    TODO: CRITICAL! Don't forget to put real routes here!--}}
 
@@ -9,7 +9,8 @@
         </div>
     </x-slot>
 
-    <x-slot name="content">
+    <x-dropdown.menu align="right">
+
         {{-- Account Management --}}
         <x-dropdown.header>
             {{ __('nav.manage_account') }}
@@ -34,20 +35,17 @@
 
         <x-dropdown.separator/>
 
-        {{-- Authentication --}}
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
+        {{-- Logout button --}}
+        <x-form method="POST" action="{{ route('logout') }}" x-data="{}" x-ref="form">
             <x-dropdown.link
-                href="{{ route('logout') }}"
-                onclick="
-                    event.preventDefault();
-                    this.closest('form').submit();
-                "
+                x-on:click.prevent="$refs.form.submit()"
+                role="button"
             >
                 <x-slot name="icon"><i class="fa fa-sign-out-alt fa-flip-horizontal"></i></x-slot>
                 {{ __('auth.logout') }}
             </x-dropdown.link>
-        </form>
-    </x-slot>
+        </x-form>
+
+    </x-dropdown.menu>
+
 </x-navbar.dropdown>
