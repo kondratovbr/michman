@@ -11,7 +11,7 @@
 
         {{-- Bottombar has "fixed" positioning to the bottom.
         It is placed here so it loads before the rest of the page. --}}
-{{--        <livewire:bottombar/>--}}
+        <livewire:bottombar/>
 
         {{-- Main Layout Container --}}
         <div class="container mx-auto pb-20 md:grid md:grid-cols-12">

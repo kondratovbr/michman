@@ -1,4 +1,4 @@
-@props(['align' => 'left'])
+@props(['align' => 'left', 'minWidth' => '48'])
 
 <div {{ $attributes->merge([
     'class' => 'relative',
@@ -19,7 +19,7 @@
     </x-bottombar.link>
 
     {{-- Dropup menu --}}
-    <x-dropdown.menu drop="up" :align="$align">
+    <x-dropdown.menu drop="up" :align="$align" :minWidth="$minWidth" class="">
         {{ $slot }}
     </x-dropdown.menu>
 

@@ -175,7 +175,7 @@ module.exports = {
 
             backgroundColor: ['hover', 'active', 'disabled', 'checked'],
             backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked'],
-            borderWidth: ['hover', 'active'],
+            borderWidth: ['hover', 'active', 'last'],
             borderColor: ['hover', 'active', 'focus'],
             borderOpacity: ['focus', 'group-hover', 'group-active', 'group-focus'],
             cursor: ['disabled'],

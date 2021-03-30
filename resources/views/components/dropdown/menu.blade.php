@@ -1,5 +1,10 @@
-<div
-    class="absolute z-50 {{ $marginClasses }} {{ $widthClass }} rounded-md border border-gray-600 shadow-lg {{ $alignmentClasses }}"
+<div {{ $attributes->merge(['class' => classes(
+    'absolute z-50 max-w-screen',
+    'rounded-md border border-gray-600 shadow-lg',
+    $marginClasses,
+    $widthClass,
+    $alignmentClasses,
+)]) }}
     x-show="{{ $show }}"
     x-cloak
     x-transition:enter="transition ease-out duration-200"
