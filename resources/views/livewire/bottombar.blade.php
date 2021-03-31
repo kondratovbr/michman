@@ -23,13 +23,10 @@
                 </x-icon>
             </x-slot>
 
-            <x-dropdown.menu drop="up" align="right" minWidth="64">
-                @include('bottombar._main-dropup')
-            </x-dropdown.menu>
 
-            <x-dropdown.menu drop="up" align="right" minWidth="64" show="sub === 'account'">
-                @include('bottombar._account-dropup')
-            </x-dropdown.menu>
+            @include('bottombar._main-dropup')
+
+            @include('bottombar._account-dropup')
 
         </x-bottombar.dropup>
 
