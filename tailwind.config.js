@@ -143,6 +143,8 @@ module.exports = {
                 '4xs': '8rem',
                 '3xs': '12rem',
                 '2xs': '16rem',
+                'screen-xl-10/12': 'calc(1280px / 12 * 10)',
+                'screen-2xl-10/12': 'calc(1536px / 12 * 10)',
             },
             // Extending min-width utilities using a custom sizing scale (see above).
             minWidth: smallSizingScale,
@@ -150,6 +152,7 @@ module.exports = {
             padding: {
                 '11-sub-2': 'calc(2.75rem - 2px)',
                 '1.25': '0.3125rem',
+                '7.5': '1.875rem',
             },
             // Reusable transition durations
             transitionDuration: {
