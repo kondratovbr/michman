@@ -1,4 +1,7 @@
-<li>
+<li
+    {{-- This compensates for the padding on the first and last elements. --}}
+    class="first:-mt-1 last:-mb-1"
+>
     <a
         class="group w-full h-full inline-flex flex-col items-stretch py-1 cursor-pointer select-none focus:outline-none"
     >
