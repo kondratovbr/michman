@@ -15,7 +15,7 @@
     x-transition:leave-start="transform opacity-100 scale-100"
     x-transition:leave-end="transform opacity-0 scale-95"
 >
-    <div class="rounded-md py-0 md:py-2 bg-navy-300">
+    <div class="rounded-md py-0 {{ $header ? '' : 'md:py-2' }} bg-navy-300">
         {{ $slot }}
     </div>
 </div>
