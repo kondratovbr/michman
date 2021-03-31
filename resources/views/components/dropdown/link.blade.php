@@ -3,7 +3,7 @@
 @props(['capitalize' => true, 'textClasses' => '', 'external' => false, 'action' => null])
 
 <a {{ $attributes->merge([
-    'class' => 'group h-full flex flex-col items-stretch px-2 cursor-pointer select-none focus:outline-none border-b border-gray-600 md:border-b-0 last:border-b-0 mx-4 md:mx-0 py-2 md:py-1',
+    'class' => 'group h-full flex flex-col items-stretch mx-4 md:mx-0 px-0 md:px-2 py-2 md:py-1 cursor-pointer select-none focus:outline-none border-b border-gray-600 md:border-b-0 last:border-b-0',
 ]) }}
     @if($external)
         target="_blank"
