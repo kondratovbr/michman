@@ -3,7 +3,7 @@
 <div {{ $attributes->merge([
     'class' => 'relative',
 ]) }}
-    x-data="{ open: false, sub: 'account' }"
+    x-data="{ open: false, sub: '' }"
     {{-- TODO: IMPORTANT! Does this work on touch? --}}
     x-on:click.away="open = false; sub = ''"
     x-on:close.stop="open = false; sub = ''"

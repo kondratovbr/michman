@@ -1,7 +1,7 @@
 {{--TODO: CRITICAL! Placeholders! Don't forget to put actual routes here!--}}
 {{--TODO: IMPORTANT! Make sure longer emails actually fit. Same in the navbar. Maybe cut the email if it's long. Or maybe even don't show it at all if it's long - just an avatar.--}}
 
-<x-dropdown.title :capitalize="false">
+<x-dropdown.title :capitalize="false" paddingLeft="pl-7">
     <div class="flex items-center space-x-2">
         <x-avatar class="h-10 w-10" />
         <span>{{ user()->email }}</span>
@@ -10,10 +10,7 @@
 
 <x-dropdown.separator/>
 
-<x-dropdown.link
-    x-on:click.prevent="open = false; sub = 'account'"
-    role="button"
->
+<x-dropdown.link action="account">
     <x-slot name="icon"><i class="far fa-user"></i></x-slot>
     {{ __('nav.account') }}
     <x-slot name="iconRight"><i class="fas fa-chevron-right text-gray-400"></i></x-slot>
