@@ -1,3 +1,6 @@
+
+{{-- NOTE: This menu is currently not in use. --}}
+
 {{--TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
 {{--TODO: CRITICAL! Don't forget to put real routes here!--}}
 

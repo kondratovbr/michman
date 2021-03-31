@@ -1,9 +1,9 @@
 <div
     x-show="open"
-    class="md:hidden fixed inset-0 overflow-hidden"
+    class="lg:hidden fixed inset-0 overflow-hidden"
     x-cloak
 
-    {{--        TODO: WTF is this doing?--}}
+{{--    TODO: WTF is this doing?--}}
     x-transition:enter=""
     x-transition:enter-start=""
     x-transition:enter-end=""

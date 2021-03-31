@@ -50,19 +50,9 @@
 
         </div>
 
-        {{-- Burger Button --}}
         <div class="-mr-2 flex items-center md:hidden">
-            @include('partials._burger-button')
         </div>
 
     </div>
-
-{{--    TODO: CRITICAL! Do I even need it in the end? Worth redoing into a dropdown type of thing?--}}
-    {{-- Mobile Burger Menu --}}
-    {{--
-    <x-burger-menu>
-        @include('partials._burger-menu')
-    </x-burger-menu>
-    --}}
 
 </nav>

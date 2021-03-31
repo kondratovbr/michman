@@ -1,5 +1,8 @@
+
+{{-- NOTE: This button as well as the menu iself is currently not in use. --}}
+
 <button
-    class="group inline-flex items-stretch p-2 cursor-pointer select-none focus:outline-none"
+    class="group inline-flex lg:hidden items-stretch p-2 cursor-pointer select-none focus:outline-none"
     x-on:click="open = !open"
 >
     <div class="p-2 flex items-center justify-center rounded-md border border-gray-200 border-opacity-0 group-hover:border-opacity-100 group-hover:text-gray-100 bg-navy-400 bg-opacity-0 group-active:bg-opacity-100 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick">
