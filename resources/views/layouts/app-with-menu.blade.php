@@ -2,9 +2,9 @@
 
     {{-- Page Heading --}}
     @isset($header)
-        <header class="py-8 px-4 sm:px-6 lg:px-8">
+        <header class="py-8">
             {{-- This is needed to align the header with the aside menu buttons --}}
-            <div class="ml-1">
+            <div class="ml-4">
                 {{ $header }}
             </div>
         </header>
@@ -15,7 +15,7 @@
     <div class="md:grid md:grid-cols-12">
 
         {{-- Side Menu --}}
-        <div class="md:col-span-3 px-5">
+        <div class="md:col-span-3 pr-5">
             {{ $menu }}
         </div>
 
