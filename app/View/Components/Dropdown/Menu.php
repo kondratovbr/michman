@@ -12,19 +12,22 @@ class Menu extends Component
     public string $widthClass;
     public string $marginClasses;
     public string $shadowClass;
+    public bool $header;
 
     public function __construct(
         string $show = 'open',
         string $drop = 'down',
         string $align = 'left',
         string $width = null,
-        string $minWidth = '48'
+        string $minWidth = '48',
+        bool $header = false,
     ) {
         $this->show = $show;
         $this->alignmentClasses = $this->alignmentClasses($drop, $align);
         $this->widthClass = $this->widthClass($width, $minWidth);
         $this->marginClasses = $this->marginClasses($drop);
         $this->shadowClass = $this->shadowClass($drop);
+        $this->header = $header;
     }
 
     /**
