@@ -2,8 +2,9 @@
 {{--TODO: Needs hover, focus. Also, a11y concerns for dropdowns.--}}
 {{--TODO: Needs different styling for links for when user is on that page. --}}
 
-<div
-    class="relative"
+<div {{ $attributes->merge([
+    'class' => 'relative',
+]) }}
     x-data="{ open: false }"
     {{-- TODO: IMPORTANT! Does this work on touch? --}}
     x-on:click.away="open = false"
@@ -24,7 +25,9 @@
         >
             <div class="flex items-center transform group-hover:scale-105 transition-transform ease-in-out duration-quick">
                 {{ $trigger }}
-                <x-dropdown.icon class="ml-2" />
+                @if($chevron)
+                    <x-dropdown.icon class="ml-2" />
+                @endif
             </div>
         </div>
     </a>

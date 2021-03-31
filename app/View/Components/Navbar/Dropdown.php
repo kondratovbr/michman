@@ -7,6 +7,10 @@ use Illuminate\View\Component;
 
 class Dropdown extends Component
 {
+    public function __construct(
+        public bool $chevron = true
+    ) {}
+
     /**
      * Get the view that represents the component.
      */
