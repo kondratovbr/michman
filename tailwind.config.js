@@ -2,9 +2,7 @@ const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
 const defaultTheme = require('tailwindcss/defaultTheme');
 
-/*
- Custom smaller sizing scale for extending various utilities, like minWidth
- */
+// Custom smaller sizing scale for extending various utilities, like minWidth.
 smallSizingScale = {
     '0.5': '0.125rem',
     '1': '0.25rem',
@@ -39,6 +37,26 @@ smallSizingScale = {
     '72': '18rem',
     '80': '20rem',
     '96': '24rem',
+    '1/3': '33.333333%',
+    '2/3': '66.666667%',
+};
+
+// Custom extension for "flex-grow"/"flex-shrink" utilities.
+// NOTE: Not used currently.
+flexSizingScale = {
+    '0': 0,
+    '1': 1,
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    '10': 10,
+    '11': 11,
+    '12': 12,
 };
 
 module.exports = {
