@@ -1,5 +1,5 @@
 {{--TODO: Add icons everywhere.--}}
-{{-- TODO: Don't forget to properly align the actual logo with other elements once it's done. --}}
+{{-- TODO: Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
 
 <nav
     class="relative hidden md:block bg-navy-300 z-40"
@@ -53,7 +53,7 @@
             </div>
 
             {{-- Right Side --}}
-            <div class="hidden md:flex md:items-stretch">
+            <div class="hidden lg:flex lg:items-stretch">
                 {{-- Teams Dropdown --}}
     {{--            @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())--}}
     {{--                @include('partials._teams-dropdown')--}}
@@ -66,10 +66,11 @@
         </div>
 
         {{-- Burger button container --}}
-        {{-- While the menu button is hidden on bigger screens the container servers as a filler to help centering the main content.
+        {{-- While the button itself is hidden on bigger screens the container servers as a filler to help centering the main content.
              It should always be the same fixed width as the logo container. --}}
         <div class="w-24 hidden md:flex lg:hidden xl:flex justify-end items-stretch">
-            <x-navbar.dropdown class="lg:hidden" :chevron="false">
+            {{-- -mr is here to align the button icon with section edges. --}}
+            <x-navbar.dropdown class="lg:hidden -mr-4" :chevron="false">
                 <x-slot name="trigger">
                     <x-icon class="text-xl" size="6">
                         <i class="fas fa-bars" x-show="!open"></i>
