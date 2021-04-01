@@ -13,7 +13,6 @@
     <x-dropdown.link action="account">
         <x-slot name="icon"><i class="far fa-user"></i></x-slot>
         {{ __('nav.account') }}
-        <x-slot name="iconRight"><i class="fas fa-chevron-right text-gray-400"></i></x-slot>
     </x-dropdown.link>
 
     <x-dropdown.link href="">
