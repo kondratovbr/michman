@@ -14,7 +14,7 @@
         <livewire:bottombar/>
 
         {{-- Main layout container --}}
-        <div class="container mx-auto pb-20 md:grid md:grid-cols-12">
+        <div class="container mx-auto pb-20 md:grid md:grid-cols-12 md:px-2 lg:px-0">
             {{-- Responsiveness containment --}}
             <div class="md:col-span-12 xl:col-start-2 xl:col-end-12">
 

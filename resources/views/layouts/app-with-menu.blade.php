@@ -3,8 +3,9 @@
     {{-- Page Heading --}}
     @isset($header)
         <header class="py-8">
-            {{-- This is needed to align the header with the aside menu buttons --}}
-            <div class="ml-4">
+            {{-- Margin on <sm aligns the page header with section titles.
+                 Margin on md> aligns the page header with the side menu buttons. --}}
+            <div class="ml-4 sm:ml-0 md:ml-4">
                 {{ $header }}
             </div>
         </header>
@@ -15,7 +16,7 @@
     <div class="md:grid md:grid-cols-12">
 
         {{-- Side Menu --}}
-        <div class="md:col-span-3 pr-5">
+        <div class="hidden md:block md:col-span-3 md:pr-5">
             {{ $menu }}
         </div>
 
