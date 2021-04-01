@@ -23,7 +23,7 @@
             </x-buttons.danger>
         </div>
 
-        {{--        TODO: Actually implement the feature. It isn't that simple.--}}
+{{--        TODO: Actually implement the feature. It isn't that simple.--}}
         {{-- Temorary Sorry Modal --}}
         <x-modals.dialog wireModel="confirmingUserDeletion">
             <x-slot name="header">
