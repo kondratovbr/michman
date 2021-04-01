@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class TestController extends AbstractController
 {
     public function __invoke(Request $request)
     {

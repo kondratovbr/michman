@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class ServerController extends Controller
+class ServerController extends AbstractController
 {
     /**
      * Show the list of user's servers.

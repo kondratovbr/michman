@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-class DebugController extends Controller
+class DebugController extends AbstractController
 {
     public function __construct()
     {
