@@ -31,6 +31,7 @@
                 <x-label>{{ __('forms.password.label') }}</x-label>
                 <x-inputs.password
                     name="password"
+                    id="confirmable_password"
                     class="max-w-xl"
                     x-ref="confirmable_password"
                     wire:model.defer="confirmablePassword"
