@@ -1,7 +1,8 @@
 @props(['capitalize' => true, 'textClasses' => '', 'external' => false])
 
+{{--TODO: Padding on md+ may be wrong, should check it.--}}
 <a {{ $attributes->merge([
-    'class' => 'group h-full flex flex-col items-stretch px-6 md:px-2 py-1 cursor-pointer select-none rounded-t-md focus:outline-none bg-navy-200     border-b border-gray-600 md:border-b-0',
+    'class' => 'group h-full flex flex-col items-stretch px-3 md:px-2 py-1 cursor-pointer select-none rounded-t-md focus:outline-none bg-navy-200 border-b border-gray-600 md:border-b-0',
 ]) }}
     @isset($external)
         target="_blank"
