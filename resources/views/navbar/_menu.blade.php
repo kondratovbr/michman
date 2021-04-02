@@ -1,6 +1,7 @@
 {{--TODO: CRITICAL! Placeholders! Don't forget to put actual routes here!--}}
 {{--TODO: IMPORTANT! Make sure longer emails actually fit. Same in the navbar. Maybe cut the email if it's long. Or maybe even don't show it at all if it's long - just an avatar.--}}
 
+{{-- Dropdown menu available from the navbar only on "md" screens. Intended mostly for tidier navigation on tablets. --}}
 <x-dropdown.menu align="right" minWidth="64" :header="true">
 
     <x-dropdown.header-title :capitalize="false">
@@ -10,7 +11,7 @@
         </div>
     </x-dropdown.header-title>
 
-    <x-dropdown.link action="account">
+    <x-dropdown.link href="{{ route('account.show') }}">
         <x-slot name="icon"><i class="far fa-user"></i></x-slot>
         {{ __('nav.account') }}
     </x-dropdown.link>

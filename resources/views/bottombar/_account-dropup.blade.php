@@ -4,7 +4,7 @@
 
     <x-dropdown.back-button/>
 
-    <x-dropdown.link href="{{ route('profile.show') }}">
+    <x-dropdown.link href="{{ route('account.show') }}">
         <x-slot name="icon"><i class="far fa-user"></i></x-slot>
         {{ __('account.profile.button') }}
     </x-dropdown.link>

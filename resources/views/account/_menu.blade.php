@@ -8,7 +8,7 @@
 <aside>
     <ul class="flex flex-col items-stretch text-gray-200">
 
-        <x-menu.item>
+        <x-menu.item show="profile">
             <x-slot name="icon"><i class="far fa-user"></i></x-slot>
             {{ __('account.profile.button') }}
         </x-menu.item>
@@ -35,6 +35,12 @@
 {{--            TODO: Maybe put a Michman logo or some other icon here.--}}
             <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
             {{ __('account.api.button') }}
+        </x-menu.item>
+
+{{--        TODO: CRITICAL! Don't forget to remove this after building the page!--}}
+        <x-menu.item show="foobar">
+            <x-slot name="icon"><i class="fas fa-poo"></i></x-slot>
+            Foobar
         </x-menu.item>
 
     </ul>

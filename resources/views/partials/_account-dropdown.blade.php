@@ -16,7 +16,7 @@
             {{ __('nav.manage_account') }}
         </x-dropdown.title>
 
-        <x-dropdown.link href="{{ route('profile.show') }}">
+        <x-dropdown.link href="{{ route('account.show') }}">
             <x-slot name="icon"><i class="far fa-user"></i></x-slot>
             {{ __('nav.account') }}
         </x-dropdown.link>

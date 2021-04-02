@@ -64,14 +64,14 @@
 
 {{-- Account Management --}}
 <x-burger.link
-    href="{{ route('profile.show') }}"
+    href="{{ route('account.show') }}"
     :active="request()->routeIs('profile.show')"
 >
     <x-slot name="icon"><i class="far fa-user"></i></x-slot>
     {{ __('nav.account') }}
 </x-burger.link>
 <x-burger.link
-    href="{{ route('profile.show') }}"
+    href="{{ route('account.show') }}"
     :active="request()->routeIs('profile.show')"
 >
     <x-slot name="icon"><i class="far fa-money-bill-alt"></i></x-slot>
