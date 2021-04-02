@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
-use App\Http\Controllers\ServerController;
+use App\Http\Controllers;
+use App\Http\Livewire;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('servers', ServerController::class)
+Route::resource('servers', Controllers\ServerController::class)
     ->only(['index', 'show', 'create', 'store']);

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Fortify;
+use Laravel\Jetstream\Jetstream;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -34,7 +36,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function registerRoutes(): void
     {
         $this->routes(function () {
-
             Route::middleware('api')
                 ->prefix('api')
                 ->group(function () {
@@ -46,6 +47,9 @@ class RouteServiceProvider extends ServiceProvider
                     $this->registerWebRoutes();
                 });
 
+            // Customized package routes
+            $this->registerJetstreamRoutes();
+            $this->registerFortifyRoutes();
         });
     }
 
@@ -63,15 +67,21 @@ class RouteServiceProvider extends ServiceProvider
     protected function registerWebRoutes(): void
     {
         // Register general routes
-        Route::group([], base_path('routes/web.php'));
+        Route::group([], function () {
+            $this->loadRoutesFrom(base_path('routes/web.php'));
+        });
 
         // Register guest routes
         Route::middleware('guest')
-            ->group(base_path('routes/guest.php'));
+            ->group(function () {
+                $this->loadRoutesFrom(base_path('routes/guest.php'));
+            });
 
         // Register auth'ed user routes
         Route::middleware(['auth:sanctum', 'verified'])
-            ->group(base_path('routes/app.php'));
+            ->group(function () {
+                $this->loadRoutesFrom(base_path('routes/app.php'));
+            });
 
         // Register debug web routes
         // "if" is important here - this way the debug routes
@@ -80,8 +90,42 @@ class RouteServiceProvider extends ServiceProvider
         if (isDebug()) {
             Route::middleware('debug')
                 ->prefix('debug')
-                ->group(base_path('routes/debug.php'));
+                ->group(function() {
+                    $this->loadRoutesFrom(base_path('routes/debug.php'));
+                });
         }
+    }
+
+    /**
+     * Register customized Jetstream routes.
+     */
+    protected function registerJetstreamRoutes(): void
+    {
+        // This command tells Jetstream to ignore the built-in routes from the file in vendor directory.
+        Jetstream::ignoreRoutes();
+
+        Route::group([
+            'domain' => config('jetstream.domain', null),
+            'prefix' => config('jetstream.prefix', config('jetstream.path')),
+        ], function () {
+            $this->loadRoutesFrom(base_path('routes/jetstream.php'));
+        });
+    }
+
+    /**
+     * Register customized Fortify routes.
+     */
+    protected function registerFortifyRoutes(): void
+    {
+        // This command tells Fortify to ignore the built-in routes from the file in vendor directory.
+        Fortify::ignoreRoutes();
+
+        Route::group([
+            'domain' => config('fortify.domain', null),
+            'prefix' => config('fortify.prefix'),
+        ], function () {
+            $this->loadRoutesFrom(base_path('routes/fortify.php'));
+        });
     }
 
     /**
