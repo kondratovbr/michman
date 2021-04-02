@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class AccountPageController extends AbstractController
 {
     /**
      * Show the user's account page.
      */
-    public function __invoke(string $show = 'profile'): View
+    public function __invoke(Request $request): View
     {
-        return view('account.show', ['show' => $show]);
+        return view('account.show', [
+            'show' => $request->query('show', 'profile'),
+        ]);
     }
 }

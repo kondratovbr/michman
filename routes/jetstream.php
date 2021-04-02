@@ -18,7 +18,7 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
 
     Route::group(['middleware' => ['auth', 'verified']], function () {
         // Custom user account routes
-        Route::get('/account/{show?}', AccountPageController::class)->name('account.show');
+        Route::get('/account', AccountPageController::class)->name('account.show');
 
         // API
         if (Jetstream::hasApiFeatures()) {

@@ -9,10 +9,12 @@ use Livewire\Component;
 class AccountPage extends Component
 {
     /** @var string Currently shown sub-page. */
-    public string $show;
+    public string $show = '';
+
+    protected $queryString = ['show'];
 
     /** @var string[] Map of $show property values to sub-page views. */
-    public const VIEWS = [
+    private const VIEWS = [
         'profile' => 'profile.show',
         'foobar' => 'foobar',
     ];
