@@ -101,9 +101,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function registerJetstreamRoutes(): void
     {
-        // This command tells Jetstream to ignore the built-in routes from the file in vendor directory.
-        Jetstream::ignoreRoutes();
-
         Route::group([
             'domain' => config('jetstream.domain', null),
             'prefix' => config('jetstream.prefix', config('jetstream.path')),
@@ -117,9 +114,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function registerFortifyRoutes(): void
     {
-        // This command tells Fortify to ignore the built-in routes from the file in vendor directory.
-        Fortify::ignoreRoutes();
-
         Route::group([
             'domain' => config('fortify.domain', null),
             'prefix' => config('fortify.prefix'),

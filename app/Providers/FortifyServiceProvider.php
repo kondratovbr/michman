@@ -19,7 +19,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // This command tells Fortify to ignore the built-in routes from the file in vendor directory.
+        // We must do it here, because the RouteServiceProvider is loaded after the FortifyServiceProvider
+        // from the "vendor" directory.
+        Fortify::ignoreRoutes();
     }
 
     /**

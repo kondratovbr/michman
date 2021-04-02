@@ -19,7 +19,10 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // This command tells Jetstream to ignore the built-in routes from the file in vendor directory.
+        // We must do it here, because the RouteServiceProvider is loaded after the JetstreamServiceProvider
+        // from the "vendor" directory.
+        Jetstream::ignoreRoutes();
     }
 
     /**
