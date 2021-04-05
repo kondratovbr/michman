@@ -10,7 +10,7 @@
         @include('account._menu')
     </x-slot>
 
-    <x-sub-page wire:key="{{ $this->show }}">
+    <x-sub-page wire:key="{{ $this->show }}" name="{{ $this->show }}">
         @include($this->page)
     </x-sub-page>
 

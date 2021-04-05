@@ -1,6 +1,11 @@
 {{--TODO: CRITICAL! Placeholders. Put actual routes here.--}}
 
-<x-dropdown.menu drop="up" align="right" minWidth="64" show="sub === 'account'">
+<x-dropdown.menu
+    drop="up"
+    align="right"
+    minWidth="64"
+    show="sub === 'account'"
+>
 
     <x-dropdown.back-button/>
 

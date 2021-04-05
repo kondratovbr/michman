@@ -3,7 +3,8 @@
 <div {{ $attributes->merge([
     'class' => 'relative',
 ]) }}
-    x-data="{ open: false, sub: '' }"
+    x-data="{ open: false, sub: '', current: '' }"
+    x-on:sub-page-shown.window="current = $event.detail.page"
     {{-- TODO: IMPORTANT! Does this work on touch? --}}
     x-on:click.away="open = false; sub = ''"
     x-on:close.stop="open = false; sub = ''"
