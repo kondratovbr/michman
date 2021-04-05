@@ -68,7 +68,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         // Register general routes
         Route::group([], function () {
-            $this->loadRoutesFrom(base_path('routes/web.php'));
+            $this->loadRoutesFrom(base_path('routes/general.php'));
         });
 
         // Register guest routes

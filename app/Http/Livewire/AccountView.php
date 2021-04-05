@@ -52,8 +52,14 @@ class AccountView extends Component
      */
     public function render(): View
     {
+        /*
+         * If the requested sub-page isn't declared,
+         * redirect the user to 404 page.
+         * abort(404) doesn't work as intended here - it renders the error page in
+         * the default Livewire modal window.
+         */
         if (! Arr::has(self::VIEWS, $this->show))
-            abort(404);
+            $this->redirect(route('error.404'));
 
         return view('account.show')->layout('layouts.app-with-menu');
     }

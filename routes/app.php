@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 | App Routes
 |--------------------------------------------------------------------------
 |
-| This routes are available only for authenticated users with verified emails
+| These routes are available only for authenticated users with verified emails
 | by the means of Laravel Sanctum.
 | Guest are redirected to the login page.
 |
