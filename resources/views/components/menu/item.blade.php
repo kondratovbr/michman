@@ -10,9 +10,9 @@
         @endisset
     >
         <div
-            class="capitalize flex items-center py-3 px-4 rounded-lg border border-gray-300 border-opacity-0 bg-navy-300 bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick"
+            class="capitalize flex items-center py-3 px-4 rounded-lg border border-gray-300 border-opacity-0 bg-navy-300 group-focus:border-opacity-100 {{ $buttonStateClasses }} transition-border-background ease-in-out duration-quick"
         >
-            <div class="md:text-sm lg:text-base group-hover:text-gray-100 transform group-hover:scale-105 transition-transform ease-in-out duration-quick">
+            <div class="md:text-sm lg:text-base transform {{ $contentStateClasses }} transition-transform ease-in-out duration-quick">
                 @isset($icon)
                     <x-icon class="mr-2">{{ $icon }}</x-icon>
                 @endisset

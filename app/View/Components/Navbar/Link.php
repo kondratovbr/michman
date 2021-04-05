@@ -7,6 +7,11 @@ use Illuminate\View\Component;
 
 class Link extends Component
 {
+    public string|null $routeName;
+    public bool $active;
+    public string $stateClasses;
+    public string $contentStateClasses;
+
     // Classes to apply to the button itself
     private const INACTIVE_CLASSES = 'group-hover:border-opacity-100 group-hover:text-gray-100 bg-navy-400 bg-opacity-0 group-active:bg-opacity-100';
     private const ACTIVE_CLASSES = 'bg-navy-500 text-gray-100';
@@ -14,11 +19,6 @@ class Link extends Component
     // Classes to apply to the content of a button
     private const CONTENT_INACTIVE_CLASSES = 'group-hover:scale-110';
     private const CONTENT_ACTIVE_CLASSES = '';
-
-    public string|null $routeName;
-    public bool $active;
-    public string $stateClasses;
-    public string $contentStateClasses;
 
     public function __construct(string $routeName = null)
     {
