@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-use App\Http\Controllers\AccountPageController;
+use App\Http\Livewire\AccountView;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
 use Laravel\Jetstream\Http\Controllers\Livewire\ApiTokenController;
@@ -18,7 +18,8 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
 
     Route::group(['middleware' => ['auth', 'verified']], function () {
         // Custom user account routes
-        Route::get('/account', AccountPageController::class)->name('account.show');
+        Route::redirect('/account', '/account/profile');
+        Route::get('/account/{show}', AccountView::class)->name('account.show');
 
         // API
         if (Jetstream::hasApiFeatures()) {

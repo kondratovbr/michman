@@ -1,9 +1,8 @@
 <div {{ $attributes->merge([
     'class' => 'space-y-10 sm:space-y-0',
 ]) }}
-    wire:key="{{ $name }}"
     x-data="{ show: false }"
-    x-show.transition.duration.500ms="show"
+    x-show.transition.in.duration.500ms.origin.top.left.opacity.scale.95="show"
     x-init="setTimeout(() => { show = true })"
 >
     {{ $slot }}

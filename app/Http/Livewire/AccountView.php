@@ -6,12 +6,10 @@ use App\Support\Arr;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class AccountPage extends Component
+class AccountView extends Component
 {
     /** @var string Currently shown sub-page. */
     public string $show = '';
-
-    protected $queryString = ['show'];
 
     /** @var string[] Map of $show property values to sub-page views. */
     private const VIEWS = [
@@ -19,20 +17,15 @@ class AccountPage extends Component
         'foobar' => 'foobar',
     ];
 
+    /** @var string The name of a sub-page that will be shown by default. */
+    private const DEFAULT_SHOW = 'profile';
+
     /**
      * Prepare the component.
      */
-    public function mount(string $show = 'profile'): void
+    public function mount(string $show = null): void
     {
-        $this->show = $show ?? self::VIEWS[0];
-    }
-
-    /**
-     * Change a currently shown page.
-     */
-    public function show(string $show): void
-    {
-        $this->show = $show;
+        $this->show = $show ?? self::DEFAULT_SHOW;
     }
 
     /**
@@ -44,6 +37,14 @@ class AccountPage extends Component
     }
 
     /**
+     * Change a currently shown page.
+     */
+    public function show(string $show): void
+    {
+        $this->show = $show;
+    }
+
+    /**
      * Render the component.
      */
     public function render(): View
@@ -51,6 +52,6 @@ class AccountPage extends Component
         if (! Arr::has(self::VIEWS, $this->show))
             abort(404);
 
-        return view('livewire.account-page');
+        return view('account.show')->layout('layouts.app-with-menu');
     }
 }

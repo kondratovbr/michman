@@ -1,11 +1,17 @@
-<x-layouts.app-with-menu>
+<x-slot name="header">
+    <x-page-title>
+        {{ __('nav.account') }}
+    </x-page-title>
+</x-slot>
 
-    <x-slot name="header">
-        <x-page-title>
-            {{ __('nav.account') }}
-        </x-page-title>
+<x-page-content>
+
+    <x-slot name="menu">
+        @include('account._menu')
     </x-slot>
 
-    <livewire:account-page :show="$show" />
+    <x-sub-page wire:key="{{ $this->show }}">
+        @include($this->page)
+    </x-sub-page>
 
-</x-layouts.app-with-menu>
+</x-page-content>
