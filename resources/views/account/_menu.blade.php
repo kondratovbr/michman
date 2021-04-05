@@ -9,34 +9,34 @@
 <aside>
     <ul class="flex flex-col items-stretch text-gray-200">
 
-        <x-menu.item show="profile" shownPage="{{ $this->show }}">
+        <x-menu.item show="profile">
             <x-slot name="icon"><i class="far fa-user"></i></x-slot>
             {{ __('account.profile.button') }}
         </x-menu.item>
 
-        <x-menu.item show="ssh" shownPage="{{ $this->show }}">
+        <x-menu.item show="ssh">
             <x-slot name="icon"><i class="fa fa-terminal"></i></x-slot>
             {{ __('account.ssh.button') }}
         </x-menu.item>
 
-        <x-menu.item show="providers" shownPage="{{ $this->show }}">
+        <x-menu.item show="providers">
             <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
             {{ __('account.providers.button') }}
         </x-menu.item>
 
-        <x-menu.item show="vcs" shownPage="{{ $this->show }}">
+        <x-menu.item show="vcs">
             <x-slot name="icon"><i class="fa fa-code-branch"></i></x-slot>
             {{ __('account.vcs.button') }}
         </x-menu.item>
 
-        <x-menu.item show="api" shownPage="{{ $this->show }}">
+        <x-menu.item show="api">
 {{--            TODO: Maybe put a Michman logo or some other icon here.--}}
             <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
             {{ __('account.api.button') }}
         </x-menu.item>
 
 {{--        TODO: CRITICAL! Don't forget to remove this after building the page!--}}
-        <x-menu.item show="foobar" shownPage="{{ $this->show }}">
+        <x-menu.item show="foobar">
             <x-slot name="icon"><i class="fas fa-poo"></i></x-slot>
             Foobar
         </x-menu.item>
