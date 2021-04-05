@@ -189,6 +189,9 @@ module.exports = {
             },
         },
 
+        debugScreens: {
+            position: ['top', 'left'],
+        },
     },
 
     variants: {
