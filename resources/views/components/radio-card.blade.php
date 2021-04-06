@@ -1,6 +1,8 @@
 @props(['name', 'value', 'checked' => false])
 
-<div class="relative w-32 h-32">
+<div {{ $attributes->merge([
+    'class' => 'relative',
+]) }}>
 
     <input
         type="radio"
@@ -11,6 +13,7 @@
         @if($checked)
             checked
         @endif
+{{--        disabled--}}
     >
 
     <label
