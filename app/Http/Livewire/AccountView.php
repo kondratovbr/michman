@@ -17,6 +17,7 @@ class AccountView extends Component
     /** @var string[] Map of $show property values to sub-page views. */
     private const VIEWS = [
         'profile' => 'profile.show',
+        'providers' => 'providers.show',
         'foobar' => 'foobar',
     ];
 
