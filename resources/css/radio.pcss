@@ -1,0 +1,55 @@
+@layer components {
+    input[type='radio'].radio {
+
+        /* Default unchecked styles */
+        background-color: transparent;
+        color: currentColor;
+        cursor: auto;
+
+        &:hover {
+            background-color: transparent;
+            color: currentColor;
+            cursor: auto;
+        }
+
+        /* Default checked styles */
+        &:checked {
+            background-color: transparent;
+            color: currentColor;
+            cursor: auto;
+
+            &:hover {
+                background-color: transparent;
+                color: currentColor;
+                cursor: auto;
+            }
+        }
+
+        @variants hover, group-hover, focus, group-focus, active, group-active {
+
+            &.checked-border-opacity-0:checked {
+                --tw-border-opacity: 0 !important;
+            }
+            &.checked-border-opacity-100:checked {
+                --tw-border-opacity: 100 !important;
+            }
+
+            &.checked-bg-gold-600:checked {
+                @apply bg-gold-600 !important;
+            }
+            &.checked-bg-gold-700:checked {
+                @apply bg-gold-700 !important;
+            }
+            &.checked-bg-gold-800:checked {
+                @apply bg-gold-800 !important;
+            }
+
+            /* rbg(17, 24, 39) - coolGray 900 */
+            /* NOTE: Fill color encoded in HEX ("#111827") doesn't work in Chrome for some reason. */
+            &.dot-gray-900:checked {
+                background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='rbg(17, 24, 39)' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e") !important;
+            }
+
+        }
+    }
+}

@@ -197,19 +197,21 @@ module.exports = {
     variants: {
         extend: {
 
-            backgroundColor: ['hover', 'active', 'disabled', 'checked'],
-            backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked'],
-            borderWidth: ['hover', 'active', 'last'],
-            borderColor: ['hover', 'active', 'focus'],
+            backgroundColor: ['hover', 'active', 'disabled', 'checked', 'input-checked', 'sibling-hover'],
+            backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked', 'input-checked', 'sibling-hover'],
+            borderWidth: ['hover', 'active', 'last', 'input-checked'],
+            borderColor: ['hover', 'active', 'focus', 'input-checked'],
             borderOpacity: ['focus', 'group-hover', 'group-active', 'group-focus'],
+            boxShadow: ['focus', 'input-checked'],
             cursor: ['disabled'],
             display: [],
             margin: ['first', 'last'],
             opacity: ['disabled', 'group-hover', 'group-active'],
+            outline: ['focus'],
             padding: ['first', 'last'],
-            ringColor: [],
-            ringOpacity: ['hover', 'focus', 'disabled'],
-            ringWidth: [],
+            ringColor: ['focus', 'input-checked'],
+            ringOpacity: ['hover', 'focus', 'disabled', 'input-checked'],
+            ringWidth: ['input-checked'],
             rotate: [],
             scale: ['group-hover', 'group-focus'],
             textColor: ['hover', 'active', 'group-hover', 'group-focus', 'disabled', 'sibling-focus'],
@@ -245,6 +247,24 @@ module.exports = {
             addVariant('sibling-focus', ({ modifySelectors, separator }) => {
                 modifySelectors(({ className }) => {
                     return `.sibling:focus ~ .${e(`sibling-focus${separator}${className}`)}`;
+                });
+            });
+        }),
+
+        // "sibling-hover" variant for various interactive elements (mostly for a proper hover inside radio-cards)
+        plugin(function({ addVariant, e }) {
+            addVariant('sibling-hover', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.sibling:hover ~ .${e(`sibling-hover${separator}${className}`)}`;
+                });
+            });
+        }),
+
+        // "input-checked" variant for styling labels or other direct sibling elements based in checkbox/radio state
+        plugin(function({ addVariant, e }) {
+            addVariant('input-checked', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.input:checked + .${e(`input-checked${separator}${className}`)}`;
                 });
             });
         }),
