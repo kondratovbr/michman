@@ -21,9 +21,9 @@
             </x-field>
 
             <div class="flex justify-end mt-4">
-                <x-button class="ml-4">
+                <x-buttons.primary class="ml-4">
                     {{ __('Confirm') }}
-                </x-button>
+                </x-buttons.primary>
             </div>
 
         </x-forms.vertical>

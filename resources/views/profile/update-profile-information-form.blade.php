@@ -78,9 +78,9 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-button wire:loading.attr="disabled" wire:target="photo">
+        <x-buttons.primary wire:loading.attr="disabled" wire:target="photo">
             {{ __('Save') }}
-        </x-button>
+        </x-buttons.primary>
         <x-jet-action-message class="ml-3" on="saved">
             {{ __('Saved.') }}
         </x-jet-action-message>

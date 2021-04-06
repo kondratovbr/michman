@@ -48,9 +48,9 @@
                     </a>
                 @endif
 
-                <x-button class="ml-4">
+                <x-buttons.primary class="ml-4">
                     {{ __('buttons.login') }}
-                </x-button>
+                </x-buttons.primary>
             </div>
 
         </x-forms.vertical>

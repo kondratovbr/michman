@@ -53,9 +53,9 @@
 
             <div class="flex items-center justify-end">
                 <x-link href="{{ route('login') }}">{{ __('auth.already-registered') }}</x-link>
-                <x-button class="ml-4">
+                <x-buttons.primary class="ml-4">
                     {{ __('buttons.register') }}
-                </x-button>
+                </x-buttons.primary>
             </div>
 
         </x-forms.vertical>
