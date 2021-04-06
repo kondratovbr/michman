@@ -1,3 +1,5 @@
+{{--TODO: Figure out disabled state.--}}
+
 @props(['id', 'name', 'defaultState', 'labelClass' => ''])
 
 <label
@@ -12,6 +14,7 @@
         @if(old($name, $defaultState) === 'on')
             checked
         @endif
+{{--        disabled--}}
     >
     <span class="ml-2 group-hover:text-gray-100 {{ $labelClass }}">
         {{ $slot }}

@@ -1,3 +1,5 @@
+{{--TODO: Figure out disabled state.--}}
+
 @props(['name', 'value', 'checked' => false])
 
 <div {{ $attributes->merge([
