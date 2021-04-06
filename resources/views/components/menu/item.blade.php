@@ -18,7 +18,7 @@
         @endisset
     >
         <div
-            class="capitalize flex items-center py-3 px-4 rounded-lg border border-gray-300 border-opacity-0 bg-navy-300 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick"
+            class="capitalize flex items-center py-3 px-4 rounded-lg border border-gray-300 border-opacity-0 bg-navy-300 bg-opacity-0 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick"
             x-bind:class="{
                 {{-- Default state --}}
                 'bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100': current !== item,
