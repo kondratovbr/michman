@@ -77,6 +77,14 @@ return [
             'label' => 'API Token (Personal Access Token)',
         ],
 
+        'key' => [
+            'label' => 'API Key',
+        ],
+
+        'secret' => [
+            'label' => 'Secret',
+        ],
+
         'name' => [
             'label' => 'Name',
             'help' => 'Optional. To help you distinguish provider keys and accounts in case you have a lot of them.',
@@ -92,7 +100,10 @@ return [
          * keys should be the same as in config/providers.php
          */
         'digital_ocean_v2' => [
-            'name' => 'Digital Ocean',
+            'name' => 'DigitalOcean',
+        ],
+        'aws' => [
+            'name' => 'AWS',
         ],
         'linode' => [
             'name' => 'Linode',
