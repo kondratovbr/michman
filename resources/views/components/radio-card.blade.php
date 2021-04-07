@@ -1,20 +1,22 @@
 {{--TODO: Figure out disabled state.--}}
 
-@props(['name', 'value', 'checked' => false])
-
-<div {{ $attributes->merge([
-    'class' => 'relative',
-]) }}>
+<div {{ $attributes->class(['relative'])->only('class') }}>
 
     <input
-        type="radio"
+        {{ $attributes->merge([
+            'type' => 'radio',
+            'name' => $name,
+            'id' => $attributes->get('name') . '-' . $attributes->get('value'),
+            'value' => $value,
+        ])->except('class') }}
         class="input sibling radio absolute top-3 left-3 z-10 checked:bg-gold-800 text-black dot-gray-900 cursor-pointer"
-        name="{{ $name }}"
-        id="{{ $name . '-' . $value }}"
-        value="{{ $value }}"
-        @if($checked)
-            checked
-        @endif
+{{--        type="radio"--}}
+{{--        name="{{ $name }}"--}}
+{{--        id="{{ $name . '-' . $value }}"--}}
+{{--        value="{{ $value }}"--}}
+{{--        @if($checked)--}}
+{{--            checked--}}
+{{--        @endif--}}
 {{--        disabled--}}
     >
 
