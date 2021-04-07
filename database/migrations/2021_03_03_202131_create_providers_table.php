@@ -13,10 +13,19 @@ class CreateProvidersTable extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('user_id');
-            $table->string('name');
+
             $table->string('provider');
-            $table->string('api_token');
+
+            // Some APIs use token-based authentication and some use key/secret.
+            $table->string('token')->nullable();
+            $table->string('key')->nullable();
+            $table->string('secret')->nullable();
+
+            // Name is just for the user's convenience.
+            $table->string('name')->nullable();
+
             $table->timestamps();
         });
     }
