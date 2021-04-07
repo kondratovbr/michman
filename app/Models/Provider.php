@@ -14,8 +14,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * like DigitalOcean or Linode.
  *
  * @property int $id
- * @property string $name
- * @property string $api_key
+ * @property string $provider
+ * @property string|null $name
+ * @property string|null $token
+ * @property string|null $key
+ * @property string|null $secret
  * @property CarbonInterface $created_at
  * @property CarbonInterface $updated_at
  *
