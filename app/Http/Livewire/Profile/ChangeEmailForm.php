@@ -34,8 +34,8 @@ class ChangeEmailForm extends Component
 
         // This event is used to show the success message.
         $this->emit('saved');
-        // This event will refresh the navbar - to render the new email.
-        $this->emit('refresh-navbar');
+        // This event will refresh the navigation menus - to render the new email.
+        $this->emit('refresh-navigation');
     }
 
     /**
