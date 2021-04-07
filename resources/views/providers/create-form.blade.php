@@ -3,18 +3,18 @@
 <x-form-section submit="store">
 
     <x-slot name="title">
-        New provider
+        {{ __('account.providers.create.title') }}
     </x-slot>
 
     <x-slot name="description">
-        Add a new server provider API credentials.
+        {{ __('account.providers.create.description') }}
     </x-slot>
 
     <x-slot name="form">
         <div class="space-y-6">
 
             <x-field class="space-y-2">
-                <div>Provider</div>
+                <div>{{ __('account.providers.provider.label') }}</div>
 
                 {{-- Check-cards container --}}
                 <div class="flex space-x-6">
@@ -45,15 +45,19 @@
 
             <div class="space-y-4">
 
+                <x-message colors="info">
+                    <x-lang key="providers.digital-ocean-info" />
+                </x-message>
+
                 <x-field>
-                    <x-label>Personal Access Token</x-label>
+                    <x-label>{{ __('account.providers.token.label') }}</x-label>
                     <x-inputs.text name="token" />
                 </x-field>
 
                 <x-field>
-                    <x-label>Name</x-label>
+                    <x-label>{{ __('account.providers.name.label') }}</x-label>
                     <x-inputs.text name="name" />
-                    <x-help>Optional. To help you distinguish provider keys and accounts in case you have a lot of them.</x-help>
+                    <x-help>{{ __('account.providers.name.help') }}</x-help>
                 </x-field>
 
             </div>

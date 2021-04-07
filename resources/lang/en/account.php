@@ -69,6 +69,34 @@ return [
 
         'button' => 'Server Providers',
 
+        'provider' => [
+            'label' => 'Provider',
+        ],
+
+        'token' => [
+            'label' => 'API Token (Personal Access Token)',
+        ],
+
+        'name' => [
+            'label' => 'Name',
+            'help' => 'Optional. To help you distinguish provider keys and accounts in case you have a lot of them.',
+        ],
+
+        'create' => [
+            'title' => 'New provider',
+            'description' => 'Add a new server provider API credentials.',
+        ],
+
+        /*
+         * Lang strings related to specific providers,
+         * keys should be the same as in config/providers.php
+         */
+        'digital_ocean_v2' => [
+            'name' => 'Digital Ocean',
+        ],
+        'linode' => [
+            'name' => 'Linode',
+        ],
     ],
 
     'vcs' => [

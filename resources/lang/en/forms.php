@@ -25,5 +25,5 @@ return [
     'tfa' => [
         'label' => 'Code',
     ],
-
+    
 ];
