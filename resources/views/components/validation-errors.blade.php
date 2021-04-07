@@ -1,7 +1,8 @@
 @if($errors->any())
-    <div {{ $attributes->merge([
-        'class' => 'py-5 px-6 bg-red-700 text-red-100 rounded-lg',
-    ]) }}>
+    <x-message
+        {{ $attributes }}
+        colors="danger"
+    >
         {{-- If there's only one error - don't render it as a list item. --}}
         @if($errors->count() > 1)
             <ul class="list-disc list-outside ml-3 max-w-prose">
@@ -12,5 +13,5 @@
         @else
             <p>{{ $errors->first() }}</p>
         @endif
-    </div>
+    </x-message>
 @endif
