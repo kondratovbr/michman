@@ -12,7 +12,8 @@ class Lang extends Component
     ) {}
 
     /**
-     * Get the view that represents the component.
+     * Get the requested locale-dependent view or a placeholder view
+     * if the required one doesn't exist.
      */
     public function render(): View
     {
