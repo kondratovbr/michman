@@ -10,14 +10,6 @@
             'value' => $value,
         ])->except('class') }}
         class="input sibling radio absolute top-3 left-3 z-10 checked:bg-gold-800 text-black dot-gray-900 cursor-pointer"
-{{--        type="radio"--}}
-{{--        name="{{ $name }}"--}}
-{{--        id="{{ $name . '-' . $value }}"--}}
-{{--        value="{{ $value }}"--}}
-{{--        @if($checked)--}}
-{{--            checked--}}
-{{--        @endif--}}
-{{--        disabled--}}
     >
 
     <label
