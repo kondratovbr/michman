@@ -30,6 +30,18 @@ class Provider extends AbstractModel
 {
     use HasFactory;
 
+    /** @var string[] The attributes that are mass assignable. */
+    protected $fillable = [
+        'provider',
+        'token',
+        'key',
+        'secret',
+        'name',
+    ];
+
+    /** @var string[] The attributes that should be visible in arrays and JSON. */
+    protected $visible = [];
+
     /**
      * Get a relation to the user who owns this provider account.
      */

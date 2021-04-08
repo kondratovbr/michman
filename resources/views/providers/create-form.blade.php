@@ -27,10 +27,10 @@
                             class="h-32 w-32"
                             name="provider"
                             value="{{ $providerName }}"
-                            wire:model="provider"
+                            wire:model.defer="provider"
                             x-model="provider"
-{{--                            :disabled="(bool) $providerConfig['disabled']"--}}
                             x-on:click="formType = '{{ $providerConfig['auth_type'] }}'"
+{{--                            :disabled="(bool) $providerConfig['disabled']"--}}
                         >
                             <x-slot name="content">
                                 <x-icon size="16"><i class="{{ $providerConfig['icon'] }} fa-3x"></i></x-icon>
@@ -42,62 +42,25 @@
                 </div>
             </x-field>
 
-            <div class="space-y-4">
-
-{{--                TODO: Don't forget to add similar helpful messages for other providers.--}}
-{{--                TODO: Is it possible to DRY this ridiculous Alpine transition declaration?--}}
-                <x-message
-                    class="max-w-prose"
-                    colors="info"
-                    x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'digital_ocean_v2'"
-                    x-cloak
-                >
-                    <x-lang key="providers.digital-ocean-info" />
-                </x-message>
-
-                <x-field
-                    x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="formType === 'token'"
-                    x-cloak
-                >
-                    <x-label>{{ __('account.providers.token.label') }}</x-label>
-                    <x-inputs.text
-                        name="token"
-                        wire:model.defer="token"
-                    />
-                </x-field>
-
-                <x-field
-                    x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="formType === 'key-secret'"
-                    x-cloak
-                >
-                    <x-label>{{ __('account.providers.key.label') }}</x-label>
-                    <x-inputs.text
-                        name="key"
-                        wire:model.defer="key"
-                    />
-                </x-field>
-
-                <x-field
-                    x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="formType === 'key-secret'"
-                    x-cloak
-                >
-                    <x-label>{{ __('account.providers.secret.label') }}</x-label>
-                    <x-inputs.text
-                        name="secret"
-                        wire:model.defer="secret"
-                    />
-                </x-field>
-
-                <x-field>
-                    <x-label>{{ __('account.providers.name.label') }}</x-label>
-                    <x-inputs.text
-                        name="name"
-                        wire:model.defer="name"
-                    />
-                    <x-help>{{ __('account.providers.name.help') }}</x-help>
-                </x-field>
-
+            <div
+                x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'digital_ocean_v2'"
+                x-cloak
+            >
+                @include('providers.forms.digital_ocean_v2')
             </div>
+            <div
+                x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'aws'"
+                x-cloak
+            >
+                @include('providers.forms.aws')
+            </div>
+            <div
+                x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'linode'"
+                x-cloak
+            >
+                @include('providers.forms.linode')
+            </div>
+
         </div>
     </x-slot>
 

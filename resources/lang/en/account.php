@@ -75,6 +75,8 @@ return [
 
         'token' => [
             'label' => 'API Token (Personal Access Token)',
+            'label-pat' => 'API Token (Personal Access Token)',
+            'label-token' => 'API Token',
         ],
 
         'key' => [

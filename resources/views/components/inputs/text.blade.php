@@ -2,10 +2,15 @@
 
 <div class="relative {{ $widthClass }}">
 
-    <x-input {{ $attributes->merge([
-        'class' => 'sibling px-3' . (isset($iconLeft) ? ' pl-11' : ' pl-2') . (isset($iconRight) ? ' pr-11' : ' pr-2'),
-        'type' => 'text',
-    ]) }}
+    <x-input
+        {{ $attributes->class([
+            'sibling px-3',
+            isset($iconLeft) ? ' pl-11' : ' pl-2',
+            isset($iconRight) ? ' pr-11' : ' pr-2'
+        ])->merge([
+            'type' => 'text'
+        ]) }}
+
         :showErrors="$showErrors"
     />
 
