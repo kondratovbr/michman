@@ -4,6 +4,8 @@
  * Third-party server providers API configuration
  */
 
+use App\Services\DigitalOceanV2;
+
 return [
 
     'default' => 'digital_ocean_v2',
@@ -11,6 +13,7 @@ return [
     'list' => [
 
         'digital_ocean_v2' => [
+            'provider_class' => DigitalOceanV2::class,
             'base_path' => 'https://api.digitalocean.com/v2',
             'auth_type' => 'token',
             'icon' => 'fab fa-digital-ocean',
@@ -18,6 +21,7 @@ return [
         ],
 
         'aws' => [
+            'provider_class' => null,
             'base_path' => '',
             'auth_type' => 'key-secret',
             'icon' => 'fab fa-aws',
@@ -25,6 +29,7 @@ return [
         ],
 
         'linode' => [
+            'provider_class' => null,
             'base_path' => '',
             'auth_type' => 'token',
             'icon' => 'fab fa-linode',
