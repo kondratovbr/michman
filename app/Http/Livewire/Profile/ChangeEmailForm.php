@@ -25,9 +25,12 @@ class ChangeEmailForm extends Component
      */
     public function changeEmail(UpdatesUserProfileInformation $updater): void
     {
+        // The validation is done by the Updater object,
+        // which is currently an instance of
+        // App\Actions\Fortify\UpdateUserProfileInformation
+
         $this->resetErrorBag();
 
-        // We're using a Laravel Fortify built-in updater class for this.
         $updater->update(Auth::user(), [
             'email' => $this->email,
         ]);
