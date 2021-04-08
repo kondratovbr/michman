@@ -27,6 +27,10 @@ class CreateProvidersTable extends Migration
             $table->string('name')->nullable();
 
             $table->timestamps();
+
+            // One user cannot add the same token or key multiple times.
+            $table->unique(['user_id', 'token']);
+            $table->unique(['user_id', 'key']);
         });
     }
 }
