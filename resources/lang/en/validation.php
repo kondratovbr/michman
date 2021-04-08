@@ -134,6 +134,7 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'provider-credentials-valid' => 'We weren\'t able to access the API using the provided credentials.',
     ],
 
     /*
