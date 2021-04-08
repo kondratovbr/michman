@@ -3,7 +3,7 @@
 <div {{ $attributes->class([
     'py-5 px-6 rounded-lg',
     match ($colors) {
-        'info' => 'bg-navy-500',
+        'info' => 'bg-navy-500 text-blue-100',
         'danger' => 'bg-red-700 text-red-100',
     },
 ]) }}>
