@@ -21,7 +21,7 @@ class ChangePasswordForm extends Component
     /**
      * Get the validation rules.
      */
-    public function rules(): array
+    protected function rules(): array
     {
         return [
             'current_password' => Rules::currentUserPassword()->required(),

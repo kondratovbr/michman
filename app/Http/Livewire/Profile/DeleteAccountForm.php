@@ -21,7 +21,7 @@ class DeleteAccountForm extends Component
     /**
      * Get the validation rules.
      */
-    public function rules(): array
+    protected function rules(): array
     {
         return [
             'password' => Rules::currentUserPassword()->required(),
