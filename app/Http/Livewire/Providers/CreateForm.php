@@ -51,10 +51,11 @@ class CreateForm extends Component
     protected function rules(): array
     {
         /*
-         * TODO: IMPORTANT! Write better validation error messages here. "unique" rules is a major offender, for example - check it out.
-         *       Maybe refactor into a separate Validator class.
+         * TODO: IMPORTANT! Write better validation error messages here.
+         *       For example, "unique" rules is a major offender - check it out.
+         *       Maybe even refactor into a separate Validator class.
          */
-        
+
         return [
             'provider' => Rules::string(0, 255)
                 ->in(Arr::keys((array) config('providers.list')))
