@@ -23,7 +23,7 @@ return [
         'aws' => [
             'provider_class' => null,
             'base_path' => '',
-            'auth_type' => 'key-secret',
+            'auth_type' => 'basic',
             'icon' => 'fab fa-aws',
             'disabled' => true,
         ],

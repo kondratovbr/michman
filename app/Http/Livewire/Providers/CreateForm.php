@@ -38,7 +38,7 @@ class CreateForm extends Component
             $attributes['secret'] = null;
         }
 
-        if ((string) config('providers.list.' . $this->provider . '.auth_type') == 'key-secret') {
+        if ((string) config('providers.list.' . $this->provider . '.auth_type') == 'basic') {
             $attributes['token'] = null;
         }
 
@@ -56,24 +56,26 @@ class CreateForm extends Component
          *       Maybe even refactor into a separate Validator class.
          */
 
+        $authType = (string) config('providers.list.' . $this->provider . '.auth_type');
+
         return [
             'provider' => Rules::string(0, 255)
                 ->in(Arr::keys((array) config('providers.list')))
                 ->required(),
             'token' => Rules::string()->max(255)->nullable()
-                ->requiredIf((bool) config('providers.list.' . $this->provider . '.auth_type' === 'token'))
+                ->requiredIf($authType === 'token')
                 ->addRule(
                     Rule::unique(Provider::class, 'token')
                         ->where('user_id', Auth::user()->getKey())
                 ),
             'key' => Rules::string()->max(255)->nullable()
-                ->requiredIf((bool) config('providers.list.' . $this->provider . '.auth_type' === 'key-secret'))
+                ->requiredIf($authType === 'basic')
                 ->addRule(
                     Rule::unique(Provider::class, 'key')
                         ->where('user_id', Auth::user()->getKey())
                 ),
             'secret' => Rules::string()->max(255)->nullable()
-                ->requiredIf((bool) config('providers.list.' . $this->provider . '.auth_type' === 'key-secret')),
+                ->requiredIf($authType === 'basic'),
             'name' => Rules::string()->max(255)->nullable(),
         ];
     }
