@@ -1,3 +1,10 @@
-<th
-    class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light"
->{{ $slot }}</th>
+@props(['align' => 'left'])
+
+<th {{ $attributes->class([
+    'py-4 px-6 font-bold',
+    /*font-bold uppercase text-sm text-grey-dark*/
+]) }}>
+    <div class="flex {{ $align === 'center' ? 'justify-center' : '' }} {{ $align === 'right' ? 'justify-end' : '' }}">
+        {{ $slot }}
+    </div>
+</th>
