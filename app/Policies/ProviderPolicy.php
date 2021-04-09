@@ -10,6 +10,15 @@ class ProviderPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user is allowed to see the list of providers of another user.
+     */
+    public function indexUser(User $user, User $owner): bool
+    {
+        // Users only allowed to see their own providers for now.
+        return $user->is($owner);
+    }
+
+    /**
      * Determine whether the user is allowed to create a new provider.
      */
     public function create(User $user): bool
