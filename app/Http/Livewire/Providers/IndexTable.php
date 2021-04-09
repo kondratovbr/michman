@@ -2,16 +2,25 @@
 
 namespace App\Http\Livewire\Providers;
 
+use App\Facades\Auth;
+use App\Models\Provider;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 class IndexTable extends Component
 {
+    use AuthorizesRequests;
+
     /**
      * Render the component.
      */
     public function render(): View
     {
-        return view('providers.index-table');
+        $this->authorize('indexUser', [Provider::class, Auth::user()]);
+
+        return view('providers.index-table', [
+            'providers' => Auth::user()->providers,
+        ]);
     }
 }
