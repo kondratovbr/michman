@@ -9,5 +9,7 @@ class TestController extends AbstractController
     public function __invoke(Request $request)
     {
         //
+
+        return view('blank');
     }
 }
