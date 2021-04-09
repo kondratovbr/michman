@@ -6,25 +6,25 @@ use App\Services\ServerProviderInterface;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\App;
 
-// TODO: CONTINUE!
-
-class ProviderCredentialsValid implements Rule
+class ProviderKeyValid implements Rule
 {
-    protected ServerProviderInterface $api;
-    private string $providerName;
-
-    public function __construct(string $providerName)
-    {
-        $this->providerName = $providerName;
-        $this->api = App::make($providerName);
-    }
+    public function __construct(
+        protected string $providerName,
+        protected string|null $secret = null,
+    ) {}
 
     /**
      * Determine if the validation rule passes.
      */
     public function passes($attribute, $value): bool
     {
-        return $this->
+        /** @var ServerProviderInterface $api */
+        $api = App::make($this->providerName, [
+            'key' => $value,
+            'secret' => $this->secret ?? ''
+        ]);
+
+        return $api->credentialsAreValid();
     }
 
     /**

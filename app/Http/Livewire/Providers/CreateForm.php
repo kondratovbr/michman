@@ -6,9 +6,12 @@ use App\Actions\Providers\StoreProviderAction;
 use App\DataTransferObjects\ProviderData;
 use App\Facades\Auth;
 use App\Models\Provider;
+use App\Rules\ProviderKeyValid;
+use App\Rules\ProviderTokenValid;
 use App\Support\Arr;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -67,12 +70,18 @@ class CreateForm extends Component
                 ->addRule(
                     Rule::unique(Provider::class, 'token')
                         ->where('user_id', Auth::user()->getKey())
+                )->addRuleIf(
+                    new ProviderTokenValid($this->provider),
+                    $authType === 'token'
                 ),
             'key' => Rules::string()->max(255)->nullable()
                 ->requiredIf($authType === 'basic')
                 ->addRule(
                     Rule::unique(Provider::class, 'key')
                         ->where('user_id', Auth::user()->getKey())
+                )->addRuleIf(
+                    new ProviderKeyValid($this->provider, $this->secret),
+                    $authType === 'basic'
                 ),
             'secret' => Rules::string()->max(255)->nullable()
                 ->requiredIf($authType === 'basic'),
