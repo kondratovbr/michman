@@ -1,16 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Rules;
+namespace App\Rules\Providers;
 
 use App\Services\ServerProviderInterface;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\App;
 
-class ProviderKeyValid implements Rule
+class ProviderTokenValid implements Rule
 {
     public function __construct(
         protected string $providerName,
-        protected string|null $secret = null,
     ) {}
 
     /**
@@ -19,10 +18,7 @@ class ProviderKeyValid implements Rule
     public function passes($attribute, $value): bool
     {
         /** @var ServerProviderInterface $api */
-        $api = App::make($this->providerName, [
-            'key' => $value,
-            'secret' => $this->secret ?? ''
-        ]);
+        $api = App::make($this->providerName, ['token' => $value]);
 
         return $api->credentialsAreValid();
     }
