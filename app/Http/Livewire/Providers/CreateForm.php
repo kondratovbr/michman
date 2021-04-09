@@ -65,7 +65,10 @@ class CreateForm extends Component
 
         return [
             'provider' => Rules::string(0, 255)
-                ->in(Arr::keys((array) config('providers.list')))
+                // Take the names of all configured providers and filter out the disabled ones.
+                ->in(Arr::filter(Arr::keys((array) config('providers.list')),
+                    fn($provider) => ! config('providers.list.' . $provider . '.disabled')
+                ))
                 ->required(),
             'token' => Rules::string()->max(255)->nullable()
                 ->requiredIf($authType === 'token')
