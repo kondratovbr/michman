@@ -35,11 +35,5 @@
             {{ __('account.api.button') }}
         </x-menu.item>
 
-{{--        TODO: CRITICAL! Don't forget to remove this after building the page!--}}
-        <x-menu.item show="foobar">
-            <x-slot name="icon"><i class="fas fa-poo"></i></x-slot>
-            Foobar
-        </x-menu.item>
-
     </ul>
 </aside>

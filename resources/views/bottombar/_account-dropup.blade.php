@@ -35,10 +35,4 @@
         {{ __('account.api.button') }}
     </x-dropdown.link>
 
-{{--    TODO: CRITICAL! Don't forget to remove this!--}}
-    <x-dropdown.link action="sub-page" subPage="foobar">
-        <x-slot name="icon"><i class="fa fa-poo"></i></x-slot>
-        Foobar
-    </x-dropdown.link>
-
 </x-dropdown.menu>
