@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
-use Illuminate\Support\Facades\Http;
 
 abstract class AbstractServerProvider implements ServerProviderInterface
 {
@@ -22,11 +22,16 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     abstract protected function getConfigKey(): string;
 
     /**
+     * Create a pending request with authentication configured.
+     */
+    abstract protected function request(): PendingRequest;
+
+    /**
      * Send a GET request to a relative path with provided parameters.
      */
     protected function get(string $path, array $parameters = []): Response
     {
-        return Http::get($this->basePath . $path, $parameters);
+        return $this->request()->get($this->basePath . $path, $parameters);
     }
 
     /**
