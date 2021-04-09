@@ -7,7 +7,7 @@
             'id' => $attributes->get('name') . '-' . $attributes->get('value'),
             'value' => $value,
         ])->except('class') }}
-        class="input sibling radio absolute top-3 left-3 z-10 checked:bg-gold-800 text-black dot-gray-900 cursor-pointer"
+        class="input sibling radio absolute top-3 left-3 z-10 checked:bg-gold-800 text-black dot-gray-900 cursor-pointer disabled:cursor-default"
     >
 
     <label
