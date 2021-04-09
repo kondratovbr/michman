@@ -5,12 +5,12 @@
     </x-slot>
 
     <x-table-section>
-        <x-slot name="header">
+        <x-slot name="title">
             Servers
         </x-slot>
-        <x-slot name="content">
-            Servers!
-        </x-slot>
+
+        Servers!
+
     </x-table-section>
 
 </x-layouts.app-one-column>
