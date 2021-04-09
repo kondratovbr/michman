@@ -90,6 +90,7 @@ class CreateForm extends Component
                 ),
             'secret' => Rules::string()->max(255)->nullable()
                 ->requiredIf($authType === 'basic'),
+            // TODO: IMPORTANT! Should the name actually be optional or does UI requires it?
             'name' => Rules::string()->max(255)->nullable(),
         ];
     }
