@@ -187,7 +187,6 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
         App\Providers\ServerProviderServiceProvider::class,
-
     ],
 
     /*
