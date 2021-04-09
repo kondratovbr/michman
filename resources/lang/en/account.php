@@ -95,6 +95,7 @@ return [
         'create' => [
             'title' => 'New provider',
             'description' => 'Add a new server provider API credentials.',
+            'button' => 'Add Credentials',
         ],
 
         /*

@@ -67,7 +67,7 @@
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
             <x-buttons.primary>
-                {{ __('buttons.save') }}
+                {{ __('account.providers.create.button') }}
             </x-buttons.primary>
             <x-action-message on="saved">
                 {{ __('misc.saved') }}
