@@ -17,6 +17,8 @@ use Livewire\Component;
 
 class CreateForm extends Component
 {
+    use AuthorizesRequests;
+
     public string $provider = '';
     public string|null $token = null;
     public string|null $key = null;
@@ -95,6 +97,8 @@ class CreateForm extends Component
     public function store(StoreProviderAction $action): void
     {
         // TODO: CRITICAL! Don't forget authentication and authorization! Have I forget it in other Livewire components?
+
+        $this->authorize('create', Provider::class);
 
         $this->validate();
 
