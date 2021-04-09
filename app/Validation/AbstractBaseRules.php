@@ -207,15 +207,4 @@ abstract class AbstractBaseRules extends AbstractRules
             $column ?? $model->getRouteKeyName()
         ));
     }
-
-    /**
-     * Check a potentially callable condition.
-     */
-    private function checkCondition($condition): bool
-    {
-        if (is_callable($condition))
-            $condition = app()->call($condition);
-
-        return (bool) $condition;
-    }
 }

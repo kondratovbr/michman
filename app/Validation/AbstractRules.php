@@ -95,6 +95,17 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
     }
 
     /**
+     * Add the rule to the list of rules if a condition is true.
+     */
+    public function addRuleIf(string|object $rule, bool|\Closure $condition): static
+    {
+        if ($this->checkCondition($condition))
+            $this->addRule($rule);
+
+        return $this;
+    }
+
+    /**
      * Check if this instance has the rule already.
      * Non-strict check, i.e. without attributes.
      */
@@ -162,6 +173,17 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
     {
         // Empty string will be returned for rules with no attributes, like 'required' for example.
         return explode(':', $rule)[1] ?? '';
+    }
+
+    /**
+     * Check a potentially callable condition.
+     */
+    protected function checkCondition($condition): bool
+    {
+        if (is_callable($condition))
+            $condition = app()->call($condition);
+
+        return (bool) $condition;
     }
 
     public function toArray(): array
