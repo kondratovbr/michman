@@ -30,7 +30,7 @@
                             wire:model.defer="provider"
                             x-model="provider"
                             x-on:click="formType = '{{ $providerConfig['auth_type'] }}'"
-{{--                            :disabled="(bool) $providerConfig['disabled']"--}}
+                            :disabled="(bool) $providerConfig['disabled']"
                         >
                             <x-slot name="content">
                                 <x-icon size="16"><i class="{{ $providerConfig['icon'] }} fa-3x"></i></x-icon>
