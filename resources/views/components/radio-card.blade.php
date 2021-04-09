@@ -1,5 +1,3 @@
-{{--TODO: Figure out disabled state.--}}
-
 <div {{ $attributes->class(['relative'])->only('class') }}>
 
     <input
@@ -20,6 +18,7 @@
             'hover:bg-navy-400 hover:bg-opacity-100',
             'active:bg-navy-500 active:bg-opacity-100',
             'input-checked:border-gold-800 input-checked:ring-opacity-100 input-checked:shadow-lg',
+            'input-disabled:opacity-50 input-disabled:cursor-default input-disabled:bg-navy-300',
             'transition-ring-background ease-in-out duration-quick',
         ) }}"
         for="{{ $name . '-' . $value }}"
