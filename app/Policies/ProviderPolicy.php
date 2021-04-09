@@ -9,8 +9,11 @@ class ProviderPolicy
 {
     use HandlesAuthorization;
 
-    public function __construct()
+    /**
+     * Determine whether the user is allowed to create a new provider.
+     */
+    public function create(User $user): bool
     {
-        //
+        return true;
     }
 }
