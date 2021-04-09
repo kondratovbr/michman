@@ -197,16 +197,16 @@ module.exports = {
     variants: {
         extend: {
 
-            backgroundColor: ['hover', 'active', 'disabled', 'checked', 'input-checked', 'sibling-hover'],
-            backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked', 'input-checked', 'sibling-hover'],
+            backgroundColor: ['hover', 'active', 'disabled', 'checked', 'input-checked', 'sibling-hover', 'input-disabled'],
+            backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked', 'input-checked', 'sibling-hover', 'input-disabled'],
             borderWidth: ['hover', 'active', 'last', 'input-checked'],
             borderColor: ['hover', 'active', 'focus', 'input-checked'],
             borderOpacity: ['focus', 'group-hover', 'group-active', 'group-focus'],
             boxShadow: ['focus', 'input-checked'],
-            cursor: ['disabled'],
+            cursor: ['disabled', 'input-disabled'],
             display: [],
             margin: ['first', 'last'],
-            opacity: ['disabled', 'group-hover', 'group-active'],
+            opacity: ['disabled', 'group-hover', 'group-active', 'input-disabled'],
             outline: ['focus'],
             padding: ['first', 'last'],
             ringColor: ['focus', 'input-checked'],
@@ -265,6 +265,15 @@ module.exports = {
             addVariant('input-checked', ({ modifySelectors, separator }) => {
                 modifySelectors(({ className }) => {
                     return `.input:checked + .${e(`input-checked${separator}${className}`)}`;
+                });
+            });
+        }),
+
+        // "input-disabled" variant for styling labels or other direct sibling elements based in checkbox/radio state
+        plugin(function({ addVariant, e }) {
+            addVariant('input-disabled', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.input:disabled + .${e(`input-disabled${separator}${className}`)}`;
                 });
             });
         }),
