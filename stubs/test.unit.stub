@@ -2,15 +2,10 @@
 
 namespace {{ namespace }};
 
-use PHPUnit\Framework\TestCase;
+use Tests\AbstractUnitTest;
 
-class {{ class }} extends TestCase
+class {{ class }} extends AbstractUnitTest
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
     public function test_example()
     {
         $this->assertTrue(true);
