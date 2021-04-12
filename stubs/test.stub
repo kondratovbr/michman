@@ -2,8 +2,6 @@
 
 namespace {{ namespace }};
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\AbstractFeatureTest;
 
 class {{ class }} extends AbstractFeatureTest
