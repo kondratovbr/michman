@@ -15,7 +15,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
-class CreateForm extends Component
+class CreateProviderForm extends Component
 {
     use AuthorizesRequests;
 

@@ -1,6 +1,6 @@
 <x-sub-page name="providers">
 
-    <livewire:providers.create-form/>
+    <livewire:providers.create-provider-form/>
 
     <x-section-separator/>
 
