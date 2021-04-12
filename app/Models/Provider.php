@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasModelHelpers;
 use Carbon\CarbonInterface;
 use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

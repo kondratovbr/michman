@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,5 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class AbstractModel extends Model
 {
-    use UsesCamelCaseAttributes;
+    use UsesCamelCaseAttributes,
+        HasModelHelpers;
 }

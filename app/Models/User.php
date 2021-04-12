@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
@@ -48,7 +49,8 @@ class User extends Authenticatable implements MustVerifyEmail
         HasTeams,
         Notifiable,
         TwoFactorAuthenticatable,
-        UsesCamelCaseAttributes;
+        UsesCamelCaseAttributes,
+        HasModelHelpers;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

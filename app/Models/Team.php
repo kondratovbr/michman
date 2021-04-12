@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Jetstream\Events\TeamCreated;
@@ -12,7 +13,8 @@ use Laravel\Jetstream\Team as JetstreamTeam;
 class Team extends JetstreamTeam
 {
     use HasFactory,
-        UsesCamelCaseAttributes;
+        UsesCamelCaseAttributes,
+        HasModelHelpers;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
