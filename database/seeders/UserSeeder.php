@@ -7,11 +7,11 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
-    /** @var int How many generic users to seed. */
+    /** @var int Number of generic users to seed. */
     private const NUM_USERS = 10;
 
     /**
-     * Run the database seeds.
+     * Seed the database.
      */
     public function run(): void
     {
