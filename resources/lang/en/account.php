@@ -93,6 +93,7 @@ return [
         ],
 
         'create' => [
+            'do-only' => 'Right now we support only DigitalOcean, but Linode, Amazon Web Services and others are coming very soon!',
             'title' => 'New provider',
             'description' => 'Add a new server provider API credentials.',
             'button' => 'Add Credentials',
