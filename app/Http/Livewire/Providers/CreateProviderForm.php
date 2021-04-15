@@ -106,7 +106,7 @@ class CreateProviderForm extends Component
 
         $this->validate();
 
-        $action->execute(ProviderData::create(
+        $action->execute(new ProviderData(
             owner: Auth::user(),
             provider: $this->provider,
             token: $this->token,
