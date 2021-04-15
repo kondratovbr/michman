@@ -24,4 +24,12 @@ class DebugController extends AbstractController
             'routes' => $routes,
         ]);
     }
+
+    /**
+     * Show a standard phpinfo page.
+     */
+    public function phpInfo()
+    {
+        phpinfo();
+    }
 }
