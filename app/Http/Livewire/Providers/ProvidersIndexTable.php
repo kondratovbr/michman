@@ -25,7 +25,7 @@ class ProvidersIndexTable extends Component
         $this->authorize('indexUser', [Provider::class, Auth::user()]);
 
         return view('providers.index-table', [
-            'providers' => Auth::user()->providers,
+            'providers' => Auth::user()->providers()->oldest()->get(),
         ]);
     }
 }
