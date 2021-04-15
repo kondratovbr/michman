@@ -11,7 +11,7 @@ class AccountView extends Component
     /** @var string Currently shown sub-page. */
     public string $show = '';
 
-    /** @var string[] The component's listeners. */
+    /** @var string[] */
     protected $listeners = ['showSubPage' => 'show'];
 
     /** @var string[] Map of $show property values to sub-page views. */

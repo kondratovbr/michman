@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Navbar extends Component
 {
-    /** @var string[] The component's listeners. */
+    /** @var string[] */
     protected $listeners = [
         // TODO: Do I use all of them? Probably only the first one.
         'refresh-navigation' => '$refresh',
