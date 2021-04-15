@@ -1,5 +1,6 @@
 {{--TODO: IMPORTANT! Add badges and buttons, implement removing providers. Note that stackable buttons shouldn't be very rounded.--}}
 {{--TODO: Figure out how to verify that API is still accessible by a credentials and highlight/notify when it isn't.--}}
+{{--TODO: Figure out how to animate the action of storing a new provider. davidkpiano/flipping ? is it computationally intensive?--}}
 
 <x-table-section>
     <x-slot name="title">Server Providers</x-slot>
