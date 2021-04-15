@@ -4,6 +4,6 @@
 
     <x-section-separator/>
 
-    <livewire:providers.index-table/>
+    <livewire:providers.providers-index-table/>
 
 </x-sub-page>

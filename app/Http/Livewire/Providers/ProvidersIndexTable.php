@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
-class IndexTable extends Component
+class ProvidersIndexTable extends Component
 {
     use AuthorizesRequests;
 
