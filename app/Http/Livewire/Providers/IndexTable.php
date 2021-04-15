@@ -12,6 +12,11 @@ class IndexTable extends Component
 {
     use AuthorizesRequests;
 
+    /** @var string[] */
+    protected $listeners = [
+        'provider-stored' => '$refresh',
+    ];
+
     /**
      * Render the component.
      */
