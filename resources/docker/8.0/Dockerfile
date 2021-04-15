@@ -42,6 +42,16 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ARG XDEBUG=true
+ARG XDEBUG_PORT=9003
+ARG XDEBUG_CONFIG=/etc/php/8.0/mods-available/xdebug.ini
+RUN if [ "${XDEBUG}" = 'true' ]; then \
+    echo "xdebug.client_port=${XDEBUG_PORT}" >> $XDEBUG_CONFIG \
+    && echo "xdebug.mode=develop,debug" >> $XDEBUG_CONFIG \
+    && echo "xdebug.start_with_request=yes" >> $XDEBUG_CONFIG \
+    && echo "xdebug.client_host=host.docker.internal" >> $XDEBUG_CONFIG ;\
+fi;
+
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.0
 
 RUN groupadd --force -g $WWWGROUP sail
