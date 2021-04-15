@@ -100,8 +100,6 @@ class CreateProviderForm extends Component
      */
     public function store(StoreProviderAction $action): void
     {
-        // TODO: CRITICAL! Don't forget authentication and authorization! Have I forget it in other Livewire components?
-
         $this->authorize('create', Provider::class);
 
         $this->validate();
