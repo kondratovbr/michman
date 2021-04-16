@@ -1,16 +1,15 @@
+{{--TODO: IMPORTANT! Improve the single column layout - looks weird.--}}
+
 <x-layouts.app-one-column>
 
     <x-slot name="header">
-        <h1>Servers</h1>
+        <x-page-title>Servers</x-page-title>
     </x-slot>
 
-    <x-table-section>
-        <x-slot name="title">
-            Servers
-        </x-slot>
+    <livewire:servers.create-server-form/>
 
-        Servers!
+    <x-section-separator/>
 
-    </x-table-section>
+    <livewire:servers.servers-index-table/>
 
 </x-layouts.app-one-column>
