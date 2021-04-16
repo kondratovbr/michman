@@ -5,8 +5,10 @@ namespace App\Models;
 use App\Models\Traits\HasModelHelpers;
 use Carbon\CarbonInterface;
 use Database\Factories\ProviderFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Server Provider Eloquent model
@@ -24,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $updated_at
  *
  * @property-read User $owner
+ * @property-read Collection $servers
  *
  * @method static ProviderFactory factory(...$parameters)
  */
@@ -49,5 +52,13 @@ class Provider extends AbstractModel
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get a relation to the servers created with this provider.
+     */
+    public function servers(): HasMany
+    {
+        return $this->hasMany(Server::class);
     }
 }

@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\HtmlString;
@@ -33,6 +34,7 @@ use App\Facades\QrCode;
  * @property-read string $avatarUrl
  *
  * @property-read Collection $providers
+ * @property-read Collection $servers
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -117,5 +119,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class);
+    }
+
+    /**
+     * Get a relation with servers owned by this user.
+     */
+    public function servers(): HasManyThrough
+    {
+        // TODO: CRITICAL! Does it work? Need to declare foreign keys here?
+        return $this->hasManyThrough(Server::class, Provider::class);
     }
 }
