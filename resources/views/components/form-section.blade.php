@@ -6,7 +6,9 @@
 
     <x-section-title class="lg:order-2 lg:col-span-1">
         <x-slot name="title">{{ $title }}</x-slot>
-        <x-slot name="description">{{ $description }}</x-slot>
+        @isset($description)
+            <x-slot name="description">{{ $description }}</x-slot>
+        @endisset
     </x-section-title>
 
     <x-box class="lg:order-1 lg:col-span-2 mt-5 lg:mt-0">
