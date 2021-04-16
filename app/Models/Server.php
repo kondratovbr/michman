@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Server Eloquent model
  *
  * @property int $id
+ * @property string $externalId
  * @property string $name
  * @property string $ip
  * @property CarbonInterface $updated_at
