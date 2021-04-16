@@ -112,6 +112,12 @@ return [
         'linode' => [
             'name' => 'Linode',
         ],
+
+        'table' => [
+            'title' => 'Server Providers',
+            'name' => 'Name',
+            'provider' => 'Provider',
+        ],
     ],
 
     'vcs' => [

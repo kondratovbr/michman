@@ -3,12 +3,12 @@
 {{--TODO: Figure out how to animate the action of storing a new provider. davidkpiano/flipping ? is it computationally intensive?--}}
 
 <x-table-section>
-    <x-slot name="title">Server Providers</x-slot>
+    <x-slot name="title">{{ __('account.providers.table.title') }}</x-slot>
 
     <x-slot name="header">
         <x-tr-header>
-            <x-th>Name</x-th>
-            <x-th>Provider</x-th>
+            <x-th>{{ __('account.providers.table.name') }}</x-th>
+            <x-th>{{ __('account.providers.table.provider') }}</x-th>
             {{-- Badges, like "active" (has active servers) --}}
             <x-th></x-th>
             {{-- Buttons, like "remove" and "edit" (Edit name and token, like in Forge.) --}}
