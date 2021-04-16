@@ -1,6 +1,6 @@
 <x-layouts.html>
 
-{{--    TODO: IMPORTANT! WTF is this? Does it even work?--}}
+{{--    TODO: CRITICAL! WTF is this? Does it even work?--}}
     <x-jet-banner/>
 
     <div class="min-h-screen">
