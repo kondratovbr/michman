@@ -6,11 +6,12 @@
         <div class="md:col-start-3 md:col-end-11">
 
             {{-- Page Heading --}}
-            @isset($header)
-                <header class="py-8">
+            <header class="py-8">
+                {{-- Keeping an empty header for padding if none provided. --}}
+                @isset($header)
                     {{ $header }}
-                </header>
-            @endisset
+                @endisset
+            </header>
 
             {{-- Page Content --}}
             <main>
