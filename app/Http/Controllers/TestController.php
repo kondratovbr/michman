@@ -10,6 +10,6 @@ class TestController extends AbstractController
     {
         //
 
-        return view('blank');
+        return view('testview');
     }
 }
