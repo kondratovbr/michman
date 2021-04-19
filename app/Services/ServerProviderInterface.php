@@ -9,6 +9,8 @@ namespace App\Services;
 // TODO: IMPORTANT! Figure out what to do with account statuses. I.e. a provider may lock the account if a payment failed or something. Have to handle it gracefully as well.
 // TODO: Maybe figure out how to check if an account reached its servers limit, so I can check it during server creation for the user.
 
+use App\Collections\RegionCollection;
+use App\Collections\SizeCollection;
 use App\DataTransferObjects\ServerData;
 
 interface ServerProviderInterface
@@ -26,7 +28,22 @@ interface ServerProviderInterface
     public function createServer(ServerData $data): string;
 
     /**
+     * Get a collection of all regions supported by the API.
+     */
+    public function getAllRegions(): RegionCollection;
+
+    /**
+     * Get a collection of all sizes supported by the API.
+     */
+    public function getAllSizes(): SizeCollection;
+
+    /**
      * Get a list of regions where this account can create a server.
      */
-    public function getRegions(): array;
+    public function getAvailableRegions(): RegionCollection;
+
+    /**
+     * Get a list of server sizes available for this account.
+     */
+    public function getAvailableSizes(): SizeCollection;
 }

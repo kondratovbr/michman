@@ -234,4 +234,22 @@ class Arr extends IlluminateArr
 
         return $result;
     }
+
+    /**
+     * Get the length of an array using the built-in count() function.
+     *
+     * @param bool $recursive Set to true to recursively count the number of items in nested arrays as well.
+     */
+    public static function length(array $array, bool $recursive = false): int
+    {
+        return count($array, $recursive ? COUNT_RECURSIVE : COUNT_NORMAL);
+    }
+
+    /**
+     * Determine if an array is empty, i.e. has exactly 0 elements.
+     */
+    public static function empty(array $array): bool
+    {
+        return static::length($array) == 0;
+    }
 }
