@@ -39,6 +39,16 @@ smallSizingScale = {
     '96': '24rem',
     '1/3': '33.333333%',
     '2/3': '66.666667%',
+
+    '1-em': '0.25em',
+    '1.5-em': '0.375em',
+    '2-em': '0.5em',
+    '2.5-em': '0.625em',
+    '3-em': '0.75em',
+    '3.5-em': '0.875em',
+    '4-em': '1em',
+    '5-em': '1.25em',
+    '6-em': '1.5em',
 };
 
 // Custom extension for "flex-grow"/"flex-shrink" utilities.
@@ -164,7 +174,8 @@ module.exports = {
                 'screen-xl-10/12': 'calc(1280px / 12 * 10)',
                 'screen-2xl-10/12': 'calc(1536px / 12 * 10)',
             },
-            // Extending min-width utilities using a custom sizing scale (see above).
+            // Extending min sizing utilities using a custom sizing scale (see above).
+            minHeight: smallSizingScale,
             minWidth: smallSizingScale,
             // Add some specific padding values
             padding: {
