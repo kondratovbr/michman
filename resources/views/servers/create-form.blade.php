@@ -46,7 +46,7 @@
     </x-slot>
 
     <x-slot name="actions">
-        Actions!
+        "Create Server", "Cancel"
     </x-slot>
 
 </x-form-section>
