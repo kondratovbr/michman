@@ -1,3 +1,5 @@
+{{-- TODO: Does it need something changed for smaller screens? --}}
+
 <div
     x-data="searchSelect({
         data: {
@@ -30,7 +32,7 @@
                 'relative w-full py-2 pl-3 pr-10 rounded-md cursor-default',
                 'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
                 'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
-                'sm:text-sm sm:leading-5',
+                '',
                 'transition duration-quick ease-in-out',
             ) }}"
             type="button"
@@ -54,6 +56,7 @@
                 x-on:keydown.enter.stop.prevent="selectOption()"
                 x-on:keydown.arrow-up.prevent="focusPreviousOption()"
                 x-on:keydown.arrow-down.prevent="focusNextOption()"
+                x-on:keydown.tab="closeListbox()"
                 type="search"
             />
 
@@ -89,7 +92,7 @@
         x-transition:leave-end="transform opacity-0 scale-95"
     >
         <ul
-            class="py-1 overflow-auto text-base leading-6 rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5"
+            class="py-1 overflow-auto text-base leading-6 rounded-md shadow-xs max-h-60 focus:outline-none"
             x-ref="listbox"
             x-on:keydown.enter.stop.prevent="selectOption()"
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
@@ -107,12 +110,18 @@
                     x-on:mouseleave="focusedOptionIndex = null"
                     role="option"
                     x-bind:aria-selected="focusedOptionIndex === index"
-                    x-bind:class="{ 'text-white bg-indigo-600': index === focusedOptionIndex, 'text-gray-900': index !== focusedOptionIndex }"
+                    x-bind:class="{
+                        'text-white bg-indigo-600': index === focusedOptionIndex,
+                        'text-gray-900': index !== focusedOptionIndex
+                    }"
                 >
                     <span
                         class="block font-normal truncate"
                         x-text="Object.values(options)[index]"
-                        x-bind:class="{ 'font-semibold': index === focusedOptionIndex, 'font-normal': index !== focusedOptionIndex }"
+                        x-bind:class="{
+                            'font-semibold': index === focusedOptionIndex,
+                            'font-normal': index !== focusedOptionIndex
+                        }"
                     ></span>
 
                     <span
