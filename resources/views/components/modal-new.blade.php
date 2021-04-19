@@ -10,13 +10,13 @@
 {{--        TODO: IMPORTANT! Test the scroll prevention om mobile. I still haven't figured it out for desktop. --}}
 {{--        TODO: If this thing even works - extract it to a componnt.--}}
     x-data="{ show: @entangle($attributes->wire('model')),
-        preventDefault(e){
+        preventDefault(e) {
             e.preventDefault();
         },
-        disableScroll(){
+        disableScroll() {
             document.body.addEventListener('touchmove', this.preventDefault, { passive: false });
         },
-        enableScroll(){
+        enableScroll() {
             document.body.removeEventListener('touchmove', this.preventDefault);
         },
     }"
