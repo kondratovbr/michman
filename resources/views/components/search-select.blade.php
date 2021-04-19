@@ -1,4 +1,4 @@
-{{-- TODO: Does it need something changed for smaller screens? --}}
+{{--TODO: Does it need something changed for smaller screens?--}}
 {{--TODO: IMPORTANT! Make sure it us usable on touch.--}}
 {{--TODO: Google some a11y guide for such menus and make sure we're alright.--}}
 
