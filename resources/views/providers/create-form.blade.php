@@ -22,7 +22,7 @@
                 <div>{{ __('account.providers.provider.label') }}</div>
 
                 {{-- Check-cards container --}}
-                <div class="flex space-x-6">
+                <div class="flex space-x-6-right space-y-6-bottom">
 
                     @foreach(config('providers.list') as $providerName => $providerConfig)
                         <x-radio-card

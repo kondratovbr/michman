@@ -12,7 +12,7 @@
 {{--            TODO: Add some loading animation here - loading an actual form may take some time. --}}
             <x-field>
                 <div
-                    class="flex space-x-6"
+                    class="flex flex-wrap space-x-6-right space-y-6-bottom"
                     {{-- TODO: Do I even use Alpine here? --}}
                     x-data="{ provider: '' }"
                 >
