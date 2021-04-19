@@ -3,7 +3,7 @@
 namespace App\Services;
 
 /*
- * TODO: CRITICAL! Figure out how to avoid hitting the rate limit with these things.
+ * TODO: CRITICAL! Figure out how to avoid hitting the rate limit with these things. Probably move the actual HTTP logic into a singleton for each service, so it can track calls during a request and also between them by using cache. Or maybe just use cache every time?
  */
 
 // TODO: IMPORTANT! Figure out what to do with account statuses. I.e. a provider may lock the account if a payment failed or something. Have to handle it gracefully as well.
