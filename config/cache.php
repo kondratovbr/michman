@@ -69,6 +69,8 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_cache'),
+    // We use Redis in this project and we already have a prefix configured in database.php,
+    // so we won't add another one here.
+    'prefix' => env('CACHE_PREFIX', 'cache'),
 
 ];
