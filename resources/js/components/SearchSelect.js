@@ -17,7 +17,7 @@ export default (config) => { return {
 
     focusNextOption: function () {
         if (this.focusedOptionIndex === null)
-            return this.focusedOptionIndex = Object.keys(this.options).length - 1
+            return this.focusedOptionIndex = 0
 
         if (this.focusedOptionIndex + 1 >= Object.keys(this.options).length)
             return
