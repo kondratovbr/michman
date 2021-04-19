@@ -12,32 +12,40 @@ export default (config) => { return {
     closeListbox: function () {
         this.open = false
         this.focusedOptionIndex = null
-        this.search = ''
+        // If we do it immediately then you can notice
+        // how search box clears before value/placeholder is shown.
+        setTimeout(() => {
+            this.search = ''
+        }, 150)
     },
 
     focusNextOption: function () {
-        if (this.focusedOptionIndex === null)
-            return this.focusedOptionIndex = 0
+        if (this.focusedOptionIndex === null) {
+            this.focusedOptionIndex = 0
+        } else if (this.focusedOptionIndex + 1 < Object.keys(this.options).length) {
+            this.focusedOptionIndex++
+        }
 
-        if (this.focusedOptionIndex + 1 >= Object.keys(this.options).length)
-            return
-
-        this.focusedOptionIndex++
         this.$refs.listbox.children[this.focusedOptionIndex].scrollIntoView({
-            block: "center",
+            block: "start",
+            behavior: "smooth"
         })
     },
 
     focusPreviousOption: function () {
-        if (this.focusedOptionIndex === null)
-            return this.focusedOptionIndex = 0
+        if (this.focusedOptionIndex === null) {
+            this.focusedOptionIndex = Object.keys(this.options).length - 1
+            return
+        }
 
         if (this.focusedOptionIndex <= 0)
             return
 
         this.focusedOptionIndex--
+
         this.$refs.listbox.children[this.focusedOptionIndex].scrollIntoView({
-            block: "center",
+            block: "start",
+            behavior: "smooth"
         })
     },
 
@@ -61,7 +69,7 @@ export default (config) => { return {
     },
 
     selectOption: function () {
-        if (!this.open)
+        if (! this.open)
             return this.toggleListboxVisibility()
 
         this.value = Object.keys(this.options)[this.focusedOptionIndex]
@@ -69,8 +77,10 @@ export default (config) => { return {
     },
 
     toggleListboxVisibility: function () {
-        if (this.open)
-            return this.closeListbox()
+        if (this.open) {
+            this.closeListbox()
+            return
+        }
 
         this.focusedOptionIndex = Object.keys(this.options).indexOf(this.value)
 
@@ -82,7 +92,8 @@ export default (config) => { return {
         this.$nextTick(() => {
             this.$refs.search.focus()
             this.$refs.listbox.children[this.focusedOptionIndex].scrollIntoView({
-                block: "nearest"
+                block: "start",
+                behavior: "smooth"
             })
         })
     },

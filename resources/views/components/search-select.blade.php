@@ -1,19 +1,20 @@
 {{-- TODO: Does it need something changed for smaller screens? --}}
+{{--TODO: IMPORTANT! Make sure it us usable on touch.--}}
+{{--TODO: Google some a11y guide for such menus and make sure we're alright.--}}
 
 <div
     x-data="searchSelect({
         data: {
-            au: 'Australia',
-            be: 'Belgium',
-            cn: 'China',
-            fr: 'France',
-            de: 'Germany',
-            it: 'Italy',
-            mx: 'Mexico',
-            es: 'Spain',
-            tr: 'Turkey',
-            gb: 'United Kingdom',
-            'us': 'United States'
+            'au': 'Australia',
+            'be': 'Belgium',
+            'cn': 'China',
+            'fr': 'France',
+            'de': 'Germany',
+            'it': 'Italy',
+            'mx': 'Mexico',
+            'es': 'Spain',
+            'tr': 'Turkey',
+            'gb': 'United Kingdom',
         },
         emptyOptionsMessage: 'No countries match your search.',
         name: 'country',
@@ -32,7 +33,6 @@
                 'relative w-full py-2 pl-3 pr-10 rounded-md cursor-default',
                 'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
                 'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
-                '',
                 'transition duration-quick ease-in-out',
             ) }}"
             type="button"
@@ -81,7 +81,7 @@
 
     {{-- Dropdown menu --}}
     <div
-        class="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg"
+        class="absolute z-10 w-full mt-2 bg-navy-400 border border-gray-600 rounded-md shadow-lg origin-top"
         x-show="open"
         x-cloak
         x-transition:enter="transition ease-out duration-200"
@@ -92,7 +92,7 @@
         x-transition:leave-end="transform opacity-0 scale-95"
     >
         <ul
-            class="py-1 overflow-auto text-base leading-6 rounded-md shadow-xs max-h-60 focus:outline-none"
+            class="py-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
             x-ref="listbox"
             x-on:keydown.enter.stop.prevent="selectOption()"
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
@@ -103,7 +103,7 @@
         >
             <template x-for="(key, index) in Object.keys(options)" :key="index">
                 <li
-                    class="relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9"
+                    class="relative py-2 pl-3 cursor-default select-none pr-9"
                     x-bind:id="name + 'Option' + focusedOptionIndex"
                     x-on:click="selectOption()"
                     x-on:mouseenter="focusedOptionIndex = index"
@@ -111,8 +111,8 @@
                     role="option"
                     x-bind:aria-selected="focusedOptionIndex === index"
                     x-bind:class="{
-                        'text-white bg-indigo-600': index === focusedOptionIndex,
-                        'text-gray-900': index !== focusedOptionIndex
+                        'text-gray-300 bg-navy-500': index === focusedOptionIndex,
+                        'text-gray-100': index !== focusedOptionIndex
                     }"
                 >
                     <span
@@ -125,21 +125,13 @@
                     ></span>
 
                     <span
-                        class="absolute inset-y-0 right-0 items-center pr-4 text-indigo-600"
+                        class="absolute inset-y-0 right-0 items-center pr-4"
                         x-bind:class="{
                             'flex': key === value,
                             'hidden': key !== value,
-                            'text-white': index === focusedOptionIndex,
-                            'text-indigo-600': index !== focusedOptionIndex
                         }"
                     >
-                        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path
-                                fill-rule="evenodd"
-                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
+                        <x-icon><i class="fas fa-check"></i></x-icon>
                     </span>
                 </li>
             </template>
