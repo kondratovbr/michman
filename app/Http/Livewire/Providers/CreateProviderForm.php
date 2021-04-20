@@ -26,7 +26,7 @@ class CreateProviderForm extends Component
     public string|null $name = null;
 
     /**
-     * Prepare the component.
+     * Initialize the component.
      */
     public function mount(): void
     {

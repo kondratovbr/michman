@@ -13,7 +13,7 @@ class ChangeEmailForm extends Component
     public string $email;
 
     /**
-     * Prepare the component.
+     * Initialize the component.
      */
     public function mount(): void
     {

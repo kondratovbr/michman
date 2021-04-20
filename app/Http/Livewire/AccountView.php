@@ -24,7 +24,7 @@ class AccountView extends Component
     private const DEFAULT_SHOW = 'profile';
 
     /**
-     * Prepare the component.
+     * Initialize the component.
      */
     public function mount(string $show = null): void
     {
