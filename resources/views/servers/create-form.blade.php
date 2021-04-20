@@ -9,7 +9,7 @@
         <div class="space-y-6">
 
 {{--            TODO: I'm using this field at least twice - see "providers.create-form". DRY?--}}
-{{--            TODO: Add some loading animation here - loading an actual form may take some time. --}}
+{{--            TODO: Add some loading animation here - loading an actual form may take some time due to external API calls. --}}
             <x-field>
                 <div
                     {{-- Negative bottom margin compensates for the bottom margin on the elements. --}}
