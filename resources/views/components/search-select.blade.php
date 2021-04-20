@@ -1,6 +1,9 @@
 {{--TODO: Does it need something changed for smaller screens?--}}
 {{--TODO: IMPORTANT! Make sure it us usable on touch.--}}
-{{--TODO: Google some a11y guide for such menus and make sure we're alright.--}}
+{{--TODO: Google some a11y guide for such menus and make sure we're alright.
+          Also, check out:
+          https://www.w3.org/TR/wai-aria-practices/#Listbox
+          https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
 <div
     x-data="searchSelect({
@@ -25,59 +28,50 @@
     x-on:keydown.escape="closeListbox()"
     class="relative"
 >
-
     {{-- Activation button --}}
-    <div>
-        <button
-            class="{{ classes(
-                'relative w-full py-2 pl-3 pr-10 rounded-md cursor-default',
-                'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
-                'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
-                'transition duration-quick ease-in-out',
-            ) }}"
-            type="button"
-            x-ref="button"
-            x-on:click.prevent="toggleListboxVisibility()"
-            x-bind:aria-expanded="open"
-            aria-haspopup="listbox"
-        >
-            <div
-                class="w-full h-full min-h-6-em truncate text-left"
-                x-show="! open"
-                x-text="value in options ? options[value] : placeholder"
-                x-bind:class="{ 'text-gray-500': !(value in options) }"
-            ></div>
+    <button
+        class="{{ classes(
+            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-default',
+            'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
+            'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
+            'transition duration-quick ease-in-out',
+        ) }}"
+        type="button"
+        x-ref="button"
+        x-on:click.prevent="toggleListboxVisibility()"
+        x-bind:aria-expanded="open"
+        aria-haspopup="listbox"
+    >
+        <div
+            class="w-full h-full min-h-6-em truncate text-left"
+            x-show="! open"
+            x-text="value in options ? options[value] : placeholder"
+            x-bind:class="{ 'text-gray-500': !(value in options) }"
+        ></div>
 
-            <input
-                class="w-full h-full min-h-6-em p-0 border-none bg-transparent focus:outline-none focus:ring-transparent"
-                x-ref="search"
-                x-show="open"
-                x-model="search"
-                x-on:keydown.enter.stop.prevent="selectOption()"
-                x-on:keydown.arrow-up.prevent="focusPreviousOption()"
-                x-on:keydown.arrow-down.prevent="focusNextOption()"
-                x-on:keydown.tab="closeListbox()"
-                type="search"
+        <input
+            class="w-full h-full min-h-6-em p-0 border-none bg-transparent focus:outline-none focus:ring-transparent"
+            x-ref="search"
+            x-show="open"
+            x-model="search"
+            x-on:keydown.enter.stop.prevent="selectOption()"
+            x-on:keydown.arrow-up.prevent="focusPreviousOption()"
+            x-on:keydown.arrow-down.prevent="focusNextOption()"
+            x-on:keydown.tab="closeListbox()"
+            type="search"
+        />
+
+        <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+            <x-heroicons.solid.selector
+                class="w-5 h-5 text-gray-400"
+                x-bind:class="{
+                    'text-gray-400' : ! open,
+                    'text-gray-300' : open,
+                }"
             />
+        </span>
 
-            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <svg
-                    class="w-5 h-5 text-gray-400"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                >
-                    <path
-                        d="M7 7l3-3 3 3m0 6l-3 3-3-3"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    ></path>
-                </svg>
-            </span>
-
-        </button>
-    </div>
+    </button>
 
     {{-- Dropdown menu --}}
     <div
@@ -92,31 +86,33 @@
         x-transition:leave-end="transform opacity-0 scale-95"
     >
         <ul
-            class="py-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
+            class="py-1 w-full max-h-60 overflow-auto text-base leading-6 focus:outline-none"
             x-ref="listbox"
             x-on:keydown.enter.stop.prevent="selectOption()"
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.prevent="focusNextOption()"
             role="listbox"
+            {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
+{{--            aria-labelledby="listbox-label"--}}
             x-bind:aria-activedescendant="focusedOptionIndex ? name + 'Option' + focusedOptionIndex : null"
             tabindex="-1"
         >
             <template x-for="(key, index) in Object.keys(options)" :key="index">
                 <li
-                    class="relative py-2 pl-3 cursor-default select-none pr-9"
+                    class="py-2 pl-3 pr-9 cursor-default select-none"
                     x-bind:id="name + 'Option' + focusedOptionIndex"
                     x-on:click="selectOption()"
                     x-on:mouseenter="focusedOptionIndex = index"
                     x-on:mouseleave="focusedOptionIndex = null"
-                    role="option"
                     x-bind:aria-selected="focusedOptionIndex === index"
                     x-bind:class="{
                         'text-gray-300 bg-navy-500': index === focusedOptionIndex,
                         'text-gray-100': index !== focusedOptionIndex
                     }"
+                    role="option"
                 >
                     <span
-                        class="block font-normal truncate"
+                        class="block truncate"
                         x-text="Object.values(options)[index]"
                         x-bind:class="{
                             'font-semibold': index === focusedOptionIndex,
