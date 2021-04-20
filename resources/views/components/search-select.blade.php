@@ -21,7 +21,7 @@
         },
         emptyOptionsMessage: 'No countries match your search.',
         name: 'country',
-        placeholder: 'Select a country'
+        placeholder: ' '
     })"
     x-init="init()"
     x-on:click.away="closeListbox()"
@@ -31,7 +31,7 @@
     {{-- Activation button --}}
     <button
         class="{{ classes(
-            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-default',
+            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-pointer',
             'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
             'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
             'transition duration-quick ease-in-out',
@@ -40,8 +40,11 @@
         x-ref="button"
         x-on:click.prevent="toggleListboxVisibility()"
         x-bind:aria-expanded="open"
+        {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
+{{--            aria-labelledby="listbox-label"--}}
         aria-haspopup="listbox"
     >
+        {{-- Name of a currently chosen option or a placeholder --}}
         <div
             class="w-full h-full min-h-6-em truncate text-left"
             x-show="! open"
@@ -49,6 +52,7 @@
             x-bind:class="{ 'text-gray-500': !(value in options) }"
         ></div>
 
+        {{-- Input box for searching --}}
         <input
             class="w-full h-full min-h-6-em p-0 border-none bg-transparent focus:outline-none focus:ring-transparent"
             x-ref="search"
@@ -61,7 +65,8 @@
             type="search"
         />
 
-        <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+        {{-- Icon for the activation button --}}
+        <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none">
             <x-heroicons.solid.selector
                 class="w-5 h-5 text-gray-400"
                 x-bind:class="{
@@ -99,7 +104,7 @@
         >
             <template x-for="(key, index) in Object.keys(options)" :key="index">
                 <li
-                    class="py-2 pl-3 pr-9 cursor-default select-none"
+                    class="relative py-2 pl-3 pr-9 cursor-pointer select-none"
                     x-bind:id="name + 'Option' + focusedOptionIndex"
                     x-on:click="selectOption()"
                     x-on:mouseenter="focusedOptionIndex = index"
@@ -111,6 +116,7 @@
                     }"
                     role="option"
                 >
+                    {{-- Name of an option --}}
                     <span
                         class="block truncate"
                         x-text="Object.values(options)[index]"
@@ -120,6 +126,7 @@
                         }"
                     ></span>
 
+                    {{-- Checkmark icon for a selected option --}}
                     <span
                         class="absolute inset-y-0 right-0 items-center pr-4"
                         x-bind:class="{
@@ -133,7 +140,7 @@
             </template>
 
             <div
-                class="px-3 py-2 text-gray-900 cursor-default select-none"
+                class="px-3 py-2 text-gray-900 cursor-pointer select-none"
                 x-show="! Object.keys(options).length"
                 x-text="emptyOptionsMessage"
             ></div>

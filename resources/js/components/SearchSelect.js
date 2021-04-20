@@ -17,6 +17,10 @@ export default (config) => { return {
         setTimeout(() => {
             this.search = ''
         }, 150)
+        // Keep focus on the activation button after the list is closed.
+        this.$nextTick(() => {
+            this.$refs.button.focus()
+        })
     },
 
     focusNextOption: function () {
