@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\Traits\HasModelHelpers;
+use App\Services\ServerProviderInterface;
 use Carbon\CarbonInterface;
 use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\App;
 
 /**
  * Server Provider Eloquent model
@@ -45,6 +47,26 @@ class Provider extends AbstractModel
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /** @var ServerProviderInterface An interface to interact with the API. */
+    private ServerProviderInterface $api;
+
+    /**
+     * Get an instance of ServerProviderInterface to interact with the server provider API.
+     */
+    public function api(): ServerProviderInterface
+    {
+        if (! isset($this->api)) {
+            $this->api = App::make(
+                $this->provider,
+                isset($this->token)
+                    ? ['token' => $this->token, 'identifier' => $this->id]
+                    : ['key' => $this->key, 'secret' => $this->secret, 'identifier' => $this->id]
+            );
+        }
+
+        return $this->api;
+    }
 
     /**
      * Get a relation to the user who owns this provider account.
