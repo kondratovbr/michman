@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasModelHelpers;
 use App\Services\ServerProviderInterface;
 use Carbon\CarbonInterface;
 use Database\Factories\ProviderFactory;
