@@ -52,7 +52,7 @@ export default (config) => { return {
     init: function () {
         this.options = this.data
 
-        if (!(this.value in this.options))
+        if (! (this.value in this.options))
             this.value = null
 
         this.$watch('search', ((value) => {
