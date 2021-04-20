@@ -12,7 +12,8 @@
 {{--            TODO: Add some loading animation here - loading an actual form may take some time. --}}
             <x-field>
                 <div
-                    class="flex flex-wrap space-x-6-right space-y-6-bottom"
+                    {{-- Negative bottom margin compensates for the bottom margin on the elements. --}}
+                    class="flex flex-wrap space-x-6-right space-y-6-bottom -mb-6"
                     {{-- TODO: Do I even use Alpine here? --}}
                     x-data="{ provider: '' }"
                 >
