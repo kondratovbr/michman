@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\Collections\RegionCollection;
 use App\Collections\SizeCollection;
+use App\DataTransferObjects\RegionData;
 use App\DataTransferObjects\ServerData;
 
 interface ServerProviderInterface
@@ -46,4 +47,9 @@ interface ServerProviderInterface
      * Get a list of server sizes available for this account.
      */
     public function getAvailableSizes(): SizeCollection;
+
+    /**
+     * Get a collection of sizes available for this specific API credentials in a region provided.
+     */
+    public function getSizesAvailableInRegion(RegionData $region): SizeCollection;
 }

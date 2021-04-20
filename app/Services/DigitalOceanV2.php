@@ -18,9 +18,10 @@ class DigitalOceanV2 extends AbstractServerProvider
     /** @var string Bearer token used for authentication. */
     private string $token;
 
-    public function __construct(string $token)
+    public function __construct(string $token, int $identifier = null)
     {
-        parent::__construct();
+        parent::__construct($identifier);
+
         $this->token = $token;
     }
 
@@ -46,7 +47,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         // TODO: Implement createServer() method.
     }
 
-    public function getAllSizes(): SizeCollection
+    protected function getAllSizesFromApi(): SizeCollection
     {
         $response = $this->getJson('/sizes');
         $data = json_decode($response->body());
@@ -69,7 +70,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $collection;
     }
 
-    public function getAllRegions(): RegionCollection
+    protected function getAllRegionsFromApi(): RegionCollection
     {
         $response = $this->getJson('/regions');
         $data = json_decode($response->body());
@@ -91,15 +92,34 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function getAvailableRegions(): RegionCollection
     {
+        $availableSizes = $this->getAllSizes()
+            ->filter(fn(SizeData $size) => $size->available)
+            ->pluck('slug');
+
         return $this->getAllRegions()->filter(fn(RegionData $region) =>
-            $region->available && ! Arr::empty($region->sizes)
+            $region->available
+            && ! Arr::empty($region->sizes)
+            && $availableSizes->intersect($region->sizes)->isNotEmpty()
         );
     }
 
     public function getAvailableSizes(): SizeCollection
     {
+        $availableRegions = $this->getAllRegions()
+            ->filter(fn(RegionData $region) => $region->available)
+            ->pluck('slug');
+
         return $this->getAllSizes()->filter(fn(SizeData $size) =>
-            $size->available && ! Arr::empty($size->regions)
+            $size->available
+            && ! Arr::empty($size->regions)
+            && $availableRegions->intersect($size->regions)->isNotEmpty()
+        );
+    }
+
+    public function getSizesAvailableInRegion(RegionData $region): SizeCollection
+    {
+        return $this->getAvailableSizes()->filter(fn(SizeData $size) =>
+            Arr::hasValue($size->regions, $region->slug)
         );
     }
 }

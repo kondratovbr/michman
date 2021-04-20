@@ -2,18 +2,41 @@
 
 namespace App\Services;
 
+use App\Collections\RegionCollection;
+use App\Collections\SizeCollection;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Cache;
+use RuntimeException;
+
+// TODO: Maybe refactor this so the app itself only uses methods from the Provider model,
+//       so the model would actually be able to use caching and such.
 
 abstract class AbstractServerProvider implements ServerProviderInterface
 {
-    protected string $configKey;
-    protected string $basePath;
+    /** @var int */
+    private const REGIONS_CACHE_TTL = 60 * 60; // 1 hour
+    /** @var int */
+    private const SIZES_CACHE_TTL = 60 * 60; // 1 hour
 
-    public function __construct()
+    private string $configKey;
+    private string $basePath;
+    private string $cachePrefix;
+    protected int|null $identifier;
+
+    /*
+     * These properties are used to cache some data internally just for
+     * the lifecycle of this object.
+     * This technique saves some external API requests.
+     */
+    private RegionCollection $allRegions;
+    private SizeCollection $allSizes;
+
+    public function __construct(int $identifier = null)
     {
         $this->configKey = $this->getConfigKey();
         $this->basePath = $this->config('base_path');
+        $this->identifier = $identifier;
     }
 
     /**
@@ -25,6 +48,72 @@ abstract class AbstractServerProvider implements ServerProviderInterface
      * Create a pending request with authentication configured.
      */
     abstract protected function request(): PendingRequest;
+
+    /**
+     * Call the API for all server regions it supports.
+     */
+    abstract protected function getAllRegionsFromApi(): RegionCollection;
+
+    /**
+     * Call the API for all server sizes it supports.
+     */
+    abstract protected function getAllSizesFromApi(): SizeCollection;
+
+    /**
+     * Get a cache prefix for this specific server provider API credentials.
+     */
+    private function getCachePrefix(): string
+    {
+        // If we don't have an internal provider ID we cannot use cache at all -
+        // we have nothing to use as a unique reproducible identifier.
+        if (! isset($this->identifier))
+            throw new RuntimeException('Cannot use caching for this provider - no unique identifier provided.');
+
+        if (! isset($this->cachePrefix))
+            $this->cachePrefix = 'provider.' . $this->identifier;
+
+        return $this->cachePrefix;
+    }
+
+    /**
+     * Determine if we can even use cache to store some data for this API credentials.
+     */
+    private function canUseCache(): bool
+    {
+        return isset($this->identifier);
+    }
+
+    /**
+     * Retrieve a collection of all regions supported by the API
+     * either from cache or from the API.
+     */
+    private function retrieveAllRegions(): RegionCollection
+    {
+        if (! $this->canUseCache())
+            return $this->getAllRegionsFromApi();
+
+        return Cache::remember(
+            $this->cacheKey('all-regions'),
+            self::REGIONS_CACHE_TTL,
+            fn() => $this->getAllRegionsFromApi()
+        );
+    }
+
+    /**
+     * Retrieve a collection of all sizes supported by the API
+     * either from cache or from the API.
+     */
+    private function retrieveAllSizes(): SizeCollection
+    {
+        if (! $this->canUseCache())
+            return $this->getAllSizesFromApi();
+
+        return Cache::remember(
+            $this->cacheKey('all-sizes'),
+            self::SIZES_CACHE_TTL,
+            fn() => $this->getAllSizesFromApi()
+        );
+    }
 
     /**
      * Send a GET request to a relative path with provided parameters.
@@ -50,8 +139,38 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     /**
      * Get a config value for this provider using standard dot-notation.
      */
-    protected function config(string $key): mixed
+    protected function config(string $key, mixed $default = null): mixed
     {
-        return config('providers.list.' . $this->configKey . '.' . $key);
+        return config('providers.list.' . $this->configKey . '.' . $key, $default);
+    }
+
+    /**
+     * Get a properly prefixed cache key for some parameter related to this specific server provider API credentials.
+     */
+    protected function cacheKey(string $key): string
+    {
+        return $this->getCachePrefix() . '.' . $key;
+    }
+
+    /**
+     * Get a collection of all regions supported by the API using caching.
+     */
+    public function getAllRegions(): RegionCollection
+    {
+        if (! isset($this->allRegions))
+            $this->allRegions = $this->retrieveAllRegions();
+
+        return $this->allRegions;
+    }
+
+    /**
+     * Get a collection of all sizes supported by the API using caching.
+     */
+    public function getAllSizes(): SizeCollection
+    {
+        if (! isset($this->allSizes))
+            $this->allSizes = $this->retrieveAllSizes();
+
+        return $this->allSizes;
     }
 }
