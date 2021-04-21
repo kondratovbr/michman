@@ -5,10 +5,19 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
-@props(['data', 'name', 'placeholder' => ' ', 'emptyOptionsMessage' => ' '])
+@props(['data', 'name', 'placeholder' => ' ', 'emptyOptionsMessage' => ' ', 'wireModel', 'defer' => false])
 
 <div
-    x-data="searchSelect({ @alpine($name, $data, $placeholder, $emptyOptionsMessage) })"
+    x-data="searchSelect({
+        @alpine($name, $data, $placeholder, $emptyOptionsMessage),
+        @isset($wireModel)
+            @if($defer)
+                value: @entangle($wireModel).defer,
+            @else
+                value: @entangle($wireModel),
+            @endif
+        @endisset
+    })"
     x-init="init()"
     x-on:click.away="closeListbox(false)"
     x-on:keydown.escape="closeListbox()"

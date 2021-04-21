@@ -5,10 +5,19 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
-@props(['data', 'name', 'placeholder' => ' '])
+@props(['data', 'name', 'placeholder' => ' ', 'wireModel', 'defer' => false])
 
 <div
-    x-data="select({ @alpine($data, $name, $placeholder) })"
+    x-data="select({
+        @alpine($data, $name, $placeholder),
+        @isset($wireModel)
+            @if($defer)
+                value: @entangle($wireModel).defer,
+            @else
+                value: @entangle($wireModel),
+            @endif
+        @endisset
+    })"
     x-init="init()"
     x-on:click.away="closeListbox(false)"
     x-on:keydown.escape="closeListbox()"
@@ -29,7 +38,6 @@
         {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
 {{--            aria-labelledby="listbox-label"--}}
         aria-haspopup="listbox"
-
         x-on:keydown.enter.stop.prevent="selectOption()"
         x-on:keydown.arrow-up.prevent="focusPreviousOption()"
         x-on:keydown.arrow-down.prevent="focusNextOption()"
