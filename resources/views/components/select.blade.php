@@ -8,7 +8,7 @@
     {{-- Activation button --}}
     <button
         class="{{ classes(
-            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-pointer',
+            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-pointer select-none',
             'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
             'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
             'transition duration-quick ease-in-out',
@@ -28,14 +28,14 @@
     >
         {{-- Name of a currently chosen option or a placeholder --}}
         <div
-            class="w-full h-full min-h-6-em truncate text-left"
+            class="w-full h-full min-h-6-em truncate text-left pointer-events-none select-none"
 {{--            x-show="! open"--}}
             x-text="value in options ? options[value] : placeholder"
             x-bind:class="{ 'text-gray-500': !(value in options) }"
         ></div>
 
         {{-- Icon for the activation button --}}
-        <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none">
+        <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none select-none">
             <x-heroicons.solid.selector
                 class="w-5 h-5 text-gray-400"
                 x-bind:class="{

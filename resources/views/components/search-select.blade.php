@@ -17,7 +17,7 @@
     {{-- Activation button --}}
     <button
         class="{{ classes(
-            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-pointer',
+            'relative w-full py-2 pl-3 pr-10 rounded-md cursor-pointer select-none',
             'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
             'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
             'transition duration-quick ease-in-out',
@@ -32,7 +32,7 @@
     >
         {{-- Name of a currently chosen option or a placeholder --}}
         <div
-            class="w-full h-full min-h-6-em truncate text-left"
+            class="w-full h-full min-h-6-em truncate text-left select-none"
             x-show="! open"
             x-text="value in options ? options[value] : placeholder"
             x-bind:class="{ 'text-gray-500': !(value in options) }"
@@ -48,11 +48,10 @@
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.prevent="focusNextOption()"
             x-on:keydown.tab="closeListbox()"
-            type="search"
         />
 
         {{-- Icon for the activation button --}}
-        <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none">
+        <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none select-none">
             <x-heroicons.solid.selector
                 class="w-5 h-5 text-gray-400"
                 x-bind:class="{
@@ -126,7 +125,7 @@
             </template>
 
             <div
-                class="px-3 py-2 text-gray-900 cursor-pointer select-none"
+                class="px-3 py-2 text-gray-300 cursor-default select-none"
                 x-show="! Object.keys(options).length"
                 x-text="emptyOptionsMessage"
             ></div>
