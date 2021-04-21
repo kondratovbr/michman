@@ -10,7 +10,7 @@
 <div
     x-data="searchSelect({ @alpine($name, $data, $placeholder, $emptyOptionsMessage) })"
     x-init="init()"
-    x-on:click.away="closeListbox()"
+    x-on:click.away="closeListbox(false)"
     x-on:keydown.escape="closeListbox()"
     class="relative"
 >

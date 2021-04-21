@@ -9,7 +9,7 @@ export default (config) => { return {
     search: '',
     value: config.value,
 
-    closeListbox: function () {
+    closeListbox: function (keepFocus = true) {
         this.open = false
         this.focusedOptionIndex = null
         // If we do it immediately then you can notice
@@ -18,9 +18,10 @@ export default (config) => { return {
             this.search = ''
         }, 150)
         // Keep focus on the activation button after the list is closed.
-        this.$nextTick(() => {
-            this.$refs.button.focus()
-        })
+        if (keepFocus)
+            this.$nextTick(() => {
+                this.$refs.button.focus()
+            })
     },
 
     focusNextOption: function () {
@@ -77,7 +78,7 @@ export default (config) => { return {
             return this.toggleListboxVisibility()
 
         this.value = Object.keys(this.options)[this.focusedOptionIndex]
-        this.closeListbox()
+        this.closeListbox(false)
     },
 
     toggleListboxVisibility: function () {
