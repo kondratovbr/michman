@@ -124,6 +124,7 @@
                 </li>
             </template>
 
+            {{-- A message shown if no results found for a given search string --}}
             <div
                 class="px-3 py-2 text-gray-300 cursor-default select-none"
                 x-show="! Object.keys(options).length"
