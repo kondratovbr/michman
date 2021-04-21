@@ -1,3 +1,6 @@
+{{--TODO: IMPORTANT! The thing should show a message and a button/link to add a provider if the user has none.--}}
+{{--TODO: IMPORTANT! The "disabled" parameter should depend on if the user has a corresponding credentials added, not like now.--}}
+
 <x-form-section submit="store">
 
     <x-slot name="title">
