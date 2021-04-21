@@ -5,24 +5,10 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
+@props(['data', 'name', 'placeholder' => ' ', 'emptyOptionsMessage' => ' '])
+
 <div
-    x-data="searchSelect({
-        data: {
-            'au': 'Australia',
-            'be': 'Belgium',
-            'cn': 'China',
-            'fr': 'France',
-            'de': 'Germany',
-            'it': 'Italy',
-            'mx': 'Mexico',
-            'es': 'Spain',
-            'tr': 'Turkey',
-            'gb': 'United Kingdom',
-        },
-        emptyOptionsMessage: 'No countries match your search.',
-        name: 'country',
-        placeholder: ' '
-    })"
+    x-data="searchSelect({ @alpine($name, $data, $placeholder, $emptyOptionsMessage) })"
     x-init="init()"
     x-on:click.away="closeListbox()"
     x-on:keydown.escape="closeListbox()"

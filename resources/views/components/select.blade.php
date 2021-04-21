@@ -1,20 +1,5 @@
 <div
-    x-data="select({
-        data: {
-            'au': 'Australia',
-            'be': 'Belgium',
-            'cn': 'China',
-            'fr': 'France',
-            'de': 'Germany',
-            'it': 'Italy',
-            'mx': 'Mexico',
-            'es': 'Spain',
-            'tr': 'Turkey',
-            'gb': 'United Kingdom',
-        },
-        name: 'country',
-        placeholder: ' '
-    })"
+    x-data="select({ @alpine($data, $name, $placeholder) })"
     x-init="init()"
     x-on:click.away="closeListbox()"
     x-on:keydown.escape="closeListbox()"
