@@ -55,7 +55,7 @@ export default (config) => { return {
     },
 
     init: function () {
-        this.options = this.data
+        this.options = this.data ?? []
 
         if (! (this.value in this.options))
             this.value = null
