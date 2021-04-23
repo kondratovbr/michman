@@ -1,4 +1,4 @@
-@props(['name', 'id', 'options' => []])
+@props(['name', 'id', 'options' => [], 'placeholder' => ' '])
 
 <div
     class="relative"
@@ -29,16 +29,11 @@
         },
 }"
     x-init="$refs.select.selectedIndex = -1"
-    x-on:click.away="open = false"
-    x-on:keydown.escape="open = false; $refs.button.focus()"
+    x-on:click.away="open = false; focusedOptionIndex = null"
+    x-on:keydown.escape="open = false; focusedOptionIndex = null; $refs.button.focus()"
 >
-
-    <x-buttons.secondary
-        x-on:click.prevent="console.log($refs.select.options)"
-    >Help me!</x-buttons.secondary>
-
     <select
-{{--        class="hidden"--}}
+        class="hidden"
         name="{{ $name }}"
         id="{{ $id ?? $name }}"
         {{ $attributes->wire('model') }}
@@ -72,11 +67,27 @@
         x-on:keydown.arrow-up.prevent="focusPreviousOption()"
         x-on:keydown.arrow-down.prevent="focusNextOption()"
         x-on:keydown.enter.stop.prevent="selectOption()"
+        x-on:keydown.tab="open = false; focusedOptionIndex = null"
     >
         <div
             class="w-full h-full min-h-6-em truncate text-left pointer-events-none select-none"
-            x-text="$refs.select.selectedIndex >= 0 ? $refs.select.options[$refs.select.selectedIndex].text : 'Placeholder!'"
+            x-text="
+                $refs.select.selectedIndex >= 0
+                    ? $refs.select.options[$refs.select.selectedIndex].text
+                    : '{{ $placeholder }}'
+            "
+            x-bind:class="{ 'text-gray-500': $refs.select.selectedIndex < 0 }"
         ></div>
+
+        <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none select-none">
+            <x-heroicons.solid.selector
+                class="w-5 h-5 text-gray-400"
+                x-bind:class="{
+                    'text-gray-400' : ! open,
+                    'text-gray-300' : open,
+                }"
+            />
+        </span>
     </button>
 
     <div
@@ -96,15 +107,14 @@
                 <li
                     class="{{ classes(
                         'relative py-2 pl-3 pr-9 cursor-pointer select-none',
-                        'text-gray-100',
                     ) }}"
                     x-bind:id="'{{ $name }}' + '-option-' + (index - 1)"
                     x-on:mouseenter="focusedOptionIndex = index - 1"
                     x-on:mouseleave="focusedOptionIndex = null"
                     x-on:click="selectOption()"
                     x-bind:class="{
-                        'text-gray-300 bg-navy-500': index - 1 === focusedOptionIndex,
-                        'text-gray-100': index - 1 !== focusedOptionIndex
+                        'text-gray-100 bg-navy-500': index - 1 === focusedOptionIndex,
+                        'text-gray-200': index - 1 !== focusedOptionIndex,
                     }"
                     role="option"
                     tabindex="-1"
@@ -113,7 +123,16 @@
                         class="block truncate"
                         x-text="$refs.select.options[index - 1].text"
                     ></span>
-                    <span></span>
+
+                    <span
+                        class="absolute inset-y-0 right-0 items-center pr-4"
+                        x-bind:class="{
+                            'flex': index - 1 === $refs.select.selectedIndex,
+                            'hidden': index - 1 !== $refs.select.selectedIndex,
+                        }"
+                    >
+                        <x-icon><i class="fas fa-check"></i></x-icon>
+                    </span>
                 </li>
             </template>
         </ul>
