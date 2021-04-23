@@ -18,4 +18,12 @@ trait HasModelHelpers
     {
         return (new static)->getTable();
     }
+
+    /**
+     * Get the name of a DB column used as a primary key.
+     */
+    public static function keyName(): string
+    {
+        return (new static)->getKey();
+    }
 }
