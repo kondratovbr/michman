@@ -1,29 +1,21 @@
-{{--TODO: Does it need something changed for smaller screens?--}}
-{{--TODO: IMPORTANT! Make sure it us usable on touch.--}}
-{{--TODO: Google some a11y guide for such menus and make sure we're alright.
-          Also, check out:
-          https://www.w3.org/TR/wai-aria-practices/#Listbox
-          https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
-
-@props(['name', 'data' => [], 'placeholder' => ' ', 'wireModel', 'defer' => false])
+@props(['name', 'options' => [], 'placeholder' => ' ', 'wireModelChangedEvent', 'wireOptionsChangedEvent', 'labelId'])
 
 <div
-    x-data="select({
-        @alpine($data, $name, $placeholder),
-        @isset($wireModel)
-            @if($defer)
-                value: @entangle($wireModel).defer,
-            @else
-                value: @entangle($wireModel),
-            @endif
-        @endisset
+    class="relative"
+    x-data="selectProper({
+        @alpine($options, $name, $placeholder),
+        @if($attributes->wire('model') != '')
+            'wireModel': '{{ $attributes->wire('model')->value() }}',
+            'wireEvent': '{{ $wireModelChangedEvent ?? $attributes->wire('model')->value() . '-changed' }}',
+            @isset($wireOptionsChangedEvent)
+                'wireOptionsEvent': '{{ $wireOptionsChangedEvent }}',
+            @endisset
+        @endif
     })"
     x-init="init()"
     x-on:click.away="closeListbox(false)"
     x-on:keydown.escape="closeListbox()"
-    class="relative"
 >
-    search-select
     {{-- Activation button --}}
     <button
         class="{{ classes(
@@ -36,8 +28,9 @@
         x-ref="button"
         x-on:click.prevent="toggleListboxVisibility()"
         x-bind:aria-expanded="open"
-        {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
-{{--            aria-labelledby="listbox-label"--}}
+        @isset($labelId)
+            aria-labelledby="{{ $labelId }}"
+        @endisset
         aria-haspopup="listbox"
         x-on:keydown.enter.stop.prevent="selectOption()"
         x-on:keydown.arrow-up.prevent="focusPreviousOption()"
@@ -47,7 +40,6 @@
         {{-- Name of a currently chosen option or a placeholder --}}
         <div
             class="w-full h-full min-h-6-em truncate text-left pointer-events-none select-none"
-{{--            x-show="! open"--}}
             x-text="value in options ? options[value] : placeholder"
             x-bind:class="{ 'text-gray-500': !(value in options) }"
         ></div>
@@ -83,15 +75,16 @@
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.prevent="focusNextOption()"
             role="listbox"
-            {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
-{{--            aria-labelledby="listbox-label"--}}
+            @isset($labelId)
+                aria-labelledby="{{ $labelId }}"
+            @endisset
             x-bind:aria-activedescendant="focusedOptionIndex ? name + 'Option' + focusedOptionIndex : null"
             tabindex="-1"
         >
             <template x-for="(key, index) in Object.keys(options)" :key="index">
                 <li
                     class="relative py-2 pl-3 pr-9 cursor-pointer select-none"
-                    x-bind:id="name + 'Option' + focusedOptionIndex"
+                    x-bind:id="name + 'Option' + index"
                     x-on:click="selectOption()"
                     x-on:mouseenter="focusedOptionIndex = index"
                     x-on:mouseleave="focusedOptionIndex = null"

@@ -5,11 +5,11 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
-@props(['name', 'data' => [], 'placeholder' => ' ', 'wireModel', 'defer' => false])
+@props(['name', 'data' => [], 'placeholder' => ' ', 'emptyOptionsMessage' => ' ', 'wireModel', 'defer' => false])
 
 <div
-    x-data="select({
-        @alpine($data, $name, $placeholder),
+    x-data="searchSelect({
+        @alpine($data, $name, $placeholder, $emptyOptionsMessage),
         @isset($wireModel)
             @if($defer)
                 value: @entangle($wireModel).defer,
@@ -23,7 +23,6 @@
     x-on:keydown.escape="closeListbox()"
     class="relative"
 >
-    search-select
     {{-- Activation button --}}
     <button
         class="{{ classes(
@@ -39,18 +38,26 @@
         {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
 {{--            aria-labelledby="listbox-label"--}}
         aria-haspopup="listbox"
-        x-on:keydown.enter.stop.prevent="selectOption()"
-        x-on:keydown.arrow-up.prevent="focusPreviousOption()"
-        x-on:keydown.arrow-down.prevent="focusNextOption()"
-        x-on:keydown.tab="closeListbox()"
     >
         {{-- Name of a currently chosen option or a placeholder --}}
         <div
-            class="w-full h-full min-h-6-em truncate text-left pointer-events-none select-none"
-{{--            x-show="! open"--}}
+            class="w-full h-full min-h-6-em truncate text-left select-none"
+            x-show="! open"
             x-text="value in options ? options[value] : placeholder"
             x-bind:class="{ 'text-gray-500': !(value in options) }"
         ></div>
+
+        {{-- Input box for searching --}}
+        <input
+            class="w-full h-full min-h-6-em p-0 border-none bg-transparent focus:outline-none focus:ring-transparent"
+            x-ref="search"
+            x-show="open"
+            x-model="search"
+            x-on:keydown.enter.stop.prevent="selectOption()"
+            x-on:keydown.arrow-up.prevent="focusPreviousOption()"
+            x-on:keydown.arrow-down.prevent="focusNextOption()"
+            x-on:keydown.tab="closeListbox()"
+        />
 
         {{-- Icon for the activation button --}}
         <span class="absolute inset-y-0 right-0 ml-3 flex items-center pr-2 pointer-events-none select-none">
@@ -62,6 +69,7 @@
                 }"
             />
         </span>
+
     </button>
 
     {{-- Dropdown menu --}}
@@ -77,7 +85,7 @@
         x-transition:leave-end="transform opacity-0 scale-95"
     >
         <ul
-            class="py-1 w-full max-h-60 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
+            class="py-1 w-full max-h-60 overflow-auto text-base leading-6 focus:outline-none"
             x-ref="listbox"
             x-on:keydown.enter.stop.prevent="selectOption()"
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
@@ -124,6 +132,13 @@
                     </span>
                 </li>
             </template>
+
+            {{-- A message shown if no results found for a given search string --}}
+            <div
+                class="px-3 py-2 text-gray-300 cursor-default select-none"
+                x-show="! Object.keys(options).length"
+                x-text="emptyOptionsMessage"
+            ></div>
         </ul>
     </div>
 

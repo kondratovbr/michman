@@ -1,15 +1,22 @@
 export default (config) => { return {
     data: config.data,
+    emptyOptionsMessage: config.emptyOptionsMessage ?? 'No results match your search.',
     focusedOptionIndex: null,
     name: config.name,
     open: false,
     options: {},
     placeholder: config.placeholder ?? 'Select an option',
+    search: '',
     value: config.value,
 
     closeListbox: function (keepFocus = true) {
         this.open = false
         this.focusedOptionIndex = null
+        // If we do it immediately then you can notice
+        // how search box clears before value/placeholder is shown.
+        setTimeout(() => {
+            this.search = ''
+        }, 150)
         // Keep focus on the activation button after the list is closed.
         if (keepFocus)
             this.$nextTick(() => {
@@ -52,6 +59,18 @@ export default (config) => { return {
 
         if (! (this.value in this.options))
             this.value = null
+
+        this.$watch('search', ((value) => {
+            if (!this.open || !value)
+                return this.options = this.data
+
+            this.options = Object.keys(this.data)
+                .filter((key) => this.data[key].toLowerCase().includes(value.toLowerCase()))
+                .reduce((options, key) => {
+                    options[key] = this.data[key]
+                    return options
+                }, {})
+        }))
     },
 
     selectOption: function () {
@@ -59,7 +78,6 @@ export default (config) => { return {
             return this.toggleListboxVisibility()
 
         this.value = Object.keys(this.options)[this.focusedOptionIndex]
-
         this.closeListbox(false)
     },
 
@@ -77,6 +95,7 @@ export default (config) => { return {
         this.open = true
 
         this.$nextTick(() => {
+            this.$refs.search.focus()
             this.$refs.listbox.children[this.focusedOptionIndex].scrollIntoView({
                 block: "start",
                 behavior: "smooth"

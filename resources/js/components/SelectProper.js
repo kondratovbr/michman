@@ -1,11 +1,15 @@
 export default (config) => { return {
-    data: config.data,
+    providedOptions: config.options,
+    //data: config.options,
     focusedOptionIndex: null,
     name: config.name,
     open: false,
     options: {},
-    placeholder: config.placeholder ?? 'Select an option',
+    placeholder: config.placeholder ?? ' ',
     value: config.value,
+    wireModel: config.wireModel ?? null,
+    wireEvent: config.wireEvent ?? null,
+    wireOptionsEvent: config.wireOptionsEvent ?? null,
 
     closeListbox: function (keepFocus = true) {
         this.open = false
@@ -48,17 +52,43 @@ export default (config) => { return {
     },
 
     init: function () {
-        this.options = this.data ?? []
+        // Set up the component to listen for value changes from the Livewire side
+        if (this.wireModel != null) {
+            // Update the value in Alpine when it is changed by Livewire
+            if (this.wireEvent != null) {
+                this.$wire.on(this.wireEvent, (value) => {
+                    console.log('Handling value changed event from Livewire')
+                    this.value = value
+                })
+            }
+            // Re-initialize the component when Livewire changes the options provided
+            if (this.wireOptionsEvent != null) {
+                this.$wire.on(this.wireOptionsEvent, () => {
+                    console.log('Re-initializing select, new data')
+                    console.log(this.providedOptions)
+                    this.options = this.providedOptions ?? []
+                    this.value = null
+                })
+            }
+        }
+
+        this.options = this.providedOptions ?? []
 
         if (! (this.value in this.options))
             this.value = null
     },
 
-    selectOption: function () {
-        if (! this.open)
-            return this.toggleListboxVisibility()
+    selectOption: function (value = null) {
+        if (! this.open) {
+            this.toggleListboxVisibility()
+            return
+        }
 
         this.value = Object.keys(this.options)[this.focusedOptionIndex]
+
+        // This integrates the component with Livewire
+        if (this.wireModel != null)
+            this.$wire.set(this.wireModel, this.value)
 
         this.closeListbox(false)
     },

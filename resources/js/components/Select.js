@@ -59,6 +59,7 @@ export default (config) => { return {
             return this.toggleListboxVisibility()
 
         this.value = Object.keys(this.options)[this.focusedOptionIndex]
+
         this.closeListbox(false)
     },
 
@@ -82,4 +83,8 @@ export default (config) => { return {
             })
         })
     },
+
+    selectedValue: function () {
+        return this.value;
+    }
 }}

@@ -5,18 +5,19 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
-@props(['data', 'name', 'placeholder' => ' ', 'wireModel', 'defer' => false])
+@props(['name', 'data' => [], 'placeholder' => ' ', 'wireModel', 'defer' => false])
 
 <div
+    wire:model="{{ $wireModel }}"
     x-data="select({
         @alpine($data, $name, $placeholder),
-        @isset($wireModel)
-            @if($defer)
-                value: @entangle($wireModel).defer,
-            @else
-                value: @entangle($wireModel),
-            @endif
-        @endisset
+{{--        @isset($wireModel)--}}
+{{--            @if($defer)--}}
+{{--                value: @entangle($wireModel).defer,--}}
+{{--            @else--}}
+{{--                value: @entangle($wireModel),--}}
+{{--            @endif--}}
+{{--        @endisset--}}
     })"
     x-init="init()"
     x-on:click.away="closeListbox(false)"
@@ -38,7 +39,7 @@
         {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
 {{--            aria-labelledby="listbox-label"--}}
         aria-haspopup="listbox"
-        x-on:keydown.enter.stop.prevent="selectOption()"
+        x-on:keydown.enter.stop.prevent="selectOption(); $dispatch('input', selectedValue())"
         x-on:keydown.arrow-up.prevent="focusPreviousOption()"
         x-on:keydown.arrow-down.prevent="focusNextOption()"
         x-on:keydown.tab="closeListbox()"
@@ -78,7 +79,7 @@
         <ul
             class="py-1 w-full max-h-60 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
             x-ref="listbox"
-            x-on:keydown.enter.stop.prevent="selectOption()"
+            x-on:keydown.enter.stop.prevent="selectOption(); $dispatch('input', selectedValue())"
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.prevent="focusNextOption()"
             role="listbox"
@@ -91,7 +92,7 @@
                 <li
                     class="relative py-2 pl-3 pr-9 cursor-pointer select-none"
                     x-bind:id="name + 'Option' + focusedOptionIndex"
-                    x-on:click="selectOption()"
+                    x-on:click="selectOption(); $dispatch('input', selectedValue())"
                     x-on:mouseenter="focusedOptionIndex = index"
                     x-on:mouseleave="focusedOptionIndex = null"
                     x-bind:aria-selected="focusedOptionIndex === index"
