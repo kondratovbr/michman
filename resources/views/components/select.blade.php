@@ -13,16 +13,28 @@
         open: false,
         focusedOptionIndex: null,
         focusNextOption: function () {
-            if (this.focusedOptionIndex === null)
-                return this.focusedOptionIndex = 0;
-            if (this.focusedOptionIndex < this.$refs.select.length - 1)
-                return this.focusedOptionIndex++;
+            if (this.focusedOptionIndex === null) {
+                this.focusedOptionIndex = 0;
+                this.scrollToFocusedOption();
+                return;
+            }
+            if (this.focusedOptionIndex < this.$refs.select.length - 1) {
+                this.focusedOptionIndex++;
+                this.scrollToFocusedOption();
+                return;
+            }
         },
         focusPreviousOption: function () {
-            if (this.focusedOptionIndex === null)
-                return this.focusedOptionIndex = this.$refs.select.length - 1;
-            if (this.focusedOptionIndex > 0)
-                return this.focusedOptionIndex--;
+            if (this.focusedOptionIndex === null) {
+                this.focusedOptionIndex = this.$refs.select.length - 1;
+                this.scrollToFocusedOption();
+                return;
+            }
+            if (this.focusedOptionIndex > 0) {
+                this.focusedOptionIndex--;
+                this.scrollToFocusedOption();
+                return;
+            }
         },
         selectOption: function () {
             this.$refs.select.selectedIndex = this.focusedOptionIndex;
@@ -33,6 +45,12 @@
             @endif
             this.open = false;
             this.focusedOptionIndex = null;
+        },
+        scrollToFocusedOption: function () {
+            this.$refs.listbox.children[this.focusedOptionIndex].scrollIntoView({
+                block: 'start',
+                behavior: 'smooth',
+            });
         },
     }"
     @if(! $default)
