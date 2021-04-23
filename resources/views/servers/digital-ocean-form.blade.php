@@ -8,6 +8,7 @@
         <x-label>API Credentials</x-label>
         <x-select
             :options="$providers"
+            :default="Arr::first($providers)"
             name="provider_id"
             wire:model="state.provider_id"
             placeholder="Select API credentials"
