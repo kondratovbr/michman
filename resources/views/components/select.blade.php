@@ -5,7 +5,7 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
-@props(['name', 'id', 'options' => [], 'default' => null, 'placeholder' => ' ', 'labelId'])
+@props(['name', 'id', 'options' => [], 'default' => false, 'placeholder' => ' ', 'labelId'])
 
 <div
     class="relative"
@@ -34,9 +34,8 @@
             this.open = false;
             this.focusedOptionIndex = null;
         },
-}"
-    {{-- If there's no default value provided - we'll make sure to deselect whatever is selected by default by the browser. --}}
-    @if(! isset($default))
+    }"
+    @if(! $default)
         x-init="$refs.select.selectedIndex = -1"
     @endif
     x-on:click.away="open = false; focusedOptionIndex = null"
@@ -51,12 +50,7 @@
         x-ref="select"
     >
         @foreach($options as $value => $valueString)
-            <option
-                value="{{ $value }}"
-                @if($value === $default)
-                    selected
-                @endif
-            >{{ $valueString }}</option>
+            <option value="{{ $value }}">{{ $valueString }}</option>
         @endforeach
     </select>
 
