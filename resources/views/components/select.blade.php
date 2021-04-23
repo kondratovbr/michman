@@ -46,6 +46,28 @@
             this.open = false;
             this.focusedOptionIndex = null;
         },
+        closeListbox: function (keepFocus = false) {
+            this.open = false;
+            this.focusedIndexOption = null;
+            if (keepFocus)
+                $refs.buttons.focus()
+        },
+        toggleListbox: function () {
+            if (this.open) {
+                this.open = false;
+                this.focusedOptionIndex = null;
+                return;
+            }
+
+            this.open = true;
+            this.focusedOptionIndex = this.$refs.select.selectedIndex;
+            if (this.focusedOptionIndex < 0)
+                this.focusedOptionIndex = 0;
+            this.$nextTick(() => {
+                this.$refs.search.focus();
+                this.scrollToFocusedOption();
+            });
+        },
         scrollToFocusedOption: function () {
             this.$refs.listbox.children[this.focusedOptionIndex].scrollIntoView({
                 block: 'start',
@@ -56,8 +78,8 @@
     @if(! $default)
         x-init="$refs.select.selectedIndex = -1"
     @endif
-    x-on:click.away="open = false; focusedOptionIndex = null"
-    x-on:keydown.escape="open = false; focusedOptionIndex = null; $refs.button.focus()"
+    x-on:click.away="closeListbox()"
+    x-on:keydown.escape="closeListbox(true)"
 >
     {{-- Hidden select for keeping the state and interacting with Livewire --}}
     <select
@@ -82,19 +104,9 @@
         ) }}"
         type="button"
         x-ref="button"
-        x-on:click.prevent="
-            if (! open) {
-                open = true
-                focusedOptionIndex = $refs.select.selectedIndex
-                if (focusedOptionIndex < 0)
-                    focusedOptionIndex = 0
-            } else {
-                open = false
-                focusedOptionIndex = null
-            }
-        "
-        x-on:keydown.arrow-up.prevent="focusPreviousOption()"
-        x-on:keydown.arrow-down.prevent="focusNextOption()"
+        x-on:click.prevent="toggleListbox()"
+        x-on:keydown.arrow-up.stop.prevent="focusPreviousOption()"
+        x-on:keydown.arrow-down.stop.prevent="focusNextOption()"
         x-on:keydown.enter.stop.prevent="selectOption()"
         x-on:keydown.tab="open = false; focusedOptionIndex = null"
         aria-haspopup="listbox"
@@ -143,8 +155,8 @@
             class="py-1 w-full max-h-64 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
             x-ref="listbox"
             x-on:keydown.enter.stop.prevent="selectOption()"
-            x-on:keydown.arrow-up.prevent="focusPreviousOption()"
-            x-on:keydown.arrow-down.prevent="focusNextOption()"
+            x-on:keydown.arrow-up.stop.prevent="focusPreviousOption()"
+            x-on:keydown.arrow-down.stop.prevent="focusNextOption()"
             tabindex="-1"
             role="listbox"
             @isset($labelId)
