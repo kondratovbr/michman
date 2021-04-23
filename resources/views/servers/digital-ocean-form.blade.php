@@ -1,9 +1,5 @@
 <div class="space-y-6">
 
-{{--    @dump($providers, $foobar)--}}
-
-    <p>Livewire provider_id: {{ $state['provider_id'] }}</p>
-
     <x-field wire:key="provider_id">
         <x-label>API Credentials</x-label>
         <x-select
