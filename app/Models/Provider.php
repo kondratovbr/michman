@@ -55,6 +55,8 @@ class Provider extends AbstractModel
      */
     public function api(): ServerProviderInterface
     {
+        // We're caching an instance of ServerProviderInterface for this model,
+        // so it doesn't get made multiple times.
         if (! isset($this->api)) {
             $this->api = App::make(
                 $this->provider,
