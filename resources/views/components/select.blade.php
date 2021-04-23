@@ -5,25 +5,53 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
-@props(['name', 'data' => [], 'placeholder' => ' ', 'wireModel', 'defer' => false])
+@props(['name', 'id', 'options' => [], 'placeholder' => ' ', 'labelId'])
 
 <div
-    wire:model="{{ $wireModel }}"
-    x-data="select({
-        @alpine($data, $name, $placeholder),
-{{--        @isset($wireModel)--}}
-{{--            @if($defer)--}}
-{{--                value: @entangle($wireModel).defer,--}}
-{{--            @else--}}
-{{--                value: @entangle($wireModel),--}}
-{{--            @endif--}}
-{{--        @endisset--}}
-    })"
-    x-init="init()"
-    x-on:click.away="closeListbox(false)"
-    x-on:keydown.escape="closeListbox()"
     class="relative"
+    x-data="{
+        open: false,
+        focusedOptionIndex: null,
+        focusNextOption: function () {
+            if (this.focusedOptionIndex === null)
+                return this.focusedOptionIndex = 0;
+            if (this.focusedOptionIndex < this.$refs.select.length - 1)
+                return this.focusedOptionIndex++;
+        },
+        focusPreviousOption: function () {
+            if (this.focusedOptionIndex === null)
+                return this.focusedOptionIndex = this.$refs.select.length - 1;
+            if (this.focusedOptionIndex > 0)
+                return this.focusedOptionIndex--;
+        },
+        selectOption: function () {
+            this.$refs.select.selectedIndex = this.focusedOptionIndex;
+            {{-- Livewire doesn't get the update event if the value was changed from JS,
+                     so we have to manually send the value to its backend.--}}
+            @if($attributes->wire('model')->value())
+                this.$wire.set('{{ $attributes->wire('model')->value() }}', this.$refs.select.value);
+            @endif
+            this.open = false;
+            this.focusedOptionIndex = null;
+        },
+}"
+    x-init="$refs.select.selectedIndex = -1"
+    x-on:click.away="open = false; focusedOptionIndex = null"
+    x-on:keydown.escape="open = false; focusedOptionIndex = null; $refs.button.focus()"
 >
+    {{-- Hidden select for keeping the state and interacting with Livewire --}}
+    <select
+        class="hidden"
+        name="{{ $name }}"
+        id="{{ $id ?? $name }}"
+        {{ $attributes->wire('model') }}
+        x-ref="select"
+    >
+        @foreach($options as $value => $valueString)
+            <option value="{{ $value }}">{{ $valueString }}</option>
+        @endforeach
+    </select>
+
     {{-- Activation button --}}
     <button
         class="{{ classes(
@@ -34,22 +62,36 @@
         ) }}"
         type="button"
         x-ref="button"
-        x-on:click.prevent="toggleListboxVisibility()"
-        x-bind:aria-expanded="open"
-        {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
-{{--            aria-labelledby="listbox-label"--}}
-        aria-haspopup="listbox"
-        x-on:keydown.enter.stop.prevent="selectOption(); $dispatch('input', selectedValue())"
+        x-on:click.prevent="
+            if (! open) {
+                open = true
+                focusedOptionIndex = $refs.select.selectedIndex
+                if (focusedOptionIndex < 0)
+                    focusedOptionIndex = 0
+            } else {
+                open = false
+                focusedOptionIndex = null
+            }
+        "
         x-on:keydown.arrow-up.prevent="focusPreviousOption()"
         x-on:keydown.arrow-down.prevent="focusNextOption()"
-        x-on:keydown.tab="closeListbox()"
+        x-on:keydown.enter.stop.prevent="selectOption()"
+        x-on:keydown.tab="open = false; focusedOptionIndex = null"
+        aria-haspopup="listbox"
+        x-bind:aria-expanded="open"
+        @isset($labelId)
+            aria-labelledby="{{ $labelId }}"
+        @endisset
     >
         {{-- Name of a currently chosen option or a placeholder --}}
         <div
             class="w-full h-full min-h-6-em truncate text-left pointer-events-none select-none"
-{{--            x-show="! open"--}}
-            x-text="value in options ? options[value] : placeholder"
-            x-bind:class="{ 'text-gray-500': !(value in options) }"
+            x-text="
+                $refs.select.selectedIndex >= 0
+                    ? $refs.select.options[$refs.select.selectedIndex].text
+                    : '{{ $placeholder }}'
+            "
+            x-bind:class="{ 'text-gray-500': $refs.select.selectedIndex < 0 }"
         ></div>
 
         {{-- Icon for the activation button --}}
@@ -64,7 +106,7 @@
         </span>
     </button>
 
-    {{-- Dropdown menu --}}
+    {{-- Dropdown select menu container --}}
     <div
         class="absolute z-10 w-full mt-2 bg-navy-400 border border-gray-600 rounded-md shadow-lg origin-top"
         x-show="open"
@@ -76,52 +118,50 @@
         x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
     >
+        {{-- The select menu itself --}}
         <ul
-            class="py-1 w-full max-h-60 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
+            class="py-1 w-full max-h-64 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
             x-ref="listbox"
-            x-on:keydown.enter.stop.prevent="selectOption(); $dispatch('input', selectedValue())"
+            x-on:keydown.enter.stop.prevent="selectOption()"
             x-on:keydown.arrow-up.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.prevent="focusNextOption()"
-            role="listbox"
-            {{-- TODO: This is recommended to have for a11y. Should point to an ID of the label for this thing. --}}
-{{--            aria-labelledby="listbox-label"--}}
-            x-bind:aria-activedescendant="focusedOptionIndex ? name + 'Option' + focusedOptionIndex : null"
             tabindex="-1"
+            role="listbox"
+            @isset($labelId)
+                aria-labelledby="{{ $labelId }}"
+            @endisset
+            x-bind:aria-activedescendant="'{{ $name }}' + '-option-' + focusedOptionIndex"
         >
-            <template x-for="(key, index) in Object.keys(options)" :key="index">
+            <template x-for="index in $refs.select.options.length" :key="index - 1">
                 <li
-                    class="relative py-2 pl-3 pr-9 cursor-pointer select-none"
-                    x-bind:id="name + 'Option' + focusedOptionIndex"
-                    x-on:click="selectOption(); $dispatch('input', selectedValue())"
-                    x-on:mouseenter="focusedOptionIndex = index"
+                    class="{{ classes(
+                        'relative py-2 pl-3 pr-9 cursor-pointer select-none',
+                    ) }}"
+                    x-bind:id="'{{ $name }}' + '-option-' + (index - 1)"
+                    x-on:mouseenter="focusedOptionIndex = index - 1"
                     x-on:mouseleave="focusedOptionIndex = null"
-                    x-bind:aria-selected="focusedOptionIndex === index"
+                    x-on:click="selectOption()"
                     x-bind:class="{
-                        'text-gray-300 bg-navy-500': index === focusedOptionIndex,
-                        'text-gray-100': index !== focusedOptionIndex
+                        'text-gray-100 bg-navy-500': focusedOptionIndex === index - 1,
+                        'text-gray-200': focusedOptionIndex !== index - 1,
                     }"
                     role="option"
+                    x-bind:aria-selected="focusedOptionIndex === index - 1"
                 >
                     {{-- Name of an option --}}
                     <span
                         class="block truncate"
-                        x-text="Object.values(options)[index]"
-                        x-bind:class="{
-                            'font-semibold': index === focusedOptionIndex,
-                            'font-normal': index !== focusedOptionIndex
-                        }"
+                        x-text="$refs.select.options[index - 1].text"
                     ></span>
 
                     {{-- Checkmark icon for a selected option --}}
                     <span
                         class="absolute inset-y-0 right-0 items-center pr-4"
                         x-bind:class="{
-                            'flex': key === value,
-                            'hidden': key !== value,
+                            'flex': index - 1 === $refs.select.selectedIndex,
+                            'hidden': index - 1 !== $refs.select.selectedIndex,
                         }"
-                    >
-                        <x-icon><i class="fas fa-check"></i></x-icon>
-                    </span>
+                    ><x-icon><i class="fas fa-check"></i></x-icon></span>
                 </li>
             </template>
         </ul>

@@ -6,7 +6,7 @@
 
     <x-field wire:key="provider_id">
         <x-label>API Credentials</x-label>
-        <x-select-new
+        <x-select
             :options="$providers"
             name="provider_id"
             wire:model="state.provider_id"
