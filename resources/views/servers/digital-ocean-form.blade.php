@@ -10,6 +10,7 @@
             :options="$providers"
             name="provider_id"
             wire:model="state.provider_id"
+            placeholder="Select API credentials"
         />
     </x-field>
 
