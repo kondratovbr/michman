@@ -13,6 +13,15 @@
         />
     </x-field>
 
+{{--     TODO: Don't forget to add an explanation here. Not everyone knows where the name will be used and even WTF is it. --}}
+    <x-field>
+        <x-label>Name</x-label>
+        <x-inputs.text
+            name="name"
+            wire:model="state.name"
+        />
+    </x-field>
+
     @isset($state['provider_id'])
         <x-field>
             <x-label>Region</x-label>
@@ -23,15 +32,18 @@
                 placeholder="Select region"
             />
         </x-field>
-    @endif
 
-{{--     TODO: Don't forget to add an explanation here. Not everyone knows where the name will be used and even WTF is it. --}}
-    <x-field>
-        <x-label>Name</x-label>
-        <x-inputs.text
-            name="name"
-            wire:model="state.name"
-        />
-    </x-field>
+        @isset($state['region'])
+            <x-field>
+                <x-label>Size</x-label>
+                <x-search-select
+                    :options="$availableSizes"
+                    name="size"
+                    wire:model="state.size"
+                    placeholder="Select size"
+                />
+            </x-field>
+        @endisset
+    @endif
 
 </div>
