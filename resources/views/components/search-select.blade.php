@@ -21,7 +21,6 @@
     x-on:click.away="closeListbox()"
     x-on:keydown.escape="closeListbox(true)"
 >
-
     {{-- Hidden select for keeping the state and interacting with Livewire --}}
     <select
         class="hidden"
