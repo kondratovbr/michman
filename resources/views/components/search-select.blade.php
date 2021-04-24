@@ -9,62 +9,96 @@
 
 <div
     class="relative"
+    x-data="searchSelect({
+        @if($attributes->wire('model')->value())
+            wireModel: '{{ $attributes->wire('model')->value() }}',
+        @endif
+    })"
+
+    {{--
     x-data="{
         open: false,
         focusedOptionIndex: null,
         search: null,
         focusNextOption: function () {
-            if (this.focusedOptionIndex === null)
-                return this.focusedOptionIndex = 0;
-            if (this.focusedOptionIndex < this.$refs.select.length - 1)
-                return this.focusedOptionIndex++;
+            if (this.focusedOptionIndex === this.$refs.select.options.length - 1)
+                return this.scrollToFocusedOption();
+
+            newIndex = this.focusedOptionIndex ?? -1;
+
+            do {
+                newIndex++;
+            } while ( ! this.optionShown(newIndex) && newIndex < this.$refs.select.length - 1);
+
+            if (this.optionShown(newIndex))
+                this.focusedOptionIndex = newIndex;
+
+            this.scrollToFocusedOption();
         },
         focusPreviousOption: function () {
-            if (this.focusedOptionIndex === null)
-                return this.focusedOptionIndex = this.$refs.select.length - 1;
-            if (this.focusedOptionIndex > 0)
-                return this.focusedOptionIndex--;
+            if (this.focusedOptionIndex === 0)
+                return this.scrollToFocusedOption();
+
+            newIndex = this.focusedOptionIndex ?? this.$refs.select.options.length;
+
+            do {
+                newIndex--;
+            } while ( ! this.optionShown(newIndex) && newIndex > 0);
+
+            if (this.optionShown(newIndex))
+                this.focusedOptionIndex = newIndex;
+
+            this.scrollToFocusedOption();
         },
-        selectOption: function () {
+        selectOption: function (keepFocus = false) {
+            if (! this.open)
+                return this.toggleListbox();
+
             this.$refs.select.selectedIndex = this.focusedOptionIndex;
-            {{-- Livewire doesn't get the update event if the value was changed from JS,
-                     so we have to manually send the value to its backend.--}}
             @if($attributes->wire('model')->value())
                 this.$wire.set('{{ $attributes->wire('model')->value() }}', this.$refs.select.value);
             @endif
-            this.open = false;
-            this.focusedOptionIndex = null;
+
+            this.closeListbox(keepFocus);
         },
         closeListbox: function (keepFocus = false) {
             this.open = false;
-            this.focusedIndexOption = null;
+            this.focusedOptionIndex = null;
             if (keepFocus)
-                $refs.buttons.focus()
+                this.$refs.button.focus()
         },
         toggleListbox: function () {
-            if (! this.open) {
-                this.open = true;
-                this.focusedOptionIndex = this.$refs.select.selectedIndex;
-                if (this.focusedOptionIndex < 0)
-                    this.focusedOptionIndex = 0;
-                this.$nextTick(() => {
-                    this.$refs.search.focus();
-                });
-            } else {
-                this.open = false;
-                this.focusedOptionIndex = null;
-            }
+            if (this.open)
+                this.closeListbox(false);
+
+            this.open = true;
+            this.focusedOptionIndex = this.$refs.select.selectedIndex;
+            if (this.focusedOptionIndex < 0)
+                this.focusedOptionIndex = 0;
+            this.$nextTick(() => {
+                this.$refs.search.focus();
+                this.scrollToFocusedOption();
+            });
         },
         optionShown: function (index) {
             return this.search === null || this.$refs.select.options[index].text.toLowerCase().includes(this.search.toLowerCase());
         },
+        scrollToFocusedOption: function () {
+            this.$refs.listbox.children[this.focusedOptionIndex + 1].scrollIntoView({
+                block: 'start',
+                behavior: 'smooth',
+            });
+        },
     }"
+    --}}
+
     @if(! $default)
-        x-init="$refs.select.selectedIndex = -1"
+        x-init="$refs.select.selectedIndex = -1;"
     @endif
     x-on:click.away="closeListbox()"
     x-on:keydown.escape="closeListbox(true)"
 >
+
     {{-- Hidden select for keeping the state and interacting with Livewire --}}
     <select
         class="hidden"
@@ -91,8 +125,8 @@
         x-on:click.prevent="toggleListbox()"
         x-on:keydown.arrow-up.stop.prevent="focusPreviousOption()"
         x-on:keydown.arrow-down.stop.prevent="focusNextOption()"
-        x-on:keydown.enter.stop.prevent="selectOption()"
-        x-on:keydown.tab="selectOption()"
+        x-on:keydown.enter.stop.prevent="selectOption(true)"
+        x-on:keydown.tab="closeListbox()"
         aria-haspopup="listbox"
         x-bind:aria-expanded="open"
         @isset($labelId)
@@ -117,7 +151,7 @@
             x-ref="search"
             x-show="open"
             x-model="search"
-            x-on:keydown.enter.stop.prevent="selectOption()"
+            x-on:keydown.enter.stop.prevent="selectOption(true)"
             x-on:keydown.arrow-up.stop.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.stop.prevent="focusNextOption()"
             x-on:keydown.tab="closeListbox()"
@@ -151,7 +185,7 @@
         <ul
             class="py-1 w-full max-h-64 overflow-auto text-base leading-6 max-h-60 focus:outline-none"
             x-ref="listbox"
-            x-on:keydown.enter.stop.prevent="selectOption()"
+            x-on:keydown.enter.stop.prevent="selectOption(true)"
             x-on:keydown.arrow-up.stop.prevent="focusPreviousOption()"
             x-on:keydown.arrow-down.stop.prevent="focusNextOption()"
             tabindex="-1"
@@ -168,8 +202,8 @@
                     ) }}"
                     x-show="optionShown(index - 1)"
                     x-bind:id="'{{ $name }}' + '-option-' + (index - 1)"
-                    x-on:mouseenter="focusedOptionIndex = index - 1"
-                    x-on:mouseleave="focusedOptionIndex = null"
+                    x-on:mouseenter="focusIndex(index - 1)"
+                    x-on:mouseleave="focusIndex(null)"
                     x-on:click="selectOption()"
                     x-bind:class="{
                         'text-gray-100 bg-navy-500': focusedOptionIndex === index - 1,
