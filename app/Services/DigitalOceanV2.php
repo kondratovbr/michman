@@ -116,10 +116,10 @@ class DigitalOceanV2 extends AbstractServerProvider
         );
     }
 
-    public function getSizesAvailableInRegion(RegionData $region): SizeCollection
+    public function getSizesAvailableInRegion(RegionData|string $region): SizeCollection
     {
         return $this->getAvailableSizes()->filter(fn(SizeData $size) =>
-            Arr::hasValue($size->regions, $region->slug)
+            Arr::hasValue($size->regions, is_string($region) ? $region : $region->slug)
         );
     }
 }

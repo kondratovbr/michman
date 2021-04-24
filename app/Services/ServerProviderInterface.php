@@ -50,6 +50,8 @@ interface ServerProviderInterface
 
     /**
      * Get a collection of sizes available for this specific API credentials in a region provided.
+     *
+     * @param RegionData|string RegionData object or a region slug.
      */
-    public function getSizesAvailableInRegion(RegionData $region): SizeCollection;
+    public function getSizesAvailableInRegion(RegionData|string $region): SizeCollection;
 }
