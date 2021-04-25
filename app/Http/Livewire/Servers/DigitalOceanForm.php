@@ -66,7 +66,7 @@ class DigitalOceanForm extends Component
     {
         $this->providers = Auth::user()->providers()
             ->where('provider', 'digital_ocean_v2')
-            ->latest()
+            ->oldest()
             ->get()
             ->pluck('name', 'id')
             ->toArray();
