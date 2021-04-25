@@ -7,7 +7,7 @@ if (! function_exists('filesize_for_humans')) {
     /**
      * Convert filesize in bytes into a human-readable formatted string with rounding.
      */
-    function filesize_for_humans_rounded(int $bytes, $precision = 2): string
+    function sizeForHumansRounded(int $bytes, $precision = 2): string
     {
         static $units = ['B','KB','MB','GB','TB','PB','EB','ZB','YB'];
         static $step = 1024;
