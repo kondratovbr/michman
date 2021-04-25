@@ -252,4 +252,12 @@ class Arr extends IlluminateArr
     {
         return static::length($array) == 0;
     }
+
+    /**
+     * Get the key of the first element of an array.
+     */
+    public static function firstKey(array $array): mixed
+    {
+        return static::first(static::keys($array));
+    }
 }

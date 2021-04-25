@@ -36,4 +36,12 @@ return [
             'name' => 'Cache Server',
         ],
     ],
+
+    'programs' => [
+        'nginx' => 'Nginx',
+        'gunicorn' => 'Gunicorn',
+        'python' => 'Python',
+        'database' => 'Database',
+        'cache' => 'Cache',
+    ],
 ];

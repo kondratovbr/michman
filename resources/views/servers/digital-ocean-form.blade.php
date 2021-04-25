@@ -7,7 +7,7 @@
         <x-label>API Credentials</x-label>
         <x-select
             :options="$providers"
-            :default="true"
+            :default="isset($state['provider_id'])"
             name="provider_id"
             wire:model="state.provider_id"
             wire:key="search-select-provider_id"
@@ -19,8 +19,8 @@
     @isset($apiErrorCode)
         {{--TODO: IMPORTANT! Make this more concise and detailed, add more explanations for different erorr codes and add a link/button to contact suport.--}}
         <x-message colors="danger">
-            <p>Something went wrong while calling DigitalOcean API.</p>
-            <p>DigitalOcean API error code: {{ $apiErrorCode }}</p>
+            <p class="max-w-prose">Something went wrong while calling DigitalOcean API.</p>
+            <p class="max-w-prose">DigitalOcean API error code: {{ $apiErrorCode }}</p>
         </x-message>
     @else
 {{--        TODO: Don't forget to add an explanation here. Not everyone knows where the name will be used and even WTF is it. --}}
@@ -37,6 +37,7 @@
                 <x-label>Region</x-label>
                 <x-search-select
                     :options="$availableRegions"
+                    :default="isset($state['region'])"
                     name="region"
                     wire:model="state.region"
                     wire:key="search-select-region-{{ $state['provider_id'] }}"
@@ -49,6 +50,7 @@
                     <x-label>Size</x-label>
                     <x-search-select
                         :options="$availableSizes"
+                        :default="isset($state['size'])"
                         name="size"
                         wire:model="state.size"
                         wire:key="search-select-size-{{ $state['region'] }}"
@@ -61,11 +63,26 @@
                         <x-label>Type</x-label>
                         <x-select
                             :options="$types"
+                            :default="true"
                             name="type"
                             wire:model="state.type"
                             wire:key="select-type-{{ $state['size'] }}"
                             placeholder="Select server type"
                         />
+                        <x-message class="mt-3">
+                            <div class="max-w-prose space-y-3">
+                                <p>
+                                    Application servers include everything you need to deploy your Python / Django application.
+                                    If you don't want to install a database, you may disable its installation below.
+                                </p>
+                                <p>The following will be installed on the server:</p>
+                                <ul class="list-disc list-outside ml-3 ">
+                                    @foreach(config('servers.types.' . $state['type'] . '.install') as $program)
+                                        <li>{{ __('servers.programs.' . $program) }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </x-message>
                     </x-field>
                 @endisset
             @endisset

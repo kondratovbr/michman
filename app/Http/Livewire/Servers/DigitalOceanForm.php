@@ -36,7 +36,7 @@ class DigitalOceanForm extends Component
     /** Current user input. */
     public array $state = [
         'provider_id' => null,
-        'server_type' => 'app',
+        'type' => 'app',
         'name' => '',
         'region' => null,
         'size' => null,
@@ -75,16 +75,41 @@ class DigitalOceanForm extends Component
             ->pluck('name', 'id')
             ->toArray();
 
-        $this->state['provider_id'] = Arr::first(Arr::keys($this->providers));
-        $this->loadApi();
-        $this->loadProviderData();
-
-        $this->state['name'] = generateRandomName();
-
         $this->types = Arr::mapAssoc(
             Arr::keys(config('servers.types')),
             fn(int $key, string $type) => new Pair($type, __('servers.types.' . $type . '.name'))
         );
+
+        $this->loadDefaults();
+    }
+
+    /**
+     * Put default values for user inputs.
+     */
+    protected function loadDefaults(): void
+    {
+        $this->state['provider_id'] = Arr::first(Arr::keys($this->providers));
+        $this->loadApi();
+        $this->loadProviderData();
+
+        // We generate the name after the first API operation,
+        // because our API error handling code resets the state on errors.
+        $this->state['name'] = generateRandomName();
+
+        if ($this->apiErrorCode) {
+            // API returned some error, so we stop and put blank values as defaults,
+            // so the user can handle it from here.
+            $this->state['provider_id'] = null;
+            $this->availableRegions = [];
+            $this->availableSizes = [];
+            $this->apiErrorCode = null;
+            return;
+        }
+
+        $this->state['region'] = Arr::firstKey($this->availableRegions);
+        $this->loadRegionData();
+
+        $this->state['size'] = Arr::firstKey($this->availableSizes);
     }
 
     /**
@@ -138,6 +163,9 @@ class DigitalOceanForm extends Component
                 'name',
                 'slug'
             );
+
+            $this->state['region'] = Arr::firstKey($this->availableRegions);
+            $this->loadRegionData();
         });
     }
 
@@ -159,6 +187,8 @@ class DigitalOceanForm extends Component
                 ]
             )]
             )->toArray();
+
+            $this->state['size'] = Arr::firstKey($this->availableSizes);
         });
     }
 
@@ -172,6 +202,7 @@ class DigitalOceanForm extends Component
         } catch (RequestException $exception) {
             $this->apiErrorCode = $exception->response->status();
             $this->reset(['state']);
+            $this->state['name'] = generateRandomName();
         }
     }
 
