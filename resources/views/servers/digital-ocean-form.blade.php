@@ -55,6 +55,19 @@
                         placeholder="Select size"
                     />
                 </x-field>
+
+                @isset($state['size'])
+                    <x-field>
+                        <x-label>Type</x-label>
+                        <x-select
+                            :options="$types"
+                            name="type"
+                            wire:model="state.type"
+                            wire:key="select-type-{{ $state['size'] }}"
+                            placeholder="Select server type"
+                        />
+                    </x-field>
+                @endisset
             @endisset
         @endisset
     @endisset

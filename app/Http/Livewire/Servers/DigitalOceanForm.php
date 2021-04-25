@@ -7,6 +7,7 @@ use App\Facades\Auth;
 use App\Services\ServerProviderInterface;
 use App\Support\Arr;
 use App\Validation\Rules;
+use Ds\Pair;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Client\RequestException;
 use Livewire\Component;
@@ -25,10 +26,12 @@ class DigitalOceanForm extends Component
 
     /** @var int[] User's server providers. */
     public array $providers = [];
-    /** @var string[] Regions currently available for server creation based on the data provided.  */
+    /** @var string[] Regions currently available for server creation based on the data provided. */
     public array $availableRegions = [];
-    /** @var string[] Sizes currently available for server creation based on the data provided.  */
+    /** @var string[] Sizes currently available for server creation based on the data provided. */
     public array $availableSizes = [];
+    /** @var string[] Server types supported. */
+    public array $types = [];
 
     /** Current user input. */
     public array $state = [
@@ -53,8 +56,9 @@ class DigitalOceanForm extends Component
         return [
             'state' => [
                 'provider_id' => Rules::integer()->in(Arr::keys($this->providers))->required(),
-                'region' => Rules::string()->in(Arr::keys($this->availableSizes))->required(),
-                'size' => Rules::string()->in(Arr::keys($this->availableSizes))->required(),
+                'region' => Rules::string(0, 255)->in(Arr::keys($this->availableSizes))->required(),
+                'size' => Rules::string(0, 255)->in(Arr::keys($this->availableSizes))->required(),
+                'type' => Rules::string(0, 255)->in(Arr::keys(config('servers.types')))->required(),
             ],
         ];
     }
@@ -76,6 +80,11 @@ class DigitalOceanForm extends Component
         $this->loadProviderData();
 
         $this->state['name'] = generateRandomName();
+
+        $this->types = Arr::mapAssoc(
+            Arr::keys(config('servers.types')),
+            fn(int $key, string $type) => new Pair($type, __('servers.types.' . $type . '.name'))
+        );
     }
 
     /**
