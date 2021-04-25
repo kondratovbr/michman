@@ -14,12 +14,12 @@
             wireModel: '{{ $attributes->wire('model')->value() }}',
         @endif
     })"
-
     @if(! $default)
         x-init="$refs.select.selectedIndex = -1;"
     @endif
     x-on:click.away="closeListbox()"
     x-on:keydown.escape="closeListbox(true)"
+    {{ $attributes->wire('key') }}
 >
     {{-- Hidden select for keeping the state and interacting with Livewire --}}
     <select

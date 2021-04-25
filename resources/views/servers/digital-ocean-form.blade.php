@@ -9,6 +9,7 @@
             :default="true"
             name="provider_id"
             wire:model="state.provider_id"
+            wire:key="search-select-provider_id"
             placeholder="Select API credentials"
         />
     </x-field>
@@ -29,6 +30,7 @@
                 :options="$availableRegions"
                 name="region"
                 wire:model="state.region"
+                wire:key="search-select-region-{{ $state['provider_id'] }}"
                 placeholder="Select region"
             />
         </x-field>
@@ -40,6 +42,7 @@
                     :options="$availableSizes"
                     name="size"
                     wire:model="state.size"
+                    wire:key="search-select-size-{{ $state['region'] }}"
                     placeholder="Select size"
                 />
             </x-field>

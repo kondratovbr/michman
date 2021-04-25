@@ -19,6 +19,7 @@
     @endif
     x-on:click.away="closeListbox()"
     x-on:keydown.escape="closeListbox(true)"
+    {{ $attributes->wire('key') }}
 >
     {{-- Hidden select for keeping the state and interacting with Livewire --}}
     <select
