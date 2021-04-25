@@ -123,7 +123,9 @@ abstract class AbstractServerProvider implements ServerProviderInterface
         if (! isset($pendingRequest))
             $pendingRequest = $this->request();
 
-        return $pendingRequest->acceptJson()->get($this->basePath . $path, $parameters);
+        return $pendingRequest
+            ->get($this->basePath . $path, $parameters)
+            ->throw();
     }
 
     /**
