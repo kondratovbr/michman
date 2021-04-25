@@ -105,6 +105,7 @@ return [
          */
         'digital_ocean_v2' => [
             'name' => 'DigitalOcean',
+            'size-name' => ':ramGb GB, :count CPU Core, :disk SSD - $:price/month|:ramGb GB, :count CPU Cores, :disk SSD - $:price/month',
         ],
         'aws' => [
             'name' => 'AWS',

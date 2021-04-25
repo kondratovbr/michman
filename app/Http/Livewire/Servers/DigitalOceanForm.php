@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Servers;
 
 use App\DataTransferObjects\SizeData;
 use App\Facades\Auth;
-use App\Models\Provider;
 use App\Services\ServerProviderInterface;
 use App\Support\Arr;
 use App\Validation\Rules;
@@ -24,17 +23,17 @@ class DigitalOceanForm extends Component
 
     public array $providers;
     public array $availableRegions = [];
-    public array $availableSizes = [];
+    public array $availableSizes = ['foo' => 'bar'];
 
     public array $state = [
         'provider_id' => null,
         'server_type' => 'app',
         'name' => '',
-        'region' => '',
-        'size' => '',
-        'python_version' => '',
+        'region' => null,
+        'size' => null,
+        'python_version' => null,
         'database' => null,
-        'db_name' => '',
+        'db_name' => null,
     ];
 
     public function rules(): array
@@ -81,6 +80,7 @@ class DigitalOceanForm extends Component
         switch ($name) {
             case 'state.provider_id':
                 $this->validateOnly('state.provider_id');
+                $this->loadApi();
                 $this->loadProviderData();
                 break;
             case 'state.region':
@@ -124,13 +124,16 @@ class DigitalOceanForm extends Component
     {
         $sizes = $this->api->getSizesAvailableInRegion($this->state['region']);
 
-        $this->availableSizes = Arr::pluck(
-            $sizes->map(fn(SizeData $size) =>
-                //
-            ),
-            'name',
-            'slug'
-        );
+        $this->availableSizes = $sizes->mapWithKeys(fn(SizeData $size) =>
+            [$size->slug => trans_choice('account.providers.digital_ocean_v2.size-name',
+                $size->cpus,
+                [
+                    'ramGb' => round($size->memoryMb / 1024, 1),
+                    'disk' => sizeForHumansRounded($size->diskGb * 1024 * 1024 * 1024, 1),
+                    'price' => $size->priceMonthly,
+                ]
+            )]
+        )->toArray();
     }
 
     /**
