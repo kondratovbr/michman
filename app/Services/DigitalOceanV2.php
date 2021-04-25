@@ -59,6 +59,7 @@ class DigitalOceanV2 extends AbstractServerProvider
             $collection->push(new SizeData(
                 slug: $size->slug,
                 transfer: $size->transfer,
+                priceMonthly: $size->price_monthly,
                 memoryMb: $size->memory,
                 cpus: $size->vcpus,
                 diskGb: $size->disk,

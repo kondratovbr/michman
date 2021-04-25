@@ -8,6 +8,7 @@ class SizeData extends DataTransferObject
 {
     public string $slug;
     public float $transfer;
+    public float $priceMonthly;
     public int $memoryMb;
     public int $cpus;
     public int $diskGb;
