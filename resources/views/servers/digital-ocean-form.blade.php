@@ -19,7 +19,8 @@
     @isset($apiErrorCode)
         {{--TODO: IMPORTANT! Make this more concise and detailed, add more explanations for different erorr codes and add a link/button to contact suport.--}}
         <x-message colors="danger">
-            Something went wrong. DigitalOcean API error code: {{ $apiErrorCode }}
+            <p>Something went wrong while calling DigitalOcean API.</p>
+            <p>DigitalOcean API error code: {{ $apiErrorCode }}</p>
         </x-message>
     @else
 {{--        TODO: Don't forget to add an explanation here. Not everyone knows where the name will be used and even WTF is it. --}}
