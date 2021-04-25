@@ -8,6 +8,7 @@ use App\Services\ServerProviderInterface;
 use App\Support\Arr;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Client\RequestException;
 use Livewire\Component;
 
 // TODO: Should probably refactor to use one component class for all providers,
@@ -19,12 +20,17 @@ use Livewire\Component;
 
 class DigitalOceanForm extends Component
 {
+    /** An interface to DigitalOcean API with the currently chosen user's API token. */
     protected ServerProviderInterface $api;
 
-    public array $providers;
+    /** @var int[] User's server providers. */
+    public array $providers = [];
+    /** @var string[] Regions currently available for server creation based on the data provided.  */
     public array $availableRegions = [];
-    public array $availableSizes = ['foo' => 'bar'];
+    /** @var string[] Sizes currently available for server creation based on the data provided.  */
+    public array $availableSizes = [];
 
+    /** Current user input. */
     public array $state = [
         'provider_id' => null,
         'server_type' => 'app',
@@ -36,6 +42,12 @@ class DigitalOceanForm extends Component
         'db_name' => null,
     ];
 
+    /** Error code returned by the external API, if any. */
+    public int|null $apiErrorCode = null;
+
+    /**
+     * Get the validation rules for user input.
+     */
     public function rules(): array
     {
         return [
@@ -62,6 +74,8 @@ class DigitalOceanForm extends Component
         $this->state['provider_id'] = Arr::first(Arr::keys($this->providers));
         $this->loadApi();
         $this->loadProviderData();
+
+        $this->state['name'] = generateRandomName();
     }
 
     /**
@@ -108,13 +122,13 @@ class DigitalOceanForm extends Component
      */
     protected function loadProviderData(): void
     {
-        if (isset($this->api)) {
+        $this->handleApiErrors(function () {
             $this->availableRegions = Arr::pluck(
                 $this->api->getAvailableRegions()->toArray(),
                 'name',
                 'slug'
             );
-        }
+        });
     }
 
     /**
@@ -122,9 +136,10 @@ class DigitalOceanForm extends Component
      */
     protected function loadRegionData(): void
     {
-        $sizes = $this->api->getSizesAvailableInRegion($this->state['region']);
+        $this->handleApiErrors(function () {
+            $sizes = $this->api->getSizesAvailableInRegion($this->state['region']);
 
-        $this->availableSizes = $sizes->mapWithKeys(fn(SizeData $size) =>
+            $this->availableSizes = $sizes->mapWithKeys(fn(SizeData $size) =>
             [$size->slug => trans_choice('account.providers.digital_ocean_v2.size-name',
                 $size->cpus,
                 [
@@ -133,7 +148,21 @@ class DigitalOceanForm extends Component
                     'price' => $size->priceMonthly,
                 ]
             )]
-        )->toArray();
+            )->toArray();
+        });
+    }
+
+    /**
+     * Wrap any external API calls into an exception handler to gracefully handle possible errors.
+     */
+    protected function handleApiErrors(callable $closure): void
+    {
+        try {
+            $closure();
+        } catch (RequestException $exception) {
+            $this->apiErrorCode = $exception->response->status();
+            $this->reset(['state']);
+        }
     }
 
     /**
