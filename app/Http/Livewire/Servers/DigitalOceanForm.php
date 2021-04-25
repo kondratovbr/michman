@@ -103,6 +103,7 @@ class DigitalOceanForm extends Component
         switch ($name) {
             case 'state.provider_id':
                 $this->validateOnly('state.provider_id');
+                $this->apiErrorCode = null;
                 $this->loadApi();
                 $this->loadProviderData();
                 break;
