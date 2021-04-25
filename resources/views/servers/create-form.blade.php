@@ -1,5 +1,6 @@
 {{--TODO: IMPORTANT! The thing should show a message and a button/link to add a provider if the user has none.--}}
 {{--TODO: IMPORTANT! The "disabled" parameter should depend on if the user has a corresponding credentials added, not like now.--}}
+{{--TODO: Can this form be made into a more pleasant multi-step process? Check out ploi.io, maybe they have a better proccess. Maybe also check out DigitalOcean and Linode and others - maybe they have a better example of this process?--}}
 
 <x-form-section submit="store">
 
