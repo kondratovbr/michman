@@ -8,6 +8,7 @@
         "php": "^8.0",
         "ext-bcmath": "*",
         "ext-ctype": "*",
+        "ext-ds": "*",
         "ext-fileinfo": "*",
         "ext-imagick": "*",
         "ext-json": "*",

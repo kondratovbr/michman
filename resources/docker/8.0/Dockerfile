@@ -30,6 +30,7 @@ RUN apt-get update \
        php8.0-redis \
        php8.0-imagick \
        php8.0-xdebug \
+       php8.0-ds \
     && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
     && curl -sL https://deb.nodesource.com/setup_15.x | bash - \
     && apt-get install -y nodejs \
