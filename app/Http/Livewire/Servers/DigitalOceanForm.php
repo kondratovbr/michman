@@ -68,13 +68,18 @@ class DigitalOceanForm extends Component
      */
     public function rules(): array
     {
+        /*
+         * TODO: CRITICAL! Error messages here suck. They all display the field name like "state.provider id",
+         *       which is bullshit. Fix.
+         */
+
         $rules = [
             'state.provider_id' => Rules::integer()
                 ->in(Arr::keys($this->providers))
                 ->required(),
             'state.name' => Rules::string(1, 255)->required(),
             'state.region' => Rules::string(1, 255)
-                ->in(Arr::keys($this->availableSizes))
+                ->in(Arr::keys($this->availableRegions))
                 ->required(),
             'state.size' => Rules::string(1, 255)
                 ->in(Arr::keys($this->availableSizes))
