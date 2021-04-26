@@ -20,6 +20,8 @@ use Livewire\Component;
 
 // TODO: Note - all server configuration tasks and even the creation itself should be done in the queue to avoid hogging the request - it may take some time. Don't forget to show something meaningful to the user in the meantime.
 
+// TODO: This form should probably be horizontal, like Forge does.
+
 class DigitalOceanForm extends Component
 {
     /** An interface to DigitalOcean API with the currently chosen user's API token. */
@@ -44,10 +46,10 @@ class DigitalOceanForm extends Component
     /** Current user input. */
     public array $state = [
         'provider_id' => null,
-        'type' => 'app',
         'name' => null,
         'region' => null,
         'size' => null,
+        'type' => 'app',
         'python_version' => '3_9',
         'database' => 'mysql-8_0',
         'db_name' => null,
@@ -63,14 +65,46 @@ class DigitalOceanForm extends Component
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'state' => [
-                'provider_id' => Rules::integer()->in(Arr::keys($this->providers))->required(),
-                'region' => Rules::string(0, 255)->in(Arr::keys($this->availableSizes))->required(),
-                'size' => Rules::string(0, 255)->in(Arr::keys($this->availableSizes))->required(),
-                'type' => Rules::string(0, 255)->in(Arr::keys(config('servers.types')))->required(),
+                'provider_id' => Rules::integer()
+                    ->in(Arr::keys($this->providers))
+                    ->required(),
+                'name' => Rules::string(1, 255)->required(),
+                'region' => Rules::string(1, 255)
+                    ->in(Arr::keys($this->availableSizes))
+                    ->required(),
+                'size' => Rules::string(1, 255)
+                    ->in(Arr::keys($this->availableSizes))
+                    ->required(),
+                'type' => Rules::string(1, 255)
+                    ->in(Arr::keys(config('servers.types')))
+                    ->required(),
+                'add_ssh_keys_to_vcs' => Rules::checkbox(),
             ],
         ];
+
+        if ($this->shouldInstall('python')) {
+            $rules['state']['python_version'] = Rules::string(1, 10)
+                ->in(Arr::keys(config('servers.python')))
+                ->required();
+        }
+
+        if ($this->shouldInstall('database')) {
+            $rules['state']['database'] = Rules::string(1, 32)
+                ->in(Arr::keys(Arr::add(config('servers.databases'), 'none', null)))
+                ->required();
+            if ($this->state['database'] != 'none')
+                $rules['state']['db_name'] = Rules::string(1, 255)->required();
+        }
+
+        if ($this->shouldInstall('cache')) {
+            $rules['state']['cache'] = Rules::string(1, 32)
+                ->in(Arr::keys(Arr::add(config('servers.caches'), 'none', null)))
+                ->required();
+        }
+
+        return $rules;
     }
 
     /**
@@ -227,6 +261,27 @@ class DigitalOceanForm extends Component
             $this->reset(['state']);
             $this->state['name'] = generateRandomName();
         }
+    }
+
+    /**
+     * Determine if we should install a certain program based on the currently chosen server type.
+     */
+    public function shouldInstall(string $program): bool
+    {
+        if (! Arr::has(config('servers.types'), $this->state['type']))
+            return false;
+
+        return Arr::hasValue(config('servers.types.' . $this->state['type'] . '.install'), $program);
+    }
+
+    /**
+     * Validate and store a new server.
+     */
+    public function store(): void
+    {
+        $this->validate();
+
+        //
     }
 
     /**

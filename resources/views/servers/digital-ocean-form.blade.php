@@ -30,6 +30,7 @@
             <x-inputs.text
                 name="name"
                 wire:model="state.name"
+                required
             />
         </x-field>
 
@@ -76,7 +77,7 @@
                     </x-field>
 
                     @isset($state['type'])
-                        @if(Arr::hasValue(config('servers.types.' . $state['type'] . '.install'), 'python'))
+                        @if($this->shouldInstall('python'))
                             <x-field>
                                 <x-label>Python Version</x-label>
                                 <x-select
@@ -88,7 +89,7 @@
                                 />
                             </x-field>
                         @endif
-                        @if(Arr::hasValue(config('servers.types.' . $state['type'] . '.install'), 'database'))
+                        @if($this->shouldInstall('database'))
                             <x-field>
                                 <x-label>Database</x-label>
                                 <x-select
@@ -109,7 +110,7 @@
                                 </x-field>
                             @endif
                         @endif
-                        @if(Arr::hasValue(config('servers.types.' . $state['type'] . '.install'), 'cache'))
+                        @if($this->shouldInstall('cache'))
                             <x-field>
                                 <x-label>Cache</x-label>
                                 <x-select
