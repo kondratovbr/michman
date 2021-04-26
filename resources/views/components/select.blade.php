@@ -41,7 +41,9 @@
         class="{{ classes(
             'relative w-full py-2 pl-3 pr-10 rounded-md cursor-pointer select-none',
             'bg-navy-300 border-2 border-gray-400 ring ring-transparent ring-opacity-0',
-            'focus:outline-none focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
+            'hover:border-gray-300',
+            'focus:outline-none focus:bg-red focus:border-gray-300 focus:ring-opacity-50 focus:ring-indigo-200',
+            'focus-within:border-gray-300 focus-within:ring-opacity-50 focus-within:ring-indigo-200',
             'transition duration-quick ease-in-out',
         ) }}"
         type="button"
