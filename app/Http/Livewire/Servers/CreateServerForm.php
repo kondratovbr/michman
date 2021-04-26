@@ -18,6 +18,22 @@ class CreateServerForm extends Component
     ];
 
     /**
+     * Trigger an underlying server creation form to store a new server.
+     */
+    public function store(): void
+    {
+        //
+    }
+
+    /**
+     * Cancel server creation and reset the form.
+     */
+    public function cancel(): void
+    {
+        $this->reset();
+    }
+
+    /**
      * Get the name of a server creation form component for a chosen provider.
      */
     public function getFormComponentProperty(): ?string

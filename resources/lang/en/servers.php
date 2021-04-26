@@ -16,6 +16,7 @@ return [
     'create' => [
 
         'title' => 'Provision New Server',
+        'button' => 'Create Server',
 
     ],
 
