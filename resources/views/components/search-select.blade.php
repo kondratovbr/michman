@@ -5,6 +5,8 @@
           https://www.w3.org/TR/wai-aria-practices/#Listbox
           https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html--}}
 
+{{--TODO: IMPORTANT! Add an error state styling.--}}
+
 @props(['name', 'id', 'options' => [], 'default' => false, 'placeholder' => ' ', 'labelId'])
 
 <div
