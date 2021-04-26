@@ -300,8 +300,19 @@ class DigitalOceanForm extends Component
         $this->validate();
 
         $server = $action->execute(new NewServerData(
-
+            provider: Auth::user()->providers()->whereKey($this->state['provider_id'])->firstOrFail(),
+            name: $this->state['name'],
+            region: $this->state['region'],
+            size: $this->state['size'],
+            type: $this->state['type'],
+            pythonVersion: $this->state['python_version'],
+            database: $this->state['database'],
+            dbName: $this->state['db_name'],
+            cache: $this->state['cache'],
+            addSshKeysToVcs: $this->state['add_ssh_keys_to_vcs'],
         ));
+
+        dd($server);
 
         //
     }
