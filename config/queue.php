@@ -35,28 +35,21 @@ return [
         ],
 
         'database' => [
+            /*
+             * TODO: CRITICAL! Make sure workers actually work all queues.
+             * Currently used queue names:
+             *
+             * default
+             * servers
+             */
             'driver' => 'database',
             'table' => 'jobs',
+            // Default queue to dispatch jobs
             'queue' => 'default',
             'retry_after' => 90,
-        ],
-
-        'beanstalkd' => [
-            'driver' => 'beanstalkd',
-            'host' => 'localhost',
-            'queue' => 'default',
-            'retry_after' => 90,
-            'block_for' => 0,
-        ],
-
-        'sqs' => [
-            'driver' => 'sqs',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'prefix' => env('SQS_PREFIX', 'https://sqs.us-east-1.amazonaws.com/your-account-id'),
-            'queue' => env('SQS_QUEUE', 'your-queue-name'),
-            'suffix' => env('SQS_SUFFIX'),
-            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            // Store jobs in DB after an active transaction is committed,
+            // Laravel will handle transaction failures when they happen.
+            'after_commit' => true,
         ],
 
         'redis' => [
@@ -65,6 +58,7 @@ return [
             'queue' => env('REDIS_QUEUE', 'default'),
             'retry_after' => 90,
             'block_for' => null,
+            'after_commit' => true,
         ],
 
     ],
