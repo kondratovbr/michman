@@ -74,7 +74,14 @@ class Arr extends IlluminateArr
      */
     public static function filterAssoc(array $array, \Closure $callback): array
     {
-        return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if ($callback($key, $value))
+                $result[$key] = $value;
+        }
+
+        return $result;
     }
 
     /**
