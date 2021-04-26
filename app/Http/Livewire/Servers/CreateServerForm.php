@@ -2,13 +2,20 @@
 
 namespace App\Http\Livewire\Servers;
 
+use App\Facades\Auth;
+use App\Models\Provider;
+use App\Support\Arr;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class CreateServerForm extends Component
 {
+    /** @var string Currently chosen server provider type. */
     public string $provider = '';
+
+    /** @var string[] Providers supported by the app where the user have credentials. */
+    public array $availableProviders = [];
 
     /**
      * Provider name to form component mapping.
@@ -16,6 +23,23 @@ class CreateServerForm extends Component
     private array $formComponents = [
         'digital_ocean_v2' => 'servers.digital-ocean-form',
     ];
+
+    /**
+     * Initialize the component.
+     */
+    public function mount(): void
+    {
+        $usersProviders = Auth::user()->providers()
+            ->pluck('provider')
+            ->unique();
+
+        $this->availableProviders = Arr::keys(Arr::filterAssoc(
+            config('providers.list'),
+            fn(string $provider, array $config) =>
+                ! $config['disabled'] && $usersProviders->contains($provider)
+        ));
+    }
+
 
     /**
      * Trigger an underlying server creation form to store a new server.
