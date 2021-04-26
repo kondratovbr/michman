@@ -93,7 +93,7 @@ class DigitalOceanForm extends Component
             'state.type' => Rules::string(1, 255)
                 ->in(Arr::keys(config('servers.types')))
                 ->required(),
-            'state.add_ssh_keys_to_vcs' => Rules::checkbox(),
+            'state.add_ssh_keys_to_vcs' => Rules::boolean()->required(),
         ];
 
         if ($this->shouldInstall('python')) {
