@@ -14,6 +14,7 @@
             wire:key="search-select-provider_id"
             placeholder="Select API credentials"
         />
+        <x-input-error for="state.provider_id" />
     </x-field>
 
     {{-- Gracefully handle possible external API errors. --}}
@@ -32,6 +33,7 @@
                 wire:model="state.name"
                 required
             />
+            <x-input-error for="state.name" />
         </x-field>
 
         @isset($state['provider_id'])
@@ -45,6 +47,7 @@
                     wire:key="search-select-region-{{ $state['provider_id'] }}"
                     placeholder="Select region"
                 />
+                <x-input-error for="state.region" />
             </x-field>
 
             @isset($state['region'])
@@ -58,6 +61,7 @@
                         wire:key="search-select-size-{{ $state['region'] }}"
                         placeholder="Select size"
                     />
+                    <x-input-error for="state.size" />
                 </x-field>
 
                 @isset($state['size'])
@@ -71,9 +75,13 @@
                             wire:key="select-type-{{ $state['size'] }}"
                             placeholder="Select server type"
                         />
-                        <x-message class="mt-3">
-                            <p class="max-w-prose">{{ __('servers.types.' . $state['type'] . '.description') }}</p>
-                        </x-message>
+                        @error('state.type')
+                            <x-input-error for="state.type" />
+                        @else
+                            <x-message class="mt-3">
+                                <p class="max-w-prose">{{ __('servers.types.' . $state['type'] . '.description') }}</p>
+                            </x-message>
+                        @enderror
                     </x-field>
 
                     @isset($state['type'])
@@ -87,6 +95,7 @@
                                     wire:model="state.python_version"
                                     wire:key="select-python_version-{{ $state['type'] }}"
                                 />
+                                <x-input-error for="state.python_version" />
                             </x-field>
                         @endif
                         @if($this->shouldInstall('database'))
@@ -99,6 +108,7 @@
                                     wire:model="state.database"
                                     wire:key="select-database-{{ $state['type'] }}"
                                 />
+                                <x-input-error for="state.database" />
                             </x-field>
                             @if($state['database'] !== 'none')
                                 <x-field>
@@ -107,6 +117,7 @@
                                         name="db_name"
                                         wire:model="state.db_name"
                                     />
+                                    <x-input-error for="state.db_name" />
                                 </x-field>
                             @endif
                         @endif
@@ -120,6 +131,7 @@
                                     wire:model="state.cache"
                                     wire:key="select-cache-{{ $state['type'] }}"
                                 />
+                                <x-input-error for="state.cache" />
                             </x-field>
                         @endif
                     @endisset
