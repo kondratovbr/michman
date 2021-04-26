@@ -77,9 +77,7 @@ export default (config) => { return {
 
     scrollToFocusedOption: function () {
         // "+1" is because the first element in the DOM will be the <template>
-        this.$refs.listbox.children[this.focusedOptionIndex + 1].scrollIntoView({
-            block: 'start',
-            behavior: 'smooth',
-        });
+        const topPos = this.$refs.listbox.children[this.focusedOptionIndex + 1].offsetTop;
+        this.$refs.listbox.scroll({ top: topPos, behavior: 'smooth' });
     },
 }}
