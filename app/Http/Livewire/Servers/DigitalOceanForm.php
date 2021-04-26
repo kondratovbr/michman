@@ -6,6 +6,7 @@ use App\DataTransferObjects\SizeData;
 use App\Facades\Auth;
 use App\Services\ServerProviderInterface;
 use App\Support\Arr;
+use App\Support\Str;
 use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
@@ -30,19 +31,28 @@ class DigitalOceanForm extends Component
     public array $availableRegions = [];
     /** @var string[] Sizes currently available for server creation based on the data provided. */
     public array $availableSizes = [];
+
     /** @var string[] Server types supported. */
     public array $types = [];
+    /** @var string[] Databases supported. */
+    public array $databases = [];
+    /** @var string[] Supported versions of Python. */
+    public array $pythonVersions = [];
+    /** @var string[] Supported types of caches. */
+    public array $caches = [];
 
     /** Current user input. */
     public array $state = [
         'provider_id' => null,
         'type' => 'app',
-        'name' => '',
+        'name' => null,
         'region' => null,
         'size' => null,
-        'python_version' => null,
-        'database' => null,
+        'python_version' => '3_9',
+        'database' => 'mysql-8_0',
         'db_name' => null,
+        'cache' => 'redis',
+        'add_ssh_keys_to_vcs' => null,
     ];
 
     /** Error code returned by the external API, if any. */
@@ -77,7 +87,19 @@ class DigitalOceanForm extends Component
 
         $this->types = Arr::mapAssoc(
             Arr::keys(config('servers.types')),
-            fn(int $key, string $type) => new Pair($type, __('servers.types.' . $type . '.name'))
+            fn(int $index, string $type) => new Pair($type, __('servers.types.' . $type . '.name'))
+        );
+        $this->databases = Arr::mapAssoc(
+            Arr::keys(Arr::add(config('servers.databases'), 'none', null)),
+            fn(int $index, string $type) => new Pair($type, __('servers.databases.' . $type))
+        );
+        $this->pythonVersions = Arr::mapAssoc(
+            Arr::keys(config('servers.python')),
+            fn(int $index, string $type) => new Pair($type, Str::replace('_', '.', $type))
+        );
+        $this->caches = Arr::mapAssoc(
+            Arr::keys(Arr::add(config('servers.caches'), 'none', null)),
+            fn(int $index, string $type) => new Pair($type, __('servers.caches.' . $type))
         );
 
         $this->loadDefaults();
@@ -92,9 +114,10 @@ class DigitalOceanForm extends Component
         $this->loadApi();
         $this->loadProviderData();
 
-        // We generate the name after the first API operation,
+        // We generate these defaults after the first API operation,
         // because our API error handling code resets the state on errors.
         $this->state['name'] = generateRandomName();
+        $this->state['db_name'] = Str::kebab(config('app.name'));
 
         if ($this->apiErrorCode) {
             // API returned some error, so we stop and put blank values as defaults,
