@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire\Servers;
 
+use App\Actions\Servers\StoreServerAction;
+use App\DataTransferObjects\NewServerData;
 use App\DataTransferObjects\SizeData;
 use App\Facades\Auth;
+use App\Models\Server;
 use App\Services\ServerProviderInterface;
 use App\Support\Arr;
 use App\Support\Str;
 use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Client\RequestException;
 use Livewire\Component;
 
@@ -24,6 +28,8 @@ use Livewire\Component;
 
 class DigitalOceanForm extends Component
 {
+    use AuthorizesRequests;
+
     /** An interface to DigitalOcean API with the currently chosen user's API token. */
     protected ServerProviderInterface $api;
 
@@ -283,11 +289,17 @@ class DigitalOceanForm extends Component
     /**
      * Validate and store a new server.
      */
-    public function store(): void
+    public function store(StoreServerAction $action): void
     {
+        $this->authorize('create', Server::class);
+
         $this->validate();
 
-        dd('Going to store a new server!');
+        $server = $action->execute(new NewServerData(
+
+        ));
+
+        //
     }
 
     /**
