@@ -27,19 +27,19 @@ return [
         ],
         'web' => [
             'name' => 'Web Server',
-            'description' => '',
+            'description' => 'Web servers include the web server software you need to deploy your Python / Django application, but do not include a cache or database. These servers are meant to be networked to dedicated cache or database servers.',
         ],
         'worker' => [
             'name' => 'Worker Server',
-            'description' => '',
+            'description' => 'Worker servers install Python, but do not install a web server or database. These servers are meant to serve as dedicated queue worker servers that may not even be networked to your web servers, but still need to networked to your database and cache servers.',
         ],
         'database' => [
             'name' => 'Database Server',
-            'description' => '',
+            'description' => 'Database servers are dedicated virtual machines for running only a database that should be networked to your other servers.',
         ],
         'cache' => [
             'name' => 'Cache Server',
-            'description' => '',
+            'description' => 'Cache servers install only cache software and are meant as dedicated caches for your applications. These servers should be networked to the rest of your servers.',
         ],
     ],
 
