@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $externalId
  * @property string $name
+ * @property string $type
  * @property string $ip
  * @property CarbonInterface $updated_at
  * @property CarbonInterface $created_at
@@ -28,7 +29,7 @@ class Server extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
-        'ip',
+        'type',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */

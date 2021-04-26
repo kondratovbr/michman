@@ -16,9 +16,11 @@ class CreateServersTable extends Migration
             $table->foreignId('provider_id');
 
             $table->string('name');
+            $table->string('type');
             // ID of a server given by the server provider.
-            $table->string('external_id');
-            $table->string('ip');
+            $table->string('external_id')->nullable();
+            // IP can be null before the server is actually created by a provider.
+            $table->string('ip')->nullable();
 
             $table->timestamps();
         });
