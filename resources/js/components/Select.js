@@ -52,7 +52,7 @@ export default (config) => { return {
         this.focusedOptionIndex = null;
 
         if (keepFocus)
-            this.$refs.button.focus()
+            this.$refs.button.focus();
     },
 
     toggleListbox: function () {
@@ -69,6 +69,8 @@ export default (config) => { return {
             this.focusedOptionIndex = 0;
 
         this.$nextTick(() => {
+            // Keep the focus on the button
+            this.$refs.button.focus();
             this.scrollToFocusedOption();
         });
     },
