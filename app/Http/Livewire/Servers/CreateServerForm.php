@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\Servers;
 
 use App\Facades\Auth;
-use App\Models\Provider;
 use App\Support\Arr;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
+/**
+ * @property-read string $formComponent
+ */
 class CreateServerForm extends Component
 {
     /** @var string Currently chosen server provider type. */
@@ -46,7 +48,7 @@ class CreateServerForm extends Component
      */
     public function store(): void
     {
-        //
+        $this->emitTo($this->formComponent, 'store-button-pressed');
     }
 
     /**
@@ -54,7 +56,7 @@ class CreateServerForm extends Component
      */
     public function cancel(): void
     {
-        $this->reset();
+        $this->reset('provider');
     }
 
     /**

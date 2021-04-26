@@ -60,46 +60,47 @@ class DigitalOceanForm extends Component
     /** Error code returned by the external API, if any. */
     public int|null $apiErrorCode = null;
 
+    /** @var string[] */
+    protected $listeners = ['store-button-pressed' => 'store'];
+
     /**
      * Get the validation rules for user input.
      */
     public function rules(): array
     {
         $rules = [
-            'state' => [
-                'provider_id' => Rules::integer()
-                    ->in(Arr::keys($this->providers))
-                    ->required(),
-                'name' => Rules::string(1, 255)->required(),
-                'region' => Rules::string(1, 255)
-                    ->in(Arr::keys($this->availableSizes))
-                    ->required(),
-                'size' => Rules::string(1, 255)
-                    ->in(Arr::keys($this->availableSizes))
-                    ->required(),
-                'type' => Rules::string(1, 255)
-                    ->in(Arr::keys(config('servers.types')))
-                    ->required(),
-                'add_ssh_keys_to_vcs' => Rules::checkbox(),
-            ],
+            'state.provider_id' => Rules::integer()
+                ->in(Arr::keys($this->providers))
+                ->required(),
+            'state.name' => Rules::string(1, 255)->required(),
+            'state.region' => Rules::string(1, 255)
+                ->in(Arr::keys($this->availableSizes))
+                ->required(),
+            'state.size' => Rules::string(1, 255)
+                ->in(Arr::keys($this->availableSizes))
+                ->required(),
+            'state.type' => Rules::string(1, 255)
+                ->in(Arr::keys(config('servers.types')))
+                ->required(),
+            'state.add_ssh_keys_to_vcs' => Rules::checkbox(),
         ];
 
         if ($this->shouldInstall('python')) {
-            $rules['state']['python_version'] = Rules::string(1, 10)
+            $rules['state.python_version'] = Rules::string(1, 10)
                 ->in(Arr::keys(config('servers.python')))
                 ->required();
         }
 
         if ($this->shouldInstall('database')) {
-            $rules['state']['database'] = Rules::string(1, 32)
+            $rules['state.database'] = Rules::string(1, 32)
                 ->in(Arr::keys(Arr::add(config('servers.databases'), 'none', null)))
                 ->required();
             if ($this->state['database'] != 'none')
-                $rules['state']['db_name'] = Rules::string(1, 255)->required();
+                $rules['state.db_name'] = Rules::string(1, 255)->required();
         }
 
         if ($this->shouldInstall('cache')) {
-            $rules['state']['cache'] = Rules::string(1, 32)
+            $rules['state.cache'] = Rules::string(1, 32)
                 ->in(Arr::keys(Arr::add(config('servers.caches'), 'none', null)))
                 ->required();
         }
@@ -281,7 +282,7 @@ class DigitalOceanForm extends Component
     {
         $this->validate();
 
-        //
+        dd('Going to store a new server!');
     }
 
     /**
