@@ -7,7 +7,7 @@
     <x-field wire:key="provider_id">
         <x-label>API Credentials</x-label>
         <x-select
-            name="provider_id"
+            name="state.provider_id"
             :options="$providers"
             :default="isset($state['provider_id'])"
             wire:model="state.provider_id"
@@ -29,7 +29,7 @@
         <x-field>
             <x-label>Name</x-label>
             <x-inputs.text
-                name="name"
+                name="state.name"
                 wire:model="state.name"
                 required
             />
@@ -40,7 +40,7 @@
             <x-field>
                 <x-label>Region</x-label>
                 <x-search-select
-                    name="region"
+                    name="state.region"
                     :options="$availableRegions"
                     :default="isset($state['region'])"
                     wire:model="state.region"
@@ -54,7 +54,7 @@
                 <x-field>
                     <x-label>Size</x-label>
                     <x-search-select
-                        name="size"
+                        name="state.size"
                         :options="$availableSizes"
                         :default="isset($state['size'])"
                         wire:model="state.size"
@@ -68,7 +68,7 @@
                     <x-field>
                         <x-label>Type</x-label>
                         <x-select
-                            name="type"
+                            name="state.type"
                             :options="$types"
                             :default="isset($state['type'])"
                             wire:model="state.type"
@@ -89,7 +89,7 @@
                             <x-field>
                                 <x-label>Python Version</x-label>
                                 <x-select
-                                    name="python_version"
+                                    name="state.python_version"
                                     :options="$pythonVersions"
                                     :default="isset($state['python_version'])"
                                     wire:model="state.python_version"
@@ -102,7 +102,7 @@
                             <x-field>
                                 <x-label>Database</x-label>
                                 <x-select
-                                    name="database"
+                                    name="state.database"
                                     :options="$databases"
                                     :default="isset($state['database'])"
                                     wire:model="state.database"
@@ -114,7 +114,7 @@
                                 <x-field>
                                     <x-label>Database Name</x-label>
                                     <x-inputs.text
-                                        name="db_name"
+                                        name="state.db_name"
                                         wire:model="state.db_name"
                                     />
                                     <x-input-error for="state.db_name" />
@@ -125,7 +125,7 @@
                             <x-field>
                                 <x-label>Cache</x-label>
                                 <x-select
-                                    name="cache"
+                                    name="state.cache"
                                     :options="$caches"
                                     :default="isset($state['cache'])"
                                     wire:model="state.cache"
@@ -140,7 +140,7 @@
 
             <x-field>
                 <x-checkbox-new
-                    name="add_ssh_keys_to_vcs"
+                    name="state.add_ssh_keys_to_vcs"
                     wire:model="state.add_ssh_keys_to_vcs"
                     :defaultState="config('servers.types.' . $state['type'] . '.add_ssh_keys_to_vcs') ? 'on' : 'off'"
                 >Add server's SSH key to source control providers</x-checkbox-new>
