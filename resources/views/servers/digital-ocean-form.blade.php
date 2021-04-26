@@ -142,7 +142,6 @@
                 <x-checkbox-new
                     name="state.add_ssh_keys_to_vcs"
                     wire:model="state.add_ssh_keys_to_vcs"
-                    :defaultState="config('servers.types.' . $state['type'] . '.add_ssh_keys_to_vcs') ? 'on' : 'off'"
                 >Add server's SSH key to source control providers</x-checkbox-new>
             </x-field>
 

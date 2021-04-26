@@ -60,7 +60,7 @@ class DigitalOceanForm extends Component
         'database' => 'mysql-8_0',
         'db_name' => null,
         'cache' => 'redis',
-        'add_ssh_keys_to_vcs' => null,
+        'add_ssh_keys_to_vcs' => true,
     ];
 
     /** Error code returned by the external API, if any. */
@@ -204,6 +204,10 @@ class DigitalOceanForm extends Component
             case 'state.region':
                 $this->validateOnly('state.region');
                 $this->loadRegionData();
+                break;
+            case 'state.type':
+                $this->validateOnly('type');
+                $this->state['add_ssh_keys_to_vcs'] = (bool) config('servers.types.' . $this->state['type'] . '.add_ssh_keys_to_vcs');
                 break;
         }
     }
