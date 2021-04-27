@@ -26,9 +26,9 @@ use App\Facades\QrCode;
  *
  * @property int $id
  * @property string $email
- * @property CarbonInterface $email_verified_at
- * @property CarbonInterface $created_at
- * @property CarbonInterface $updated_at
+ * @property CarbonInterface $emailVerifiedAt
+ * @property CarbonInterface $createdAt
+ * @property CarbonInterface $updatedAt
  *
  * @property-read string $name
  * @property-read string $avatarUrl

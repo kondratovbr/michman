@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $name
  * @property string $type
  * @property string $ip
- * @property CarbonInterface $updated_at
- * @property CarbonInterface $created_at
+ * @property CarbonInterface $updatedAt
+ * @property CarbonInterface $createdAt
  *
  * @property-read Provider $provider
  *
