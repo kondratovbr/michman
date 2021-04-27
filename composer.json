@@ -28,6 +28,7 @@
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.0",
+        "phpseclib/phpseclib": "^3.0",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/data-transfer-object": "^3.0",
         "spatie/laravel-view-models": "^1.3",
