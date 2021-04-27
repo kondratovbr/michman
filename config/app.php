@@ -247,4 +247,12 @@ return [
 
     ],
 
+    /*
+     * Custom Project-specific Parameters
+     */
+
+    'ssh_private_key_path' => env('SSH_PRIVATE_KEY_PATH', null),
+    'ssh_public_key_path' => env('SSH_PUBLIC_KEY_PATH', null),
+    // Fingerprint is used as a sanity check to verify that we're using the right key.
+    'ssh_key_fingerprint' => env('SSH_KEY_FINGERPRINT', null),
 ];
