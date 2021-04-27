@@ -40,6 +40,7 @@ return [
              * Currently used queue names:
              *
              * default
+             * providers
              * servers
              */
             'driver' => 'database',
