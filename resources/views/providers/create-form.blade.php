@@ -15,14 +15,13 @@
             class="space-y-6"
             x-data="{ formType: 'token', provider: '{{ config('providers.default') }}' }"
         >
-
             <x-message>{{ __('account.providers.create.do-only') }}</x-message>
 
-            <x-field class="space-y-2">
-                <div>{{ __('account.providers.provider.label') }}</div>
-
+            <x-field>
+                <x-label>{{ __('account.providers.provider.label') }}</x-label>
                 {{-- Check-cards container --}}
-                <div class="flex space-x-6-right space-y-6-bottom">
+                {{-- Negative bottom margin compensates for the bottom margin on the elements. --}}
+                <div class="flex space-x-6-right space-y-6-bottom -mb-6">
 
                     @foreach(config('providers.list') as $providerName => $providerConfig)
                         <x-radio-card
