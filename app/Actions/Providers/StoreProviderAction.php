@@ -3,7 +3,9 @@
 namespace App\Actions\Providers;
 
 use App\DataTransferObjects\ProviderData;
+use App\Jobs\Providers\AddWorkerSshKeyToProviderJob;
 use App\Models\Provider;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class StoreProviderAction
 {
@@ -11,6 +13,9 @@ class StoreProviderAction
     {
         /** @var Provider $provider */
         $provider = $data->owner->providers()->create($data->toArray());
+
+        // TODO: IMPORTANT! Do I have to do some more stuff here?
+        dispatch(new AddWorkerSshKeyToProviderJob($provider));
 
         return $provider;
     }
