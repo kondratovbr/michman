@@ -24,7 +24,7 @@ class RequestNewServerFromProviderJob implements ShouldQueue
 
     public function __construct(Server $server)
     {
-        $this->onQueue('servers');
+        $this->onQueue('provider');
 
         $this->server = $server->withoutRelations();
     }
