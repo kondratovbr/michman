@@ -25,6 +25,7 @@ class ProviderFactory extends Factory
             'key' => null,
             'secret' => null,
             'name' => $this->faker->domainName,
+            'ssh_key_added' => null,
         ];
     }
 

@@ -23,8 +23,9 @@ use Illuminate\Support\Facades\App;
  * @property string|null $token
  * @property string|null $key
  * @property string|null $secret
- * @property CarbonInterface $created_at
- * @property CarbonInterface $updated_at
+ * @property bool|null $sshKeyAdded
+ * @property CarbonInterface $createdAt
+ * @property CarbonInterface $updatedAt
  *
  * @property-read User $owner
  * @property-read Collection $servers
@@ -35,6 +36,11 @@ class Provider extends AbstractModel
 {
     use HasFactory;
 
+    /** @var string[] The attributes that should be cast. */
+    protected $casts = [
+        'ssh_key_added' => 'boolean',
+    ];
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'provider',
@@ -42,6 +48,7 @@ class Provider extends AbstractModel
         'key',
         'secret',
         'name',
+        'ssh_key_added',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */

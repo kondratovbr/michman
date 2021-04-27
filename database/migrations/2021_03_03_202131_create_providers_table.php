@@ -26,6 +26,9 @@ class CreateProvidersTable extends Migration
             // Name is just for the user's convenience.
             $table->string('name')->nullable();
 
+            // Track if we added our worker SSH key to the account.
+            $table->boolean('ssh_key_added')->nullable();
+
             $table->timestamps();
 
             // One user cannot add the same token or key multiple times.
