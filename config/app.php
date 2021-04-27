@@ -251,8 +251,15 @@ return [
      * Custom Project-specific Parameters
      */
 
-    'ssh_private_key_path' => env('SSH_PRIVATE_KEY_PATH', null),
-    'ssh_public_key_path' => env('SSH_PUBLIC_KEY_PATH', null),
-    // Fingerprint is used as a sanity check to verify that we're using the right key.
-    'ssh_key_fingerprint' => env('SSH_KEY_FINGERPRINT', null),
+    // Config for the worker SSH key used by the app.
+    'ssh_key' => [
+        // Paths to project's SSH key used for accessing managed servers. Relative to the base path (project root).
+        'private_key_path' => env('SSH_PRIVATE_KEY_PATH', null),
+        'public_key_path' => env('SSH_PUBLIC_KEY_PATH', null),
+        // Fingerprint is used as a sanity check to verify that we're using the right key.
+        'fingerprint' => env('SSH_KEY_FINGERPRINT', null),
+        // Name is provided to third-party services mostly to ease identification for the user.
+        'name' => env('SSH_KEY_NAME', env('APP_NAME')),
+    ],
+
 ];
