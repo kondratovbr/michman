@@ -138,7 +138,7 @@ class DigitalOceanV2 extends AbstractServerProvider
             'public_key' => $publicKey,
         ]);
 
-        return json_decode($response->body())->id;
+        return (string) json_decode($response->body())->ssh_key->id;
     }
 
     public function getAllSshKeys(): SshKeyCollection
