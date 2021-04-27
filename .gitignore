@@ -8,6 +8,10 @@
 /public/js/app.js
 /public/mix-manifest.json
 
+# SSH keys
+worker_dev_ssh_key
+worker_dev_ssh_key.pub
+
 
 
 ### Laravel ###
