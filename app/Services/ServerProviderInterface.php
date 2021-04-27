@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\Collections\RegionCollection;
 use App\Collections\SizeCollection;
+use App\Collections\SshKeyCollection;
 use App\DataTransferObjects\RegionData;
 use App\DataTransferObjects\ServerData;
 
@@ -54,4 +55,16 @@ interface ServerProviderInterface
      * @param RegionData|string RegionData object or a region slug.
      */
     public function getSizesAvailableInRegion(RegionData|string $region): SizeCollection;
+
+    /**
+     * Add a new SSH key to the provider.
+     *
+     * @return string Key ID designated by the provider.
+     */
+    public function addSshKey(string $name, string $publicKey): string;
+
+    /**
+     * Get a collection of SSH keys added to this account.
+     */
+    public function getAllSshKeys(): SshKeyCollection;
 }

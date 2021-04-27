@@ -129,13 +129,36 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     }
 
     /**
-     * Send a get request to a relative path with provided parameters
-     * and explicitly indicate to expect a JSON response,
+     * Send a GET request to a relative path with provided parameters
+     * and explicitly indicate to expect a JSON response
      * by attaching a "content-type: application/json" HTTP header.
      */
     protected function getJson(string $path, array $parameters = []): Response
     {
         return $this->get($path, $parameters, $this->request()->acceptJson());
+    }
+
+    /**
+     * Send a POST request to a relative path with provided parameters.
+     */
+    protected function post(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    {
+        if (! isset($pendingRequest))
+            $pendingRequest = $this->request();
+
+        return $pendingRequest
+            ->post($this->basePath . $path, $parameters)
+            ->throw();
+    }
+
+    /**
+     * Send a POST request to a relative path with provided parameters
+     * and explicitly indicate to expect a JSON response
+     * by attaching a "content-type: application/json" HTTP header.
+     */
+    protected function postJson(string $path, array $parameters = []): Response
+    {
+        return $this->post($path, $parameters, $this->request()->acceptJson());
     }
 
     /**

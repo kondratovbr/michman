@@ -4,12 +4,18 @@ namespace App\Services;
 
 use App\Collections\RegionCollection;
 use App\Collections\SizeCollection;
+use App\Collections\SshKeyCollection;
 use App\DataTransferObjects\RegionData;
 use App\DataTransferObjects\ServerData;
 use App\DataTransferObjects\SizeData;
+use App\DataTransferObjects\SshKeyData;
 use App\Support\Arr;
 
-// TODO: CRITICAL. We should somehow gracefully fail if the API returns something unexpected or doesn't respond at all.
+// TODO: IMPORTANT! Cover the thing with tests.
+
+// TODO: CRITICAL! We should somehow gracefully fail if the API returns something unexpected or doesn't respond at all.
+
+// TODO: CRITICAL! Have I entirely forgot about pagination in responses?
 
 class DigitalOceanV2 extends AbstractServerProvider
 {
@@ -123,5 +129,35 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->getAvailableSizes()->filter(fn(SizeData $size) =>
             Arr::hasValue($size->regions, is_string($region) ? $region : $region->slug)
         );
+    }
+
+    public function addSshKey(string $name, string $publicKey): string
+    {
+        $response = $this->postJson('/account/keys', [
+            'name' => $name,
+            'public_key' => $publicKey,
+        ]);
+
+        return json_decode($response->body())->id;
+    }
+
+    public function getAllSshKeys(): SshKeyCollection
+    {
+        $response = $this->getJson('/account/keys');
+        $data = json_decode($response->body());
+
+        $collection = new SshKeyCollection;
+
+        /** @var object $key */
+        foreach ($data->ssh_keys as $key) {
+            $collection->push(new SshKeyData(
+                id: $key->id,
+                fingerptint: $key->fingerprint,
+                publicKey: $key->public_key,
+                name: $key->name,
+            ));
+        }
+
+        return $collection;
     }
 }
