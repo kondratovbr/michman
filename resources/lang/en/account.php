@@ -105,7 +105,9 @@ return [
          */
         'digital_ocean_v2' => [
             'name' => 'DigitalOcean',
+            // TODO: Maybe figure out how to localize descriptions? A bit of manual work, not much. Also, maybe figure out how to style the descriptions a bit different, like, italic for example. Note: I may have used these lines in several places - make sure to look for them.
             'size-name' => ':ramGb GB, :count CPU Core, :disk SSD - $:price/month|:ramGb GB, :count CPU Cores, :disk SSD - $:price/month',
+            'size-name-description' => ':ramGb GB, :count CPU Core, :disk SSD, :description - $:price/month|:ramGb GB, :count CPU Cores, :disk SSD, :description - $:price/month',
         ],
         'aws' => [
             'name' => 'AWS',
