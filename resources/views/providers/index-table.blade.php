@@ -9,9 +9,10 @@
         <x-tr-header>
             <x-th>{{ __('account.providers.table.name') }}</x-th>
             <x-th>{{ __('account.providers.table.provider') }}</x-th>
-            {{-- Badges, like "active" (has active servers) --}}
+            {{-- Badges, like "active" (has active servers) or "ready" (no servers, but ready to rock-n-roll) and "error" (no access, for some reason) --}}
             <x-th></x-th>
             {{-- Buttons, like "remove" and "edit" (Edit name and token, like in Forge.) --}}
+{{--            TODO: When implementing the edit modal don't forget to put a big warning that the key should belong to the same account or existing servers may break.--}}
             <x-th></x-th>
         </x-tr-header>
     </x-slot>
