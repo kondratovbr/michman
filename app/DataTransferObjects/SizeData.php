@@ -15,4 +15,5 @@ class SizeData extends DataTransferObject
     /** @var string[] */
     public array $regions;
     public bool $available;
+    public string $description = '';
 }
