@@ -17,8 +17,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Client\RequestException;
 use Livewire\Component;
 
-// TODO: Should probably refactor to use one component class for all providers,
-//       but maybe some other dependencies to adapt to their differences.
+// TODO: Should probably refactor to use one component class for all providers, but maybe some other dependencies to adapt to their differences.
 
 // TODO: The API key may be read-only, so we should do some POST request at the creation (or afterwards, in the queue) to verify that we have write access. We can just mark the key as "read-only" or just "invalid" in the providers list if we encounter such issue.
 
