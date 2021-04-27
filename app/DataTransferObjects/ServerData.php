@@ -6,6 +6,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class ServerData extends DataTransferObject
 {
+    public string $id;
     public string $name;
     public string $ip;
 
