@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\App;
  * @property string|null $key
  * @property string|null $secret
  * @property bool|null $sshKeyAdded
+ * @property string|null $providerSshKeyId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *

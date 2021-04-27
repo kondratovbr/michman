@@ -28,6 +28,8 @@ class CreateProvidersTable extends Migration
 
             // Track if we added our worker SSH key to the account.
             $table->boolean('ssh_key_added')->nullable();
+            // SSH key ID designated by a server provider.
+            $table->string('provider_ssh_key_id')->nullable();
 
             $table->timestamps();
 
