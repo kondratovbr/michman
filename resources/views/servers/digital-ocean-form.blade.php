@@ -78,7 +78,7 @@
                         @error('state.type')
                             <x-input-error for="state.type" />
                         @else
-                            <x-message class="mt-3">
+                            <x-message class="mt-3" colors="info">
                                 <p class="max-w-prose">{{ __('servers.types.' . $state['type'] . '.description') }}</p>
                             </x-message>
                         @enderror
@@ -148,7 +148,7 @@
         @endisset
     @endisset
 
-    <x-message>
+    <x-message colors="info">
         <div class="max-w-prose space-y-3">
             <p>The following will be installed on the server:</p>
             <ul class="list-disc list-outside ml-3 ">

@@ -15,7 +15,7 @@
             class="space-y-6"
             x-data="{ formType: 'token', provider: '{{ config('providers.default') }}' }"
         >
-            <x-message>{{ __('account.providers.create.do-only') }}</x-message>
+            <x-message colors="info">{{ __('account.providers.create.do-only') }}</x-message>
 
             <x-field>
                 <x-label>{{ __('account.providers.provider.label') }}</x-label>
