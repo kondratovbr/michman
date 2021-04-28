@@ -16,7 +16,7 @@ class StoreServerAction
 
         Bus::chain([
             new RequestNewServerFromProviderJob($server),
-            //
+            // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
         ])->dispatch();
 
         return $server;

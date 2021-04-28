@@ -1,5 +1,6 @@
 {{--TODO: IMPORTANT! The thing should show a message and a button/link to add a provider if the user has none.--}}
 {{--TODO: Can this form be made into a more pleasant multi-step process? Check out ploi.io, maybe they have a better proccess. Maybe also check out DigitalOcean and Linode and others - maybe they have a better example of this process?--}}
+{{--TODO: Maybe I can somehow figure out how to pre-cache data from a third-party API when user opens this page, so it works a bit faster?--}}
 
 <x-form-section submit="store">
 
