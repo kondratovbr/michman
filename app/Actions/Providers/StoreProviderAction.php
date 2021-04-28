@@ -14,9 +14,6 @@ class StoreProviderAction
         /** @var Provider $provider */
         $provider = $data->owner->providers()->create($data->toArray());
 
-        // TODO: IMPORTANT! Do I have to do some more stuff here?
-        AddWorkerSshKeyToProviderJob::dispatch($provider);
-
         return $provider;
     }
 }
