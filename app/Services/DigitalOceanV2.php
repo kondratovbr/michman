@@ -7,6 +7,7 @@ use App\Collections\SizeCollection;
 use App\Collections\SshKeyCollection;
 use App\DataTransferObjects\NewServerData;
 use App\DataTransferObjects\RegionData;
+use App\DataTransferObjects\ServerData;
 use App\DataTransferObjects\SizeData;
 use App\DataTransferObjects\SshKeyData;
 use App\Services\Exceptions\ExternalApiException;
@@ -51,14 +52,9 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $response->successful();
     }
 
-    public function createServer(ServerData $data): string
-    {
-        // TODO: Implement createServer() method.
-    }
-
     protected function getAllSizesFromApi(): SizeCollection
     {
-        $response = $this->getJson('/sizes')->json();
+        $response = $this->getJson('/sizes');
         $data = $this->decodeJson($response->body());
 
         $collection = new SizeCollection;
@@ -195,8 +191,41 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->sshKeyDataFromResponseObject($data->ssh_key);
     }
 
+    public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData
+    {
+        if (empty($sshKeyIdentifier))
+            throw new ExternalApiException('No SSH key identifier provided. SSH key is required to request a new server, it should be added to the server provider account beforehand.');
+
+        $response = $this->postJson('/droplets', [
+            'name' => $data->name,
+            'region' => $data->region,
+            'size' => $data->size,
+            'image' => (string) config('providers.list.digital_ocean_v2.default_image'),
+            'ssh_keys' => [$sshKeyIdentifier],
+            'monitoring' => true,
+        ]);
+        $data = $this->decodeJson($response->body());
+
+        return $this->serverDataFromResponseObject($data->droplet);
+    }
+
+    public function getServer(string $serverId): ServerData
+    {
+        //
+    }
+
+    public function getAllServers(): ServerData
+    {
+        //
+    }
+
+    public function getServerPublicIp4(string $serverId): string
+    {
+
+    }
+
     /**
-     * Convert SSH key response object format to internal format.
+     * Convert SSH key object from response format to internal format.
      */
     protected function sshKeyDataFromResponseObject(object $data): SshKeyData
     {
@@ -205,6 +234,18 @@ class DigitalOceanV2 extends AbstractServerProvider
             fingerprint: $data->fingerprint,
             publicKey: $data->public_key,
             name: $data->name,
+        );
+    }
+
+    /**
+     * Convert server object from response format to internal format.
+     */
+    protected function serverDataFromResponseObject(object $data): ServerData
+    {
+        return new ServerData(
+            id: $data->id,
+            name: $data->name,
+            publicIp4: $data->networks->v4->ip_address ?? null,
         );
     }
 }

@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Collections\RegionCollection;
 use App\Collections\SizeCollection;
 use App\Collections\SshKeyCollection;
+use App\DataTransferObjects\NewServerData;
 use App\DataTransferObjects\RegionData;
 use App\DataTransferObjects\ServerData;
 use App\DataTransferObjects\SshKeyData;
@@ -25,10 +26,8 @@ interface ServerProviderInterface
 
     /**
      * Provision a new server with this server provider.
-     *
-     * @return string Server ID designated by the provider.
      */
-    public function createServer(ServerData $data): string;
+    public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData;
 
     /**
      * Get a collection of all regions supported by the API.

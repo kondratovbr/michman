@@ -21,6 +21,7 @@ return [
             'auth_type' => 'token',
             'icon' => 'fab fa-digital-ocean',
             'disabled' => false,
+            'default_image' => 'ubuntu-20-04-x64',
         ],
 
         'aws' => [
@@ -29,6 +30,7 @@ return [
             'auth_type' => 'basic',
             'icon' => 'fab fa-aws',
             'disabled' => true,
+            'default_image' => '',
         ],
 
         'linode' => [
@@ -37,6 +39,7 @@ return [
             'auth_type' => 'token',
             'icon' => 'fab fa-linode',
             'disabled' => true,
+            'default_image' => '',
         ],
 
     ],

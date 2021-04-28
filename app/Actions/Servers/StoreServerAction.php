@@ -15,7 +15,7 @@ class StoreServerAction
         $server = $data->provider->servers()->create($data->toArray());
 
         Bus::chain([
-            new RequestNewServerFromProviderJob($server),
+            new RequestNewServerFromProviderJob($server, $data),
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
         ])->dispatch();
 
