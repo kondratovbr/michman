@@ -24,6 +24,6 @@ trait HasModelHelpers
      */
     public static function keyName(): string
     {
-        return (new static)->getKey();
+        return (new static)->getKeyName();
     }
 }
