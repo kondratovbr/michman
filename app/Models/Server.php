@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Server Eloquent model
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  *
  * @property-read Provider $provider
+ * @property-read WorkerSshKey $workerSshKey
  *
  * @method static ProviderFactory factory(...$parameters)
  */
@@ -35,11 +37,22 @@ class Server extends AbstractModel
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
+    /** @var string[] The attributes that should be cast. */
+    protected $casts = [];
+
     /**
      * Get a relation to the provider that runs this server.
      */
     public function provider(): BelongsTo
     {
         return $this->belongsTo(Provider::class);
+    }
+
+    /**
+     * Get a relation to the SSH key used to access this server.
+     */
+    public function workerSshKey(): HasOne
+    {
+        return $this->hasOne(WorkerSshKey::class);
     }
 }
