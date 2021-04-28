@@ -162,6 +162,52 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     }
 
     /**
+     * Send a PUT request to a relative path with provided parameters.
+     */
+    protected function put(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    {
+        if (! isset($pendingRequest))
+            $pendingRequest = $this->request();
+
+        return $pendingRequest
+            ->put($this->basePath . $path, $parameters)
+            ->throw();
+    }
+
+    /**
+     * Send a PUT request to a relative path with provided parameters
+     * and explicitly indicate to expect a JSON response
+     * by attaching a "content-type: application/json" HTTP header.
+     */
+    protected function putJson(string $path, array $parameters = []): Response
+    {
+        return $this->put($path, $parameters, $this->request()->acceptJson());
+    }
+
+    /**
+     * Send a DELETE request to a relative path with provided parameters.
+     */
+    protected function delete(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    {
+        if (! isset($pendingRequest))
+            $pendingRequest = $this->request();
+
+        return $pendingRequest
+            ->delete($this->basePath . $path, $parameters)
+            ->throw();
+    }
+
+    /**
+     * Send a DELETE request to a relative path with provided parameters
+     * and explicitly indicate to expect a JSON response
+     * by attaching a "content-type: application/json" HTTP header.
+     */
+    protected function deleteJson(string $path, array $parameters = []): Response
+    {
+        return $this->delete($path, $parameters, $this->request()->acceptJson());
+    }
+
+    /**
      * Get a config value for this provider using standard dot-notation.
      */
     protected function config(string $key, mixed $default = null): mixed
