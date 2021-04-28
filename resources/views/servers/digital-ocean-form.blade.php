@@ -142,8 +142,8 @@
 {{--                TODO: This checkbox needs some explanatory text.--}}
                 <x-field>
                     <x-checkbox-new
-                        name="state.add_ssh_keys_to_vcs"
-                        wire:model="state.add_ssh_keys_to_vcs"
+                        name="state.add_ssh_key_to_vcs"
+                        wire:model="state.add_ssh_key_to_vcs"
                     >Add server's SSH key to source control providers</x-checkbox-new>
                 </x-field>
             </div>

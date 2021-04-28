@@ -16,5 +16,5 @@ class NewServerData extends DataTransferObject
     public string $database = 'none';
     public string|null $dbName = null;
     public string $cache = 'none';
-    public bool $addSshKeysToVcs = false;
+    public bool $addSshKeyToVcs = false;
 }

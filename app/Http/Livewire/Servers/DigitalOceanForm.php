@@ -59,7 +59,7 @@ class DigitalOceanForm extends Component
         'database' => 'mysql-8_0',
         'db_name' => null,
         'cache' => 'redis',
-        'add_ssh_keys_to_vcs' => true,
+        'add_ssh_key_to_vcs' => true,
     ];
 
     /** Error code returned by the external API, if any. */
@@ -92,7 +92,7 @@ class DigitalOceanForm extends Component
             'state.type' => Rules::string(1, 255)
                 ->in(Arr::keys(config('servers.types')))
                 ->required(),
-            'state.add_ssh_keys_to_vcs' => Rules::boolean()->required(),
+            'state.add_ssh_key_to_vcs' => Rules::boolean()->required(),
         ];
 
         if ($this->shouldInstall('python')) {
@@ -206,7 +206,7 @@ class DigitalOceanForm extends Component
                 break;
             case 'state.type':
                 $this->validateOnly('type');
-                $this->state['add_ssh_keys_to_vcs'] = (bool) config('servers.types.' . $this->state['type'] . '.add_ssh_keys_to_vcs');
+                $this->state['add_ssh_key_to_vcs'] = (bool) config('servers.types.' . $this->state['type'] . '.add_ssh_key_to_vcs');
                 break;
         }
     }
@@ -319,7 +319,7 @@ class DigitalOceanForm extends Component
             database: $this->state['database'],
             dbName: $this->state['db_name'],
             cache: $this->state['cache'],
-            addSshKeysToVcs: $this->state['add_ssh_keys_to_vcs'],
+            addSshKeyToVcs: $this->state['add_ssh_key_to_vcs'],
         ));
 
         dd($server);

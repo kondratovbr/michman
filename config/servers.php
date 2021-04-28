@@ -16,7 +16,7 @@ return [
                 'database',
                 'cache',
             ],
-            'add_ssh_keys_to_vcs' => true,
+            'add_ssh_key_to_vcs' => true,
         ],
         'web' => [
             'disabled' => false,
@@ -25,28 +25,28 @@ return [
                 'gunicorn',
                 'python',
             ],
-            'add_ssh_keys_to_vcs' => true,
+            'add_ssh_key_to_vcs' => true,
         ],
         'worker' => [
             'disabled' => true,
             'install' => [
                 'python',
             ],
-            'add_ssh_keys_to_vcs' => true,
+            'add_ssh_key_to_vcs' => true,
         ],
         'database' => [
             'disabled' => true,
             'install' => [
                 'database',
             ],
-            'add_ssh_keys_to_vcs' => false,
+            'add_ssh_key_to_vcs' => false,
         ],
         'cache' => [
             'disabled' => true,
             'install' => [
                 'cache',
             ],
-            'add_ssh_keys_to_vcs' => false,
+            'add_ssh_key_to_vcs' => false,
         ],
     ],
 
