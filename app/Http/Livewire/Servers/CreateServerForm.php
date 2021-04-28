@@ -48,7 +48,7 @@ class CreateServerForm extends Component
      */
     public function store(): void
     {
-        $this->emitTo($this->formComponent, 'store-button-pressed');
+        $this->emitTo($this->formComponent, 'store-server-button-pressed');
     }
 
     /**

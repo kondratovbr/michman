@@ -66,7 +66,7 @@ class DigitalOceanForm extends Component
     public int|null $apiErrorCode = null;
 
     /** @var string[] */
-    protected $listeners = ['store-button-pressed' => 'store'];
+    protected $listeners = ['store-server-button-pressed' => 'store'];
 
     /**
      * Get the validation rules for user input.
