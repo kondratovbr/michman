@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Throwable;
 
 class AddWorkerSshKeyToProviderJob implements ShouldQueue
 {
@@ -38,7 +39,7 @@ class AddWorkerSshKeyToProviderJob implements ShouldQueue
             /** @var Provider $provider */
             $provider = Provider::query()
                 ->lockForUpdate()
-                ->where(Provider::keyName(), $this->provider->getKey())
+                ->whereKey($this->provider->getKey())
                 ->firstOrFail();
 
             if ($provider->sshKeyAdded && ! $this->force)
@@ -53,5 +54,16 @@ class AddWorkerSshKeyToProviderJob implements ShouldQueue
             $provider->providerSshKeyId = $addedKey->id;
             $provider->save();
         }, 5);
+    }
+
+    /**
+     * Handle a failed job.
+     */
+    public function failed(Throwable $exception): void
+    {
+        Provider::query()
+            ->whereKey($this->provider->getKey())
+            ->whereNull('ssh_key_added')
+            ->update(['ssh_key_added' => false]);
     }
 }
