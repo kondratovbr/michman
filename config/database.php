@@ -43,10 +43,28 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        // Main application database.
         'mysql' => [
             'driver' => 'mysql',
+
+            // Here's an example on how to use separate connections for read/write operations.
+            // Which may be usable in a multi-server setup.
+            // Options inside 'read'/'write' arrays overrides main ones for the corresponding type of operation,
+            // they're intended to be different, obviously.
+            // Of course, stuff like port, username, password, etc. can be overridden as well.
+            'read' => [
+                'host' => env('DB_HOST', '127.0.0.1'),
+            ],
+            'write' => [
+                'host' => env('DB_HOST', '127.0.0.1'),
+            ],
+            // This option is related to multi-server DB setup.
+            // When true - after any 'write' operation was done Laravel will continue to use that connection
+            // for all subsequent reads as well till the end of the request cycle.
+            'sticky' => true,
+
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            // 'host' => env('DB_HOST', '127.0.0.1'), // Overridden above
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'app'),
             'username' => env('DB_USERNAME', 'app'),
@@ -57,12 +75,15 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'engine' => 'InnoDB',
+            // This application depends on the transaction isolation level, so I've added this just to be sure.
+            'isolation_level' => 'REPEATABLE READ',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
+        // Database used during testing.
         'testing' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -77,7 +98,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            'engine' => 'InnoDB',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
