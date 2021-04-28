@@ -5,10 +5,11 @@ namespace App\Services;
 use App\Collections\RegionCollection;
 use App\Collections\SizeCollection;
 use App\Collections\SshKeyCollection;
+use App\DataTransferObjects\NewServerData;
 use App\DataTransferObjects\RegionData;
-use App\DataTransferObjects\ServerData;
 use App\DataTransferObjects\SizeData;
 use App\DataTransferObjects\SshKeyData;
+use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
 
 // TODO: IMPORTANT! Cover the thing with tests.
@@ -16,6 +17,8 @@ use App\Support\Arr;
 // TODO: CRITICAL! We should somehow gracefully fail if the API returns something unexpected or doesn't respond at all.
 
 // TODO: CRITICAL! Have I entirely forgot about pagination in responses?
+
+// TODO: IMPORTANT! Should I add some reasonable timeouts here?
 
 class DigitalOceanV2 extends AbstractServerProvider
 {
@@ -55,8 +58,8 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     protected function getAllSizesFromApi(): SizeCollection
     {
-        $response = $this->getJson('/sizes');
-        $data = json_decode($response->body());
+        $response = $this->getJson('/sizes')->json();
+        $data = $this->decodeJson($response->body());
 
         $collection = new SizeCollection;
 
@@ -81,7 +84,7 @@ class DigitalOceanV2 extends AbstractServerProvider
     protected function getAllRegionsFromApi(): RegionCollection
     {
         $response = $this->getJson('/regions');
-        $data = json_decode($response->body());
+        $data = $this->decodeJson(($response->body()));
 
         $collection = new RegionCollection;
 
@@ -137,7 +140,7 @@ class DigitalOceanV2 extends AbstractServerProvider
             'name' => $name,
             'public_key' => $publicKey,
         ]);
-        $data = json_decode($response->body());
+        $data = $this->decodeJson(($response->body()));
 
         return $this->sshKeyDataFromResponseObject($data->ssh_key);
     }
@@ -145,7 +148,7 @@ class DigitalOceanV2 extends AbstractServerProvider
     public function getAllSshKeys(): SshKeyCollection
     {
         $response = $this->getJson('/account/keys');
-        $data = json_decode($response->body());
+        $data = $this->decodeJson(($response->body()));
 
         $collection = new SshKeyCollection;
 
@@ -160,7 +163,7 @@ class DigitalOceanV2 extends AbstractServerProvider
     public function getSshKey(string $identifier): SshKeyData
     {
         $response = $this->getJson('/account/keys/' . $identifier);
-        $data = json_decode($response->body());
+        $data = $this->decodeJson(($response->body()));
 
         return $this->sshKeyDataFromResponseObject($data->ssh_key);
     }
@@ -187,7 +190,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         $response = $this->putJson('/account/keys/' . $identifier, [
             'name' => $newName,
         ]);
-        $data = json_decode($response->body());
+        $data = $this->decodeJson(($response->body()));
 
         return $this->sshKeyDataFromResponseObject($data->ssh_key);
     }

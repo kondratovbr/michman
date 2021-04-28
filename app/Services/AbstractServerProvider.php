@@ -224,6 +224,14 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     }
 
     /**
+     * Decode JSON response throwing en exceptions on failure.
+     */
+    protected function decodeJson(string $json): object
+    {
+        return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * Get a collection of all regions supported by the API using caching.
      */
     public function getAllRegions(): RegionCollection
