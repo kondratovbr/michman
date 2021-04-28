@@ -49,7 +49,23 @@ smallSizingScale = {
     '4-em': '1em',
     '5-em': '1.25em',
     '6-em': '1.5em',
+    '7-em': '1.75em',
+    '8-em': '2em',
 };
+
+textSizingScale = {
+    '1-em': '0.25em',
+    '1.5-em': '0.375em',
+    '2-em': '0.5em',
+    '2.5-em': '0.625em',
+    '3-em': '0.75em',
+    '3.5-em': '0.875em',
+    '4-em': '1em',
+    '5-em': '1.25em',
+    '6-em': '1.5em',
+    '7-em': '1.75em',
+    '8-em': '2em',
+},
 
 // Custom extension for "flex-grow"/"flex-shrink" utilities.
 // NOTE: Not used currently.
@@ -174,6 +190,7 @@ module.exports = {
                 'screen-xl-10/12': 'calc(1280px / 12 * 10)',
                 'screen-2xl-10/12': 'calc(1536px / 12 * 10)',
             },
+            height: textSizingScale,
             // Extending min sizing utilities using a custom sizing scale (see above).
             minHeight: smallSizingScale,
             minWidth: smallSizingScale,
