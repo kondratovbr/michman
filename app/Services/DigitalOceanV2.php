@@ -131,14 +131,15 @@ class DigitalOceanV2 extends AbstractServerProvider
         );
     }
 
-    public function addSshKey(string $name, string $publicKey): string
+    public function addSshKey(string $name, string $publicKey): SshKeyData
     {
         $response = $this->postJson('/account/keys', [
             'name' => $name,
             'public_key' => $publicKey,
         ]);
+        $data = json_decode($response->body());
 
-        return (string) json_decode($response->body())->ssh_key->id;
+        return $this->sshKeyDataFromResponseObject($data->ssh_key);
     }
 
     public function getAllSshKeys(): SshKeyCollection
@@ -150,14 +151,57 @@ class DigitalOceanV2 extends AbstractServerProvider
 
         /** @var object $key */
         foreach ($data->ssh_keys as $key) {
-            $collection->push(new SshKeyData(
-                id: $key->id,
-                fingerptint: $key->fingerprint,
-                publicKey: $key->public_key,
-                name: $key->name,
-            ));
+            $collection->push($this->sshKeyDataFromResponseObject($key));
         }
 
         return $collection;
+    }
+
+    public function getSshKey(string $identifier): SshKeyData
+    {
+        $response = $this->getJson('/account/keys/' . $identifier);
+        $data = json_decode($response->body());
+
+        return $this->sshKeyDataFromResponseObject($data->ssh_key);
+    }
+
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyData
+    {
+        $addedKeys = $this->getAllSshKeys();
+
+        /** @var SshKeyData $duplicatedAddedKey */
+        $duplicatedAddedKey = $addedKeys->firstWhere('publicKey', $publicKey);
+
+        if ($duplicatedAddedKey !== null) {
+            if ($duplicatedAddedKey->name === $name)
+                return $duplicatedAddedKey;
+
+            return $this->updateSshKey($duplicatedAddedKey->id, $name);
+        }
+
+        return $this->addSshKey($name, $publicKey);
+    }
+
+    public function updateSshKey(string $identifier, string $newName): SshKeyData
+    {
+        $response = $this->putJson('/account/keys/' . $identifier, [
+            'name' => $newName,
+        ]);
+        $data = json_decode($response->body());
+
+        return $this->sshKeyDataFromResponseObject($data->ssh_key);
+    }
+
+    /**
+     * Convert SSH key response object format to internal format.
+     */
+    protected function sshKeyDataFromResponseObject(object $data): SshKeyData
+    {
+        return new SshKeyData(
+            id: $data->id,
+            fingerprint: $data->fingerprint,
+            publicKey: $data->public_key,
+            name: $data->name,
+        );
     }
 }
