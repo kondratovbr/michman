@@ -60,21 +60,30 @@ class Provider extends AbstractModel
     /** @var ServerProviderInterface An interface to interact with the API. */
     private ServerProviderInterface $api;
 
+    /** @var string Current status of this provider. */
+    private string $status;
+
     /**
      * Get the current status of this provider.
      */
     public function getStatusAttribute(): string
     {
+        // We're caching this attribute for an instance,
+        // so we don't have to query the DB every time.
+
+        if (isset($this->status))
+            return $this->status;
+
         if (($this->serversCount ?? $this->servers()->count()) > 0)
-            return 'active';
+            return $this->status = 'active';
 
         if ($this->sshKeyAdded)
-            return 'ready';
+            return $this->status = 'ready';
 
         if ($this->sshKeyAdded === false)
-            return 'error';
+            return $this->status = 'error';
 
-        return 'pending';
+        return $this->status = 'pending';
     }
 
     /**

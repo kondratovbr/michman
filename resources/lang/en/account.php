@@ -99,6 +99,13 @@ return [
             'button' => 'Add Credentials',
         ],
 
+        'statuses' => [
+            'active' => 'Active',
+            'ready' => 'Ready',
+            'error' => 'Error',
+            'pending' => 'Pending',
+        ],
+
         /*
          * Lang strings related to specific providers,
          * keys should be the same as in config/providers.php

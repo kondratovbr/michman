@@ -18,12 +18,13 @@
     </x-slot>
 
     <x-slot name="body">
+
         {{-- TODO: Check how it looks with longer names. --}}
         @foreach($providers as $provider)
             <x-tr>
                 <x-td>{{ $provider->name }}</x-td>
                 <x-td>{{ __('account.providers.' . $provider->provider . '.name') }}</x-td>
-                <x-td></x-td>
+                <x-td><x-providers.badge :provider="$provider" /></x-td>
                 <x-td></x-td>
             </x-tr>
         @endforeach
