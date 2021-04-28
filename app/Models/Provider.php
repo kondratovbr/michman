@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\App;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read string $status
+ *
  * @property-read User $owner
  * @property-read Collection $servers
  *
@@ -57,6 +59,23 @@ class Provider extends AbstractModel
 
     /** @var ServerProviderInterface An interface to interact with the API. */
     private ServerProviderInterface $api;
+
+    /**
+     * Get the current status of this provider.
+     */
+    public function getStatusAttribute(): string
+    {
+        if (($this->serversCount ?? $this->servers()->count()) > 0)
+            return 'active';
+
+        if ($this->sshKeyAdded)
+            return 'ready';
+
+        if ($this->sshKeyAdded === false)
+            return 'error';
+
+        return 'pending';
+    }
 
     /**
      * Get an instance of ServerProviderInterface to interact with the server provider API.
