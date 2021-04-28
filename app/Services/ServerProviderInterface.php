@@ -14,6 +14,7 @@ use App\Collections\SizeCollection;
 use App\Collections\SshKeyCollection;
 use App\DataTransferObjects\RegionData;
 use App\DataTransferObjects\ServerData;
+use App\DataTransferObjects\SshKeyData;
 
 interface ServerProviderInterface
 {
@@ -58,13 +59,26 @@ interface ServerProviderInterface
 
     /**
      * Add a new SSH key to the provider.
-     *
-     * @return string Key ID designated by the provider.
      */
-    public function addSshKey(string $name, string $publicKey): string;
+    public function addSshKey(string $name, string $publicKey): SshKeyData;
 
     /**
      * Get a collection of SSH keys added to this account.
      */
     public function getAllSshKeys(): SshKeyCollection;
+
+    /**
+     * Add a new SSH key to the provider, checking if it was added before.
+     */
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyData;
+
+    /**
+     * @param string $identifier Provider's ID or fingerprint.
+     */
+    public function getSshKey(string $identifier): SshKeyData;
+
+    /**
+     * Change the name of an SSH key that was added previously.
+     */
+    public function updateSshKey(string $identifier, string $newName): SshKeyData;
 }
