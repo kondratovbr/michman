@@ -1,6 +1,6 @@
 {{--TODO: IMPORTANT! The form desperately needs some loading indicators - it may take some time to work.--}}
 {{--TODO: Make a "What Will Be Installed" type of list somewhere here after a server type is chosen.--}}
-{{--TODO: IMPORTANT! Add DigitalOcean weekly backups feature. Does DO has some other backup options? Snapshots? So, maybe we should offer to enable something better here?--}}
+{{--TODO: Shoud I add DigitalOcean weekly backups feature? This way of deploying kinda doesn't need them - we need to backup databases, of course, and uploaded files somehow as well. Does DO has some other backup options? Snapshots? So, maybe we should offer to enable something better here?--}}
 
 <div class="space-y-6">
 
@@ -138,12 +138,15 @@
                 @endisset
             @endisset
 
-            <x-field>
-                <x-checkbox-new
-                    name="state.add_ssh_keys_to_vcs"
-                    wire:model="state.add_ssh_keys_to_vcs"
-                >Add server's SSH key to source control providers</x-checkbox-new>
-            </x-field>
+            <div class="space-y-2 -mt-2">
+{{--                TODO: This checkbox needs some explanatory text.--}}
+                <x-field>
+                    <x-checkbox-new
+                        name="state.add_ssh_keys_to_vcs"
+                        wire:model="state.add_ssh_keys_to_vcs"
+                    >Add server's SSH key to source control providers</x-checkbox-new>
+                </x-field>
+            </div>
 
         @endisset
     @endisset
