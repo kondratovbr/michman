@@ -4,7 +4,6 @@ namespace App\Jobs\Providers;
 
 use App\Models\Provider;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -35,8 +34,6 @@ class AddWorkerSshKeyToProviderJob implements ShouldQueue
      */
     public function handle(): void
     {
-        // TODO: CRITICAL! CONTINUE!
-
         DB::transaction(function () {
             /** @var Provider $provider */
             $provider = Provider::query()
@@ -47,14 +44,14 @@ class AddWorkerSshKeyToProviderJob implements ShouldQueue
             if ($provider->sshKeyAdded && ! $this->force)
                 return;
 
-            $providerKeyId = $provider->api()->addSshKey(
+            $addedKey = $provider->api()->addSshKeySafely(
                 (string) config('app.ssh_key.name'),
-                trim(File::get(config('app.ssh_key.public_key_path')))
+                trim(File::get(base_path(config('app.ssh_key.public_key_path'))))
             );
 
             $provider->sshKeyAdded = true;
-            $provider->providerSshKeyId = $providerKeyId;
+            $provider->providerSshKeyId = $addedKey->id;
             $provider->save();
-        });
+        }, 5);
     }
 }
