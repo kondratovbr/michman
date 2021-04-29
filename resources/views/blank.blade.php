@@ -12,8 +12,6 @@
     </head>
     <body>
 
-        @livewire('test')
-
         @livewireScripts
     </body>
 </html>
