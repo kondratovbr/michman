@@ -7,8 +7,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use DateTimeInterface;
 
 class GetServerPublicIpJob implements ShouldQueue
 {
@@ -16,11 +18,28 @@ class GetServerPublicIpJob implements ShouldQueue
 
     protected Server $server;
 
+    /** @var int The amount of seconds to wait between retries if an address wasn't issued yet. */
+    protected const SECONDS_BETWEEN_RETRIES = 30;
+
     public function __construct(Server $server)
     {
         $this->onQueue('servers');
 
         $this->server = $server->withoutRelations();
+    }
+
+    /** Get the middleware the job should pass through. */
+    public function middleware(): array
+    {
+        return [
+            (new ThrottlesExceptions(3, 10))->backoff(1)
+        ];
+    }
+
+    /** Determine the time at which the job should timeout. */
+    public function retryUntil(): DateTimeInterface
+    {
+        return now()->addMinutes(60);
     }
 
     /**
@@ -37,7 +56,13 @@ class GetServerPublicIpJob implements ShouldQueue
 
             $ip = $server->provider->api()->getServerPublicIp4($server->externalId);
 
-            // TODO: CRITICAL! CONTINUE! Figure out how to re-run the job after some timeout if the IP isn't issued yet.
+            if (is_null($ip)) {
+                $this->release(static::SECONDS_BETWEEN_RETRIES);
+                return;
+            }
+
+            $server->ip = $ip;
+            $server->save();
         }, 5);
     }
 }

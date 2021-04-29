@@ -21,8 +21,6 @@ class StoreServerAction
         /** @var Server $server */
         $server = $data->provider->servers()->create($data->toArray());
 
-        return $server;
-
         Bus::chain([
             new CreateWorkerSshKeyForServerJob($server),
             new AddServerSshKeyToProviderJob($server),
