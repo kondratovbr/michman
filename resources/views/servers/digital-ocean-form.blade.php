@@ -139,7 +139,7 @@
             @endisset
 
             <div class="space-y-2 -mt-2">
-{{--                TODO: This checkbox needs some explanatory text.--}}
+{{--                TODO: This checkbox needs some explanatory text, maybe better a link to docs.--}}
                 <x-field>
                     <x-checkbox-new
                         name="state.add_ssh_key_to_vcs"
