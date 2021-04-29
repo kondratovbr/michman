@@ -38,17 +38,22 @@ class AddServerSshKeyToProviderJob implements ShouldQueue
     public function handle(): void
     {
         DB::transaction(function () {
+            /** @var Server $server */
+            $server = Server::query()
+                ->whereKey($this->server->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
             /** @var WorkerSshKey $sshKey */
-            $sshKey = WorkerSshKey::query()
-                ->whereKey($this->server->workerSshKey->getKey())
+            $sshKey = $server->workerSshKey()
                 ->lockForUpdate()
                 ->firstOrFail();
 
             $api = $this->server->provider->api();
 
-            $addedKey = $api->addSshKeySafely($sshKey->publicKey, $sshKey->name);
+            $addedKey = $api->addSshKeySafely($sshKey->name, $sshKey->publicKey);
 
-            $sshKey->externalId = $addedKey->providerId;
+            $sshKey->externalId = $addedKey->id;
             $sshKey->save();
         }, 5);
     }

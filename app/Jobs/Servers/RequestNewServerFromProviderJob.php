@@ -48,6 +48,9 @@ class RequestNewServerFromProviderJob implements ShouldQueue
             $api = $server->provider->api();
 
             $createdServer = $api->createServer($this->serverData, $server->workerSshKey->externalId);
+
+            $server->externalId = $createdServer->id;
+            $server->save();
         });
     }
 }
