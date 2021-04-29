@@ -2,7 +2,7 @@
 
 namespace App\Collections;
 
-class SizeCollection extends AbstractBasicCollection
+class SizeDataCollection extends AbstractBasicCollection
 {
     //
 }

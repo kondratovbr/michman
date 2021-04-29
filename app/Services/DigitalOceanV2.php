@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-use App\Collections\RegionCollection;
-use App\Collections\SizeCollection;
-use App\Collections\SshKeyCollection;
+use App\Collections\RegionDataCollection;
+use App\Collections\ServerDataCollection;
+use App\Collections\SizeDataCollection;
+use App\Collections\SshKeyDataCollection;
 use App\DataTransferObjects\NewServerData;
 use App\DataTransferObjects\RegionData;
 use App\DataTransferObjects\ServerData;
@@ -52,12 +53,12 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $response->successful();
     }
 
-    protected function getAllSizesFromApi(): SizeCollection
+    protected function getAllSizesFromApi(): SizeDataCollection
     {
         $response = $this->getJson('/sizes');
         $data = $this->decodeJson($response->body());
 
-        $collection = new SizeCollection;
+        $collection = new SizeDataCollection;
 
         /** @var object $size */
         foreach ($data->sizes as $size) {
@@ -77,12 +78,12 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $collection;
     }
 
-    protected function getAllRegionsFromApi(): RegionCollection
+    protected function getAllRegionsFromApi(): RegionDataCollection
     {
         $response = $this->getJson('/regions');
         $data = $this->decodeJson(($response->body()));
 
-        $collection = new RegionCollection;
+        $collection = new RegionDataCollection;
 
         /** @var object $region */
         foreach ($data->regions as $region) {
@@ -97,7 +98,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $collection;
     }
 
-    public function getAvailableRegions(): RegionCollection
+    public function getAvailableRegions(): RegionDataCollection
     {
         $availableSizes = $this->getAllSizes()
             ->filter(fn(SizeData $size) => $size->available)
@@ -110,7 +111,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         );
     }
 
-    public function getAvailableSizes(): SizeCollection
+    public function getAvailableSizes(): SizeDataCollection
     {
         $availableRegions = $this->getAllRegions()
             ->filter(fn(RegionData $region) => $region->available)
@@ -123,7 +124,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         );
     }
 
-    public function getSizesAvailableInRegion(RegionData|string $region): SizeCollection
+    public function getSizesAvailableInRegion(RegionData|string $region): SizeDataCollection
     {
         return $this->getAvailableSizes()->filter(fn(SizeData $size) =>
             Arr::hasValue($size->regions, is_string($region) ? $region : $region->slug)
@@ -138,19 +139,19 @@ class DigitalOceanV2 extends AbstractServerProvider
         ]);
         $data = $this->decodeJson(($response->body()));
 
-        return $this->sshKeyDataFromResponseObject($data->ssh_key);
+        return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
-    public function getAllSshKeys(): SshKeyCollection
+    public function getAllSshKeys(): SshKeyDataCollection
     {
         $response = $this->getJson('/account/keys');
         $data = $this->decodeJson(($response->body()));
 
-        $collection = new SshKeyCollection;
+        $collection = new SshKeyDataCollection;
 
         /** @var object $key */
         foreach ($data->ssh_keys as $key) {
-            $collection->push($this->sshKeyDataFromResponseObject($key));
+            $collection->push($this->sshKeyDataFromResponseData($key));
         }
 
         return $collection;
@@ -161,7 +162,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         $response = $this->getJson('/account/keys/' . $identifier);
         $data = $this->decodeJson(($response->body()));
 
-        return $this->sshKeyDataFromResponseObject($data->ssh_key);
+        return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
     public function addSshKeySafely(string $name, string $publicKey): SshKeyData
@@ -188,7 +189,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         ]);
         $data = $this->decodeJson(($response->body()));
 
-        return $this->sshKeyDataFromResponseObject($data->ssh_key);
+        return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
     public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData
@@ -206,28 +207,43 @@ class DigitalOceanV2 extends AbstractServerProvider
         ]);
         $data = $this->decodeJson($response->body());
 
-        return $this->serverDataFromResponseObject($data->droplet);
+        return $this->serverDataFromResponseData($data->droplet);
     }
 
     public function getServer(string $serverId): ServerData
     {
-        //
+        $response = $this->getJson('/droplets/' . $serverId);
+        $data = $this->decodeJson($response->body());
+
+        return $this->serverDataFromResponseData($data->droplet);
     }
 
-    public function getAllServers(): ServerData
+    public function getAllServers(): ServerDataCollection
     {
-        //
+        $response = $this->getJson('/droplets');
+        $data = $this->decodeJson($response->body());
+
+        $servers = new ServerDataCollection;
+
+        foreach ($data->droplets as $droplet) {
+            $servers->push($this->serverDataFromResponseData($droplet));
+        }
+
+        return $servers;
     }
 
-    public function getServerPublicIp4(string $serverId): string
+    public function getServerPublicIp4(string $serverId): string|null
     {
+        $response = $this->getJson('/droplets/' . $serverId);
+        $data = $this->decodeJson($response->body());
 
+        return $this->publicIpFromNetworks($data->droplet->networks->v4);
     }
 
     /**
      * Convert SSH key object from response format to internal format.
      */
-    protected function sshKeyDataFromResponseObject(object $data): SshKeyData
+    protected function sshKeyDataFromResponseData(object $data): SshKeyData
     {
         return new SshKeyData(
             id: $data->id,
@@ -240,12 +256,25 @@ class DigitalOceanV2 extends AbstractServerProvider
     /**
      * Convert server object from response format to internal format.
      */
-    protected function serverDataFromResponseObject(object $data): ServerData
+    protected function serverDataFromResponseData(object $data): ServerData
     {
         return new ServerData(
             id: $data->id,
             name: $data->name,
-            publicIp4: $data->networks->v4->ip_address ?? null,
+            publicIp4: $this->publicIpFromNetworks($data->networks->v4),
         );
+    }
+
+    /**
+     * Extract a public IP address from a list of networks attached to a server.
+     */
+    protected function publicIpFromNetworks(array $networks): string|null
+    {
+        foreach ($networks as $network) {
+            if ($network->type === 'public')
+                return $network->ip_address;
+        }
+
+        return null;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Collections;
 
-class RegionCollection extends AbstractBasicCollection
+class SshKeyDataCollection extends AbstractBasicCollection
 {
     //
 }

@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Collections\RegionCollection;
-use App\Collections\SizeCollection;
+use App\Collections\RegionDataCollection;
+use App\Collections\SizeDataCollection;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
@@ -29,8 +29,8 @@ abstract class AbstractServerProvider implements ServerProviderInterface
      * the lifecycle of this object.
      * This technique saves some external API requests.
      */
-    private RegionCollection $allRegions;
-    private SizeCollection $allSizes;
+    private RegionDataCollection $allRegions;
+    private SizeDataCollection $allSizes;
 
     public function __construct(int $identifier = null)
     {
@@ -52,12 +52,12 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     /**
      * Call the API for all server regions it supports.
      */
-    abstract protected function getAllRegionsFromApi(): RegionCollection;
+    abstract protected function getAllRegionsFromApi(): RegionDataCollection;
 
     /**
      * Call the API for all server sizes it supports.
      */
-    abstract protected function getAllSizesFromApi(): SizeCollection;
+    abstract protected function getAllSizesFromApi(): SizeDataCollection;
 
     /**
      * Get a cache prefix for this specific server provider API credentials.
@@ -87,7 +87,7 @@ abstract class AbstractServerProvider implements ServerProviderInterface
      * Retrieve a collection of all regions supported by the API
      * either from cache or from the API.
      */
-    private function retrieveAllRegions(): RegionCollection
+    private function retrieveAllRegions(): RegionDataCollection
     {
         if (! $this->canUseCache())
             return $this->getAllRegionsFromApi();
@@ -103,7 +103,7 @@ abstract class AbstractServerProvider implements ServerProviderInterface
      * Retrieve a collection of all sizes supported by the API
      * either from cache or from the API.
      */
-    private function retrieveAllSizes(): SizeCollection
+    private function retrieveAllSizes(): SizeDataCollection
     {
         if (! $this->canUseCache())
             return $this->getAllSizesFromApi();
@@ -234,7 +234,7 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     /**
      * Get a collection of all regions supported by the API using caching.
      */
-    public function getAllRegions(): RegionCollection
+    public function getAllRegions(): RegionDataCollection
     {
         if (! isset($this->allRegions))
             $this->allRegions = $this->retrieveAllRegions();
@@ -245,7 +245,7 @@ abstract class AbstractServerProvider implements ServerProviderInterface
     /**
      * Get a collection of all sizes supported by the API using caching.
      */
-    public function getAllSizes(): SizeCollection
+    public function getAllSizes(): SizeDataCollection
     {
         if (! isset($this->allSizes))
             $this->allSizes = $this->retrieveAllSizes();
