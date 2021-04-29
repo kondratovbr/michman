@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read Server $server
+ *
  * @method static WorkerSshKeyFactory factory(...$parameters)
  */
 class WorkerSshKey extends AbstractModel

@@ -2,36 +2,31 @@
 
 namespace App\Actions\Servers;
 
-use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
 use App\DataTransferObjects\NewServerData;
+use App\Jobs\Providers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\DB;
 
 class StoreServerAction
 {
     public function __construct(
-        protected CreateWorkerSshKeyAction $createWorkerSshKeyAction
+        //
     ) {}
 
     public function execute(NewServerData $data): Server
     {
-        // TODO: CRITICAL! CONTINUE!
-
-        DB::beginTransaction();
-
         /** @var Server $server */
-        $server = $data->provider->servers()->make($data->toArray());
-
-        // TODO: Move this to a job?
-        $this->createWorkerSshKeyAction->execute($server);
-
-        DB::commit();
+        $server = $data->provider->servers()->create($data->toArray());
 
         Bus::chain([
+            new CreateWorkerSshKeyForServerJob($server),
+            new AddServerSshKeyToProviderJob($server),
             new RequestNewServerFromProviderJob($server, $data),
+
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
+
         ])->dispatch();
 
         return $server;
