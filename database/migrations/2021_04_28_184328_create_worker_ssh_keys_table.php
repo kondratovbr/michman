@@ -15,8 +15,8 @@ class CreateWorkerSshKeysTable extends Migration
             $table->id();
             $table->foreignId('server_id');
 
-            $table->string('public_key');
-            $table->string('private_key');
+            $table->text('public_key');
+            $table->text('private_key');
             $table->string('name');
             // ID issued by a server provider after we add the key to the user's account.
             $table->string('external_id')->nullable();
