@@ -29,6 +29,6 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Ssh::create()
+        //
     }
 }
