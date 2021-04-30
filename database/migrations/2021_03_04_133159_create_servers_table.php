@@ -22,6 +22,7 @@ class CreateServersTable extends Migration
             // IP can be null before the server is actually created by a provider.
             $table->string('public_ip')->nullable();
             $table->string('ssh_port')->nullable();
+            $table->string('ssh_host_key')->nullable();
 
             $table->timestamps();
         });

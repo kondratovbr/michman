@@ -18,6 +18,7 @@ use Spatie\Ssh\Ssh;
  * @property string $type
  * @property string $publicIp
  * @property string $sshPort
+ * @property string|null $sshHostKey
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
@@ -37,6 +38,7 @@ class Server extends AbstractModel
         'external_id',
         'public_ip',
         'ssh_port',
+        'ssh_host_key',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
