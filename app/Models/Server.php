@@ -16,8 +16,8 @@ use Spatie\Ssh\Ssh;
  * @property string $externalId
  * @property string $name
  * @property string $type
- * @property string $publicIp
- * @property string $sshPort
+ * @property string|null $publicIp
+ * @property string|null $sshPort
  * @property string|null $sshHostKey
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
