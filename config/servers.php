@@ -83,4 +83,6 @@ return [
         ],
     ],
 
+    'default_ssh_port' => 22,
+
 ];

@@ -18,8 +18,11 @@ class StoreServerAction
 
     public function execute(NewServerData $data): Server
     {
+        $attributes = $data->toArray();
+        $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
+
         /** @var Server $server */
-        $server = $data->provider->servers()->create($data->toArray());
+        $server = $data->provider->servers()->create($attributes);
 
         Bus::chain([
             new CreateWorkerSshKeyForServerJob($server),

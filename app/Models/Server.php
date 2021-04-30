@@ -7,6 +7,7 @@ use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Ssh\Ssh;
 
 /**
  * Server Eloquent model
@@ -15,7 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $externalId
  * @property string $name
  * @property string $type
- * @property string $ip
+ * @property string $publicIp
+ * @property string $sshPort
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
@@ -32,6 +34,9 @@ class Server extends AbstractModel
     protected $fillable = [
         'name',
         'type',
+        'external_id',
+        'public_ip',
+        'ssh_port',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -39,6 +44,14 @@ class Server extends AbstractModel
 
     /** @var string[] The attributes that should be cast. */
     protected $casts = [];
+
+    /**
+     * Open an SSH session to the server.
+     */
+    public function ssh(string $user): Ssh
+    {
+        $ssh = Ssh::create($user, $this->publicIp)
+    }
 
     /**
      * Get a relation to the provider that runs this server.

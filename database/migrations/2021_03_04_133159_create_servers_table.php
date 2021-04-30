@@ -20,7 +20,8 @@ class CreateServersTable extends Migration
             // ID of a server given by the server provider.
             $table->string('external_id')->nullable();
             // IP can be null before the server is actually created by a provider.
-            $table->string('ip')->nullable();
+            $table->string('public_ip')->nullable();
+            $table->string('ssh_port')->nullable();
 
             $table->timestamps();
         });

@@ -61,7 +61,7 @@ class GetServerPublicIpJob implements ShouldQueue
                 return;
             }
 
-            $server->ip = $ip;
+            $server->publicIp = $ip;
             $server->save();
         }, 5);
     }
