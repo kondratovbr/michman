@@ -7,7 +7,7 @@ use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Spatie\Ssh\Ssh;
+use phpseclib3\Net\SSH2;
 
 /**
  * Server Eloquent model
@@ -50,9 +50,43 @@ class Server extends AbstractModel
     /**
      * Open an SSH session to the server.
      */
-    public function ssh(string $user): Ssh
+    public function ssh(string $user = null): SSH2
     {
-        $ssh = Ssh::create($user, $this->publicIp)
+        $ssh = $this->newSshSession();
+
+        if ($ssh->getServerPublicHostKey() != $this->sshHostKey)
+            throw new \RuntimeException('Host key verification failed.');
+
+        $user ??= (string) config('servers.worker_user');
+
+        if (! $ssh->login($user, $this->workerSshKey->privateKey))
+            throw new \RuntimeException('Key authentication failed.');
+
+        return $ssh;
+    }
+
+    /**
+     * Load and save the server's SSH host key.
+     */
+    protected function updateSshHostKey(): void
+    {
+        $ssh = $this->newSshSession();
+
+        $hostKey = $ssh->getServerPublicHostKey();
+
+        // SSH2::getServerPublicHostKey() may return false if the key received wasn't signed correctly.
+        if ($hostKey === false)
+            throw new \RuntimeException('Server\'s SSH host key wasn\'t received correctly.');
+
+        $this->update(['ssh_host_key' => $hostKey]);
+    }
+
+    protected function newSshSession(): SSH2
+    {
+        return new SSH2(
+            $this->publicIp,
+            $this->sshPort ?? (string) config('servers.default_ssh_port'),
+        );
     }
 
     /**
