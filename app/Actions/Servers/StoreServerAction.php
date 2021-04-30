@@ -6,7 +6,9 @@ use App\DataTransferObjects\NewServerData;
 use App\Jobs\Providers\AddServerSshKeyToProviderJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
+use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
+use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 
@@ -29,6 +31,8 @@ class StoreServerAction
             new AddServerSshKeyToProviderJob($server),
             new RequestNewServerFromProviderJob($server, $data),
             new GetServerPublicIpJob($server),
+            new VerifyRemoteServerIsSuitableJob($server),
+            new PrepareRemoteServerJob($server),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
