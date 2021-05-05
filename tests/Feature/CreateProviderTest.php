@@ -133,7 +133,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('aws', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('digital_ocean_v2', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldReceive('credentialsAreValid')->once()->andReturnFalse();
         });
 
@@ -152,7 +152,7 @@ class CreateProviderTest extends AbstractFeatureTest
         config(['providers.list.digital_ocean_v2.disabled' => true]);
 
         $data = [
-            'provider' => 'digital_ocean_v2',
+            'provider' => 'aws',
             'token' => Str::random(32),
             'key' => null,
             'secret' => null,
