@@ -3,6 +3,9 @@
 namespace Tests\Integration;
 
 use App\DataTransferObjects\NewServerData;
+use App\DataTransferObjects\RegionData;
+use App\DataTransferObjects\SizeData;
+use App\DataTransferObjects\SshKeyData;
 use App\Models\Provider;
 use App\Models\User;
 use App\Services\ServerProviderInterface;
@@ -191,6 +194,358 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
     public function test_get_all_regions()
     {
-        //
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/regions', [],
+            '{"regions": [{"name": "New York 1","slug": "nyc1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 1","slug": "ams1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 3","slug": "ams3","sizes": ["s-1vcpu-1gb","s-1vcpu-2gb"],"features": ["virtio","private_networking","backups","ipv6","metadata"],"available": true}],"links": {},"meta": {"total": 9}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $regions = $api->getAllRegions();
+
+        $this->assertCount(3, $regions);
+
+        /** @var RegionData $region1 */
+        $region1 = $regions[0];
+        /** @var RegionData $region2 */
+        $region2 = $regions[1];
+        /** @var RegionData $region3 */
+        $region3 = $regions[2];
+
+        $this->assertEquals('New York 1', $region1->name);
+        $this->assertEquals('nyc1', $region1->slug);
+        $this->assertEmpty($region1->sizes);
+        $this->assertFalse($region1->available);
+
+        $this->assertEquals('Amsterdam 1', $region2->name);
+        $this->assertEquals('ams1', $region2->slug);
+        $this->assertEmpty($region2->sizes);
+        $this->assertFalse($region2->available);
+
+        $this->assertEquals('Amsterdam 3', $region3->name);
+        $this->assertEquals('ams3', $region3->slug);
+        $this->assertEquals(['s-1vcpu-1gb', 's-1vcpu-2gb'], $region3->sizes);
+        $this->assertTrue($region3->available);
+    }
+
+    public function test_get_all_sizes()
+    {
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/sizes', [],
+            '{"sizes": [{"slug": "s-1vcpu-1gb","memory": 1024,"vcpus": 1,"disk": 25,"transfer": 1.0,"price_monthly": 5.0,"price_hourly": 0.00744,"regions": ["ams2","ams3","blr1"],"available": true},{"slug": "s-32vcpu-192gb","memory": 196608,"vcpus": 24,"disk": 3840,"transfer": 12.0,"price_monthly": 960.0,"price_hourly": 1.42857,"regions": [],"available": false}],"links": {},"meta": {"total": 20}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $sizes = $api->getAllSizes();
+
+        $this->assertCount(2, $sizes);
+
+        /** @var SizeData $size1 */
+        $size1 = $sizes[0];
+        /** @var SizeData $size2 */
+        $size2 = $sizes[1];
+
+        $this->assertEquals('s-1vcpu-1gb', $size1->slug);
+        $this->assertEquals(1.0, $size1->transfer);
+        $this->assertEquals(5.0, $size1->priceMonthly);
+        $this->assertEquals(1024, $size1->memoryMb);
+        $this->assertEquals(1, $size1->cpus);
+        $this->assertEquals(25, $size1->diskGb);
+        $this->assertEquals(['ams2', 'ams3', 'blr1'], $size1->regions);
+        $this->assertTrue($size1->available);
+
+        $this->assertEquals('s-32vcpu-192gb', $size2->slug);
+        $this->assertEquals(12.0, $size2->transfer);
+        $this->assertEquals(960.0, $size2->priceMonthly);
+        $this->assertEquals(196608, $size2->memoryMb);
+        $this->assertEquals(24, $size2->cpus);
+        $this->assertEquals(3840, $size2->diskGb);
+        $this->assertEmpty($size2->regions);
+        $this->assertFalse($size2->available);
+    }
+
+    public function test_get_available_regions()
+    {
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/sizes', [],
+            '{"sizes": [{"slug": "s-1vcpu-1gb","memory": 1024,"vcpus": 1,"disk": 25,"transfer": 1.0,"price_monthly": 5.0,"price_hourly": 0.00744,"regions": ["ams2","ams3","blr1"],"available": true},{"slug": "s-32vcpu-192gb","memory": 196608,"vcpus": 24,"disk": 3840,"transfer": 12.0,"price_monthly": 960.0,"price_hourly": 1.42857,"regions": [],"available": false}],"links": {},"meta": {"total": 20}}'
+        );
+
+        $this->mockRequest($token, 'get', '/regions', [],
+            '{"regions": [{"name": "New York 1","slug": "nyc1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 1","slug": "ams1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 3","slug": "ams3","sizes": ["s-1vcpu-1gb","s-1vcpu-2gb"],"features": ["virtio","private_networking","backups","ipv6","metadata"],"available": true}],"links": {},"meta": {"total": 9}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $regions = $api->getAvailableRegions();
+
+        $this->assertCount(1, $regions);
+
+        /** @var RegionData $region1 */
+        $region1 = $regions->first();
+
+        $this->assertEquals('Amsterdam 3', $region1->name);
+        $this->assertEquals('ams3', $region1->slug);
+        $this->assertEquals(['s-1vcpu-1gb', 's-1vcpu-2gb'], $region1->sizes);
+        $this->assertTrue($region1->available);
+    }
+
+    public function test_get_available_sizes()
+    {
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/regions', [],
+            '{"regions": [{"name": "New York 1","slug": "nyc1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 1","slug": "ams1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 3","slug": "ams3","sizes": ["s-1vcpu-1gb","s-1vcpu-2gb"],"features": ["virtio","private_networking","backups","ipv6","metadata"],"available": true}],"links": {},"meta": {"total": 9}}'
+        );
+
+        $this->mockRequest($token, 'get', '/sizes', [],
+            '{"sizes": [{"slug": "s-1vcpu-1gb","memory": 1024,"vcpus": 1,"disk": 25,"transfer": 1.0,"price_monthly": 5.0,"price_hourly": 0.00744,"regions": ["ams2","ams3","blr1","nyc1"],"available": true},{"slug": "s-32vcpu-192gb","memory": 196608,"vcpus": 24,"disk": 3840,"transfer": 12.0,"price_monthly": 960.0,"price_hourly": 1.42857,"regions": ["nyc1","ams3"],"available": false}],"links": {},"meta": {"total": 20}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $sizes = $api->getAvailableSizes();
+
+        $this->assertCount(1, $sizes);
+
+        /** @var SizeData $size1 */
+        $size1 = $sizes->first();
+
+        $this->assertEquals('s-1vcpu-1gb', $size1->slug);
+        $this->assertEquals(1.0, $size1->transfer);
+        $this->assertEquals(5.0, $size1->priceMonthly);
+        $this->assertEquals(1024, $size1->memoryMb);
+        $this->assertEquals(1, $size1->cpus);
+        $this->assertEquals(25, $size1->diskGb);
+        $this->assertEquals(['ams2', 'ams3', 'blr1', 'nyc1'], $size1->regions);
+        $this->assertTrue($size1->available);
+    }
+
+    public function test_get_sizes_available_in_region_by_data()
+    {
+        $region = new RegionData(
+            name: 'The Region',
+            slug: 'nyc1',
+            sizes: ['s-1vcpu-1gb', 's-32vcpu-192gb', 's-32vcpu-16gb'],
+            available: true,
+        );
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/regions', [],
+            '{"regions": [{"name": "New York 1","slug": "nyc1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 1","slug": "ams1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 3","slug": "ams3","sizes": ["s-1vcpu-1gb","s-1vcpu-2gb"],"features": ["virtio","private_networking","backups","ipv6","metadata"],"available": true}],"links": {},"meta": {"total": 9}}'
+        );
+
+        $this->mockRequest($token, 'get', '/sizes', [],
+            '{"sizes": [{"slug": "s-1vcpu-1gb","memory": 1024,"vcpus": 1,"disk": 25,"transfer": 1.0,"price_monthly": 5.0,"price_hourly": 0.00744,"regions": ["ams2","ams3","blr1","nyc1"],"available": true},{"slug": "s-32vcpu-192gb","memory": 196608,"vcpus": 24,"disk": 3840,"transfer": 12.0,"price_monthly": 960.0,"price_hourly": 1.42857,"regions": ["nyc1","ams3"],"available": false}],"links": {},"meta": {"total": 20}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $sizes = $api->getSizesAvailableInRegion($region);
+
+        $this->assertCount(1, $sizes);
+
+        $size1 = $sizes[0];
+
+        $this->assertEquals('s-1vcpu-1gb', $size1->slug);
+        $this->assertEquals(1.0, $size1->transfer);
+        $this->assertEquals(5.0, $size1->priceMonthly);
+        $this->assertEquals(1024, $size1->memoryMb);
+        $this->assertEquals(1, $size1->cpus);
+        $this->assertEquals(25, $size1->diskGb);
+        $this->assertEquals(['ams2', 'ams3', 'blr1', 'nyc1'], $size1->regions);
+        $this->assertTrue($size1->available);
+    }
+
+    public function test_get_sizes_available_in_region_by_slug()
+    {
+        $region = 'nyc1';
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/regions', [],
+            '{"regions": [{"name": "New York 1","slug": "nyc1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 1","slug": "ams1","sizes": [],"features": ["virtio","backups"],"available": false},{"name": "Amsterdam 3","slug": "ams3","sizes": ["s-1vcpu-1gb","s-1vcpu-2gb"],"features": ["virtio","private_networking","backups","ipv6","metadata"],"available": true}],"links": {},"meta": {"total": 9}}'
+        );
+
+        $this->mockRequest($token, 'get', '/sizes', [],
+            '{"sizes": [{"slug": "s-1vcpu-1gb","memory": 1024,"vcpus": 1,"disk": 25,"transfer": 1.0,"price_monthly": 5.0,"price_hourly": 0.00744,"regions": ["ams2","ams3","blr1","nyc1"],"available": true},{"slug": "s-32vcpu-192gb","memory": 196608,"vcpus": 24,"disk": 3840,"transfer": 12.0,"price_monthly": 960.0,"price_hourly": 1.42857,"regions": ["nyc1","ams3"],"available": false}],"links": {},"meta": {"total": 20}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $sizes = $api->getSizesAvailableInRegion($region);
+
+        $this->assertCount(1, $sizes);
+
+        $size1 = $sizes[0];
+
+        $this->assertEquals('s-1vcpu-1gb', $size1->slug);
+        $this->assertEquals(1.0, $size1->transfer);
+        $this->assertEquals(5.0, $size1->priceMonthly);
+        $this->assertEquals(1024, $size1->memoryMb);
+        $this->assertEquals(1, $size1->cpus);
+        $this->assertEquals(25, $size1->diskGb);
+        $this->assertEquals(['ams2', 'ams3', 'blr1', 'nyc1'], $size1->regions);
+        $this->assertTrue($size1->available);
+    }
+
+    public function test_get_ssh_key()
+    {
+        $token = Str::random();
+        $id = '111';
+
+        $this->mockRequest($token, 'get', '/account/keys/' . $id, [],
+            '{"ssh_key": {"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "My SSH Public Key"}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $key = $api->getSshKey($id);
+
+        $this->assertEquals('111', $key->id);
+        $this->assertEquals('3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa', $key->fingerprint);
+        $this->assertEquals('ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example', $key->publicKey);
+        $this->assertEquals('My SSH Public Key', $key->name);
+    }
+
+    public function test_add_ssh_key()
+    {
+        $token = Str::random();
+        $name = 'My SSH Public Key';
+        $publicKey = 'ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example';
+
+        $this->mockRequest($token, 'post', '/account/keys',
+            [
+                'name' => $name,
+                'public_key' => $publicKey,
+            ],
+            '{"ssh_key": {"id": 666,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "My SSH Public Key"}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $key = $api->addSshKey($name, $publicKey);
+
+        $this->assertEquals('666', $key->id);
+        $this->assertEquals('3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa', $key->fingerprint);
+        $this->assertEquals('ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example', $key->publicKey);
+        $this->assertEquals('My SSH Public Key', $key->name);
+    }
+
+    public function test_update_ssh_key()
+    {
+        $token = Str::random();
+        $id = '111';
+        $name = 'New SSH Key Name';
+
+        $this->mockRequest($token, 'put', '/account/keys/' . $id, ['name' => $name],
+            '{"ssh_key": {"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "New SSH Key Name"}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $key = $api->updateSshKey($id, $name);
+
+        $this->assertEquals('111', $key->id);
+        $this->assertEquals('3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa', $key->fingerprint);
+        $this->assertEquals('ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example', $key->publicKey);
+        $this->assertEquals('New SSH Key Name', $key->name);
+    }
+
+    public function test_get_all_ssh_keys()
+    {
+        $token = Str::random();
+
+        $this->mockRequest($token, 'get', '/account/keys', [],
+            '{"ssh_keys": [{"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example1","name": "My SSH Public Key 1"},{"id": 222,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fb","public_key": "ssh-rsa BEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example2","name": "My SSH Public Key 2"}],"links": {},"meta": {"total": 2}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $keys = $api->getAllSshKeys();
+
+        $this->assertCount(2, $keys);
+
+        /** @var SshKeyData $key1 */
+        $key1 = $keys[0];
+        /** @var SshKeyData $key2 */
+        $key2 = $keys[1];
+
+        $this->assertEquals('111', $key1->id);
+        $this->assertEquals('3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa', $key1->fingerprint);
+        $this->assertEquals('ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example1', $key1->publicKey);
+        $this->assertEquals('My SSH Public Key 1', $key1->name);
+
+        $this->assertEquals('222', $key2->id);
+        $this->assertEquals('3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fb', $key2->fingerprint);
+        $this->assertEquals('ssh-rsa BEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example2', $key2->publicKey);
+        $this->assertEquals('My SSH Public Key 2', $key2->name);
+    }
+
+    public function test_add_new_ssh_key_safely()
+    {
+        $token = Str::random();
+        $name = 'New SSH Key';
+        $publicKey = 'ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example';
+
+        $this->mockRequest($token, 'get', '/account/keys', [],
+            '{"ssh_keys": [{"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example1","name": "My SSH Public Key 1"},{"id": 222,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fb","public_key": "ssh-rsa BEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example2","name": "My SSH Public Key 2"}],"links": {},"meta": {"total": 2}}'
+        );
+
+        $this->mockRequest($token, 'post', '/account/keys',
+            [
+                'name' => $name,
+                'public_key' => $publicKey,
+            ],
+            '{"ssh_key": {"id": 333,"fingerprint": "3a:16:bc:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "New SSH Key"}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $key = $api->addSshKeySafely($name, $publicKey);
+
+        $this->assertEquals('333', $key->id);
+        $this->assertEquals('3a:16:bc:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa', $key->fingerprint);
+        $this->assertEquals('ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example', $key->publicKey);
+        $this->assertEquals('New SSH Key', $key->name);
+    }
+
+    public function test_add_existing_ssh_key_safely()
+    {
+        $token = Str::random();
+        $name = 'New SSH Key Name';
+        $publicKey = 'ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example';
+
+        $this->mockRequest($token, 'get', '/account/keys', [],
+            '{"ssh_keys": [{"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "Old SSH Key Name"},{"id": 222,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fb","public_key": "ssh-rsa BEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example2","name": "My SSH Public Key 2"}],"links": {},"meta": {"total": 2}}'
+        );
+
+        $this->mockRequest($token, 'put', '/account/keys/111', ['name' => $name],
+            '{"ssh_key": {"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "New SSH Key Name"}}'
+        );
+
+        /** @var ServerProviderInterface $api */
+        $api = App::make('digital_ocean_v2', ['token' => $token]);
+
+        $key = $api->addSshKeySafely($name, $publicKey);
+
+        $this->assertEquals('111', $key->id);
+        $this->assertEquals('3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa', $key->fingerprint);
+        $this->assertEquals('ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example', $key->publicKey);
+        $this->assertEquals('New SSH Key Name', $key->name);
     }
 }
