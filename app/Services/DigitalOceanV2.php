@@ -71,7 +71,6 @@ class DigitalOceanV2 extends AbstractServerProvider
                 diskGb: $size->disk,
                 regions: $size->regions,
                 available: $size->available,
-                description: $size->description,
             ));
         }
 
