@@ -261,7 +261,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return new ServerData(
             id: $data->id,
             name: $data->name,
-            publicIp4: $this->publicIpFromNetworks($data->networks->v4),
+            publicIp4: $this->publicIpFromNetworks($data->networks->v4 ?? []),
         );
     }
 
