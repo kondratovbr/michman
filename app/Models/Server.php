@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Carbon\CarbonInterface;
-use Database\Factories\ProviderFactory;
+use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -25,7 +25,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Provider $provider
  * @property-read WorkerSshKey $workerSshKey
  *
- * @method static ProviderFactory factory(...$parameters)
+ * @method static ServerFactory factory(...$parameters)
  */
 class Server extends AbstractModel
 {
