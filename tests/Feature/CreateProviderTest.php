@@ -21,7 +21,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $data = [
             'provider' => 'digital_ocean_v2',
-            'token' => Str::random(32),
+            'token' => 'foobar',
             'key' => null,
             'secret' => null,
             'name' => 'Valid name',
@@ -44,7 +44,18 @@ class CreateProviderTest extends AbstractFeatureTest
         $user->fresh();
 
         $this->assertCount(1, $user->providers);
-        $this->assertDatabaseHas(Provider::tableName(), $data);
+        $this->assertDatabaseHas('providers', [
+            'user_id' => $user->id,
+            'provider' => 'digital_ocean_v2',
+            'key' => null,
+            'secret' => null,
+            'name' => 'Valid name',
+        ]);
+
+        /** @var Provider $provider */
+        $provider = $user->providers->first();
+
+        $this->assertEquals('foobar', $provider->token);
     }
 
     public function test_provider_with_basic_auth_can_be_created()
@@ -56,8 +67,8 @@ class CreateProviderTest extends AbstractFeatureTest
         $data = [
             'provider' => 'aws',
             'token' => null,
-            'key' => Str::random(16),
-            'secret' => Str::random(16),
+            'key' => 'login',
+            'secret' => 'password',
             'name' => 'Valid name',
         ];
 
@@ -78,7 +89,18 @@ class CreateProviderTest extends AbstractFeatureTest
         $user->fresh();
 
         $this->assertCount(1, $user->providers);
-        $this->assertDatabaseHas(Provider::tableName(), $data);
+        $this->assertDatabaseHas(Provider::tableName(), [
+            'user_id' => $user->id,
+            'provider' => 'aws',
+            'token' => null,
+            'name' => 'valid name',
+        ]);
+
+        /** @var Provider $provider */
+        $provider = $user->providers->first();
+
+        $this->assertEquals('login', $provider->key);
+        $this->assertEquals('password', $provider->secret);
     }
 
     public function test_provider_with_wrong_type_of_credentials_cannot_be_created()
