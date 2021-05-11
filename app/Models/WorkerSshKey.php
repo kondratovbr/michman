@@ -24,6 +24,9 @@ use phpseclib3\Crypt\PublicKeyLoader;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read string $publicKeyString
+ * @property-read string $privateKeyString
+ *
  * @property-read Server $server
  *
  * @method static WorkerSshKeyFactory factory(...$parameters)
@@ -54,8 +57,7 @@ class WorkerSshKey extends AbstractModel
         if ($publicKey instanceof PrivateKeyInterface)
             $publicKey = $publicKey->getPublicKey();
 
-        $this->attributes['public_key'] = $publicKey
-            ->toString('OpenSSH', ['comment' => $this->server->name]);
+        $this->attributes['public_key'] = $this->keyToString($publicKey);
     }
 
     public function getPrivateKeyAttribute(): PrivateKeyInterface
@@ -68,9 +70,22 @@ class WorkerSshKey extends AbstractModel
 
     public function setPrivateKeyAttribute(PrivateKeyInterface $privateKey): void
     {
-        $this->attributes['private_key'] = Crypt::encryptString(
-            $privateKey->toString('OpenSSH', ['comment' => $this->server->name])
-        );
+        $this->attributes['private_key'] = Crypt::encryptString($this->keyToString($privateKey));
+    }
+
+    public function getPrivateKeyStringAttribute(): string
+    {
+        return $this->keyToString($this->privateKey);
+    }
+
+    public function getPublicKeyStringAttribute(): string
+    {
+        return $this->keyToString($this->publicKey);
+    }
+
+    protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key): string
+    {
+        return $key->toString('OpenSSH', ['comment' => $this->server->name]);
     }
 
     /**
