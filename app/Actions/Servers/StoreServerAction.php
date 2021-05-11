@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Bus;
 
 class StoreServerAction
 {
-    public function __construct(
-        //
-    ) {}
-
     public function execute(NewServerData $data): Server
     {
         $attributes = $data->toArray();
