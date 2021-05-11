@@ -30,7 +30,7 @@ class DigitalOceanForm extends Component
     use AuthorizesRequests;
 
     /** An interface to DigitalOcean API with the currently chosen user's API token. */
-    protected ServerProviderInterface $api;
+    protected ServerProviderInterface|null $api;
 
     /** @var int[] User's server providers. */
     public array $providers = [];
@@ -217,10 +217,11 @@ class DigitalOceanForm extends Component
     protected function loadApi(): void
     {
         if (isset($this->state['provider_id'])) {
-            $this->api = Auth::user()->providers()
-                ->whereKey($this->state['provider_id'])
-                ->first()
-                ->api();
+            $this->api = optional(
+                Auth::user()->providers()
+                    ->whereKey($this->state['provider_id'])
+                    ->first()
+                )->api();
         }
     }
 

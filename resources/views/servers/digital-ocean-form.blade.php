@@ -155,7 +155,7 @@
         <div class="max-w-prose space-y-3">
             <p>The following will be installed on the server:</p>
             <ul class="list-disc list-outside ml-3 ">
-                @foreach(config('servers.types.' . $state['type'] . '.install') as $program)
+                @foreach(config('servers.types.' . $state['type'] . '.install') ?? [] as $program)
                     @if($program == 'database')
                         @if($state['database'] != 'none')
                             <li>{{ __('servers.databases.' . $state['database']) }}</li>
