@@ -6,6 +6,10 @@ use Carbon\CarbonInterface;
 use Database\Factories\WorkerSshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Crypt;
+use phpseclib3\Crypt\Common\PrivateKey as PrivateKeyInterface;
+use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
+use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * WorkerSshKey Eloquent model
@@ -13,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Represents an SSH key that our worker uses to access the server.
  *
  * @property int $id
- * @property string $publicKey
- * @property string $privateKey
+ * @property PublicKeyInterface $publicKey
+ * @property PrivateKeyInterface $privateKey
  * @property string $name
  * @property string|null $externalId
  * @property CarbonInterface $createdAt
@@ -30,8 +34,6 @@ class WorkerSshKey extends AbstractModel
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'public_key',
-        'private_key',
         'name',
         'external_id',
     ];
@@ -39,10 +41,37 @@ class WorkerSshKey extends AbstractModel
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    /** @var string[] The attributes that should be cast. */
-    protected $casts = [
-        'private_key' => 'encrypted',
-    ];
+    public function getPublicKeyAttribute(): PublicKeyInterface
+    {
+        /** @var PublicKeyInterface $publicKey */
+        $publicKey = PublicKeyLoader::load($this->attributes['public_key']);
+
+        return $publicKey;
+    }
+
+    public function setPublicKeyAttribute(PublicKeyInterface|PrivateKeyInterface $publicKey): void
+    {
+        if ($publicKey instanceof PrivateKeyInterface)
+            $publicKey = $publicKey->getPublicKey();
+
+        $this->attributes['public_key'] = $publicKey
+            ->toString('OpenSSH', ['comment' => $this->server->name]);
+    }
+
+    public function getPrivateKeyAttribute(): PrivateKeyInterface
+    {
+        /** @var PrivateKeyInterface $privateKey */
+        $privateKey = PublicKeyLoader::load(Crypt::decryptString($this->attributes['private_key']));
+
+        return $privateKey;
+    }
+
+    public function setPrivateKeyAttribute(PrivateKeyInterface $privateKey): void
+    {
+        $this->attributes['private_key'] = Crypt::encryptString(
+            $privateKey->toString('OpenSSH', ['comment' => $this->server->name])
+        );
+    }
 
     /**
      * Get a relation with the server that uses this key.

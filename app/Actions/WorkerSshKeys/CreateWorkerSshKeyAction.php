@@ -13,11 +13,14 @@ class CreateWorkerSshKeyAction
         $key = EC::createKey('Ed25519');
 
         /** @var WorkerSshKey $workerKey */
-        $workerKey = $server->workerSshKey()->create([
+        $workerKey = $server->workerSshKey()->make([
             'name' => $server->name,
-            'private_key' => $key->toString('OpenSSH', ['comment' => $server->name]),
-            'public_key' => $key->getPublicKey()->toString('OpenSSH', ['comment' => $server->name]),
         ]);
+
+        $workerKey->privateKey = $key;
+        $workerKey->publicKey = $key->getPublicKey();
+
+        $workerKey->save();
 
         return $workerKey;
     }

@@ -7,7 +7,6 @@ use Database\Factories\ProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SSH2;
 
 /**
@@ -63,10 +62,7 @@ class Server extends AbstractModel
 
         $user ??= (string) config('servers.worker_user');
 
-        if (! $ssh->login(
-            $user,
-            PublicKeyLoader::load($this->workerSshKey->privateKey),
-        )) {
+        if (! $ssh->login($user, $this->workerSshKey->privateKey)) {
             throw new \RuntimeException('Key authentication failed.');
         }
 
