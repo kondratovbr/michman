@@ -72,19 +72,13 @@ class CreateProviderForm extends Component
                 ->required(),
             'token' => Rules::string()->max(255)->nullable()
                 ->requiredIf($authType === 'token')
-                ->addRule(
-                    Rule::unique(Provider::class, 'token')
-                        ->where('user_id', Auth::user()->getKey())
-                )->addRuleIf(
+                ->addRuleIf(
                     new ProviderTokenValid($this->provider),
                     $authType === 'token'
                 ),
             'key' => Rules::string()->max(255)->nullable()
                 ->requiredIf($authType === 'basic')
-                ->addRule(
-                    Rule::unique(Provider::class, 'key')
-                        ->where('user_id', Auth::user()->getKey())
-                )->addRuleIf(
+                ->addRuleIf(
                     new ProviderKeyValid($this->provider, $this->secret),
                     $authType === 'basic'
                 ),

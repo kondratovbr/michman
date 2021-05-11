@@ -49,6 +49,13 @@ class Provider extends AbstractModel
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
+    /** @var string[] The attributes that should be cast. */
+    protected $casts = [
+        'token' => 'encrypted',
+        'key' => 'encrypted',
+        'secret' => 'encrypted',
+    ];
+
     /** @var ServerProviderInterface An interface to interact with the API. */
     private ServerProviderInterface $api;
 
