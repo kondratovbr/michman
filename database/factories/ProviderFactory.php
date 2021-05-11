@@ -20,13 +20,28 @@ class ProviderFactory extends Factory
     {
         return [
             'user_id' => User::factory()->withPersonalTeam(),
-            // TODO: Seed some others as well.
+            // TODO: Seed some others as well, but keep this as default.
             'provider' => 'digital_ocean_v2',
             'token' => Str::random(32),
             'key' => null,
             'secret' => null,
             'name' => $this->faker->domainName,
         ];
+    }
+
+    /**
+     * Create providers using DigitalOceanV2 API.
+     *
+     * @return $this
+     */
+    public function digitalOceanV2(): static
+    {
+        return $this->state([
+            'provider' => 'digital_ocean_v2',
+            'token' => Str::random(32),
+            'key' => null,
+            'secret' => null,
+        ]);
     }
 
     /**
