@@ -19,6 +19,7 @@ class ProviderFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::factory()->withPersonalTeam(),
             // TODO: Seed some others as well.
             'provider' => 'digital_ocean_v2',
             'token' => Str::random(32),
