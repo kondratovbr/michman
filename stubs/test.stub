@@ -3,6 +3,8 @@
 namespace {{ namespace }};
 
 use Tests\AbstractFeatureTest;
+use Mockery;
+use Mockery\MockInterface;
 
 class {{ class }} extends AbstractFeatureTest
 {
