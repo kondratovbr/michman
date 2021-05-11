@@ -11,7 +11,6 @@ use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Models\Provider;
-use App\Models\Server;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Bus;
@@ -57,7 +56,7 @@ class StoreServerActionTest extends AbstractFeatureTest
         $this->assertNull($server->sshHostKey);
         $this->assertEquals('22', $server->sshPort);
         $this->assertCount(1, $provider->servers);
-        $this->assertDatabaseHas(Server::tableName(), [
+        $this->assertDatabaseHas('servers', [
             'provider_id' => $provider->id,
             'name' => 'Server Name',
             'type' => 'app',
