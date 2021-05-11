@@ -22,7 +22,10 @@ class ProviderSeeder extends Seeder
             'token' => (string) config('providers.do_dev_token'),
             'name' => 'Dev Token',
         ])
-            ->for(User::query()->firstWhere('email', 'admin@example.com'), 'owner')
+            ->for(
+                User::query()->firstWhere('email', 'admin@example.com'),
+                'owner'
+            )
             ->create();
 
         // Seed fake tokens.
