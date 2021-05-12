@@ -16,12 +16,9 @@ class AddServerSshKeyToProviderJobTest extends AbstractFeatureTest
 {
     public function test_job_parameters_and_logic()
     {
-        /** @var Server $server */
-        $server = Server::factory()
-            ->for(Provider::factory()->digitalOceanV2())
-            ->create();
         /** @var WorkerSshKey $workerSshKey */
-        $workerSshKey = WorkerSshKey::factory()->for($server)->create();
+        $workerSshKey = WorkerSshKey::factory()->create();
+        $server = $workerSshKey->server;
 
         $job = new AddServerSshKeyToProviderJob($server);
 
