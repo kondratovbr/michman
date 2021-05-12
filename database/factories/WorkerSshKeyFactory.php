@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Server;
 use App\Models\WorkerSshKey;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use phpseclib3\Crypt\EC;
@@ -16,15 +17,26 @@ class WorkerSshKeyFactory extends Factory
      */
     public function definition(): array
     {
-        $key = EC::createKey('Ed25519');
-
-        // TODO: CRITICAL! CONTINUE! Doesn't work - tries to access ->server->name when there's no server assigned yet.
-
         return [
-            'private_key' => $key,
-            'public_key' => $key->getPublicKey(),
-            'name' => $this->faker->domainName,
+            'server_id' => Server::factory(),
             'external_id' => null,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure(): static
+    {
+        return $this->afterMaking(function (WorkerSshKey $sshKey) {
+            $key = EC::createKey('Ed25519');
+            $sshKey->privateKey = $key;
+            $sshKey->publicKey = $key->getPublicKey();
+            $sshKey->name = $sshKey->server->name ?? $this->faker->domainName;
+        })->afterCreating(function (WorkerSshKey $sshKey) {
+            //
+        });
     }
 }
