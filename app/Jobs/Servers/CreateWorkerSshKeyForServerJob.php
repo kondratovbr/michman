@@ -36,6 +36,9 @@ class CreateWorkerSshKeyForServerJob implements ShouldQueue
                 ->lockForUpdate()
                 ->firstOrFail();
 
+            if (isset($server->workerSshKey))
+                throw new \RuntimeException('The server already has a workerSshKey.');
+
             $action->execute($server);
         }, 5);
     }

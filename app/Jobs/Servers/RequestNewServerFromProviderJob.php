@@ -45,6 +45,9 @@ class RequestNewServerFromProviderJob implements ShouldQueue
                 ->lockForUpdate()
                 ->firstOrFail();
 
+            if (isset($server->externalId))
+                throw new \RuntimeException('The server already has an external_id set.');
+
             $api = $server->provider->api();
 
             $createdServer = $api->createServer($this->serverData, $server->workerSshKey->externalId);
