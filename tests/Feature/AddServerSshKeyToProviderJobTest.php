@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\DataTransferObjects\SshKeyData;
 use App\Jobs\Providers\AddServerSshKeyToProviderJob;
-use App\Models\Provider;
-use App\Models\Server;
 use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
 use App\Support\Str;
@@ -38,10 +36,8 @@ class AddServerSshKeyToProviderJobTest extends AbstractFeatureTest
 
         app()->call([$job, 'handle']);
 
-        $workerSshKey->fresh();
+        $workerSshKey->refresh();
 
         $this->assertEquals('100500', $workerSshKey->externalId);
-
-        // TODO: CRITICAL! CONTINUE! Make sure it works, right now it doesn't.
     }
 }
