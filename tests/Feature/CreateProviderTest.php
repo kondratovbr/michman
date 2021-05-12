@@ -41,7 +41,7 @@ class CreateProviderTest extends AbstractFeatureTest
             ->call('store')
             ->assertHasNoErrors();
 
-        $user->fresh();
+        $user->refresh();
 
         $this->assertCount(1, $user->providers);
         $this->assertDatabaseHas('providers', [
@@ -86,7 +86,7 @@ class CreateProviderTest extends AbstractFeatureTest
             ->call('store')
             ->assertHasNoErrors();
 
-        $user->fresh();
+        $user->refresh();
 
         $this->assertCount(1, $user->providers);
         $this->assertDatabaseHas(Provider::tableName(), [
@@ -131,7 +131,7 @@ class CreateProviderTest extends AbstractFeatureTest
             ->call('store')
             ->assertHasErrors(['token']);
 
-        $user->fresh();
+        $user->refresh();
 
         $this->assertCount(0, $user->providers);
     }
@@ -164,7 +164,7 @@ class CreateProviderTest extends AbstractFeatureTest
             ->call('store')
             ->assertHasErrors(['token']);
 
-        $user->fresh();
+        $user->refresh();
 
         $this->assertCount(0, $user->providers);
     }
@@ -195,7 +195,7 @@ class CreateProviderTest extends AbstractFeatureTest
             ->call('store')
             ->assertHasErrors(['provider']);
 
-        $user->fresh();
+        $user->refresh();
 
         $this->assertCount(0, $user->providers);
     }

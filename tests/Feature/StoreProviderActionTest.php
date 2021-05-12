@@ -48,7 +48,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
             'secret' => null,
         ]);
 
-        $provider->fresh();
+        $provider->refresh();
 
         $this->assertEquals('foobar', $provider->token);
     }
@@ -89,7 +89,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
             'token' => null,
         ]);
 
-        $provider->fresh();
+        $provider->refresh();
 
         $this->assertEquals('login', $provider->key);
         $this->assertEquals('password', $provider->secret);
