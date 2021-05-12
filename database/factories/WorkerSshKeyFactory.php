@@ -35,8 +35,20 @@ class WorkerSshKeyFactory extends Factory
             $sshKey->privateKey = $key;
             $sshKey->publicKey = $key->getPublicKey();
             $sshKey->name = $sshKey->server->name ?? $this->faker->domainName;
-        })->afterCreating(function (WorkerSshKey $sshKey) {
-            //
+        });
+    }
+
+    /**
+     * Add a random external_id attribute.
+     *
+     * @return $this
+     */
+    public function withRandomExternalId(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'external_id' => rand(1, 10000),
+            ];
         });
     }
 }
