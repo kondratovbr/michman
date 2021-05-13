@@ -9,6 +9,7 @@ use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
+use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 
@@ -29,6 +30,7 @@ class StoreServerAction
             new GetServerPublicIpJob($server),
             new VerifyRemoteServerIsSuitableJob($server),
             new PrepareRemoteServerJob($server),
+            new UpdateServerAvailabilityJob($server),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
