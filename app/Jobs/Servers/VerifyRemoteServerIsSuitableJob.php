@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Spatie\Ssh\Ssh;
+use Illuminate\Support\Facades\DB;
 
 class VerifyRemoteServerIsSuitableJob implements ShouldQueue
 {
@@ -29,6 +29,16 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        // TODO: CRITICAL! CONTINUE!
+
+        DB::transaction(function () {
+            /** @var Server $server */
+            $server = Server::query()
+                ->whereKey($this->server->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $ssh = $server->ssh('root');
+        }, 5);
     }
 }
