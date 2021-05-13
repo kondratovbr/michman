@@ -19,6 +19,8 @@ use phpseclib3\Net\SSH2;
  * @property string|null $publicIp
  * @property string|null $sshPort
  * @property string|null $sshHostKey
+ * @property bool|null $suitable
+ * @property bool|null $available
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
@@ -39,13 +41,18 @@ class Server extends AbstractModel
         'public_ip',
         'ssh_port',
         'ssh_host_key',
+        'suitable',
+        'available',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
     /** @var string[] The attributes that should be cast. */
-    protected $casts = [];
+    protected $casts = [
+        'suitable' => 'boolean',
+        'available' => 'boolean',
+    ];
 
     /**
      * Open an SSH session to the server.
@@ -62,9 +69,8 @@ class Server extends AbstractModel
 
         $user ??= (string) config('servers.worker_user');
 
-        if (! $ssh->login($user, $this->workerSshKey->privateKey)) {
+        if (! $ssh->login($user, $this->workerSshKey->privateKey))
             throw new \RuntimeException('Key authentication failed.');
-        }
 
         return $ssh;
     }

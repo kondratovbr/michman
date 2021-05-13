@@ -23,6 +23,8 @@ class CreateServersTable extends Migration
             $table->string('public_ip')->nullable();
             $table->string('ssh_port')->nullable();
             $table->string('ssh_host_key')->nullable();
+            $table->boolean('suitable')->nullable();
+            $table->boolean('available')->nullable();
 
             $table->timestamps();
         });
