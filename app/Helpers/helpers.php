@@ -50,3 +50,13 @@ if (! function_exists('generateRandomName')) {
         return $result;
     }
 }
+
+if (! function_exists('')) {
+    /**
+     * Generate a pseudo-random float between 0 and 1 inclusively.
+     */
+    function randomFloat(): float
+    {
+        return (float) rand() / (float) getrandmax();
+    }
+}
