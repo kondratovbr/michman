@@ -19,7 +19,6 @@ class ProviderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory()->withPersonalTeam(),
             // TODO: Seed some others as well, but keep this as default.
             'provider' => 'digital_ocean_v2',
             'token' => Str::random(32),
@@ -27,6 +26,18 @@ class ProviderFactory extends Factory
             'secret' => null,
             'name' => $this->faker->domainName,
         ];
+    }
+
+    /**
+     * Also create a user owning this provider.
+     *
+     * @return $this
+     */
+    public function withOwner(): static
+    {
+        return $this->state([
+            'user_id' => User::factory()->withPersonalTeam()
+        ]);
     }
 
     /**

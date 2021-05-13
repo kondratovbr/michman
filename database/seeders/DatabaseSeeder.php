@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ProviderSeeder::class,
             ServerSeeder::class,
+            WorkerSshKeySeeder::class,
         ]);
     }
 }

@@ -18,12 +18,23 @@ class ServerFactory extends Factory
     public function definition(): array
     {
         return [
-            'provider_id' => Provider::factory(),
             'name' => $this->faker->domainName,
             // TODO: Seed other types as well.
             'type' => 'app',
             'ssh_port' => (string) config('servers.default_ssh_port'),
         ];
+    }
+
+    /**
+     * Also create a provider owning this server.
+     *
+     * @return $this
+     */
+    public function withProvider(): static
+    {
+        return $this->state([
+            'provider_id' => Provider::factory()->withOwner(),
+        ]);
     }
 
     /**
