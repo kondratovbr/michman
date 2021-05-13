@@ -23,7 +23,7 @@ class GetServerPublicIpJob implements ShouldQueue
 
     public function __construct(Server $server)
     {
-        $this->onQueue('servers');
+        $this->onQueue('providers');
 
         $this->server = $server->withoutRelations();
     }
