@@ -10,8 +10,8 @@ use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
+use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
-use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Bus;
 use Tests\AbstractFeatureTest;
@@ -70,6 +70,7 @@ class StoreServerActionTest extends AbstractFeatureTest
             GetServerPublicIpJob::class,
             VerifyRemoteServerIsSuitableJob::class,
             PrepareRemoteServerJob::class,
+            UpdateServerAvailabilityJob::class,
         ]);
     }
 }
