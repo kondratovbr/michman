@@ -158,10 +158,9 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
     public function test_create_server()
     {
-        $provider = Provider::factory()->for(
-            User::factory()->withPersonalTeam(),
-            'owner'
-        )->create();
+        /** @var Provider $provider */
+        $provider = Provider::factory()->withOwner()->create();
+
         $serverData = new NewServerData(
             provider: $provider,
             name: 'new-server',

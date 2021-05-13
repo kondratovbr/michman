@@ -11,7 +11,7 @@ class CreateWorkerSshKeyActionTest extends AbstractFeatureTest
     public function test_worker_ssh_key_gets_created()
     {
         /** @var Server $server */
-        $server = Server::factory()->create();
+        $server = Server::factory()->withProvider()->create();
 
         $action = new CreateWorkerSshKeyAction;
 

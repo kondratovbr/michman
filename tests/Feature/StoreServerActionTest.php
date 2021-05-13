@@ -20,12 +20,9 @@ class StoreServerActionTest extends AbstractFeatureTest
 {
     public function test_server_gets_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         /** @var StoreServerAction $action */
         $action = App::make(StoreServerAction::class);

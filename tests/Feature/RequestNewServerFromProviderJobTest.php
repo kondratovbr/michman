@@ -9,7 +9,6 @@ use App\Models\Provider;
 use App\Models\Server;
 use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
-use Mockery;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
@@ -19,7 +18,7 @@ class RequestNewServerFromProviderJobTest extends AbstractFeatureTest
     {
         /** @var Server $server */
         $server = Server::factory()
-            ->for(Provider::factory()->digitalOceanV2(), 'provider')
+            ->for(Provider::factory()->digitalOceanV2()->withOwner(), 'provider')
             ->has(WorkerSshKey::factory()->withRandomExternalId(), 'workerSshKey')
             ->create();
 

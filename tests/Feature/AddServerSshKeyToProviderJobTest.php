@@ -15,24 +15,26 @@ class AddServerSshKeyToProviderJobTest extends AbstractFeatureTest
     public function test_job_parameters_and_logic()
     {
         /** @var WorkerSshKey $workerSshKey */
-        $workerSshKey = WorkerSshKey::factory()->create();
+        $workerSshKey = WorkerSshKey::factory()->withServer()->create();
         $server = $workerSshKey->server;
 
         $job = new AddServerSshKeyToProviderJob($server);
 
         $this->assertEquals('providers', $job->queue);
 
-        $this->mockBind('digital_ocean_v2', ServerProviderInterface::class, function (MockInterface $mock) use ($server) {
-            $mock->shouldReceive('addSshKeySafely')
-                ->with($server->workerSshKey->name, $server->workerSshKey->publicKeyString)
-                ->once()
-                ->andReturn(new SshKeyData(
-                    id: '100500',
-                    fingerprint: Str::random(),
-                    publicKey: $server->workerSshKey->publicKeyString,
-                    name: $server->workerSshKey->name,
-                ));
-        });
+        $this->mockBind('digital_ocean_v2', ServerProviderInterface::class,
+            function (MockInterface $mock) use ($server) {
+                $mock->shouldReceive('addSshKeySafely')
+                    ->with($server->workerSshKey->name, $server->workerSshKey->publicKeyString)
+                    ->once()
+                    ->andReturn(new SshKeyData(
+                        id: '100500',
+                        fingerprint: Str::random(),
+                        publicKey: $server->workerSshKey->publicKeyString,
+                        name: $server->workerSshKey->name,
+                    ));
+            }
+        );
 
         app()->call([$job, 'handle']);
 

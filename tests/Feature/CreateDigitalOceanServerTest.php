@@ -19,13 +19,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 {
     public function test_server_can_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $serverName = Str::random();
 
@@ -82,13 +78,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_provider_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => 100500,
@@ -116,13 +108,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_region_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -150,13 +138,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_size_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -184,13 +168,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_type_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -219,13 +199,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_python_version_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -253,13 +229,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_database_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -287,13 +259,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_without_db_name_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -321,13 +289,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_with_invalid_cache_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,
@@ -355,13 +319,9 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
     public function test_server_without_name_cannot_be_created()
     {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
         /** @var Provider $provider */
-        $provider = Provider::factory([
-            'user_id' => $user->id,
-        ])->create();
+        $provider = Provider::factory()->withOwner()->create();
+        $user = $provider->owner;
 
         $state = [
             'provider_id' => $provider->id,

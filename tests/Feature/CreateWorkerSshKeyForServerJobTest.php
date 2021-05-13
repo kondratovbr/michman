@@ -12,7 +12,7 @@ class CreateWorkerSshKeyForServerJobTest extends AbstractFeatureTest
 {
     public function test_job_has_correct_parameters_and_calls_action()
     {
-        $server = Server::factory()->create();
+        $server = Server::factory()->withProvider()->create();
 
         $job = new CreateWorkerSshKeyForServerJob($server);
 
