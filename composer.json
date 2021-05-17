@@ -17,6 +17,7 @@
         "ext-pdo": "*",
         "ext-tokenizer": "*",
         "ext-xml": "*",
+        "composer/semver": "^3.2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "graham-campbell/digitalocean": "^8.3",
