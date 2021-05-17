@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\SshAuthFailedException;
 use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,7 +71,7 @@ class Server extends AbstractModel
         $user ??= (string) config('servers.worker_user');
 
         if (! $ssh->login($user, $this->workerSshKey->privateKey))
-            throw new \RuntimeException('Key authentication failed.');
+            throw new SshAuthFailedException('Key authentication failed.');
 
         return $ssh;
     }
