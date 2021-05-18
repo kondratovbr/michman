@@ -18,7 +18,7 @@ use phpseclib3\Net\SSH2;
  * @property string $name
  * @property string $type
  * @property string|null $publicIp
- * @property string|null $sshPort
+ * @property string $sshPort
  * @property string|null $sshHostKey
  * @property bool|null $suitable
  * @property bool|null $available
@@ -54,6 +54,14 @@ class Server extends AbstractModel
         'suitable' => 'boolean',
         'available' => 'boolean',
     ];
+
+    /**
+     * Get SSH port attribute or the default one if it's null.
+     */
+    public function getSshPortAttribute(): string
+    {
+        return $this->attributes['ssh_port'] ?? (string) config('servers.default_ssh_port');
+    }
 
     /**
      * Open an SSH session to the server.
@@ -92,12 +100,12 @@ class Server extends AbstractModel
         $this->update(['ssh_host_key' => $hostKey]);
     }
 
+    /**
+     * Create a new instance of an SSH session to this server.
+     */
     protected function newSshSession(): SSH2
     {
-        return new SSH2(
-            $this->publicIp,
-            $this->sshPort ?? (string) config('servers.default_ssh_port'),
-        );
+        return new SSH2($this->publicIp, $this->sshPort,);
     }
 
     /**
