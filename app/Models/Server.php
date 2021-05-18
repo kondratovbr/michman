@@ -81,6 +81,8 @@ class Server extends AbstractModel
         if (! $ssh->login($user, $this->workerSshKey->privateKey))
             throw new SshAuthFailedException('Key authentication failed.');
 
+        $ssh->setKeepAlive(1);
+
         return $ssh;
     }
 
