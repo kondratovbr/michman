@@ -4,8 +4,6 @@ namespace App\Jobs\Servers;
 
 use App\Models\Server;
 use Illuminate\Bus\Queueable;
-// TODO: IMPORTANT! Do I need this in the actual job? And on other server-related jobs?
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
