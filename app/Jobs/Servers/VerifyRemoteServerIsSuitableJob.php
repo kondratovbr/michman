@@ -7,17 +7,21 @@ use App\Models\Server;
 use App\Support\Str;
 use Composer\Semver\Comparator;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use phpseclib3\Net\SSH2;
+use DateTimeInterface;
 
 class VerifyRemoteServerIsSuitableJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    /** @var int The amount of seconds to wait between retries if a server isn't accessible yet. */
+    protected const SECONDS_BETWEEN_RETRIES = 60;
 
     protected Server $server;
 
@@ -26,6 +30,20 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
         $this->onQueue('servers');
 
         $this->server = $server->withoutRelations();
+    }
+
+    /** Get the middleware the job should pass through. */
+    public function middleware(): array
+    {
+        return [
+            (new ThrottlesExceptions(3, 10))->backoff(1),
+        ];
+    }
+
+    /** Determine the time at which the job should timeout. */
+    public function retryUntil(): DateTimeInterface
+    {
+        return now()->addMinutes(30);
     }
 
     /**
@@ -45,6 +63,11 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
             } catch (SshAuthFailedException $e) {
                 $server->suitable = false;
                 $server->save();
+                return;
+            }
+
+            if (! $ssh->isConnected()) {
+                $this->release(static::SECONDS_BETWEEN_RETRIES);
                 return;
             }
 
@@ -70,7 +93,7 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
             return false;
 
         // We have root access at the moment.
-        if ($ssh->exec('whoami') != 'root')
+        if (! Str::contains($ssh->exec('whoami'), 'root'))
             return false;
 
         // apt-get is installed and accessible.
