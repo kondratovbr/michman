@@ -3,7 +3,7 @@
 namespace App\Actions\Servers;
 
 use App\DataTransferObjects\NewServerData;
-use App\Jobs\Providers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\AddServerSshKeyToProviderJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;

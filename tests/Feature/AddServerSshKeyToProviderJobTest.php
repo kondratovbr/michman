@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\DataTransferObjects\SshKeyData;
-use App\Jobs\Providers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\AddServerSshKeyToProviderJob;
 use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
 use App\Support\Str;
