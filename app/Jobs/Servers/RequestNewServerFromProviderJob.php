@@ -8,15 +8,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use DateTimeInterface;
 
-/*
- * TODO: CRITICAL! This job (and others interacting with third-party APIs) should be:
- *       1. Rate-limited
- *       2. Able to "backoff" when the API is unresponsive
- *       Laravel has built-in features for this - see docs.
- */
+// TODO: Should I refactor all provider-interacting and server-interacting jobs to keep throttling and retries DRY?
 
 class RequestNewServerFromProviderJob implements ShouldQueue
 {
@@ -33,12 +30,29 @@ class RequestNewServerFromProviderJob implements ShouldQueue
         $this->serverData = $serverData;
     }
 
+    /** Get the middleware the job should pass through. */
+    public function middleware(): array
+    {
+        return [
+            (new ThrottlesExceptions(3, 10))->backoff(1),
+        ];
+    }
+
+    /** Determine the time at which the job should timeout. */
+    public function retryUntil(): DateTimeInterface
+    {
+        return now()->addMinutes(30);
+    }
+
     /**
      * Execute the job.
      */
     public function handle(): void
     {
         DB::transaction(function () {
+
+            // TODO: IMPORTANT! Make sure to handle a situation when another server with the same name already exists on this provider.
+
             /** @var Server $server */
             $server = Server::query()
                 ->whereKey($this->server->getKey())

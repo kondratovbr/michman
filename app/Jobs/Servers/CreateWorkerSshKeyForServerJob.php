@@ -15,6 +15,9 @@ class CreateWorkerSshKeyForServerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /** The number of times the job may be attempted. */
+    public int $tries = 5;
+
     protected Server $server;
 
     public function __construct(Server $server)
@@ -37,7 +40,7 @@ class CreateWorkerSshKeyForServerJob implements ShouldQueue
                 ->firstOrFail();
 
             if (isset($server->workerSshKey))
-                throw new \RuntimeException('The server already has a workerSshKey.');
+                $this->fail(new \RuntimeException('The server already has a workerSshKey.'));
 
             $action->execute($server);
         }, 5);
