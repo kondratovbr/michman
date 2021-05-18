@@ -16,10 +16,10 @@ class GetServerPublicIpJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected Server $server;
-
     /** @var int The amount of seconds to wait between retries if an address wasn't issued yet. */
     protected const SECONDS_BETWEEN_RETRIES = 30;
+
+    protected Server $server;
 
     public function __construct(Server $server)
     {
@@ -32,7 +32,7 @@ class GetServerPublicIpJob implements ShouldQueue
     public function middleware(): array
     {
         return [
-            (new ThrottlesExceptions(3, 10))->backoff(1)
+            (new ThrottlesExceptions(3, 10))->backoff(1),
         ];
     }
 
