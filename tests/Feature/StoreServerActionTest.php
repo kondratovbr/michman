@@ -52,6 +52,7 @@ class StoreServerActionTest extends AbstractFeatureTest
         $this->assertNull($server->publicIp);
         $this->assertNull($server->sshHostKey);
         $this->assertEquals('22', $server->sshPort);
+        $this->assertNotNull($server->sudoPassword);
         $this->assertCount(1, $provider->servers);
         $this->assertDatabaseHas('servers', [
             'provider_id' => $provider->id,
