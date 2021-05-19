@@ -11,6 +11,7 @@ use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Server;
+use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
 
 class StoreServerAction
@@ -19,6 +20,7 @@ class StoreServerAction
     {
         $attributes = $data->toArray();
         $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
+        $attributes['sudo_server'] = Str::random(32);
 
         /** @var Server $server */
         $server = $data->provider->servers()->create($attributes);

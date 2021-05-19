@@ -21,8 +21,11 @@ class CreateServersTable extends Migration
             $table->string('external_id')->nullable();
             // IP can be null before the server is actually created by a provider.
             $table->string('public_ip')->nullable();
+            // The default SSH port will be used if it is null.
             $table->string('ssh_port')->nullable();
             $table->string('ssh_host_key')->nullable();
+            // Sudo password is stored encrypted and temporarily during the creation process and removed afterwards.
+            $table->text('sudo_password')->nullable();
             $table->boolean('suitable')->nullable();
             $table->boolean('available')->nullable();
 
