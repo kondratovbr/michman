@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use phpseclib3\Net\SFTP;
 
 class PrepareRemoteServerJob implements ShouldQueue
 {
@@ -51,8 +52,9 @@ class PrepareRemoteServerJob implements ShouldQueue
 
     protected function executeScript(Server $server): void
     {
-        // TODO: CRITICAL! CONTINUE! Figure out unattended-upgrades, see official guides.
+        // TODO: CRITICAL! Test the whole thing!
 
+        // Basic operations - software updates, basic firewall configuration.
         $commands = [
             'apt-get update -y',
             'apt-get upgrade -y',
@@ -63,18 +65,32 @@ class PrepareRemoteServerJob implements ShouldQueue
             'ufw default deny incoming',
             'ufw default allow outgoing',
             "ufw limit in {$server->sshPort}/tcp",
-            'ufw enable',
-            '',
-
-            //
-
-            'reboot',
+            'ufw --force enable',
         ];
 
-        $ssh = $server->ssh('root');
+        $ssh = $server->sftp('root');
 
         foreach ($commands as $command) {
             $ssh->exec($command);
         }
+
+        // Send unattended-upgrades config files over SFTP.
+        $ssh->put(
+            '/etc/apt/apt.conf.d/20auto-upgrades',
+            base_path('servers/apt/20auto-upgrades'),
+            SFTP::SOURCE_LOCAL_FILE
+        );
+        $ssh->put(
+            '/etc/apt/apt.conf.d/50unattended-upgrades',
+            base_path('servers/apt/50unattended-upgrades'),
+            SFTP::SOURCE_LOCAL_FILE
+        );
+
+        // TODO: CRITICAL! CONTINUE!
+        // Creating a new user will require an interactive shell.
+        $ssh->read();
+        $ssh->write('');
+
+        $ssh->exec('reboot');
     }
 }
