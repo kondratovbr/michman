@@ -1,5 +1,12 @@
-// Automatically upgrade packages from these (origin:archive) pairs
 //
+// This is a customized config added by Michman.
+// Commented lines with default values are kept for reference.
+//
+// NOTE: Please, only change this if you're really know what you're doing.
+// Changes may compromise the security of the server!
+//
+
+// Automatically upgrade packages from these (origin:archive) pairs
 // Note that in Ubuntu security updates may pull in new dependencies
 // from non-security sources (e.g. chromium). By allowing the release
 // pocket these get automatically pulled in.
@@ -43,23 +50,23 @@ Unattended-Upgrade::Package-Blacklist {
 // upgraded automatically. Valid values are "true", "false", and "auto".
 Unattended-Upgrade::DevRelease "auto";
 
-// This option allows you to control if on a unclean dpkg exit
+// This option allows you to control if on an unclean dpkg exit
 // unattended-upgrades will automatically run
 //   dpkg --force-confold --configure -a
-// The default is true, to ensure updates keep getting installed
+// The default is true, to ensure updates keep getting installed.
 Unattended-Upgrade::AutoFixInterruptedDpkg "true";
 
 // Send email to this address for problems or packages upgrades
 // If empty or unset then no email is sent, make sure that you
 // have a working mail setup on your system. A package that provides
 // 'mailx' must be installed. E.g. "user@example.com"
-//Unattended-Upgrade::Mail "";
+Unattended-Upgrade::Mail "notify@michman.dev";
 
 // Set this value to one of:
 //    "always", "only-on-error" or "on-change"
 // If this is not set, then any legacy MailOnlyOnError (boolean) value
 // is used to chose between "only-on-error" and "on-change"
-//Unattended-Upgrade::MailReport "only-on-error";
+Unattended-Upgrade::MailReport "only-on-error";
 
 // Remove unused automatically installed kernel-related packages
 // (kernel images, kernel headers and kernel version locked tools).
@@ -70,7 +77,7 @@ Unattended-Upgrade::Remove-New-Unused-Dependencies "true";
 
 // Do automatic removal of unused packages after the upgrade
 // (equivalent to apt-get autoremove)
-Unattended-Upgrade::Remove-Unused-Dependencies "false";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
 
 // Automatically reboot *WITHOUT CONFIRMATION* if
 //  the file /var/run/reboot-required is found after the upgrade
@@ -83,7 +90,8 @@ Unattended-Upgrade::Automatic-Reboot-WithUsers "false";
 // If automatic reboot is enabled and needed, reboot at the specific
 // time instead of immediately
 //  Default: "now"
-//Unattended-Upgrade::Automatic-Reboot-Time "02:00";
+// Server time used, which should usually be UTC.
+Unattended-Upgrade::Automatic-Reboot-Time "04:00";
 
 // Use apt bandwidth limit feature, this example limits the download
 // speed to 70kb/sec
@@ -97,11 +105,11 @@ Unattended-Upgrade::Automatic-Reboot-WithUsers "false";
 
 // Download and install upgrades only on AC power
 // (i.e. skip or gracefully stop updates on battery)
-// Unattended-Upgrade::OnlyOnACPower "true";
+Unattended-Upgrade::OnlyOnACPower "false";
 
 // Download and install upgrades only on non-metered connection
 // (i.e. skip or gracefully stop updates on a metered connection)
-// Unattended-Upgrade::Skip-Updates-On-Metered-Connections "true";
+Unattended-Upgrade::Skip-Updates-On-Metered-Connections "false";
 
 // Verbose logging
 // Unattended-Upgrade::Verbose "false";
