@@ -325,7 +325,7 @@ class DigitalOceanForm extends Component
 
         dd($server);
 
-        // TODO: CRITICAL! UNFINISHED! Don't forget to provide some feedback on success or failure.
+        // TODO: CRITICAL! UNFINISHED! Don't forget to provide some feedback on success or failure. And don't forget to show the sudo password to the user!
     }
 
     /**
