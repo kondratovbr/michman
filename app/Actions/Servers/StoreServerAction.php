@@ -20,7 +20,7 @@ class StoreServerAction
     {
         $attributes = $data->toArray();
         $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
-        $attributes['sudo_server'] = Str::random(32);
+        $attributes['sudo_password'] = Str::random(32);
 
         /** @var Server $server */
         $server = $data->provider->servers()->create($attributes);
