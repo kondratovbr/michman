@@ -105,6 +105,24 @@ class PrepareRemoteServerJob implements ShouldQueue
         // Add the worker user to sudo group.
         $ssh->exec('usermod -aG sudo ' . config('servers.worker_user'));
 
+        // Set up SSH access for the worker user.
+        $remoteDirectory = $remoteFile = '/home/' . config('servers.worker_user') . '/.ssh';
+        $remoteFile = $remoteDirectory . '/authorized_keys';
+        $ssh->mkdir($remoteDirectory, 0700);
+        $ssh->touch($remoteFile);
+        $ssh->exec('echo "' . $server->workerSshKey->publicKeyString . '" >> ' . $remoteFile);
+        $ssh->chmod(0600, $remoteFile);
+        $ssh->exec('chown -R michman ' . $remoteDirectory);
+        $ssh->exec('chgrp -R michman ' . $remoteDirectory);
+
+        // Send SSH server config and disable SSH access for root.
+        $ssh->put(
+            '/etc/ssh/sshd_config',
+            base_path('servers/ssh/sshd_config'),
+            SFTP::SOURCE_LOCAL_FILE
+        );
+        $ssh->delete('/root/.ssh');
+
         // Reboot just in case some updates needed it.
         $ssh->exec('reboot');
     }
