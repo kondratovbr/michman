@@ -2,8 +2,8 @@
 // This is a customized config added by Michman.
 // Commented lines with default values are kept for reference.
 //
-// NOTE: Please, only change this if you're really know what you're doing.
-// Changes may compromise the security of the server!
+// NOTE: Please, do not change anything here unless you really know what you're doing.
+//       Changes may compromise the security of the server!
 //
 
 // Automatically upgrade packages from these (origin:archive) pairs
