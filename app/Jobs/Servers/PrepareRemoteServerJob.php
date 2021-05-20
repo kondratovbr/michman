@@ -11,18 +11,18 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use phpseclib3\Net\SFTP;
 
+/*
+ * TODO: IMPORTANT! I should somehow log everything the app does on the servers for possible troubleshooting.
+ */
+
 class PrepareRemoteServerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected Server $server;
+    /** The number of seconds the job can run before timing out. */
+    public int $timeout = 60 * 30; // 30 min
 
-    /** @var string[] Command sequence to execute. */
-    protected array $script = [
-        'apt-get -y update',
-        'apt-get -y upgrade',
-        'apt-get -y install ufw git',
-    ];
+    protected Server $server;
 
     public function __construct(Server $server)
     {
@@ -54,25 +54,21 @@ class PrepareRemoteServerJob implements ShouldQueue
     {
         // TODO: CRITICAL! Test the whole thing!
 
-        // Basic operations - software updates, basic firewall configuration.
-        $commands = [
-            'apt-get update -y',
-            'apt-get upgrade -y',
-            'apt-get install -y ufw git curl gnupg gzip unattended-upgrades',
-            'ufw disable',
-            'ufw logging on',
-            'ufw default deny routed',
-            'ufw default deny incoming',
-            'ufw default allow outgoing',
-            "ufw limit in {$server->sshPort}/tcp",
-            'ufw --force enable',
-        ];
-
         $ssh = $server->sftp('root');
 
-        foreach ($commands as $command) {
-            $ssh->exec($command);
-        }
+        // Update packages and make sure the required ones are installed.
+        $ssh->enablePTY();
+        $ssh->setTimeout(60 * 15); // 15 min
+        // TODO: IMPORTANT! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
+        //       'dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct the problem.'
+        //       message shows the next time. Notify myself on an emergency channel since this will probably require some manual fixing.
+        $ssh->exec('apt-get update -y');
+        $ssh->read();
+        $ssh->exec('apt-get upgrade --with-new-pkgs -y');
+        $ssh->read();
+        $ssh->exec('apt-get install -y ufw git curl gnupg gzip unattended-upgrades');
+        $ssh->read();
+        $ssh->disablePTY();
 
         // Send unattended-upgrades config files over SFTP.
         $ssh->put(
@@ -86,11 +82,30 @@ class PrepareRemoteServerJob implements ShouldQueue
             SFTP::SOURCE_LOCAL_FILE
         );
 
-        // TODO: CRITICAL! CONTINUE!
-        // Creating a new user will require an interactive shell.
-        $ssh->read();
-        $ssh->write('');
+        // Configure firewall using UFW.
+        $ssh->setTimeout(60 * 5); // 5 min
+        foreach ([
+            'ufw disable',
+            'ufw logging on',
+            'ufw default deny routed',
+            'ufw default deny incoming',
+            'ufw default allow outgoing',
+            "ufw limit in {$server->sshPort}/tcp",
+            'ufw --force enable',
+            'ufw status verbose',
+        ] as $command) {
+            $ssh->exec($command);
+        }
 
+        // Create a worker user.
+        $ssh->setTimeout(60 * 5); // 5 min
+        $ssh->exec('useradd --create-home ' . config('servers.worker_user'));
+        $ssh->exec('echo ' . config('servers.worker_user') .':' . $server->sudoPassword . ' | chpasswd');
+
+        // Add the worker user to sudo group.
+        $ssh->exec('usermod -aG sudo ' . config('servers.worker_user'));
+
+        // Reboot just in case some updates needed it.
         $ssh->exec('reboot');
     }
 }
