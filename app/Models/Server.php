@@ -7,6 +7,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
@@ -146,5 +147,13 @@ class Server extends AbstractModel
     public function workerSshKey(): HasOne
     {
         return $this->hasOne(WorkerSshKey::class);
+    }
+
+    /**
+     * Get a relation to the logs of operations performed on this server.
+     */
+    public function logs(): HasMany
+    {
+        return $this->hasMany(ServerLog::class);
     }
 }

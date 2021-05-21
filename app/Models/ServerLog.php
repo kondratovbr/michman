@@ -1,0 +1,64 @@
+<?php declare(strict_types=1);
+
+namespace App\Models;
+
+use Carbon\CarbonInterface;
+use Database\Factories\ServerLogFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+/**
+ * Server Log Eloquent model to store SSH logs in the database
+ *
+ * @property int $id
+ * @property string $type
+ * @property string|null $command
+ * @property int|null $exitCode
+ * @property string|null $content
+ * @property string|null $localFile
+ * @property string|null $remoteFile
+ * @property bool|null $success
+ * @property CarbonInterface $createdAt
+ *
+ * @property-read Server $server
+ *
+ * @method static ServerLogFactory factory(...$parameters)
+ */
+class ServerLog extends AbstractModel
+{
+    use HasFactory;
+
+    /**
+     * @var string The database connection that should be used by the model.
+     *
+     * This model uses a separate connection so logs could be created independent
+     * of transactions on the main database.
+     */
+    protected $connection = 'db-logs';
+
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = null;
+
+    /** @var string[] The attributes that are mass assignable. */
+    protected $fillable = [
+        'type',
+        'command',
+        'exit_code',
+        'content',
+        'local_file',
+        'remote_file',
+        'success',
+        'created_at',
+    ];
+
+    /** @var string[] The attributes that should be visible in arrays and JSON. */
+    protected $visible = [];
+
+    /**
+     * Get a relation to the server that owns this log.
+     */
+    public function server(): BelongsTo
+    {
+        return $this->belongsTo(Server::class);
+    }
+}
