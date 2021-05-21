@@ -3,6 +3,14 @@
 namespace App\Jobs\Servers;
 
 use App\Models\Server;
+use App\Scripts\Root\AddSshKeyToUserScript;
+use App\Scripts\Root\ConfigureFirewallScript;
+use App\Scripts\Root\ConfigureSshServerScript;
+use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
+use App\Scripts\Root\CreateSudoUserScript;
+use App\Scripts\Root\DisableSshAccessForUserScript;
+use App\Scripts\Root\RebootServerScript;
+use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,18 +42,61 @@ class PrepareRemoteServerJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
-        DB::transaction(function () {
+    public function handle(
+        UpgradePackagesScript $upgradePackages,
+        ConfigureUnattendedUpgradesScript $configureUnattendedUpgrades,
+        ConfigureFirewallScript $configureFirewall,
+        CreateSudoUserScript $createSudoUser,
+        AddSshKeyToUserScript $addSshKeyToUser,
+        ConfigureSshServerScript $configureSshServer,
+        DisableSshAccessForUserScript $disableSshAccessForUser,
+        RebootServerScript $rebootServer,
+    ): void {
+        DB::transaction(function () use (
+            $upgradePackages,
+            $configureUnattendedUpgrades,
+            $configureFirewall,
+            $createSudoUser,
+            $addSshKeyToUser,
+            $configureSshServer,
+            $disableSshAccessForUser,
+            $rebootServer,
+        ) {
             /** @var Server $server */
             $server = Server::query()
                 ->whereKey($this->server->getKey())
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $this->executeScript($server);
+            $ssh = $server->sftp('root');
 
-            //
+            $upgradePackages->execute($server, $ssh);
+
+            $configureUnattendedUpgrades->execute($server, $ssh);
+
+            $configureFirewall->execute($server, $ssh);
+
+            $createSudoUser->execute(
+                $server,
+                (string) config('servers.worker_user'),
+                $server->sudoPassword,
+                $ssh,
+            );
+            $server->sudoPassword = null;
+            $server->save();
+
+            $addSshKeyToUser->execute(
+                $server,
+                (string) config('servers.worker_user'),
+                $server->workerSshKey,
+                $ssh,
+            );
+
+            $configureSshServer->execute($server, $ssh);
+
+            $disableSshAccessForUser->execute($server, 'root', $ssh);
+
+            $rebootServer->execute($server, $ssh);
 
         }, 5);
     }
