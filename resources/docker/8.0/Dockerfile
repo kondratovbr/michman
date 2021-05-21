@@ -46,12 +46,15 @@ RUN apt-get update \
 ARG XDEBUG=true
 ARG XDEBUG_PORT=9003
 ARG XDEBUG_CONFIG=/etc/php/8.0/mods-available/xdebug.ini
+RUN echo "xdebug.max_nesting_level=512" >> $XDEBUG_CONFIG
 RUN if [ "${XDEBUG}" = 'true' ]; then \
     echo "xdebug.client_port=${XDEBUG_PORT}" >> $XDEBUG_CONFIG \
     && echo "xdebug.mode=develop,debug" >> $XDEBUG_CONFIG \
     && echo "xdebug.start_with_request=yes" >> $XDEBUG_CONFIG \
     && echo "xdebug.client_host=host.docker.internal" >> $XDEBUG_CONFIG ;\
 fi;
+
+RUN echo "max_execution_time = 600" >> /etc/php/8.0/cli/php.ini
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.0
 
