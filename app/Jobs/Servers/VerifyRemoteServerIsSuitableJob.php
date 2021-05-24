@@ -4,8 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
 use App\Models\Server;
-use App\Support\Str;
-use Composer\Semver\Comparator;
+use App\Scripts\Root\VerifyServerIsSuitableScript;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,7 +12,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use phpseclib3\Net\SSH2;
 use DateTimeInterface;
 
 class VerifyRemoteServerIsSuitableJob implements ShouldQueue
@@ -49,9 +47,9 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(VerifyServerIsSuitableScript $verifyServerIsSuitable): void
     {
-        DB::transaction(function () {
+        DB::transaction(function () use ($verifyServerIsSuitable) {
             /** @var Server $server */
             $server = Server::query()
                 ->whereKey($this->server->getKey())
@@ -71,36 +69,8 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
                 return;
             }
 
-            $server->suitable = $this->serverSuitable($ssh);
+            $server->suitable = $verifyServerIsSuitable->execute($server, $ssh);
             $server->save();
         }, 5);
-    }
-
-    /**
-     * Determine if the server is suitable for use with the app.
-     */
-    protected function serverSuitable(SSH2 $ssh): bool
-    {
-        // TODO: IMPORTANT! Must test this whole thing with other providers. Only tested on DigitalOcean so far. Add some random generic VPSs as well.
-
-        // Server is running Ubuntu.
-        if (! Str::contains($ssh->exec('uname -v'), ['ubuntu', 'Ubuntu']))
-            return false;
-
-        // The version of Ubuntu is relatively recent - at least 16.04.
-        $version = $ssh->exec('lsb_release -sr');
-        if ($ssh->getExitStatus() || Comparator::lessThan($version, '16.04'))
-            return false;
-
-        // We have root access at the moment.
-        if (! Str::contains($ssh->exec('whoami'), 'root'))
-            return false;
-
-        // apt-get is installed and accessible.
-        $ssh->exec('apt-get -v');
-        if ($ssh->getExitStatus())
-            return false;
-
-        return true;
     }
 }

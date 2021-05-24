@@ -163,4 +163,12 @@ abstract class AbstractServerScript
             );
         }
     }
+
+    /**
+     * Get the exit status of the last executed command.
+     */
+    protected function getExitStatus(): false|int
+    {
+        return $this->ssh->getExitStatus();
+    }
 }
