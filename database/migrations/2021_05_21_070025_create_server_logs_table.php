@@ -21,7 +21,7 @@ class CreateServerLogsTable extends Migration
             $table->string('type');
             $table->text('command')->nullable();
             $table->integer('exit_code')->nullable();
-            $table->text('content')->nullable();
+            $table->longText('content')->nullable();
             $table->string('local_file')->nullable();
             $table->string('remote_file')->nullable();
             $table->boolean('success')->nullable();
