@@ -6,11 +6,11 @@ use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Support\Str;
 use Composer\Semver\Comparator;
-use phpseclib3\Net\SSH2;
+use phpseclib3\Net\SFTP;
 
 class VerifyServerIsSuitableScript extends AbstractServerScript
 {
-    public function execute(Server $server, SSH2 $ssh): bool
+    public function execute(Server $server, SFTP $ssh): bool
     {
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp('root'));
