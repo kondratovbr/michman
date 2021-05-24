@@ -23,15 +23,18 @@ class UpgradePackagesScript extends AbstractServerScript
          *       Also, there's another possible error:
          *       "Could not get lock..."
          *       Need to handle it as well.
+         *       Note: there are some other similar issues, see
+         *           https://itsfoss.com/could-not-get-lock-error/
+         *           https://pingvinus.ru/note/dpkg-lock
          */
 
         $this->enablePty();
-        $this->setTimeout(60 * 15); // 15 min
-        $this->execPty('apt-get update -y');
+        $this->setTimeout(60 * 30); // 30 min
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
         $this->read();
-        $this->execPty('apt-get upgrade --with-new-pkgs -y');
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get upgrade --with-new-pkgs -y');
         $this->read();
-        $this->execPty('apt-get install -y ufw git curl gnupg gzip unattended-upgrades');
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y ufw git curl gnupg gzip unattended-upgrades');
         $this->read();
         $this->disablePty();
     }
