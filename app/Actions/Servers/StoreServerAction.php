@@ -26,6 +26,7 @@ class StoreServerAction
         $server = $data->provider->servers()->create($attributes);
 
         Bus::chain([
+            // TODO: CRITICAL! Currently this doesn't entirely work. I should either have a user with passwordless sudo or actually store the sudo password encrypted in the DB.
             new CreateWorkerSshKeyForServerJob($server),
             new AddServerSshKeyToProviderJob($server),
             new RequestNewServerFromProviderJob($server, $data),
