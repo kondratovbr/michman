@@ -57,7 +57,7 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
                 ->firstOrFail();
 
             try {
-                $ssh = $server->ssh('root');
+                $ssh = $server->sftp('root');
             } catch (SshAuthFailedException $e) {
                 $server->suitable = false;
                 $server->save();
