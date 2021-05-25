@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Console\Commands\Traits\ProtectedOnProduction;
 use App\Exceptions\NotImplementedException;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class FlushSessions extends AbstractCommand
 {
@@ -27,7 +28,7 @@ class FlushSessions extends AbstractCommand
             try {
                 $this->$flushMethodName();
                 $this->info('Session data cleaned.');
-            } catch (\Throwable $exception) {
+            } catch (Throwable $exception) {
                 $this->error($exception->getMessage());
                 return 1;
             }
