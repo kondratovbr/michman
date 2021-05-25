@@ -86,14 +86,13 @@ class Server extends AbstractModel
     public function ssh(string $user = null, SSH2 $ssh = null): SSH2
     {
         $ssh ??= $this->newSshSession();
+        $user ??= (string) config('servers.worker_user');
 
         if (! isset($this->sshHostKey))
             $this->updateSshHostKey($ssh);
 
         if ($ssh->getServerPublicHostKey() != $this->sshHostKey)
             throw new \RuntimeException('Host key verification failed.');
-
-        $user ??= (string) config('servers.worker_user');
 
         if (! $ssh->login($user, $this->workerSshKey->privateKey))
             throw new SshAuthFailedException('Key authentication failed.');
