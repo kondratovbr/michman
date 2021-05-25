@@ -13,13 +13,12 @@ class UpgradePackagesScript extends AbstractServerScript
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp('root'));
 
-        // TODO: CRITICAL! CONTINUE! This thing doesn't really work. Xdebug stops it for some reason, need to try it without.
-
         /*
-         * TODO: IMPORTANT! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
+         * TODO: CRITICAL! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
          *       'dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct the problem.'
          *       message shows the next time.
          *       Notify myself on an emergency channel since this will probably require some manual fixing.
+         *       Or maybe just destroy and recreate the server and try again if it was happening during the initial phase.
          *       Also, there's another possible error:
          *       "Could not get lock..."
          *       Need to handle it as well.
