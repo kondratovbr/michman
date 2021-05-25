@@ -17,11 +17,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use phpseclib3\Net\SFTP;
-
-/*
- * TODO: IMPORTANT! I should somehow log everything the app does on the servers for possible troubleshooting.
- */
 
 class PrepareRemoteServerJob implements ShouldQueue
 {
@@ -82,8 +77,6 @@ class PrepareRemoteServerJob implements ShouldQueue
                 $server->sudoPassword,
                 $ssh,
             );
-            $server->sudoPassword = null;
-            $server->save();
 
             $addSshKeyToUser->execute(
                 $server,
