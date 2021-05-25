@@ -3,6 +3,7 @@
 namespace App\Scripts;
 
 use App\Models\Server;
+use App\Support\Str;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
 
@@ -55,7 +56,7 @@ abstract class AbstractServerScript
     /**
      * Execute a command on a remote server over SSH.
      */
-    protected function exec(string $command): string|bool
+    protected function exec(string $command, bool $scrubLogs = false): string|bool
     {
         $this->initialize();
 
@@ -63,13 +64,13 @@ abstract class AbstractServerScript
             $this->disablePty();
 
         try {
-            return $result = $this->ssh->exec($command);
+            return $output = $this->ssh->exec($command);
         } finally {
             $this->server->log(
                 type: 'exec',
-                command: $command,
+                command: $scrubLogs ? null : $command,
                 exitCode: $this->ssh->getExitStatus(),
-                content: $result ?? null,
+                content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
             );
         }
     }
@@ -94,7 +95,7 @@ abstract class AbstractServerScript
         }
     }
 
-    protected function read(string $expected = '', $mode = SSH2::READ_SIMPLE): string
+    protected function read(string $expected = '', $mode = SSH2::READ_SIMPLE, bool $scrubLogs = false): string
     {
         $this->initialize();
 
@@ -102,11 +103,11 @@ abstract class AbstractServerScript
             $this->enablePty();
 
         try {
-            return $result = $this->ssh->read($expected, $mode);
+            return $output = $this->ssh->read($expected, $mode);
         } finally {
             $this->server->log(
                 type: 'read',
-                content: $result ?? null,
+                content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
             );
         }
     }
@@ -170,5 +171,38 @@ abstract class AbstractServerScript
     protected function getExitStatus(): false|int
     {
         return $this->ssh->getExitStatus();
+    }
+
+    /**
+     * Execute a command that uses sudo,
+     * making sure that the password is supplied if requested.
+     */
+    protected function execSudo(string $command, bool $scrubLogs = false): string|bool|null
+    {
+        $this->initialize();
+
+        if (! $this->ssh->isPTYEnabled())
+            $this->enablePty();
+
+        try {
+
+            $this->ssh->exec($command);
+            $output = $this->ssh->read();
+
+            if (! Str::contains((string) $output ?? '', '[sudo] password for'))
+                return $output;
+
+            $this->ssh->write($this->server->sudoPassword . "\n");
+
+            return $output = $this->ssh->read();
+
+        } finally {
+            $this->server->log(
+                type: 'exec_sudo',
+                command: $scrubLogs ? null : $command,
+                exitCode: $this->ssh->getExitStatus(),
+                content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
+            );
+        }
     }
 }
