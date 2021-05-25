@@ -24,7 +24,7 @@ class CreateServersTable extends Migration
             // The default SSH port will be used if it is null.
             $table->string('ssh_port')->nullable();
             $table->string('ssh_host_key')->nullable();
-            // Sudo password is stored encrypted and temporarily during the creation process and removed afterwards.
+            // Sudo password is stored encrypted.
             $table->text('sudo_password')->nullable();
             $table->boolean('suitable')->nullable();
             $table->boolean('available')->nullable();
