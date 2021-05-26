@@ -32,6 +32,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Provider $provider
  * @property-read WorkerSshKey $workerSshKey
  * @property-read Collection $logs
+ * @property-read Collection $userSshKeys
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -86,7 +87,7 @@ class Server extends AbstractModel
     public function ssh(string $user = null, SSH2 $ssh = null): SSH2
     {
         $ssh ??= $this->newSshSession();
-        $user ??= (string) config('servers.worker_user');
+        $user ??= 'root';
 
         if (! isset($this->sshHostKey))
             $this->updateSshHostKey($ssh);
@@ -173,6 +174,14 @@ class Server extends AbstractModel
     public function workerSshKey(): HasOne
     {
         return $this->hasOne(WorkerSshKey::class);
+    }
+
+    /**
+     * Get a relation to the SSH keys added by the user for this server.
+     */
+    public function userSshKeys(): HasMany
+    {
+        return $this->hasMany(UserSshKey::class);
     }
 
     /**
