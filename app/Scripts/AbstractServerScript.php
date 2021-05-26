@@ -66,10 +66,14 @@ abstract class AbstractServerScript
         try {
             return $output = $this->ssh->exec($command);
         } finally {
+            $exitCode = $this->ssh->getExitStatus();
+            if ($exitCode === false)
+                $exitCode = null;
+
             $this->server->log(
                 type: 'exec',
                 command: $scrubLogs ? null : $command,
-                exitCode: $this->ssh->getExitStatus(),
+                exitCode: $exitCode,
                 content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
             );
         }
@@ -186,7 +190,7 @@ abstract class AbstractServerScript
 
         try {
 
-            $this->ssh->exec($command);
+            $this->ssh->write($command . "\n");
             $output = $this->ssh->read();
 
             if (! Str::contains((string) $output ?? '', '[sudo] password for'))
@@ -197,10 +201,14 @@ abstract class AbstractServerScript
             return $output = $this->ssh->read();
 
         } finally {
+            $exitCode = $this->ssh->getExitStatus();
+            if ($exitCode === false)
+                $exitCode = null;
+
             $this->server->log(
                 type: 'exec_sudo',
                 command: $scrubLogs ? null : $command,
-                exitCode: $this->ssh->getExitStatus(),
+                exitCode: $exitCode,
                 content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
             );
         }
