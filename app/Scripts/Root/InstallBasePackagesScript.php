@@ -24,7 +24,7 @@ class InstallBasePackagesScript extends AbstractServerScript
          *       Note: there are some other similar issues, see
          *           https://itsfoss.com/could-not-get-lock-error/
          *           https://pingvinus.ru/note/dpkg-lock
-         *       Note: I use apt-get in other scripts as well - make sure they work too.
+         *       Note: I use apt-get in other scripts as well - search for all of them and make sure they work too.
          */
 
         $this->enablePty();
