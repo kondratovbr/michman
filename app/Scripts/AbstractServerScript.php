@@ -35,9 +35,9 @@ abstract class AbstractServerScript
     /**
      * Set a current SSH session attribute;
      */
-    protected function setSsh(SFTP $ssh): void
+    protected function setSsh(SFTP|null $ssh): void
     {
-        $this->ssh = $ssh;
+        $this->ssh = $ssh ?? $this->server->sftp();
     }
 
     /**
