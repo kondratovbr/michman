@@ -35,6 +35,7 @@ use App\Facades\QrCode;
  *
  * @property-read Collection $providers
  * @property-read Collection $servers
+ * @property-read Collection $userSshKeys
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -128,5 +129,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // TODO: CRITICAL! Does it work? Need to declare foreign keys here?
         return $this->hasManyThrough(Server::class, Provider::class);
+    }
+
+    /**
+     * Get a relation with the SSH keys added by this user.
+     */
+    public function userSshKeys(): HasMany
+    {
+        return $this->hasMany(UserSshKey::class);
     }
 }

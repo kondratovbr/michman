@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Carbon\CarbonInterface;
 use Database\Factories\UserSshKeyFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use phpseclib3\Crypt\Common\PrivateKey as PrivateKeyInterface;
 use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
 use phpseclib3\Crypt\PublicKeyLoader;
@@ -22,7 +24,8 @@ use phpseclib3\Crypt\PublicKeyLoader;
  *
  * @property-read string $publicKeyString
  *
- * @property-read Server $server
+ * @property-read User $user
+ * @property-read Collection $servers
  *
  * @method static UserSshKeyFactory factory(...$parameters)
  */
@@ -70,10 +73,19 @@ class UserSshKey extends AbstractModel
     }
 
     /**
+     * Get a relation with the user who owns this key.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get a relation with the server that owns this key.
      */
-    public function server(): BelongsTo
+    public function server(): BelongsToMany
     {
-        return $this->belongsTo(Server::class);
+        return $this->belongsToMany(Server::class, 'server_user_ssh_key')
+            ->withTimestamps();
     }
 }

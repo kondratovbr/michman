@@ -8,6 +8,7 @@ use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use phpseclib3\Net\SFTP;
@@ -179,9 +180,10 @@ class Server extends AbstractModel
     /**
      * Get a relation to the SSH keys added by the user for this server.
      */
-    public function userSshKeys(): HasMany
+    public function userSshKeys(): BelongsToMany
     {
-        return $this->hasMany(UserSshKey::class);
+        return $this->belongsToMany(UserSshKey::class, 'server_user_ssh_key')
+            ->withTimestamps();
     }
 
     /**
