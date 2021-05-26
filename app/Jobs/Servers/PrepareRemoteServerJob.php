@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Servers;
 
+use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\ConfigureFirewallScript;
@@ -15,17 +16,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use DateTimeInterface;
 
 class PrepareRemoteServerJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /** The number of seconds the job can run before timing out. */
-    public int $timeout = 60 * 30; // 30 min
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, InteractsWithRemoteServers;
 
     protected Server $server;
 
@@ -34,20 +30,6 @@ class PrepareRemoteServerJob implements ShouldQueue
         $this->onQueue('servers');
 
         $this->server = $server->withoutRelations();
-    }
-
-    /** Get the middleware the job should pass through. */
-    public function middleware(): array
-    {
-        return [
-            (new ThrottlesExceptions(3, 15))->backoff(5),
-        ];
-    }
-
-    /** Determine the time at which the job should timeout. */
-    public function retryUntil(): DateTimeInterface
-    {
-        return now()->addMinutes(60);
     }
 
     /**
