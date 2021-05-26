@@ -1,5 +1,7 @@
 <?php
 
+use App\Jobs\Servers\ConfigureAppServerJob;
+use App\Scripts\Root\InstallMysql8_0Script;
 use App\Support\Str;
 
 return [
@@ -19,6 +21,7 @@ return [
                 'cache',
             ],
             'add_ssh_key_to_vcs' => true,
+            'configuration_job_class' => ConfigureAppServerJob::class,
         ],
         'web' => [
             'disabled' => false,
@@ -28,6 +31,7 @@ return [
                 'python',
             ],
             'add_ssh_key_to_vcs' => true,
+            'configuration_job_class' => null,
         ],
         'worker' => [
             'disabled' => true,
@@ -35,6 +39,7 @@ return [
                 'python',
             ],
             'add_ssh_key_to_vcs' => true,
+            'configuration_job_class' => null,
         ],
         'database' => [
             'disabled' => true,
@@ -42,6 +47,7 @@ return [
                 'database',
             ],
             'add_ssh_key_to_vcs' => false,
+            'configuration_job_class' => null,
         ],
         'cache' => [
             'disabled' => true,
@@ -49,6 +55,7 @@ return [
                 'cache',
             ],
             'add_ssh_key_to_vcs' => false,
+            'configuration_job_class' => null,
         ],
     ],
 
@@ -63,16 +70,16 @@ return [
 
     'databases' => [
         'mysql-8_0' => [
-
+            'install_script' => InstallMysql8_0Script::class,
         ],
         'maria-10_5' => [
-
+            'install_script' => null,
         ],
         'postgres-13' => [
-
+            'install_script' => null,
         ],
         'postgres-12' => [
-
+            'install_script' => null,
         ],
     ],
 
