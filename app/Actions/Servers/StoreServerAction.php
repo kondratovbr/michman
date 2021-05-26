@@ -4,6 +4,7 @@ namespace App\Actions\Servers;
 
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\Servers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\ConfigureServerJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
@@ -34,6 +35,7 @@ class StoreServerAction
             new VerifyRemoteServerIsSuitableJob($server),
             new PrepareRemoteServerJob($server),
             new UpdateServerAvailabilityJob($server),
+            new ConfigureServerJob($server),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
