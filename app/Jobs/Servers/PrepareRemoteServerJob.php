@@ -9,6 +9,7 @@ use App\Scripts\Root\ConfigureSshServerScript;
 use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
 use App\Scripts\Root\CreateSudoUserScript;
 use App\Scripts\Root\DisableSshAccessForUserScript;
+use App\Scripts\Root\InstallBasePackagesScript;
 use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Bus\Queueable;
@@ -39,22 +40,22 @@ class PrepareRemoteServerJob implements ShouldQueue
      */
     public function handle(
         UpgradePackagesScript $upgradePackages,
+        InstallBasePackagesScript $installBasePackages,
         ConfigureUnattendedUpgradesScript $configureUnattendedUpgrades,
         ConfigureFirewallScript $configureFirewall,
         CreateSudoUserScript $createSudoUser,
         AddSshKeyToUserScript $addSshKeyToUser,
         ConfigureSshServerScript $configureSshServer,
-        DisableSshAccessForUserScript $disableSshAccessForUser,
         RebootServerScript $rebootServer,
     ): void {
         DB::transaction(function () use (
             $upgradePackages,
+            $installBasePackages,
             $configureUnattendedUpgrades,
             $configureFirewall,
             $createSudoUser,
             $addSshKeyToUser,
             $configureSshServer,
-            $disableSshAccessForUser,
             $rebootServer,
         ) {
             /** @var Server $server */
@@ -66,6 +67,8 @@ class PrepareRemoteServerJob implements ShouldQueue
             $ssh = $server->sftp('root');
 
             $upgradePackages->execute($server, $ssh);
+
+            $installBasePackages->execute($server, $ssh);
 
             $configureUnattendedUpgrades->execute($server, $ssh);
 
@@ -86,8 +89,6 @@ class PrepareRemoteServerJob implements ShouldQueue
             );
 
             $configureSshServer->execute($server, $ssh);
-
-            $disableSshAccessForUser->execute($server, 'root', $ssh);
 
             $rebootServer->execute($server, $ssh);
 

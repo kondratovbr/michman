@@ -213,4 +213,13 @@ abstract class AbstractServerScript
             );
         }
     }
+
+    /**
+     * Initialize the script instance - set Server and SSH session.
+     */
+    protected function init(Server $server, SFTP|null $ssh = null): void
+    {
+        $this->setServer($server);
+        $this->setSsh($ssh ?? $server->sftp());
+    }
 }

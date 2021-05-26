@@ -4,7 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
 use App\Models\Server;
-use App\Scripts\Sudo\VerifyServerAvailabilityScript;
+use App\Scripts\Root\VerifyServerAvailabilityScript;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
