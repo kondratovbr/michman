@@ -27,6 +27,8 @@ use phpseclib3\Net\SSH2;
  * @property string|null $sudoPassword
  * @property bool|null $suitable
  * @property bool|null $available
+ * @property string $installedDatabase
+ * @property string $installedCache
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
