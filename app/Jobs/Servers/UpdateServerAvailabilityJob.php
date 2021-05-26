@@ -50,6 +50,21 @@ class UpdateServerAvailabilityJob implements ShouldQueue
      */
     public function handle(VerifyServerAvailabilityScript $verifyServerAvailability): void
     {
+        // We want to remove the availability status of the server before starting the checking process,
+        // so we could show the progress to the user.
+        DB::transaction(function () {
+            /** @var Server $server */
+            $server = Server::query()
+                ->whereKey($this->server->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (! is_null($server->available)) {
+                $server->available = null;
+                $server->save();
+            }
+        }, 5);
+
         DB::transaction(function () use ($verifyServerAvailability) {
             /** @var Server $server */
             $server = Server::query()
