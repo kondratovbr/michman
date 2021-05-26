@@ -83,6 +83,9 @@ class WorkerSshKey extends AbstractModel
         return $this->keyToString($this->publicKey);
     }
 
+    /**
+     * Convert a key to an OpenSSH formatted string with a proper comment included.
+     */
     protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key): string
     {
         return $key->toString('OpenSSH', ['comment' => $this->server->name]);
