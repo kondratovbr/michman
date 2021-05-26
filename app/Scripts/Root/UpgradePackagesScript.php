@@ -13,21 +13,6 @@ class UpgradePackagesScript extends AbstractServerScript
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp('root'));
 
-        /*
-         * TODO: CRITICAL! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
-         *       'dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct the problem.'
-         *       message shows the next time.
-         *       Notify myself on an emergency channel since this will probably require some manual fixing.
-         *       Or maybe just destroy and recreate the server and try again if it was happening during the initial phase.
-         *       Also, there's another possible error:
-         *       "Could not get lock..."
-         *       Need to handle it as well.
-         *       Note: there are some other similar issues, see
-         *           https://itsfoss.com/could-not-get-lock-error/
-         *           https://pingvinus.ru/note/dpkg-lock
-         *       Note: I use apt-get in other scripts as well - make sure they work too.
-         */
-
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
