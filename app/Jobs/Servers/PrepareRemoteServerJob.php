@@ -8,7 +8,6 @@ use App\Scripts\Root\ConfigureFirewallScript;
 use App\Scripts\Root\ConfigureSshServerScript;
 use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
 use App\Scripts\Root\CreateSudoUserScript;
-use App\Scripts\Root\DisableSshAccessForUserScript;
 use App\Scripts\Root\InstallBasePackagesScript;
 use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpgradePackagesScript;
@@ -16,8 +15,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use DateTimeInterface;
 
 class PrepareRemoteServerJob implements ShouldQueue
 {
@@ -33,6 +34,20 @@ class PrepareRemoteServerJob implements ShouldQueue
         $this->onQueue('servers');
 
         $this->server = $server->withoutRelations();
+    }
+
+    /** Get the middleware the job should pass through. */
+    public function middleware(): array
+    {
+        return [
+            (new ThrottlesExceptions(3, 15))->backoff(5),
+        ];
+    }
+
+    /** Determine the time at which the job should timeout. */
+    public function retryUntil(): DateTimeInterface
+    {
+        return now()->addMinutes(60);
     }
 
     /**
