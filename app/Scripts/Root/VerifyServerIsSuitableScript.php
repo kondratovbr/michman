@@ -12,6 +12,8 @@ class VerifyServerIsSuitableScript extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): bool
     {
+        // TODO: Other providers and custom VPSes may come with a non-root user with sudo access and a password.
+
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp('root'));
 
@@ -32,7 +34,7 @@ class VerifyServerIsSuitableScript extends AbstractServerScript
 
         // apt-get is installed and accessible.
         $this->exec('apt-get -v');
-        if ($this->getExitStatus())
+        if ($this->getExitStatus() !== 0)
             return false;
 
         return true;
