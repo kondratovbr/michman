@@ -10,6 +10,8 @@ class {{ class }}
 
     public function __construct()
     {
+        $this->onQueue('default');
+
         //
     }
 
