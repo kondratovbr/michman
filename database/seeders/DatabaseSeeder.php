@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder
             ProviderSeeder::class,
             ServerSeeder::class,
             WorkerSshKeySeeder::class,
+
+            // TODO: Don't forget to implement.
+            FirewallRuleSeeder::class,
+            UserSshKeySeeder::class,
         ]);
     }
 }
