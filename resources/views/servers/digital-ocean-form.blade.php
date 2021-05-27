@@ -111,6 +111,7 @@
                                 <x-input-error for="state.database" />
                             </x-field>
                             @if($state['database'] !== 'none')
+{{--                                TODO: Maybe database name here isn't necessary? Leave this to other stages of deployment?--}}
                                 <x-field>
                                     <x-label>Database Name</x-label>
                                     <x-inputs.text
