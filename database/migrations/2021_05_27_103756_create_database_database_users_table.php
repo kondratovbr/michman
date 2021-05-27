@@ -14,8 +14,8 @@ class CreateDatabaseDatabaseUsersTable extends Migration
         Schema::create('database_database_users', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('database_id');
-            $table->foreignId('database_user_id');
+            $table->foreignId('database_id')->references('id')->on('databases');
+            $table->foreignId('database_user_id')->references('id')->on('database_users');
 
             $table->timestamps();
         });

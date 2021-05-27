@@ -13,7 +13,7 @@ class CreateDatabaseUsersTable extends Migration
     {
         Schema::create('database_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('server_id');
+            $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('name');
 

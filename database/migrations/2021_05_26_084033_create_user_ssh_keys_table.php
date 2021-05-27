@@ -13,7 +13,7 @@ class CreateUserSshKeysTable extends Migration
     {
         Schema::create('user_ssh_keys', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->references('id')->on('users');
 
             $table->string('username');
             $table->text('public_key');

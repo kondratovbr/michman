@@ -13,7 +13,7 @@ class CreateFirewallRulesTable extends Migration
     {
         Schema::create('firewall_rules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('server_id');
+            $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('name');
             $table->string('port');

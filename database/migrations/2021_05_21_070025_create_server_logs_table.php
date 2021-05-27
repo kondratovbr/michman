@@ -16,6 +16,8 @@ class CreateServerLogsTable extends Migration
     {
         Schema::create('server_logs', function (Blueprint $table) {
             $table->id();
+            // No foreign restraint here in case the server got removed,
+            // or even in case a completely separate database is used for server logs.
             $table->foreignId('server_id');
 
             $table->string('type');
