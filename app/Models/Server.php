@@ -27,8 +27,9 @@ use phpseclib3\Net\SSH2;
  * @property string|null $sudoPassword
  * @property bool|null $suitable
  * @property bool|null $available
- * @property string $installedDatabase
- * @property string $installedCache
+ * @property string|null $installedDatabase
+ * @property string|null $databaseRootPassword
+ * @property string|null $installedCache
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
@@ -66,6 +67,7 @@ class Server extends AbstractModel
         'suitable' => 'boolean',
         'available' => 'boolean',
         'sudo_password' => 'encrypted',
+        'database_root_password' => 'encrypted',
     ];
 
     /**
