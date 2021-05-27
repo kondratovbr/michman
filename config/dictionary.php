@@ -622,7 +622,7 @@ return [
         'pale',
         'statutory',
         'welsh',
-        'dependent',
+        'dependable',
         'firm',
         'wet',
         'competitive',
