@@ -36,6 +36,8 @@ use phpseclib3\Net\SSH2;
  * @property-read WorkerSshKey $workerSshKey
  * @property-read Collection $logs
  * @property-read Collection $userSshKeys
+ * @property-read Collection $databases
+ * @property-read Collection $databaseUsers
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -194,5 +196,21 @@ class Server extends AbstractModel
     public function logs(): HasMany
     {
         return $this->hasMany(ServerLog::class);
+    }
+
+    /**
+     * Get a relation with the databases this server holds.
+     */
+    public function databases(): HasMany
+    {
+        return $this->hasMany(Database::class);
+    }
+
+    /**
+     * Get a relation with the database users this server has.
+     */
+    public function databaseUsers(): HasMany
+    {
+        return $this->hasMany(DatabaseUser::class);
     }
 }
