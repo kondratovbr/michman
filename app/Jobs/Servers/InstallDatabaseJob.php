@@ -4,6 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
+use App\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -17,9 +18,9 @@ class InstallDatabaseJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, InteractsWithRemoteServers;
 
     protected Server $server;
-    protected string $database;
+    protected string|null $database;
 
-    public function __construct(Server $server, string $database)
+    public function __construct(Server $server, string|null $database)
     {
         $this->onQueue('servers');
 
@@ -32,6 +33,20 @@ class InstallDatabaseJob implements ShouldQueue
      */
     public function handle(): void
     {
+        if (is_null($this->database) || $this->database === 'none')
+            return;
+
+        DB::transaction(function () {
+            /** @var Server $server */
+            $server = Server::query()
+                ->whereKey($this->server->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            $server->databaseRootPassword = Str::random(32);
+            $server->save();
+        }, 5);
+
         DB::transaction(function () {
             /** @var Server $server */
             $server = Server::query()
@@ -49,6 +64,7 @@ class InstallDatabaseJob implements ShouldQueue
             $script->execute($server);
 
             $server->installedDatabase = $this->database;
+
             $server->save();
         }, 5);
     }
