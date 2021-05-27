@@ -1,7 +1,7 @@
 <?php
 
 use App\Jobs\Servers\ConfigureAppServerJob;
-use App\Scripts\Root\InstallMysql8_0Script;
+use App\Scripts\Root\Mysql8_0\InstallMysql8_0Script;
 use App\Support\Str;
 
 return [
