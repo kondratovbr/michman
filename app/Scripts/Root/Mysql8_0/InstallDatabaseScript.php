@@ -8,8 +8,11 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
-class InstallDatabaseJob extends AbstractServerScript
+class InstallDatabaseScript extends AbstractServerScript
 {
+    /** @var string MySQL authentication plugin to configure for root. */
+    protected const MYSQL_AUTH_PLUGIN = 'caching_sha2_password';
+
     public function execute(Server $server, SFTP $ssh = null): void
     {
         // TODO: IMPORTANT! I should figure out what to do if something here fails.
@@ -24,18 +27,32 @@ class InstallDatabaseJob extends AbstractServerScript
 
         $this->exec('systemctl start mysql');
 
-        // Just in case MySQL was installed and configured before we'll check if we have access with a proper password already.
-        if (Str::contains((string) $this->exec("mysql -u root -p{$server->databaseRootPassword} -e \"SHOW DATABASES\"", true), 'information_schema'))
-            return;
+        $authPlugin = static::MYSQL_AUTH_PLUGIN;
 
-        // ALTER USER 'root'@'localhost' IDENTIFIED WITH 'caching_sha2_password' BY 'password'; flush privileges;
-        $output = $this->exec("mysql -u root -e \"ALTER USER 'root'@'localhost' IDENTIFIED WITH 'caching_sha2_password' BY '{$server->databaseRootPassword}'; flush privileges;\"", true);
+        // Just in case MySQL was installed and configured before we'll check if we have access with a proper password already.
+        if (Str::contains(
+            (string) $this->execMysql(
+                'SELECT plugin FROM mysql.user WHERE User = \'root\'',
+                'root',
+                $server->databaseRootPassword,
+            ),
+            $authPlugin
+        )) {
+            return;
+        }
+
+        $output = $this->execMysql(
+            "ALTER USER 'root'@'localhost' IDENTIFIED WITH '{$authPlugin}' BY '{$server->databaseRootPassword}'; flush privileges;"
+        );
 
         if (Str::contains(Str::lower($output), 'access denied') || $this->getExitStatus() !== 0)
             throw new ServerScriptException('Failed accessing the database as root.');
 
-        // SHOW DATABASES
-        $output = $this->exec("mysql -u root -p{$server->databaseRootPassword} -e \"SHOW DATABASES\"", true);
+        $output = $this->execMysql(
+            "SHOW DATABASES",
+            'root',
+            $server->databaseRootPassword,
+        );
 
         if (! Str::contains((string) $output, 'information_schema'))
             throw new ServerScriptException('Failed accessing the database as root after setting a password.');
