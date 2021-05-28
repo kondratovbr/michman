@@ -31,10 +31,10 @@ class StoreServerAction
 
         /*
          * TODO: CRITICAL! Don't forget to:
-         *       - Install database if needed.
          *       - Install cache if needed.
          *       - Install Python if needed.
          *       - Install Nginx if needed.
+         *       - Generate SSH keys on the server. Or maybe generate locally and send to the server.
          *       - Add existing user's SSH keys to the server.
          *       - Add server's SSH keys to user's VCS if needed.
          *       - ...
