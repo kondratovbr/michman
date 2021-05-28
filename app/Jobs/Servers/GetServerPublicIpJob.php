@@ -2,19 +2,14 @@
 
 namespace App\Jobs\Servers;
 
+use App\Jobs\AbstractJob;
+use App\Jobs\Traits\InteractsWithServerProviders;
 use App\Models\Server;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\ThrottlesExceptions;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use DateTimeInterface;
 
-class GetServerPublicIpJob implements ShouldQueue
+class GetServerPublicIpJob extends AbstractJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithServerProviders;
 
     /** @var int The amount of seconds to wait between retries if an address wasn't issued yet. */
     protected const SECONDS_BETWEEN_RETRIES = 30;
@@ -23,23 +18,9 @@ class GetServerPublicIpJob implements ShouldQueue
 
     public function __construct(Server $server)
     {
-        $this->onQueue('providers');
+        $this->queue('providers');
 
         $this->server = $server->withoutRelations();
-    }
-
-    /** Get the middleware the job should pass through. */
-    public function middleware(): array
-    {
-        return [
-            (new ThrottlesExceptions(3, 10))->backoff(1),
-        ];
-    }
-
-    /** Determine the time at which the job should timeout. */
-    public function retryUntil(): DateTimeInterface
-    {
-        return now()->addMinutes(60);
     }
 
     /**

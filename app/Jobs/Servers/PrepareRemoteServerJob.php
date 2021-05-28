@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Servers;
 
+use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
 use App\Scripts\Root\AddSshKeyToUserScript;
@@ -12,22 +13,17 @@ use App\Scripts\Root\CreateSudoUserScript;
 use App\Scripts\Root\InstallBasePackagesScript;
 use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpgradePackagesScript;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class PrepareRemoteServerJob implements ShouldQueue
+class PrepareRemoteServerJob extends AbstractJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, InteractsWithRemoteServers;
+    use InteractsWithRemoteServers;
 
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->onQueue('servers');
+        $this->queue('servers');
 
         $this->server = $server->withoutRelations();
     }

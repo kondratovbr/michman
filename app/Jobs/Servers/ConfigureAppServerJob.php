@@ -2,23 +2,20 @@
 
 namespace App\Jobs\Servers;
 
+use App\Jobs\AbstractJob;
+use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class ConfigureAppServerJob implements ShouldQueue
+class ConfigureAppServerJob extends AbstractJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use InteractsWithRemoteServers;
 
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->onQueue('servers');
+        $this->queue('servers');
 
         $this->server = $server->withoutRelations();
     }

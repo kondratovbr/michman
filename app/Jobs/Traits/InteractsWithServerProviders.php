@@ -4,10 +4,10 @@ namespace App\Jobs\Traits;
 
 use DateTimeInterface;
 
-trait InteractsWithRemoteServers
+trait InteractsWithServerProviders
 {
     /** The number of seconds the job can run before timing out. */
-    public int $timeout = 60 * 30; // 30 min
+    public int $timeout = 60 * 5; // 5 min
 
     /** The number of seconds to wait before retrying the job. */
     public int $backoff = 60; // 1 min

@@ -3,45 +3,23 @@
 namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
+use App\Jobs\AbstractJob;
+use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\ThrottlesExceptions;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use DateTimeInterface;
 
-class VerifyRemoteServerIsSuitableJob implements ShouldQueue
+class VerifyRemoteServerIsSuitableJob extends AbstractJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /** @var int The amount of seconds to wait between retries if a server isn't accessible yet. */
-    protected const SECONDS_BETWEEN_RETRIES = 60;
+    use InteractsWithRemoteServers;
 
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->onQueue('servers');
+        $this->queue('servers');
 
         $this->server = $server->withoutRelations();
-    }
-
-    /** Get the middleware the job should pass through. */
-    public function middleware(): array
-    {
-        return [
-            (new ThrottlesExceptions(3, 10))->backoff(1),
-        ];
-    }
-
-    /** Determine the time at which the job should timeout. */
-    public function retryUntil(): DateTimeInterface
-    {
-        return now()->addMinutes(30);
     }
 
     /**
@@ -65,7 +43,7 @@ class VerifyRemoteServerIsSuitableJob implements ShouldQueue
             }
 
             if (! $ssh->isConnected()) {
-                $this->release(static::SECONDS_BETWEEN_RETRIES);
+                $this->release($this->backoff);
                 return;
             }
 

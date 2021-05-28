@@ -3,46 +3,33 @@
 namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
+use App\Jobs\AbstractJob;
+use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
 use App\Scripts\Root\VerifyServerAvailabilityScript;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\ThrottlesExceptions;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use DateTimeInterface;
 use Throwable;
 
-class UpdateServerAvailabilityJob implements ShouldQueue
+class UpdateServerAvailabilityJob extends AbstractJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /** @var int The amount of seconds to wait between retries if a server isn't accessible yet. */
-    protected const SECONDS_BETWEEN_RETRIES = 10;
-
-    protected Server $server;
-
-    public function __construct(Server $server)
-    {
-        $this->onQueue('servers');
-
-        $this->server = $server->withoutRelations();
-    }
-
-    /** Get the middleware the job should pass through. */
-    public function middleware(): array
-    {
-        return [
-            (new ThrottlesExceptions(3, 1))->backoff(1),
-        ];
-    }
+    use InteractsWithRemoteServers;
 
     /** Determine the time at which the job should timeout. */
     public function retryUntil(): DateTimeInterface
     {
         return now()->addMinutes(5);
+    }
+
+    protected Server $server;
+
+    public function __construct(Server $server)
+    {
+        $this->queue('servers');
+        $this->timeout = 60; // 1 min
+        $this->backoff = 10; // 10 sec
+
+        $this->server = $server->withoutRelations();
     }
 
     /**
@@ -81,7 +68,7 @@ class UpdateServerAvailabilityJob implements ShouldQueue
             }
 
             if (! $ssh->isConnected()) {
-                $this->release(static::SECONDS_BETWEEN_RETRIES);
+                $this->release($this->backoff);
                 return;
             }
 

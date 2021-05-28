@@ -2,27 +2,23 @@
 
 namespace App\Jobs\Servers;
 
+use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
 use App\Models\Server;
 use App\Scripts\Root\Mysql8_0\CreateDatabaseScript;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 
-class CreateDatabaseJob implements ShouldQueue
+class CreateDatabaseJob extends AbstractJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, InteractsWithRemoteServers;
+    use InteractsWithRemoteServers;
 
     protected Server $server;
     protected string $dbName;
 
     public function __construct(Server $server, string $dbName)
     {
-        $this->onQueue('servers');
+        $this->queue('servers');
 
         $this->server = $server->withoutRelations();
         $this->dbName = $dbName;
