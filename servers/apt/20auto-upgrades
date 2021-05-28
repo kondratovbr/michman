@@ -1,2 +1,9 @@
+//
+// This is a customized config added by Michman.
+//
+// NOTE: Please, do not change anything here unless you really know what you're doing.
+//       Changes may compromise the security of the server!
+//
+
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
