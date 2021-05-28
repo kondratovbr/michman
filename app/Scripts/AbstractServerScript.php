@@ -56,8 +56,12 @@ abstract class AbstractServerScript
     /**
      * Execute a command on a remote server over SSH.
      */
-    protected function exec(string $command, bool $scrubLogs = false): string|bool
-    {
+    protected function exec(
+        string $command,
+        bool $scrubCommand = false,
+        bool $scrubOutput = false,
+        string $logCommand = null,
+    ): string|bool {
         $this->initialize();
 
         if ($this->ssh->isPTYEnabled())
@@ -66,15 +70,20 @@ abstract class AbstractServerScript
         try {
             return $output = $this->ssh->exec($command);
         } finally {
+            $outputToLog = $output === false ? null : $output;
             $exitCode = $this->ssh->getExitStatus();
             if ($exitCode === false)
                 $exitCode = null;
 
             $this->server->log(
                 type: 'exec',
-                command: $scrubLogs ? null : $command,
+                command: $scrubCommand
+                    ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
+                    : $command,
                 exitCode: $exitCode,
-                content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
+                content: $scrubOutput
+                    ? '[Output is scrubbed for security reasons.]'
+                    : ($outputToLog ?? null),
             );
         }
     }
@@ -82,8 +91,11 @@ abstract class AbstractServerScript
     /**
      * Execute a command on a remote server over SSH using a PTY mode.
      */
-    protected function execPty(string $command): bool
-    {
+    protected function execPty(
+        string $command,
+        bool $scrubCommand = false,
+        string $logCommand = null,
+    ): bool {
         $this->initialize();
 
         if (! $this->ssh->isPTYEnabled())
@@ -94,13 +106,21 @@ abstract class AbstractServerScript
         } finally {
             $this->server->log(
                 type: 'exec_pty',
-                command: $command,
+                command: $scrubCommand
+                    ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
+                    : $command,
             );
         }
     }
 
-    protected function read(string $expected = '', $mode = SSH2::READ_SIMPLE, bool $scrubLogs = false): string
-    {
+    /**
+     * Read an output printed to the PTY.
+     */
+    protected function read(
+        string $expected = '',
+        $mode = SSH2::READ_SIMPLE,
+        bool $scrubOutput = false
+    ): string {
         $this->initialize();
 
         if (! $this->ssh->isPTYEnabled())
@@ -111,7 +131,9 @@ abstract class AbstractServerScript
         } finally {
             $this->server->log(
                 type: 'read',
-                content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
+                content: $scrubOutput
+                    ? '[Output is scrubbed for security reasons.]'
+                    : ($output ?? null),
             );
         }
     }
@@ -181,8 +203,12 @@ abstract class AbstractServerScript
      * Execute a command that uses sudo,
      * making sure that the password is supplied if requested.
      */
-    protected function execSudo(string $command, bool $scrubLogs = false): string|bool|null
-    {
+    protected function execSudo(
+        string $command,
+        bool $scrubCommandLog = false,
+        bool $scrubOutputLog = false,
+        string $logCommand = null,
+    ): string|bool|null {
         $this->initialize();
 
         if (! $this->ssh->isPTYEnabled())
@@ -201,15 +227,20 @@ abstract class AbstractServerScript
             return $output = $this->ssh->read();
 
         } finally {
+            $outputToLog = is_bool($output) ? null : $output;
             $exitCode = $this->ssh->getExitStatus();
             if ($exitCode === false)
                 $exitCode = null;
 
             $this->server->log(
                 type: 'exec_sudo',
-                command: $scrubLogs ? null : $command,
+                command: $scrubCommandLog
+                    ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
+                    : $command,
                 exitCode: $exitCode,
-                content: $scrubLogs ? '[Log is scrubbed for security reasons.]' : ($output ?? null),
+                content: $scrubOutputLog
+                    ? '[Output log is scrubbed for security reasons.]'
+                    : ($outputToLog ?? null),
             );
         }
     }
@@ -221,11 +252,17 @@ abstract class AbstractServerScript
     {
         $this->initialize();
 
-        $command = isset($password)
-            ? "mysql -u {$dbUser} -p{$password} -e \"{$query}\""
-            : "mysql -u {$dbUser} -e \"{$query}\"";
-
-        return $this->exec($command, true);
+        return $this->exec(
+            $this->mysqlCommand($query, $dbUser, $password),
+            true,
+            false,
+            $this->mysqlCommand(
+                $query,
+                $dbUser,
+                // Scrubbing the password from logs.
+                is_null($password) ? null : 'PASSWORD',
+            ),
+        );
     }
 
     /**
@@ -235,5 +272,15 @@ abstract class AbstractServerScript
     {
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp());
+    }
+
+    /**
+     * Create a command to run an SQL query over a local MySQL server on a remote server over SSH.
+     */
+    private function mysqlCommand(string $query, string $dbUser, string $password = null): string
+    {
+        return isset($password)
+            ? "mysql -u {$dbUser} -p{$password} -e \"{$query}\""
+            : "mysql -u {$dbUser} -e \"{$query}\"";
     }
 }
