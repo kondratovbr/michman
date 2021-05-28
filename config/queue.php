@@ -35,19 +35,16 @@ return [
         ],
 
         'database' => [
-            /*
-             * TODO: CRITICAL! Make sure workers actually work all queues.
-             * Currently used queue names:
-             *
-             * default
-             * providers
-             * servers
-             */
+
+            // TODO: CRITICAL! Make sure workers actually work all queues. I have a list of queues here at the bottom.
+
             'driver' => 'database',
             'table' => 'jobs',
             // Default queue to dispatch jobs
             'queue' => 'default',
-            'retry_after' => 90,
+            // Job timeout - job will be released back onto the queue
+            // if doesn't finished after this amount of seconds.
+            'retry_after' => 60 * 60, // 1 hour
             // Store jobs in DB after an active transaction is committed,
             // Laravel will handle transaction failures when they happen.
             'after_commit' => true,
@@ -57,7 +54,7 @@ return [
             'driver' => 'redis',
             'connection' => 'default',
             'queue' => env('REDIS_QUEUE', 'default'),
-            'retry_after' => 90,
+            'retry_after' => 60 * 60, // 1 hour
             'block_for' => null,
             'after_commit' => true,
         ],
@@ -79,6 +76,16 @@ return [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'mysql'),
         'table' => 'failed_jobs',
+    ],
+
+    /*
+     * Custom config values
+     */
+
+    'queues' => [
+        'default',
+        'providers',
+        'servers',
     ],
 
 ];
