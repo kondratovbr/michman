@@ -10,8 +10,12 @@ use phpseclib3\Crypt\Common\PublicKey;
 
 class AddSshKeyToUserScript extends AbstractServerScript
 {
-    public function execute(Server $server, string $username, WorkerSshKey|PublicKey|string $sshKey, SFTP $ssh = null)
-    {
+    public function execute(
+        Server $server,
+        string $username,
+        WorkerSshKey|PublicKey|string $sshKey,
+        SFTP $ssh = null,
+    ) {
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp('root'));
 
