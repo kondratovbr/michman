@@ -17,7 +17,7 @@ class AbstractJob implements ShouldQueue
     /**
      * Set a queue for this job.
      */
-    protected function queue(string $queueName): void
+    protected function setQueue(string $queueName): void
     {
         if (! Arr::hasValue(config('queue.queues'), $queueName))
             throw new RuntimeException("Queue {$queueName} is not configured.");

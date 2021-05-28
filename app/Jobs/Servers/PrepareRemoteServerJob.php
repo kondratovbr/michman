@@ -23,7 +23,7 @@ class PrepareRemoteServerJob extends AbstractJob
 
     public function __construct(Server $server)
     {
-        $this->queue('servers');
+        $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
     }

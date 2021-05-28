@@ -16,7 +16,7 @@ class AddServerSshKeyToProviderJob extends AbstractJob
 
     public function __construct(Server $server)
     {
-        $this->queue('providers');
+        $this->setQueue('providers');
 
         $this->server = $server->withoutRelations();
     }

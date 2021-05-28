@@ -8,7 +8,7 @@ class {{ class }} extends AbstractJob
 {
     public function __construct()
     {
-        $this->onQueue('default');
+        $this->setQueue('default');
 
         //
     }

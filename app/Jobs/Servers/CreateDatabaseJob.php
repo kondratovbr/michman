@@ -19,7 +19,7 @@ class CreateDatabaseJob extends AbstractJob
 
     public function __construct(Server $server, string $dbName)
     {
-        $this->queue('servers');
+        $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
         $this->dbName = $dbName;

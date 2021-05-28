@@ -25,7 +25,7 @@ class UpdateServerAvailabilityJob extends AbstractJob
 
     public function __construct(Server $server)
     {
-        $this->queue('servers');
+        $this->setQueue('servers');
         $this->timeout = 60; // 1 min
         $this->backoff = 10; // 10 sec
 

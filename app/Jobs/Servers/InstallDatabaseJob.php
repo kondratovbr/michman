@@ -18,7 +18,7 @@ class InstallDatabaseJob extends AbstractJob
 
     public function __construct(Server $server, string|null $database)
     {
-        $this->queue('servers');
+        $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
         $this->database = $database;
