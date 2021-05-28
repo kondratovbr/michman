@@ -21,6 +21,8 @@ class InstallDatabaseScript extends AbstractServerScript
 
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
+        $this->read();
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server-8.0 mysql-client-8.0');
         $this->read();
         $this->disablePty();
