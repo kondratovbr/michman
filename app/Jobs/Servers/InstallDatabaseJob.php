@@ -50,10 +50,10 @@ class InstallDatabaseJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $scriptClass = (string) config('servers.databases.' . $this->database . '.install_script');
+            $scriptClass = (string) config("servers.databases.{$this->database}.scripts_namespace") . '\InstallDatabaseScript';
 
-            if (empty($scriptClass))
-                throw new \RuntimeException('No installation script configured for this database.');
+            if (! class_exists($scriptClass))
+                throw new \RuntimeException('No installation script exists for this database.');
 
             $script = App::make($scriptClass);
 

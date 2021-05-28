@@ -14,14 +14,20 @@ class CreateDatabaseScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
-        // CREATE DATABASE IF NOT EXISTS app_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
-        $this->exec("mysql -u root -p{$server->databaseRootPassword} -e \"CREATE DATABASE IF NOT EXISTS {$dbName} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci\"");
+        $this->execMysql(
+            "CREATE DATABASE IF NOT EXISTS {$dbName} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",
+            'root',
+            $server->databaseRootPassword,
+        );
 
         if ($this->getExitStatus() !== 0)
             throw new ServerScriptException('Command to create a new database failed.');
 
-        // SHOW DATABASES
-        $output = $this->exec("mysql -u root -p{$server->databaseRootPassword} -e \"SHOW DATABASES\"");
+        $output = $this->execMysql(
+            "SHOW DATABASES",
+            'root',
+            $server->databaseRootPassword,
+        );
 
         if (! Str::contains($output, $dbName))
             throw new ServerScriptException('New database was not created.');

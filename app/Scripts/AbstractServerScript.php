@@ -215,6 +215,20 @@ abstract class AbstractServerScript
     }
 
     /**
+     * Execute a MySQL query locally on the server over SSH.
+     */
+    protected function execMysql(string $query, string $dbUser = 'root', string $password = null): string|bool
+    {
+        $this->initialize();
+
+        $command = isset($password)
+            ? "mysql -u {$dbUser} -p{$password} -e \"{$query}\""
+            : "mysql -u {$dbUser} -e \"{$query}\"";
+
+        return $this->exec($command, true);
+    }
+
+    /**
      * Initialize the script instance - set Server and SSH session.
      */
     protected function init(Server $server, SFTP|null $ssh = null): void

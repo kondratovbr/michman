@@ -8,7 +8,7 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
-class InstallMysql8_0Script extends AbstractServerScript
+class InstallDatabaseJob extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): void
     {
