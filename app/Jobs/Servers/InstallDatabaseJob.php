@@ -8,6 +8,7 @@ use App\Models\Server;
 use App\Support\Str;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class InstallDatabaseJob extends AbstractJob
 {
@@ -39,21 +40,21 @@ class InstallDatabaseJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $server->databaseRootPassword = Str::random(32);
-            $server->save();
-        }, 5);
+            if (! is_null($server->installedDatabase))
+                $this->fail(new RuntimeException('Server already has a database installed.'));
 
-        DB::transaction(function () {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            if (empty($server->databaseRootPassword)) {
+                $server->databaseRootPassword = Str::random(32);
+                $server->save();
+                // We release the job here so the transaction will commit and save the password.
+                // This way we don't have to run this job in two transactions every time.
+                $this->release();
+            }
 
             $scriptClass = (string) config("servers.databases.{$this->database}.scripts_namespace") . '\InstallDatabaseScript';
 
             if (! class_exists($scriptClass))
-                throw new \RuntimeException('No installation script exists for this database.');
+                throw new RuntimeException('No installation script exists for this database.');
 
             $script = App::make($scriptClass);
 
