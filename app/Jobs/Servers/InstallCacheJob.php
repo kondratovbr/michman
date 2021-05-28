@@ -15,7 +15,7 @@ class InstallCacheJob extends AbstractJob
 
     public function __construct(Server $server, string $cache)
     {
-        $this->queue('default');
+        $this->setQueue('default');
 
         $this->server = $server->withoutRelations();
         $this->cache = $cache;
