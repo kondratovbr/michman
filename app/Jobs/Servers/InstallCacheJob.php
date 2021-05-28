@@ -5,6 +5,9 @@ namespace App\Jobs\Servers;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class InstallCacheJob extends AbstractJob
 {
@@ -26,8 +29,31 @@ class InstallCacheJob extends AbstractJob
      */
     public function handle(): void
     {
-        // TODO: CRITICAL! Implement.
+        if (is_null($this->cache) || $this->cache === 'none')
+            return;
 
-        //
+        DB::transaction(function () {
+            /** @var Server $server */
+            $server = Server::query()
+                ->whereKey($this->server->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (! is_null($server->installedCache))
+                $this->fail(new RuntimeException('Server already has a cache installed.'));
+
+            $scriptClass = (string) config("servers.caches.{$this->cache}.scripts_namespace") . '\InstallCacheScript';
+
+            if (! class_exists($scriptClass))
+                throw new RuntimeException('No installation script exists for this cache.');
+
+            $script = App::make($scriptClass);
+
+            $script->execute($server);
+
+            $server->installedCache = $this->cache;
+
+            $server->save();
+        }, 5);
     }
 }
