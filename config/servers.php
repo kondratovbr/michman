@@ -84,10 +84,10 @@ return [
 
     'caches' => [
         'redis' => [
-
+            'scripts_namespace' => 'App\Scripts\Root\Redis',
         ],
         'memcached' => [
-
+            'scripts_namespace' => null,
         ],
     ],
 
