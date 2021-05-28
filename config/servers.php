@@ -1,7 +1,6 @@
 <?php
 
 use App\Jobs\Servers\ConfigureAppServerJob;
-use App\Scripts\Root\Mysql8_0\InstallDatabaseJob;
 use App\Support\Str;
 
 return [
@@ -71,7 +70,6 @@ return [
     'databases' => [
         'mysql-8_0' => [
             'scripts_namespace' => 'App\Scripts\Root\Mysql8_0',
-            'install_script' => InstallDatabaseJob::class,
         ],
         'maria-10_5' => [
             'scripts_namespace' => null,
