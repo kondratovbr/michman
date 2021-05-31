@@ -10,6 +10,7 @@ use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\InstallCacheJob;
 use App\Jobs\Servers\InstallDatabaseJob;
+use App\Jobs\Servers\InstallPythonJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
@@ -31,7 +32,6 @@ class StoreServerAction
 
         /*
          * TODO: CRITICAL! Don't forget to:
-         *       - Install cache if needed.
          *       - Install Python if needed.
          *       - Install Nginx if needed.
          *       - Generate SSH keys on the server. Or maybe generate locally and send to the server.
@@ -49,10 +49,14 @@ class StoreServerAction
             new VerifyRemoteServerIsSuitableJob($server),
             new PrepareRemoteServerJob($server),
             new UpdateServerAvailabilityJob($server),
+            // TODO: IMPORTANT! Do I even use this one?
             new ConfigureServerJob($server),
             new InstallDatabaseJob($server, $data->database),
             new CreateDatabaseJob($server, $data->dbName),
             new InstallCacheJob($server, $data->cache),
+
+            // TODO: CRITICAL! Implement!
+            new InstallPythonJob($server, $data->pythonVersion),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
