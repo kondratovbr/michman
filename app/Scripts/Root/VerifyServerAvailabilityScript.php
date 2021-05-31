@@ -14,6 +14,9 @@ class VerifyServerAvailabilityScript extends AbstractServerScript
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp());
 
+        $this->enablePty();
+        $this->read();
+
         return Str::contains($this->execSudo('sudo whoami'), 'root');
     }
 }
