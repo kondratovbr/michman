@@ -35,8 +35,10 @@ class CreateWorkerSshKeyForServerJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if (isset($server->workerSshKey))
+            if (isset($server->workerSshKey)) {
                 $this->fail(new \RuntimeException('The server already has a workerSshKey.'));
+                return;
+            }
 
             $action->execute($server);
         }, 5);

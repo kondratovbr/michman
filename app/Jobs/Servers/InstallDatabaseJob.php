@@ -5,6 +5,7 @@ namespace App\Jobs\Servers;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
+use App\Support\Arr;
 use App\Support\Str;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,10 @@ class InstallDatabaseJob extends AbstractJob
      */
     public function handle(): void
     {
+        /*
+         * TODO: CRITICAL! Test this again on a new server - I'm not sure it works.
+         */
+
         if (is_null($this->database) || $this->database === 'none')
             return;
 
@@ -40,8 +45,15 @@ class InstallDatabaseJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if (! is_null($server->installedDatabase))
+            if (! Arr::hasValue(config("servers.types.{$server->type}.install"), 'database')) {
+                $this->fail(new RuntimeException('This type of server should not have a database installed.'));
+                return;
+            }
+
+            if (! is_null($server->installedDatabase)) {
                 $this->fail(new RuntimeException('Server already has a database installed.'));
+                return;
+            }
 
             if (empty($server->databaseRootPassword)) {
                 $server->databaseRootPassword = Str::random(32);
@@ -49,6 +61,7 @@ class InstallDatabaseJob extends AbstractJob
                 // We release the job here so the transaction will commit and save the password.
                 // This way we don't have to run this job in two transactions every time.
                 $this->release();
+                return;
             }
 
             $scriptClass = (string) config("servers.databases.{$this->database}.scripts_namespace") . '\InstallDatabaseScript';

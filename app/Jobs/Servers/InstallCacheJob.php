@@ -5,6 +5,7 @@ namespace App\Jobs\Servers;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
+use App\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -39,8 +40,15 @@ class InstallCacheJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if (! is_null($server->installedCache))
+            if (! Arr::hasValue(config("servers.types.{$server->type}.install"), 'cache')) {
+                $this->fail(new RuntimeException('This type of server should not have a cache installed.'));
+                return;
+            }
+
+            if (! is_null($server->installedCache)) {
                 $this->fail(new RuntimeException('Server already has a cache installed.'));
+                return;
+            }
 
             $scriptClass = (string) config("servers.caches.{$this->cache}.scripts_namespace") . '\InstallCacheScript';
 

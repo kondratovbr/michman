@@ -51,6 +51,7 @@ class UpdateServerAvailabilityJob extends AbstractJob
                 $server->save();
                 // This allow us to run the job doing only one transaction.
                 $this->release();
+                return;
             }
 
             try {
