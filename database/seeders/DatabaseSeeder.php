@@ -17,11 +17,12 @@ class DatabaseSeeder extends Seeder
             ServerSeeder::class,
             WorkerSshKeySeeder::class,
 
-            // TODO: Don't forget to implement these following seeders.
+            // TODO: Don't forget to implement these following seeders:
             FirewallRuleSeeder::class,
             UserSshKeySeeder::class,
             DatabaseModelSeeder::class,
             DatabaseUserSeeder::class,
+            PythonSeeder::class,
         ]);
     }
 }

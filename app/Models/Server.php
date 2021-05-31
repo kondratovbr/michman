@@ -39,6 +39,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $userSshKeys
  * @property-read Collection $databases
  * @property-read Collection $databaseUsers
+ * @property-read Collection $pythons
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -214,5 +215,13 @@ class Server extends AbstractModel
     public function databaseUsers(): HasMany
     {
         return $this->hasMany(DatabaseUser::class);
+    }
+
+    /**
+     * Get a relation with Python instances installed on this server.
+     */
+    public function pythons(): HasMany
+    {
+        return $this->hasMany(Python::class);
     }
 }
