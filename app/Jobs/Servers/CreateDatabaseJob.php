@@ -53,7 +53,6 @@ class CreateDatabaseJob extends AbstractJob
             $script = App::make($scriptClass);
 
             $script->execute($server, $database->name);
-
         }, 5);
     }
 }
