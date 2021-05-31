@@ -100,6 +100,7 @@ class Server extends AbstractModel
         if (! isset($this->sshHostKey))
             $this->updateSshHostKey($ssh);
 
+        // TODO: IMPORTANT! Figure out what to do if the host key verification fails. Read about why it may happen in normal operation. Probably will have to notify the user and then ask them to confirm that everything is OK.
         if ($ssh->getServerPublicHostKey() != $this->sshHostKey)
             throw new \RuntimeException('Host key verification failed.');
 
