@@ -15,6 +15,11 @@ use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Support\Facades\DB;
 
+/*
+ * TODO: IMPORTANT! Should I cover all these server interacting jobs with tests?
+ *       I don't think I can automatically test the scripts, but at least test the jobs.
+ */
+
 class PrepareRemoteServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
