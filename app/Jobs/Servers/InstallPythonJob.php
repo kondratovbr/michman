@@ -6,6 +6,7 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
 use App\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
@@ -36,7 +37,7 @@ class InstallPythonJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if (! Arr::hasValue(config(""), 'python')) {
+            if (! Arr::hasValue(config("servers.types.{$server->type}.install"), 'python')) {
                 $this->fail(new RuntimeException('This type of server should not have Python installed.'));
                 return;
             }
@@ -50,9 +51,14 @@ class InstallPythonJob extends AbstractJob
                 'version' => $this->pythonVersion,
             ]);
 
-            // TODO: CRITICAL! CONTINUE!
+            $scriptClass = (string) config("servers.python.{$this->pythonVersion}.scripts_namespace") . '\InstallPythonScript';
 
-            //
+            if (! class_exists($scriptClass))
+                throw new RuntimeException('No installation script exists for this version of Python.');
+
+            $script = App::make($scriptClass);
+
+            $script->execute($server);
         }, 5);
     }
 }
