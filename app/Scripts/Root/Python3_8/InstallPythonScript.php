@@ -14,15 +14,17 @@ class InstallPythonScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         $this->enablePty();
-        $this->setTimeout(60 * 60); // 60 min
+        $this->setTimeout(60 * 30); // 30 min
 
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
         $this->read();
 
+        // TODO: IMPORTANT! Is this everything server needs to run generic Python/Django applications?
+        //       Google Django deployment on Ubuntu!
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libssl-dev libffi-dev python3-dev');
         $this->read();
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y python3.8 python3-venv');
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y python3.8 python3-pip python3-venv');
         $this->read();
 
         // Verify that Python works.
