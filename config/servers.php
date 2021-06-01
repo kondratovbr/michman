@@ -3,6 +3,11 @@
 use App\Jobs\Servers\ConfigureAppServerJob;
 use App\Support\Str;
 
+/*
+ * TODO: CRITICAL! Don't forget to implement install/configuration/etc. scripts for every other version and application I plan on supporting.
+ *       See all the nulls in here?
+ */
+
 return [
 
     /*
@@ -60,10 +65,13 @@ return [
 
     'python' => [
         '3_9' => [
-
+            'scripts_namespace' => null,
+        ],
+        '3_8' => [
+            'scripts_namespace' => 'App\Scripts\Root\Python3_8',
         ],
         '2_7' => [
-
+            'scripts_namespace' => null,
         ],
     ],
 
