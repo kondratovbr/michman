@@ -54,8 +54,6 @@ class StoreServerAction
             new InstallDatabaseJob($server, $data->database),
             new CreateDatabaseJob($server, $data->dbName),
             new InstallCacheJob($server, $data->cache),
-
-            // TODO: CRITICAL! Implement!
             new InstallPythonJob($server, $data->pythonVersion),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
