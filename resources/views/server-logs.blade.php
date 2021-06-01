@@ -12,6 +12,8 @@
     </head>
     <body>
 
+        <p>Last Log ID: {{ $lastLogId }}</p>
+
         <pre>
             @foreach($logs as $log)
                 @isset($log->command)
