@@ -37,7 +37,7 @@ class ConfigureServerJob extends AbstractJob
             $jobClass = (string) config('servers.types.' . $server->type . '.configuration_job_class');
 
             if (empty($jobClass))
-                throw new \RuntimeException('No job class for this server type configured.');
+                throw new \RuntimeException('Job class for this server type is not configured.');
 
             $jobClass::dispatch($server);
         }, 5);
