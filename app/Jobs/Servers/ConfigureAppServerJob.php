@@ -36,7 +36,6 @@ class ConfigureAppServerJob extends AbstractJob
 
             Bus::chain([
                 new InstallNginxJob($server),
-                new InstallGunicornJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
