@@ -19,6 +19,10 @@ class InstallNginxScript extends AbstractServerScript
          *       Also, figure out what to do if something fails here, like in all other scripts.
          */
 
+        /*
+         * TODO: CRITICAL! Don't forget to figure out SSL setup.
+         */
+
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
@@ -27,6 +31,11 @@ class InstallNginxScript extends AbstractServerScript
 
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y nginx');
         $this->read();
+
+        // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
+        //       Also - don't forget to create a separate user to run nginx workers as configured in nginx.conf!
+
+        // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server. See how Forge does it.
 
         // Wait a bit for Nginx to be started by systemd.
         $this->setTimeout(60);
