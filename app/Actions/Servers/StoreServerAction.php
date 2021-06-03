@@ -47,11 +47,11 @@ class StoreServerAction
             new VerifyRemoteServerIsSuitableJob($server),
             new PrepareRemoteServerJob($server),
             new UpdateServerAvailabilityJob($server),
-            new ConfigureServerJob($server),
             new InstallDatabaseJob($server, $data->database),
             new CreateDatabaseJob($server, $data->dbName),
             new InstallCacheJob($server, $data->cache),
             new InstallPythonJob($server, $data->pythonVersion),
+            new ConfigureServerJob($server),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
