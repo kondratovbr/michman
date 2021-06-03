@@ -32,15 +32,23 @@ class InstallNginxScript extends AbstractServerScript
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y nginx');
         $this->read();
 
+        $this->disablePty();
+
         // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
-        //       Also - don't forget to create a separate user to run nginx workers as configured in nginx.conf!
+
+        // Create a nologin system user to run Nginx workers as configure in nginx.conf.
+        $this->exec('useradd -r -s /usr/sbin/nologin nginx');
 
         // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server. See how Forge does it.
+
+        // Restart Nginx to load new config.
+        $this->exec('systemctl restart nginx');
 
         // Wait a bit for Nginx to be started by systemd.
         $this->setTimeout(60);
         $this->exec('sleep 30');
 
+        // Verify that Nginx has started.
         $output = $this->exec('systemctl status nginx');
         if (
             ! Str::contains(Str::lower($output), 'active (running)')
