@@ -8,14 +8,15 @@ use Database\Factories\DeploySshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Crypt;
-use phpseclib3\Crypt\Common\PrivateKey;
 use phpseclib3\Crypt\Common\PrivateKey as PrivateKeyInterface;
-use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
 use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * DeploySshKey Eloquent model
+ *
+ * Represents an SSH key that was automatically created for a server
+ * and added to a specific VCS repository to be used for deployment.
  *
  * @property int $id
  * @property CarbonInterface $createdAt
@@ -37,7 +38,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    public function getPublicKeyAttribute(): PublicKey
+    public function getPublicKeyAttribute(): PublicKeyInterface
     {
         /** @var PublicKeyInterface $publicKey */
         $publicKey = PublicKeyLoader::load($this->attributes['public_key']);
@@ -53,7 +54,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
         $this->attributes['public_key'] = $this->keyToString($publicKey);
     }
 
-    public function getPrivateKeyAttribute(): PrivateKey
+    public function getPrivateKeyAttribute(): PrivateKeyInterface
     {
         /** @var PrivateKeyInterface $privateKey */
         $privateKey = PublicKeyLoader::load(Crypt::decryptString($this->attributes['private_key']));
@@ -84,6 +85,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
         return $key->toString('OpenSSH', ['comment' => $this->server->name . ' - deploy key']);
     }
 
+    // TODO: CRITICAL! This is a mistake. A deploy key should be owned by a project and attached to many servers - all of the servers where the project is deployed. Fix and don't forget the migrations and the inverse part of this relation. The comment in keyToString is also not correct - should include project name.
     /**
      * Get a relation with the server that has this key.
      */

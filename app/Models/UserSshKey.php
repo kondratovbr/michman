@@ -16,6 +16,8 @@ use phpseclib3\Crypt\PublicKeyLoader;
 /**
  * UserSshKey Eloquent model
  *
+ * Represents an SSH key that the user added to their account to be able to access their servers manually.
+ *
  * @property int $id
  * @property string $username
  * @property string $name
