@@ -8,7 +8,7 @@ use App\Models\Server;
 use App\Models\WorkerSshKey;
 use Illuminate\Support\Facades\DB;
 
-class AddServerSshKeyToProviderJob extends AbstractJob
+class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 

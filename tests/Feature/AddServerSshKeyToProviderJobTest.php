@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\DataTransferObjects\SshKeyData;
-use App\Jobs\Servers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
 use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
 use App\Support\Str;
@@ -18,7 +18,7 @@ class AddServerSshKeyToProviderJobTest extends AbstractFeatureTest
         $workerSshKey = WorkerSshKey::factory()->withServer()->create();
         $server = $workerSshKey->server;
 
-        $job = new AddServerSshKeyToProviderJob($server);
+        $job = new AddWorkerSshKeyToServerProviderJob($server);
 
         $this->assertEquals('providers', $job->queue);
 

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\Servers\StoreServerAction;
 use App\DataTransferObjects\NewServerData;
-use App\Jobs\Servers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
@@ -66,7 +66,7 @@ class StoreServerActionTest extends AbstractFeatureTest
 
         Bus::assertChained([
             CreateWorkerSshKeyForServerJob::class,
-            AddServerSshKeyToProviderJob::class,
+            AddWorkerSshKeyToServerProviderJob::class,
             RequestNewServerFromProviderJob::class,
             GetServerPublicIpJob::class,
             VerifyRemoteServerIsSuitableJob::class,

@@ -3,7 +3,7 @@
 namespace App\Actions\Servers;
 
 use App\DataTransferObjects\NewServerData;
-use App\Jobs\Servers\AddServerSshKeyToProviderJob;
+use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\ConfigureServerJob;
 use App\Jobs\Servers\CreateDatabaseJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
@@ -41,7 +41,7 @@ class StoreServerAction
         Bus::chain([
 
             new CreateWorkerSshKeyForServerJob($server),
-            new AddServerSshKeyToProviderJob($server),
+            new AddWorkerSshKeyToServerProviderJob($server),
             new RequestNewServerFromProviderJob($server, $data),
             new GetServerPublicIpJob($server),
             new VerifyRemoteServerIsSuitableJob($server),
