@@ -40,6 +40,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $databases
  * @property-read Collection $databaseUsers
  * @property-read Collection $pythons
+ * @property-read DeploySshKey $deploySshKey
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -225,5 +226,13 @@ class Server extends AbstractModel
     public function pythons(): HasMany
     {
         return $this->hasMany(Python::class);
+    }
+
+    /**
+     * Get a relation with the deploy SSH key of this server.
+     */
+    public function deploySshKey(): HasOne
+    {
+        return $this->hasOne(DeploySshKey::class);
     }
 }
