@@ -191,6 +191,8 @@ class Server extends AbstractModel
     public function userSshKeys(): BelongsToMany
     {
         return $this->belongsToMany(UserSshKey::class, 'server_user_ssh_key')
+            ->using(ServerUserSshKeyPivot::class)
+            ->withPivot(['added_at'])
             ->withTimestamps();
     }
 
