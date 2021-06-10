@@ -40,7 +40,8 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $databases
  * @property-read Collection $databaseUsers
  * @property-read Collection $pythons
- * @property-read DeploySshKey $deploySshKey
+ * @property-read Collection $deploySshKeys
+ * @property-read ServerSshKey $serverSshKey
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -229,10 +230,18 @@ class Server extends AbstractModel
     }
 
     /**
-     * Get a relation with the deploy SSH key of this server.
+     * Get a relation with the deploy SSH keys used by this server.
      */
-    public function deploySshKey(): HasOne
+    public function deploySshKey(): HasMany
     {
-        return $this->hasOne(DeploySshKey::class);
+        return $this->hasMany(DeploySshKey::class);
+    }
+
+    /**
+     * Get a relation with the SHH key that this server is using to access VCS repositories.
+     */
+    public function serverSshKey(): HasOne
+    {
+        return $this->hasOne(ServerSshKey::class);
     }
 }

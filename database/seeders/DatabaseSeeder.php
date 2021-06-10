@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             DatabaseModelSeeder::class,
             DatabaseUserSeeder::class,
             PythonSeeder::class,
+            ServerSshKeySeeder::class,
             DeploySshKeySeeder::class,
         ]);
     }
