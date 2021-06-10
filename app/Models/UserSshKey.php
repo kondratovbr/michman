@@ -98,7 +98,6 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
     {
         return $this->belongsToMany(Server::class, 'server_user_ssh_key')
             ->using(ServerUserSshKeyPivot::class)
-            ->withPivot(['added_at'])
             ->withTimestamps();
     }
 }

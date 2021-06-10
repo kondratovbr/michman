@@ -7,7 +7,6 @@ use Carbon\CarbonInterface;
 /**
  * Pivot Model for Server to UserSshKey Relation
  *
- * @property CarbonInterface $addedAt
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  */

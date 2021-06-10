@@ -5,7 +5,6 @@ namespace App\Jobs\Servers;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
-use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\ConfigureFirewallScript;
 use App\Scripts\Root\ConfigureSshServerScript;
 use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
@@ -42,7 +41,6 @@ class PrepareRemoteServerJob extends AbstractJob
         ConfigureUnattendedUpgradesScript $configureUnattendedUpgrades,
         ConfigureFirewallScript $configureFirewall,
         CreateSudoUserScript $createSudoUser,
-        AddSshKeyToUserScript $addSshKeyToUser,
         ConfigureSshServerScript $configureSshServer,
         RebootServerScript $rebootServer,
     ): void {
@@ -52,7 +50,6 @@ class PrepareRemoteServerJob extends AbstractJob
             $configureUnattendedUpgrades,
             $configureFirewall,
             $createSudoUser,
-            $addSshKeyToUser,
             $configureSshServer,
             $rebootServer,
         ) {
@@ -76,13 +73,6 @@ class PrepareRemoteServerJob extends AbstractJob
                 $server,
                 (string) config('servers.worker_user'),
                 $server->sudoPassword,
-                $ssh,
-            );
-
-            $addSshKeyToUser->execute(
-                $server,
-                (string) config('servers.worker_user'),
-                $server->workerSshKey,
                 $ssh,
             );
 

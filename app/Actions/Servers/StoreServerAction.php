@@ -13,6 +13,7 @@ use App\Jobs\Servers\InstallDatabaseJob;
 use App\Jobs\Servers\InstallPythonJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
+use App\Jobs\Servers\UpdateUserSshKeysOnServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Server;
@@ -33,7 +34,6 @@ class StoreServerAction
         /*
          * TODO: CRITICAL! Don't forget to:
          *       - Generate SSH keys on the server. Or maybe generate locally and send to the server.
-         *       - Add existing user's SSH keys to the server.
          *       - Add server's SSH keys to user's VCS if needed.
          *       - ...
          */
@@ -47,6 +47,7 @@ class StoreServerAction
             new VerifyRemoteServerIsSuitableJob($server),
             new PrepareRemoteServerJob($server),
             new UpdateServerAvailabilityJob($server),
+            new UpdateUserSshKeysOnServerJob($server),
             new InstallDatabaseJob($server, $data->database),
             new CreateDatabaseJob($server, $data->dbName),
             new InstallCacheJob($server, $data->cache),
