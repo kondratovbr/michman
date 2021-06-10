@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\SshKeyInterface;
 use Carbon\CarbonInterface;
 use Database\Factories\WorkerSshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,21 +18,16 @@ use phpseclib3\Crypt\PublicKeyLoader;
  * Represents an SSH key that our worker uses to access the server.
  *
  * @property int $id
- * @property PublicKeyInterface $publicKey
- * @property PrivateKeyInterface $privateKey
  * @property string $name
  * @property string|null $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
- * @property-read string $publicKeyString
- * @property-read string $privateKeyString
- *
  * @property-read Server $server
  *
  * @method static WorkerSshKeyFactory factory(...$parameters)
  */
-class WorkerSshKey extends AbstractModel
+class WorkerSshKey extends AbstractModel implements SshKeyInterface
 {
     use HasFactory;
 

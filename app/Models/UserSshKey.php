@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\SshKeyInterface;
 use Carbon\CarbonInterface;
 use Database\Factories\UserSshKeyFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,19 +18,19 @@ use phpseclib3\Crypt\PublicKeyLoader;
  *
  * @property int $id
  * @property string $username
- * @property PublicKeyInterface $publicKey
  * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
- * @property-read string $publicKeyString
+ * @property null $privateKey
+ * @property null $privateKeyString
  *
  * @property-read User $user
  * @property-read Collection $servers
  *
  * @method static UserSshKeyFactory factory(...$parameters)
  */
-class UserSshKey extends AbstractModel
+class UserSshKey extends AbstractModel implements SshKeyInterface
 {
     use HasFactory;
 
@@ -62,6 +63,16 @@ class UserSshKey extends AbstractModel
     public function getPublicKeyStringAttribute(): string
     {
         return $this->keyToString($this->publicKey);
+    }
+
+    public function getPrivateKeyAttribute(): PrivateKeyInterface|null
+    {
+        return null;
+    }
+
+    public function getPrivateKeyStringAttribute(): string|null
+    {
+        return null;
     }
 
     /**

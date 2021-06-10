@@ -2,8 +2,8 @@
 
 namespace App\Scripts\Root;
 
+use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Server;
-use App\Models\WorkerSshKey;
 use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Crypt\Common\PublicKey;
@@ -13,7 +13,7 @@ class AddSshKeyToUserScript extends AbstractServerScript
     public function execute(
         Server $server,
         string $username,
-        WorkerSshKey|PublicKey|string $sshKey,
+        SshKeyInterface|PublicKey|string $sshKey,
         SFTP $ssh = null,
     ) {
         $this->setServer($server);
@@ -22,7 +22,7 @@ class AddSshKeyToUserScript extends AbstractServerScript
         if (is_string($sshKey))
             $sshKeyString = $sshKey;
 
-        $sshKeyString ??= $sshKey instanceof WorkerSshKey
+        $sshKeyString ??= $sshKey instanceof SshKeyInterface
             ? $sshKey->publicKeyString
             : $sshKey->toString('OpenSSH', ['comment' => $server->name]);
 
