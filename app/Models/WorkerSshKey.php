@@ -15,7 +15,7 @@ use phpseclib3\Crypt\PublicKeyLoader;
 /**
  * WorkerSshKey Eloquent model
  *
- * Represents an SSH key that our worker uses to access the server.
+ * Represents an SSH key that our worker process uses to access the server.
  *
  * @property int $id
  * @property string $name
