@@ -84,7 +84,7 @@ class WorkerSshKey extends AbstractModel implements SshKeyInterface
      */
     protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key): string
     {
-        return $key->toString('OpenSSH', ['comment' => $this->server->name]);
+        return $key->toString('OpenSSH', ['comment' => $this->server->name . ' - ' . (string) config('app.name') . ' worker key']);
     }
 
     /**
