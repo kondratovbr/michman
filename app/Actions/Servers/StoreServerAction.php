@@ -4,8 +4,10 @@ namespace App\Actions\Servers;
 
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
+use App\Jobs\Servers\AddServerSshKeyToVcsJob;
 use App\Jobs\Servers\ConfigureServerJob;
 use App\Jobs\Servers\CreateDatabaseJob;
+use App\Jobs\Servers\CreateServerSshKeyJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\InstallCacheJob;
@@ -14,6 +16,7 @@ use App\Jobs\Servers\InstallPythonJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\UpdateUserSshKeysOnServerJob;
+use App\Jobs\Servers\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Server;
@@ -33,12 +36,12 @@ class StoreServerAction
 
         /*
          * TODO: CRITICAL! Don't forget to:
-         *       - Generate SSH keys on the server. Or maybe generate locally and send to the server.
+         *       - Generate SSH keys on the server. Or rather generate locally and send to the server.
          *       - Add server's SSH keys to user's VCS if needed.
          *       - ...
          */
 
-        Bus::chain([
+        $jobs = [
 
             new CreateWorkerSshKeyForServerJob($server),
             new AddWorkerSshKeyToServerProviderJob($server),
@@ -52,11 +55,25 @@ class StoreServerAction
             new CreateDatabaseJob($server, $data->dbName),
             new InstallCacheJob($server, $data->cache),
             new InstallPythonJob($server, $data->pythonVersion),
-            new ConfigureServerJob($server),
 
             // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
-        ])->dispatch();
+        ];
+
+        if ($data->addSshKeyToVcs) {
+
+            // TODO: CRITICAL! CONTINUE! Don't forget to implement and test all of these!
+
+            $jobs[] = new CreateServerSshKeyJob($server);
+            $jobs[] = new UploadServerSshKeyToServerJob($server);
+            $jobs[] = new AddServerSshKeyToVcsJob($server);
+        }
+
+        $jobs[] = new ConfigureServerJob($server);
+
+        Bus::chain($jobs)->dispatch();
+
+        // TODO: Don't forget to update the test!
 
         return $server;
     }
