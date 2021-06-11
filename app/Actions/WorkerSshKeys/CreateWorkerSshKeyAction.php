@@ -14,7 +14,7 @@ class CreateWorkerSshKeyAction
 
         /** @var WorkerSshKey $workerKey */
         $workerKey = $server->workerSshKey()->make([
-            'name' => $server->name,
+            'name' => WorkerSshKey::createName($server),
         ]);
 
         $workerKey->privateKey = $key;

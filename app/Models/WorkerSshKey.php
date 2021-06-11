@@ -84,7 +84,18 @@ class WorkerSshKey extends AbstractModel implements SshKeyInterface
      */
     protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key): string
     {
-        return $key->toString('OpenSSH', ['comment' => $this->server->name . ' - ' . (string) config('app.name') . ' worker key']);
+        return $key->toString('OpenSSH', ['comment' => static::createName($this->server)]);
+    }
+
+    /**
+     * Generate a name for a worker SSH key based on the server name.
+     */
+    public static function createName(Server|string $server): string
+    {
+        if ($server instanceof Server)
+            $server = $server->name;
+
+        return $server . ' - ' . config('app.name') . ' worker key';
     }
 
     /**
