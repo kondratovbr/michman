@@ -84,7 +84,18 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
      */
     protected function keyToString(PublicKeyInterface|PrivateKeyInterface $key): string
     {
-        return $key->toString('OpenSSH', ['comment' => $this->server->name]);
+        return $key->toString('OpenSSH', ['comment' => static::createName($this->server)]);
+    }
+
+    /**
+     * Get a name for a server SSH key based on the server name.
+     */
+    public static function createName(Server|string $server): string
+    {
+        if ($server instanceof Server)
+            $server = $server->name;
+
+        return $server . ' - server key';
     }
 
     /**
