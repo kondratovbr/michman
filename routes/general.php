@@ -20,7 +20,7 @@ Route::redirect('/', '/servers')->name('home');
 Route::get('oauth/login/{oauthService}', [OAuthController::class, 'login'])
     ->where('oauthService', implode('|', config('auth.oauth_providers')))
     ->name('oauth.login');
-Route::get('oauth/callback/{oauthService}')
+Route::get('oauth/callback/{oauthService}', [OAuthController::class, 'callback'])
     ->where('oauthService', implode('|', config('auth.oauth_providers')))
     ->name('oauth.callback');
 

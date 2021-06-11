@@ -19,7 +19,7 @@ trait PasswordValidationRules
                 ->withMessage(trans_choice('errors.new_password', (int) config('auth.password.min_length')))
             )
             ->max((int) config('auth.password.max_length'))
-            ->required()
+            ->requiredWithoutAny(['oauth_provider', 'oauth_id'])
             ->confirmed();
     }
 }

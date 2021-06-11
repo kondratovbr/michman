@@ -35,7 +35,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
      */
     protected const NAMED_RULES = [
         'bail', 'required', 'nullable', 'required_with', 'required_without', 'required_without_all',
-        'array', 'string', 'integer', 'numeric', 'alpha', 'alpha_dash', 'alpha_num', 'bool', 'boolean', 'file', 'image', 'uuid',
+        'array', 'string', 'integer', 'numeric', 'alpha', 'alpha_dash', 'alpha_num', 'bool', 'boolean', 'file', 'image', 'uuid', 'email',
         'password',
         'size', 'min', 'max',
         'regex', 'confirmed',

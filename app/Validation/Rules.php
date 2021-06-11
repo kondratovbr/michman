@@ -122,4 +122,13 @@ class Rules extends AbstractBaseRules
             'min:0',
         ]);
     }
+
+    static public function email(): static
+    {
+        return new static([
+            'string',
+            'max:255',
+            'email',
+        ]);
+    }
 }
