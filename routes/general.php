@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\OAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/servers')->name('home');
+
+Route::get('oauth/login/{oauthService}', [OAuthController::class, 'login'])
+    ->where('oauthService', implode('|', config('auth.oauth_providers')))
+    ->name('oauth.login');
+Route::get('oauth/callback/{oauthService}')
+    ->where('oauthService', implode('|', config('auth.oauth_providers')))
+    ->name('oauth.callback');
 
 /*
  * Error page views to be able to serve those pages directly without exception.
