@@ -115,7 +115,7 @@ abstract class AbstractBaseRules extends AbstractRules
     }
 
     /**
-     * Required only when any of the specified fields aren't present.
+     * Required only when any of the specified fields is not present.
      */
     public function requiredWithoutAny(string|array $fields): static
     {
