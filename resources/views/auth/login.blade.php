@@ -1,5 +1,6 @@
 {{--TODO: IMPORTANT! Needs a "Register" link/button.--}}
 {{--TODO: IMPORTANT! Needs OAuth buttons as well.--}}
+{{--TODO: Also need a title somewhere here. Like on GitHub: "Sing in to GitHub".--}}
 
 <x-layouts.guest>
     <x-auth-box>
@@ -20,7 +21,8 @@
                     name="email"
                     required
                     autofocus
-                    {{-- Laravel Fortify returns an error tied to "email" field on failed login attempt (for some reason), which don't want to show here - it will be showed on the top block instead. --}}
+                    {{-- Laravel Fortify returns an error tied to "email" field on failed login attempt (for some reason),
+                    which we don't want to show here - it will be showed on the top block instead. --}}
                     :showErrors="false"
                 />
             </x-field>
