@@ -1,11 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace {{ namespace }};
 
-use {{ rootNamespace }}Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class {{ class }} extends Controller
+class {{ class }} extends AbstractController
 {
     /**
      * Handle the incoming request.
