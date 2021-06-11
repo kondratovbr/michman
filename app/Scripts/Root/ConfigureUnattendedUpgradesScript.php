@@ -10,8 +10,7 @@ class ConfigureUnattendedUpgradesScript extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): void
     {
-        $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp('root'));
+        $this->init($server, $ssh ?? $server->sftp('root'));
 
         /*
          * TODO: I need to somehow verify that apt is actually using this config files

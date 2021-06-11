@@ -14,8 +14,7 @@ class VerifyServerIsSuitableScript extends AbstractServerScript
     {
         // TODO: Other providers and custom VPSes may come with a non-root user with sudo access and a password.
 
-        $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp('root'));
+        $this->init($server, $ssh ?? $server->sftp('root'));
 
         // TODO: IMPORTANT! Must test this whole thing with other providers. Only tested on DigitalOcean so far. Add some random generic VPSs as well.
 

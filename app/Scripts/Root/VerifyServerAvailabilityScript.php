@@ -11,8 +11,7 @@ class VerifyServerAvailabilityScript extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): bool
     {
-        $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp());
+        $this->init($server, $ssh);
 
         $this->enablePty();
         $this->read();

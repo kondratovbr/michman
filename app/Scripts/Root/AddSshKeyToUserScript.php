@@ -16,8 +16,7 @@ class AddSshKeyToUserScript extends AbstractServerScript
         SshKeyInterface|PublicKey|string $sshKey,
         SFTP $ssh = null,
     ) {
-        $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp('root'));
+        $this->init($server, $ssh ?? $server->sftp('root'));
 
         if (is_string($sshKey))
             $sshKeyString = $sshKey;

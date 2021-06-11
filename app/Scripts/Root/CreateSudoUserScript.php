@@ -10,8 +10,7 @@ class CreateSudoUserScript extends AbstractServerScript
 {
     public function execute(Server $server, string $username, string $password, SFTP $ssh = null)
     {
-        $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp('root'));
+        $this->init($server, $ssh ?? $server->sftp('root'));
 
         // Create a new user.
         $this->setTimeout(60 * 5); // 5 min

@@ -10,8 +10,7 @@ class UpgradePackagesScript extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): void
     {
-        $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp('root'));
+        $this->init($server, $ssh ?? $server->sftp('root'));
 
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
