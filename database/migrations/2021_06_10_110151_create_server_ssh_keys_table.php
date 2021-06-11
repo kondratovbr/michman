@@ -15,6 +15,7 @@ class CreateServerSshKeysTable extends Migration
             $table->id();
             $table->foreignId('server_id')->references('id')->on('servers');
 
+            $table->string('name');
             $table->text('public_key');
             $table->text('private_key');
 

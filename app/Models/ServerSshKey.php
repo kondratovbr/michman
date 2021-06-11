@@ -20,8 +20,11 @@ use phpseclib3\Crypt\PublicKeyLoader;
  * and added to a VCS account as a whole to be used for deployment.
  *
  * @property int $id
+ * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @property-read Server $server
  *
  * @method static ServerSshKeyFactory factory(...$parameters)
  */
@@ -31,7 +34,7 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        //
+        'name',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
