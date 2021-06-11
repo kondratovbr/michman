@@ -26,7 +26,10 @@ use App\Facades\QrCode;
  *
  * @property int $id
  * @property string $email
+ * @property string|null $password
  * @property CarbonInterface $emailVerifiedAt
+ * @property string $oauthProvider
+ * @property string $oauthId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -54,6 +57,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'email',
         'password',
+        'oauth_provider',
+        'oauth_id',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
