@@ -125,4 +125,10 @@ return [
         'max_length' => 255,
     ],
 
+    // A list of supported OAuth providers by config keys - see services.php config file.
+    'oauth_providers' => [
+        'github',
+        // TODO: CRITICAL! Don't forget to support at least GitHub, GitLab and BitBucket.
+    ],
+
 ];
