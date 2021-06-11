@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use Illuminate\Database\DBAL\TimestampType;
 
 /*
  * Main database configuration
@@ -166,6 +167,22 @@ return [
             'database' => env('REDIS_CACHE_DB', 'cache'),
         ],
 
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | DBAL Package Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This package is used to perform more complex database migrations,
+    | like dropping and modifying columns.
+    |
+    */
+
+    'dbal' => [
+        'types' => [
+            'timestamp' => TimestampType::class,
+        ],
     ],
 
 ];
