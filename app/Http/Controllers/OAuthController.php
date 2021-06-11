@@ -27,6 +27,11 @@ class OAuthController extends AbstractController
         //       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
         //       Don't forget to implement VCS providers and automatically create one when a user is registered using OAuth.
 
+        /*
+         * TODO: Next - refactor login.blade.php and auth-box.blade.php to add another block underneath
+         *       with the link to login/register and also add OAuth buttons on the corresponding pages.
+         */
+
         $user = Socialite::driver($oauthProvider)->user();
         
         //
