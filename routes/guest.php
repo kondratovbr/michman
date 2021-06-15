@@ -1,5 +1,9 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\OAuthController;
+use App\Support\Arr;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Guest Routes
@@ -11,4 +15,15 @@
 |
 */
 
-//
+Route::get('oauth/login/{oauthService}', [OAuthController::class, 'login'])
+    ->where(
+        'oauthService',
+        implode('|', Arr::keys(config('auth.oauth_providers')))
+    )
+    ->name('oauth.login');
+Route::get('oauth/callback/{oauthService}', [OAuthController::class, 'callback'])
+    ->where(
+        'oauthService',
+        implode('|', Arr::keys(config('auth.oauth_providers')))
+    )
+    ->name('oauth.callback');
