@@ -1,0 +1,19 @@
+@layer components {
+    .separator {
+        @apply flex items-center text-center;
+
+        &::before, &::after {
+            @apply flex-1 border-b-2 border-gray-500;
+
+            content: '';
+        }
+
+        &:not(:empty)::before {
+            @apply mr-2-em;
+        }
+
+        &:not(:empty)::after {
+            @apply ml-2-em;
+        }
+    }
+}
