@@ -19,7 +19,7 @@
 @endphp
 
 @if($link)
-    <a {{ $attributes->merge(['class' => $classes]) }}>
+    <a {{ $attributes->merge(['class' => $classes])->except('type') }}>
         {{ $slot }}
     </a>
 @else
