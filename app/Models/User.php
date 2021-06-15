@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
+use App\Support\Str;
 use BaconQrCode\Renderer\Color\Rgb;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
@@ -73,6 +74,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function setEmailAttribute(string $email): void
+    {
+        $this->attributes['email'] = Str::lower($email);
+    }
 
     /**
      * Derive user's name from the email.
