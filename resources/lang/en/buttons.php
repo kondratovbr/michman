@@ -5,7 +5,7 @@ return [
     'save' => 'Save',
     'cancel' => 'Cancel',
     'login' => 'Log in',
-    'register' => 'Register',
+    'register' => 'Sign Up',
     'enable' => 'Enable',
     'confirm' => 'Confirm',
     'back' => 'Back',

@@ -2,17 +2,22 @@
 
 return [
 
-    'login-via' => 'Log In via',
-    'register-via' => 'Register via',
+    'login' => 'Log In',
+    'register' => 'Sign Up',
+    'login-to' => 'Log in to :app',
+    'register-on' => 'Sign up for :app',
+    'login-via' => 'Log in via',
+    'register-via' => 'Sign up via',
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'logout' => 'Log out',
     'remember' => 'Remember me',
-    'already-registered' => 'Already registered?',
+    'new-to' => 'New to :app?',
+    'already-registered' => 'Already signed up?',
     'thanks-for-registration' => 'Thanks for signing up! ',
     'verify-email' => 'Before getting started, could you verify your email address by clicking on the link we just emailed to you?',
-    'verification-link-sent' => 'A new verification link has been sent to the email address you provided during registration.',
+    'verification-link-sent' => 'A new verification link has been sent to the email address you provided during signing up.',
     'resend-verification-link-button' => 'Resend verification email',
 
     'tfa' => [

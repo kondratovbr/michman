@@ -5,6 +5,10 @@
 <x-layouts.guest>
     <x-auth-box>
 
+        <x-slot name="title">
+            {{ __('auth.login-to', ['app' => siteName()]) }}
+        </x-slot>
+
         <x-validation-errors class="mb-4" />
 
         @if (session('status'))
@@ -57,10 +61,17 @@
 
         <x-hr>{{ __('misc.or') }}</x-hr>
 
-        <div>
+        <div class="flex flex-col items-center">
             <h3>{{ __('auth.login-via') }}</h3>
             <x-oauth-buttons class="mt-2"/>
         </div>
+
+        <x-slot name="bottomMessage">
+            <div class="flex justify-center space-x-2">
+                <p>{{ __('auth.new-to', ['app' => siteName()]) }}</p>
+                <x-link href="{{ route('register') }}">{{ __('auth.register') }}</x-link>
+            </div>
+        </x-slot>
 
     </x-auth-box>
 </x-layouts.guest>

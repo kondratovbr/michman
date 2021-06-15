@@ -1,10 +1,11 @@
-@props(['shadow' => 'shadow-md'])
+@props(['shadow' => 'shadow-md', 'secondary' => false])
 
-<div
-    {{ $attributes->merge([
-        'class' => 'bg-navy-300 sm:rounded-lg w-full' . ' ' . $shadow,
-    ]) }}
->
+<div {{ $attributes->class([
+    $secondary
+        ? 'border-2 border-gray-500 w-full-2 sm:w-full rounded-lg'
+        : 'bg-navy-300 w-full sm:rounded-lg',
+    $secondary ? null : $shadow,
+]) }}>
     @isset($header)
         <x-box.header>
             {{ $header }}

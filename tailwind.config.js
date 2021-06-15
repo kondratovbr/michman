@@ -200,6 +200,16 @@ module.exports = {
                 'screen-2xl-10/12': 'calc(1536px / 12 * 10)',
             },
             height: textSizingScale,
+            width: {
+                'full-1': 'calc(100% - 0.25rem * 2)',
+                'full-2': 'calc(100% - 0.5rem * 2)',
+                'full-3': 'calc(100% - 0.75rem * 2)',
+                'full-4': 'calc(100% - 1rem * 2)',
+                'full-5': 'calc(100% - 1.25rem * 2)',
+                'full-6': 'calc(100% - 1.5rem * 2)',
+                'full-7': 'calc(100% - 1.75rem * 2)',
+                'full-8': 'calc(100% - 2rem * 2)',
+            },
             // Extending min sizing utilities using a custom sizing scale (see above).
             minHeight: smallSizingScale,
             minWidth: smallSizingScale,

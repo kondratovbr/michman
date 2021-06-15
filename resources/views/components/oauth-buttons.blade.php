@@ -1,5 +1,5 @@
 <div {{ $attributes->class([
-    'flex space-x-4 sm:justify-between',
+    'flex space-x-4',
 ]) }}>
     @foreach(config('auth.oauth_providers') as $oauthProviderName => $oauthProviderConfig)
         <x-buttons.secondary :link="true" href="{{ route('oauth.login', $oauthProviderName) }}">

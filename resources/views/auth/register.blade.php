@@ -3,6 +3,10 @@
 <x-layouts.guest>
     <x-auth-box>
 
+        <x-slot name="title">
+            {{ __('auth.register-on', ['app' => siteName()]) }}
+        </x-slot>
+
         <x-validation-errors class="mb-4" />
 
         <x-forms.vertical method="POST" action="{{ route('register') }}">
@@ -52,7 +56,6 @@
             @endif
 
             <div class="flex items-center justify-end">
-                <x-link href="{{ route('login') }}">{{ __('auth.already-registered') }}</x-link>
                 <x-buttons.primary class="ml-4">
                     {{ __('buttons.register') }}
                 </x-buttons.primary>
@@ -62,10 +65,17 @@
 
         <x-hr>{{ __('misc.or') }}</x-hr>
 
-        <div>
+        <div class="flex flex-col items-center">
             <h3>{{ __('auth.register-via') }}</h3>
             <x-oauth-buttons class="mt-2"/>
         </div>
+
+        <x-slot name="bottomMessage">
+            <div class="flex justify-center space-x-2">
+                <p>{{ __('auth.already-registered') }}</p>
+                <x-link href="{{ route('login') }}">{{ __('auth.login') }}</x-link>
+            </div>
+        </x-slot>
 
     </x-auth-box>
 </x-layouts.guest>
