@@ -99,6 +99,7 @@ module.exports = {
         './resources/**/*.md',
         './resources/**/*.js',
         './resource/**/*.php',
+        './config/**/*.php',
     ],
 
     theme: {
@@ -180,6 +181,14 @@ module.exports = {
             // Some specific additional margin values
             margin: {
                 '2px': '2px',
+                '1-em': '0.25em',
+                '2-em': '0.5em',
+                '3-em': '0.75em',
+                '4-em': '1em',
+                '5-em': '1.25em',
+                '6-em': '1.5em',
+                '7-em': '1.75em',
+                '8-em': '2em',
             },
             // Some specific max-width utilities
             maxWidth: {
