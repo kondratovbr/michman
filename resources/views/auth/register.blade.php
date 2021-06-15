@@ -60,5 +60,12 @@
 
         </x-forms.vertical>
 
+        <x-hr>{{ __('misc.or') }}</x-hr>
+
+        <div>
+            <h3>{{ __('auth.register-via') }}</h3>
+            <x-oauth-buttons class="mt-2"/>
+        </div>
+
     </x-auth-box>
 </x-layouts.guest>

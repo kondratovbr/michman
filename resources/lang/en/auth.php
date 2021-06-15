@@ -2,6 +2,8 @@
 
 return [
 
+    'login-via' => 'Log In via',
+    'register-via' => 'Register via',
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
@@ -18,6 +20,20 @@ return [
         'please-confirm-recovery' => 'Please confirm access to your account by entering one of your emergency recovery codes.',
         'use-recovery-button' => 'Use a recovery code',
         'use-code-button' => 'Use an authentication code',
+    ],
+
+    'oauth' => [
+        'providers' => [
+            'github' => [
+                'label' => 'GitHub',
+            ],
+            'gitlab' => [
+                'label' => 'GitLab',
+            ],
+            'bitbucket' => [
+                'label' => 'Bitbucket',
+            ],
+        ],
     ],
 
 ];

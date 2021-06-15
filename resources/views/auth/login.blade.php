@@ -45,9 +45,7 @@
 
             <div class="flex items-center justify-end">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-400 hover:text-gray-100" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
+                    <x-link>{{ __('Forgot your password?') }}</x-link>
                 @endif
 
                 <x-buttons.primary class="ml-4">
@@ -57,6 +55,12 @@
 
         </x-forms.vertical>
 
-    </x-auth-box>
+        <x-hr>{{ __('misc.or') }}</x-hr>
 
+        <div>
+            <h3>{{ __('auth.login-via') }}</h3>
+            <x-oauth-buttons class="mt-2"/>
+        </div>
+
+    </x-auth-box>
 </x-layouts.guest>
