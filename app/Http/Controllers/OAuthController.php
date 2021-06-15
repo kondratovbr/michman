@@ -32,12 +32,7 @@ class OAuthController extends AbstractController
         //       https://laravel.com/docs/8.x/socialite
         //       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
         //       Don't forget to implement VCS providers and automatically create one when a user is registered using OAuth.
-
-        /*
-         * TODO: CRITICAL! CONTINUE! Go over all the authentication logic and make sure than null password doesn't break anything,
-         *       and a user cannot login with an empty password when null is stored in the DB.
-         */
-
+        
         /*
          * TODO: IMPORTANT! Make sure to handle a case when a user declines access on the OAuth provider side for some reason, see:
          *       https://docs.github.com/en/developers/apps/managing-oauth-apps/troubleshooting-authorization-request-errors
