@@ -44,19 +44,22 @@
             </x-field>
 
             <div
-                x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'digital_ocean_v2'"
+                x-show="provider === 'digital_ocean_v2'"
+                x-transition.in.duration.300ms.origin.top.opacity.scale.95
                 x-cloak
             >
                 @include('providers.forms.digital_ocean_v2')
             </div>
             <div
-                x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'aws'"
+                x-show="provider === 'aws'"
+                x-transition.in.duration.300ms.origin.top.opacity.scale.95
                 x-cloak
             >
                 @include('providers.forms.aws')
             </div>
             <div
-                x-show.transition.in.duration.300ms.origin.top.opacity.scale.95="provider === 'linode'"
+                x-show="provider === 'linode'"
+                x-transition.in.duration.300ms.origin.top.opacity.scale.95
                 x-cloak
             >
                 @include('providers.forms.linode')

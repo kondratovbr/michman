@@ -32,7 +32,7 @@
         class="md:hidden absolute right-0 max-w-sm"
         x-show="open"
         x-cloak
-        x-on:click.away="open = false"
+        x-on:click.outside="open = false"
         x-on:close.stop="open = false"
 
         x-transition:enter="transform transition ease-out duration-300 md:duration-500"

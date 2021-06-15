@@ -7,7 +7,7 @@
 ]) }}
     x-data="{ open: false }"
     {{-- TODO: IMPORTANT! Does this work on touch? --}}
-    x-on:click.away="open = false"
+    x-on:click.outside="open = false"
     x-on:close.stop="open = false"
 >
 

@@ -12,7 +12,8 @@
         shown = true;
         timeout = setTimeout(() => { shown = false }, 2000);
     })"
-    x-show.transition.opacity.out.duration.1500ms="shown"
+    x-show="shown"
+    x-transition.opacity.out.duration.1500ms
     style="display: none;"
 >
     {{ $slot->isEmpty() ? __('misc.saved') : $slot }}

@@ -28,7 +28,7 @@
     @if(! $default)
         x-init="$refs.select.selectedIndex = -1;"
     @endif
-    x-on:click.away="closeListbox()"
+    x-on:click.outside="closeListbox()"
     x-on:keydown.escape="closeListbox(true)"
     {{ $attributes->wire('key') }}
 >

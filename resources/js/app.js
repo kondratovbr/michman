@@ -1,6 +1,10 @@
 require('./bootstrap');
 
-require('alpinejs');
+import Alpine from 'alpinejs'
+
+window.Alpine = Alpine
+
+Alpine.start()
 
 import focusableDialog from './components/FocusableDialog';
 window.focusableDialog = focusableDialog;
