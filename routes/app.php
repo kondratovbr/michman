@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('servers', Controllers\ServerController::class)
-    ->only(['index', 'show', 'create', 'store']);
+    ->only(['index', 'show']);
