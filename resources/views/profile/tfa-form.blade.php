@@ -17,10 +17,8 @@
             {{ $this->enabled ? __('account.profile.tfa.enabled') : __('account.profile.tfa.disabled') }}
         </h3>
 
-        <div class="mt-3 max-w-xl text-sm">
-            <p>
-                {{ __('account.profile.tfa.explanation') }}
-            </p>
+        <div class="mt-3 max-w-prose text-sm">
+            <p>{{ __('account.profile.tfa.explanation') }}</p>
         </div>
 
         @if ($this->enabled)
@@ -45,10 +43,8 @@
             @endif
 
             @if ($showingRecoveryCodes)
-                <div class="mt-4 max-w-xl text-sm">
-                    <p class="font-semibold">
-                        {{ __('account.profile.tfa.recovery-explanation') }}
-                    </p>
+                <div class="mt-4 max-w-prose text-sm font-semibold">
+                    {{ __('account.profile.tfa.recovery-explanation') }}
                 </div>
 
 {{--                TODO: Add a small "Copy to clipboard" button.--}}

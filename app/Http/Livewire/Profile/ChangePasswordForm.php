@@ -6,11 +6,14 @@ use App\Models\User;
 use App\Facades\Auth;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laravel\Fortify\Contracts\UpdatesUserPasswords;
 use Livewire\Component;
 
 class ChangePasswordForm extends Component
 {
+    use AuthorizesRequests;
+
     /** Currently typed user's current password. */
     public string $current_password = '';
     /** Currently typed new password. */
@@ -35,6 +38,8 @@ class ChangePasswordForm extends Component
     public function updatePassword(UpdatesUserPasswords $updater): void
     {
         $this->validate();
+
+        $this->authorize('changePassword', [Auth::user()]);
 
         $updater->update(Auth::user(), [
             'current_password' => $this->current_password,

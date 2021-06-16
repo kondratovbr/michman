@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Profile;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use App\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laravel\Fortify\Actions\DisableTwoFactorAuthentication;
 use Laravel\Fortify\Actions\EnableTwoFactorAuthentication;
 use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
@@ -18,7 +19,7 @@ use Livewire\Component;
  */
 class TfaForm extends Component
 {
-    use ConfirmsPasswords;
+    use ConfirmsPasswords, AuthorizesRequests;
 
     /** Indicates if two factor authentication QR code is being displayed. */
     public bool $showingQrCode = false;
@@ -31,6 +32,8 @@ class TfaForm extends Component
      */
     public function enableTwoFactorAuthentication(EnableTwoFactorAuthentication $enable): void
     {
+        $this->authorize('enableTfa', [Auth::user()]);
+
         if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
             $this->ensurePasswordIsConfirmed();
         }
@@ -73,10 +76,13 @@ class TfaForm extends Component
      */
     public function disableTwoFactorAuthentication(DisableTwoFactorAuthentication $disable): void
     {
+        $this->authorize('disableTfa', [Auth::user()]);
+
         if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
             $this->ensurePasswordIsConfirmed();
         }
 
+        // We're just going to use a built-int action class by Fortify.
         $disable(Auth::user());
     }
 

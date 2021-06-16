@@ -4,11 +4,14 @@ namespace App\Http\Livewire\Profile;
 
 use App\Facades\Auth;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 use Livewire\Component;
 
 class ChangeEmailForm extends Component
 {
+    use AuthorizesRequests;
+
     /** @var string Currently typed email address. */
     public string $email;
 
@@ -28,6 +31,8 @@ class ChangeEmailForm extends Component
         // The validation is done by the Updater object,
         // which is currently an instance of
         // App\Actions\Fortify\UpdateUserProfileInformation
+
+        $this->authorize('changeEmail', [Auth::user()]);
 
         $this->resetErrorBag();
 

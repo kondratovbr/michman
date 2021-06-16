@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Profile;
 use App\Validation\Rules;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use App\Facades\Auth;
 use Laravel\Jetstream\Contracts\DeletesUsers;
@@ -12,6 +13,8 @@ use Livewire\Component;
 
 class DeleteAccountForm extends Component
 {
+    use AuthorizesRequests;
+
     /** Indicates if user deletion is being confirmed. */
     public bool $confirmingUserDeletion = false;
 
@@ -50,6 +53,8 @@ class DeleteAccountForm extends Component
         // TODO: Implement the actual feature. Would be more complex than that. Maybe need to clean servers, logout providers, VCSs, etc. Maybe need to have a cooldown time, so a user can stop deletion, if necessary. Also, need to handle billing on deletion somehow.
 
         abort(403);
+
+        $this->authorize('deleteAccount', [Auth::user()]);
 
         $this->validate();
 

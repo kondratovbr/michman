@@ -126,6 +126,30 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Determine if this user has 2FA enabled.
+     */
+    public function tfaEnabled(): bool
+    {
+        return ! empty($this->two_factor_secret);
+    }
+
+    /**
+     * Determine if this user authenticates using OAuth.
+     */
+    public function usesOauth(): bool
+    {
+        return ! empty($this->oauthProvider) && ! empty($this->oauthId);
+    }
+
+    /**
+     * Determine if this user uses email+password authentication.
+     */
+    public function usesPassword(): bool
+    {
+        return ! empty($this->password);
+    }
+
+    /**
      * Get a relation with server providers owned by this user.
      */
     public function providers(): HasMany

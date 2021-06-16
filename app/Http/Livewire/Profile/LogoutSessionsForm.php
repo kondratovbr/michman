@@ -6,6 +6,7 @@ use App\Validation\Rules;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Collection as BasicCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,8 @@ use Livewire\Component;
  */
 class LogoutSessionsForm extends Component
 {
+    use AuthorizesRequests;
+
     /** @var bool Indicates if a confirmation modal should currently be opened. */
     public bool $modalOpened = false;
     /** @var string Currently typed user's password. */
@@ -55,6 +58,8 @@ class LogoutSessionsForm extends Component
     public function logoutOtherSessions(StatefulGuard $guard): void
     {
         $this->validate();
+
+        $this->authorize('logoutOtherSessions', [Auth::user()]);
 
         DB::beginTransaction();
 

@@ -57,6 +57,14 @@ return [
             'modal-title' => 'Delete Account',
         ],
 
+        'oauth' => [
+            'title' => ':provider OAuth',
+            'authenticated' => 'You are authenticated via :provider.',
+            'explanation-start' => 'You can enable access with an email and password in addition to access via :provider by setting a password using',
+            'explanation-end' => 'function.',
+            'enable-password-access-button' => 'Enable Password Access',
+        ],
+
     ],
 
     'ssh' => [
