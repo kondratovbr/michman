@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\App;
 /**
  * Server Provider Eloquent model
  *
- * Represents a server provider connected to the app over their API,
+ * Represents an account on a third-party server provider connected to the app over their API,
  * like DigitalOcean or Linode.
  *
  * @property int $id
