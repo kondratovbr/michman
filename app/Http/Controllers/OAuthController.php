@@ -37,21 +37,17 @@ class OAuthController extends AbstractController
         // TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
         //       Like, show a separate dialog after registration with accepting terms?
 
-        // TODO: IMPORTANT! Figure out WTF is "scopes":
-        //       https://laravel.com/docs/8.x/socialite
-        //       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
-        //       Don't forget to implement VCS providers and automatically create one when a user is registered using OAuth.
+        /*
+         * TODO: CRITICAL! Is I want to access user's repositories I will need specific OAuth "scopes" for it:
+         *       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
+         *       https://laravel.com/docs/8.x/socialite
+         */
 
         /*
          * TODO: IMPORTANT! Make sure to handle a case when a user declines access on the OAuth provider side for some reason, see:
          *       https://docs.github.com/en/developers/apps/managing-oauth-apps/troubleshooting-authorization-request-errors
          *       Maybe other possible errors as well, for example - "Application suspended" error should be handled like an
          *       emergency situation and I should be notified immediately.
-         */
-
-        /*
-         * TODO: Next - refactor login.blade.php and auth-box.blade.php to add another block underneath
-         *       with the link to login/register and also add OAuth buttons on the corresponding pages.
          */
 
         /*
