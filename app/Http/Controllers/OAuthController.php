@@ -42,10 +42,6 @@ class OAuthController extends AbstractController
         //       Like, show a separate dialog after registration with accepting terms?
 
         /*
-         * TODO: CRITICAL! I should handle password changing and 2FA for users that use OAuth.
-         */
-
-        /*
          * TODO: CRITICAL! Is I want to access user's repositories I will need specific OAuth "scopes" for it:
          *       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
          *       https://laravel.com/docs/8.x/socialite
@@ -58,12 +54,6 @@ class OAuthController extends AbstractController
          * TODO: Also handle user avatars provided by OAuth providers. I mean, implement user avatars in general.
          *       Don't store any avatars at all - use an OAuth provided avatar (by its URL)
          *       or use an external service to generate an avatar when OAuth gives nothing or isn't even used.
-         */
-
-        /*
-         * TODO: IMPORTANT! Don't forget to give a user a link to the OAuth provider permissions information page
-         *       somewhere on the user profile page:
-         *       https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#directing-users-to-review-their-access
          */
 
         $oauthUser = Socialite::driver($oauthProvider)->user();
