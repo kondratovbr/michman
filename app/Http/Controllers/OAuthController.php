@@ -41,6 +41,9 @@ class OAuthController extends AbstractController
          * TODO: CRITICAL! Is I want to access user's repositories I will need specific OAuth "scopes" for it:
          *       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
          *       https://laravel.com/docs/8.x/socialite
+         *       I think I should just add scopes in the first auth redirect here,
+         *       but also check that we have the necessary scopes while performing specific actions
+         *       and request additional permissions if we don't have it.
          */
 
         /*
@@ -68,8 +71,6 @@ class OAuthController extends AbstractController
 
         Auth::login($user, true);
 
-        // TODO: CRITICAL! Try this redirect with an actual button on an actual page (works with manual URLs in the address bar).
-        //       That's probably how it's done in Laravel Fortify.
         return redirect()->intended(config('fortify.home'));
     }
 
