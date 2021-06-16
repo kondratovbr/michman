@@ -18,6 +18,7 @@ class AccountView extends Component
     public const VIEWS = [
         'profile' => 'profile.show',
         'providers' => 'providers.show',
+        'vcs' => 'vcs.show',
     ];
 
     /** @var string The name of a sub-page that will be shown by default. */
