@@ -25,6 +25,19 @@ abstract class AbstractServerProvider extends AbstractProvider implements Server
     private RegionDataCollection $allRegions;
     private SizeDataCollection $allSizes;
 
+    protected function getCachePrefix(): string
+    {
+        // If we don't have an internal provider ID we cannot use cache at all -
+        // we have nothing to use as a unique reproducible identifier.
+        if (! isset($this->identifier))
+            throw new RuntimeException('Cannot use caching for this server provider - no unique identifier provided.');
+
+        if (! isset($this->cachePrefix))
+            $this->cachePrefix = 'provider.' . $this->identifier;
+
+        return $this->cachePrefix;
+    }
+
     /**
      * Call the API for all server regions it supports.
      */
@@ -34,19 +47,6 @@ abstract class AbstractServerProvider extends AbstractProvider implements Server
      * Call the API for all server sizes it supports.
      */
     abstract protected function getAllSizesFromApi(): SizeDataCollection;
-
-    protected function getCachePrefix(): string
-    {
-        // If we don't have an internal provider ID we cannot use cache at all -
-        // we have nothing to use as a unique reproducible identifier.
-        if (! isset($this->identifier))
-            throw new RuntimeException('Cannot use caching for this provider - no unique identifier provided.');
-
-        if (! isset($this->cachePrefix))
-            $this->cachePrefix = 'provider.' . $this->identifier;
-
-        return $this->cachePrefix;
-    }
 
     /**
      * Retrieve a collection of all regions supported by the API
