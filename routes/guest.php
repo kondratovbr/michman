@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 | Guest Routes
 |--------------------------------------------------------------------------
 |
-| These routes are available only for guests, i.e. non-authenticated users
-| by covering them with "guest" middleware.
+| These routes are available only for guests, i.e. non-authenticated users.
+| Which is achieved by covering them with "guest" middleware in RouteServiceProvider.
 | Authenticated users will be redirected to the homepage.
 |
 */
@@ -21,6 +21,7 @@ Route::get('oauth/login/{oauthService}', [OAuthController::class, 'login'])
         implode('|', Arr::keys(config('auth.oauth_providers')))
     )
     ->name('oauth.login');
+
 Route::get('oauth/callback/{oauthService}', [OAuthController::class, 'callback'])
     ->where(
         'oauthService',
