@@ -59,6 +59,12 @@ class OAuthController extends AbstractController
          *       or use an external service to generate an avatar when OAuth gives nothing or isn't even used.
          */
 
+        /*
+         * TODO: IMPORTANT! Don't forget to give a user a link to the OAuth provider permissions information page
+         *       somewhere on the user profile page:
+         *       https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#directing-users-to-review-their-access
+         */
+
         $oauthUser = Socialite::driver($oauthProvider)->user();
 
         $user = $this->findUserByOauthId($oauthProvider, $oauthUser);
