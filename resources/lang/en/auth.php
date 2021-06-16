@@ -33,6 +33,7 @@ return [
         'providers' => [
             'github' => [
                 'label' => 'GitHub',
+                'review-page-link' => 'GitHub OAuth Apps Settings',
             ],
             'gitlab' => [
                 'label' => 'GitLab',

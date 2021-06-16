@@ -63,6 +63,7 @@ return [
             'explanation-start' => 'You can enable access with an email and password in addition to access via :provider by setting a password using',
             'explanation-end' => 'function.',
             'enable-password-access-button' => 'Enable Password Access',
+            'review-and-revoke' => 'You can review permissions and revoke access via',
         ],
 
     ],

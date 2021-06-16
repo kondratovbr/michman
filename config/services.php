@@ -44,6 +44,13 @@ return [
          *       as a URL parameter.
          */
         'redirect' => '/oauth/github/callback',
+
+        /*
+         * Custom properties
+         */
+
+        // https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#directing-users-to-review-their-access
+        'review_access_url' => 'https://github.com/settings/connections/applications/' . env('GITHUB_CLIENT_ID'),
     ],
 
 ];
