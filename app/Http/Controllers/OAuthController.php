@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Facades\Auth;
+use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
+use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
+use App\Http\Exceptions\OAuth\OauthException;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Facades\Socialite;
@@ -38,19 +42,16 @@ class OAuthController extends AbstractController
         //       Like, show a separate dialog after registration with accepting terms?
 
         /*
+         * TODO: CRITICAL! I should handle password changing and 2FA for users that use OAuth.
+         */
+
+        /*
          * TODO: CRITICAL! Is I want to access user's repositories I will need specific OAuth "scopes" for it:
          *       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
          *       https://laravel.com/docs/8.x/socialite
          *       I think I should just add scopes in the first auth redirect here,
          *       but also check that we have the necessary scopes while performing specific actions
          *       and request additional permissions if we don't have it.
-         */
-
-        /*
-         * TODO: IMPORTANT! Make sure to handle a case when a user declines access on the OAuth provider side for some reason, see:
-         *       https://docs.github.com/en/developers/apps/managing-oauth-apps/troubleshooting-authorization-request-errors
-         *       Maybe other possible errors as well, for example - "Application suspended" error should be handled like an
-         *       emergency situation and I should be notified immediately.
          */
 
         /*
@@ -81,7 +82,30 @@ class OAuthController extends AbstractController
     }
 
     /**
-     * Try to authenticate a user by OAuth ID returned from an OAuth provider.
+     * Handle a callback from an OAuth provider in case of an error during authentication.
+     *
+     * https://docs.github.com/en/developers/apps/managing-oauth-apps/troubleshooting-authorization-request-errors
+     */
+    public function defaultCallback(string $oauthProvider, Request $request): RedirectResponse
+    {
+        $error = $request->get('error');
+
+        // User declined access on the OAuth provider side so we will just redirect to
+        // the beginning for now.
+        // TODO: Maybe show some message for the user in this case.
+        if ($error === 'access_denied')
+            return redirect()->home();
+
+        throw match ($error) {
+            // TODO: CRITICAL! If any of these OAuthExceptions is thrown I should immediately notify myself on the emergency channel.
+            'application_suspended' => new ApplicationSuspendedException($oauthProvider, $request->fullUrl()),
+            'redirect_uri_mismatch' => new RedirectUriMismatchException($oauthProvider, $request->fullUrl()),
+            default => new OauthException($oauthProvider, $request->fullUrl())
+        };
+    }
+
+    /**
+     * Try to find a user previously registered via OAuth by their OAuth ID returned from an OAuth provider.
      */
     private function findUserByOauthId(string $oauthProvider, OauthUser $oauthUser): User|null
     {
@@ -95,7 +119,7 @@ class OAuthController extends AbstractController
     }
 
     /**
-     * Try to authenticate a user by an Email returned from OAuth provider.
+     * Try to find a user by an email returned from an OAuth provider.
      */
     private function findUserByEmail(string $oauthProvider, OauthUser $oauthUser): User|null
     {
@@ -121,13 +145,13 @@ class OAuthController extends AbstractController
     }
 
     /**
-     * Register a new user using data returned from OAuth provider.
+     * Register a new user using data returned from an OAuth provider.
      */
     private function registerUserByOauth(string $oauthProvider, OauthUser $oauthUser): User
     {
         /*
          * TODO: IMPORTANT! Don't forget to figure out the rest of the stuff I may want to do here,
-         *       like greet the user, send an email or whatever.
+         *       like greet the user, send an email or whatever. It should be DRY.
          */
 
         return DB::transaction(function () use ($oauthUser, $oauthProvider) {
