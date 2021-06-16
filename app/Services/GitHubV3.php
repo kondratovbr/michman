@@ -38,9 +38,9 @@ class GitHubV3 extends AbstractVcsProvider
         return Http::withToken($this->token)->accept(static::ACCEPT);
     }
 
-    protected function getConfigKey(): string
+    protected function getConfigPrefix(): string
     {
-        return 'github';
+        return 'vcs.list.github_v3';
     }
 
     public function credentialsAreValid(): bool
