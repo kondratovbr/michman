@@ -15,7 +15,7 @@ class AccountView extends Component
     protected $listeners = ['showSubPage' => 'show'];
 
     /** @var string[] Map of $show property values to sub-page views. */
-    private const VIEWS = [
+    public const VIEWS = [
         'profile' => 'profile.show',
         'providers' => 'providers.show',
     ];
