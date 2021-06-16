@@ -13,6 +13,8 @@ use App\DataTransferObjects\SizeData;
 use App\DataTransferObjects\SshKeyData;
 use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Http;
 
 // TODO: IMPORTANT! Cover the thing with tests.
 
@@ -24,8 +26,6 @@ use App\Support\Arr;
 
 class DigitalOceanV2 extends AbstractServerProvider
 {
-    use UsesBearerTokens;
-
     /** @var string Bearer token used for authentication. */
     private string $token;
 
@@ -36,26 +36,46 @@ class DigitalOceanV2 extends AbstractServerProvider
         $this->token = $token;
     }
 
-    protected function getToken(): string
+    protected function getConfigPrefix(): string
     {
-        return $this->token;
+        return 'providers.list.digital_ocean_v2';
     }
 
-    protected function getConfigKey(): string
+    protected function request(): PendingRequest
     {
-        return 'digital_ocean_v2';
+        return Http::withToken($this->token)->acceptJson();
     }
 
     public function credentialsAreValid(): bool
     {
-        $response = $this->getJson('/account');
+        $response = $this->get('/account');
 
         return $response->successful();
     }
 
+    protected function getAllRegionsFromApi(): RegionDataCollection
+    {
+        $response = $this->get('/regions');
+        $data = $this->decodeJson(($response->body()));
+
+        $collection = new RegionDataCollection;
+
+        /** @var object $region */
+        foreach ($data->regions as $region) {
+            $collection->push(new RegionData(
+                name: $region->name,
+                slug: $region->slug,
+                sizes: $region->sizes,
+                available: $region->available,
+            ));
+        }
+
+        return $collection;
+    }
+
     protected function getAllSizesFromApi(): SizeDataCollection
     {
-        $response = $this->getJson('/sizes');
+        $response = $this->get('/sizes');
         $data = $this->decodeJson($response->body());
 
         $collection = new SizeDataCollection;
@@ -77,24 +97,53 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $collection;
     }
 
-    protected function getAllRegionsFromApi(): RegionDataCollection
+    public function getServer(string $serverId): ServerData
     {
-        $response = $this->getJson('/regions');
-        $data = $this->decodeJson(($response->body()));
+        $response = $this->get('/droplets/' . $serverId);
+        $data = $this->decodeJson($response->body());
 
-        $collection = new RegionDataCollection;
+        return $this->serverDataFromResponseData($data->droplet);
+    }
 
-        /** @var object $region */
-        foreach ($data->regions as $region) {
-            $collection->push(new RegionData(
-                name: $region->name,
-                slug: $region->slug,
-                sizes: $region->sizes,
-                available: $region->available,
-            ));
+    public function getAllServers(): ServerDataCollection
+    {
+        $response = $this->get('/droplets');
+        $data = $this->decodeJson($response->body());
+
+        $servers = new ServerDataCollection;
+
+        foreach ($data->droplets as $droplet) {
+            $servers->push($this->serverDataFromResponseData($droplet));
         }
 
-        return $collection;
+        return $servers;
+    }
+
+    public function getServerPublicIp4(string $serverId): string|null
+    {
+        $response = $this->get('/droplets/' . $serverId);
+        $data = $this->decodeJson($response->body());
+
+        return $this->publicIpFromNetworks($data->droplet->networks->v4);
+    }
+
+    public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData
+    {
+        if (empty($sshKeyIdentifier))
+            throw new ExternalApiException('No SSH key identifier provided. SSH key is required to request a new server, it should be added to the server provider account beforehand.');
+
+        $response = $this->post('/droplets', [
+            'name' => $data->name,
+            'region' => $data->region,
+            'size' => $data->size,
+            'image' => (string) config('providers.list.digital_ocean_v2.default_image'),
+            // TODO: CRITICAL! Don't forget to remove the second one!
+            'ssh_keys' => [$sshKeyIdentifier, '46:2e:86:c8:74:2d:d6:bf:d3:00:49:20:a7:67:12:4f'],
+            'monitoring' => true,
+        ]);
+        $data = $this->decodeJson($response->body());
+
+        return $this->serverDataFromResponseData($data->droplet);
     }
 
     public function getAvailableRegions(): RegionDataCollection
@@ -132,7 +181,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function addSshKey(string $name, string $publicKey): SshKeyData
     {
-        $response = $this->postJson('/account/keys', [
+        $response = $this->post('/account/keys', [
             'name' => $name,
             'public_key' => $publicKey,
         ]);
@@ -143,7 +192,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function getAllSshKeys(): SshKeyDataCollection
     {
-        $response = $this->getJson('/account/keys');
+        $response = $this->get('/account/keys');
         $data = $this->decodeJson(($response->body()));
 
         $collection = new SshKeyDataCollection;
@@ -154,14 +203,6 @@ class DigitalOceanV2 extends AbstractServerProvider
         }
 
         return $collection;
-    }
-
-    public function getSshKey(string $identifier): SshKeyData
-    {
-        $response = $this->getJson('/account/keys/' . $identifier);
-        $data = $this->decodeJson(($response->body()));
-
-        return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
     public function addSshKeySafely(string $name, string $publicKey): SshKeyData
@@ -181,62 +222,22 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->addSshKey($name, $publicKey);
     }
 
-    public function updateSshKey(string $identifier, string $newName): SshKeyData
+    public function getSshKey(string $identifier): SshKeyData
     {
-        $response = $this->putJson('/account/keys/' . $identifier, [
-            'name' => $newName,
-        ]);
+        $response = $this->get('/account/keys/' . $identifier);
         $data = $this->decodeJson(($response->body()));
 
         return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
-    public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData
+    public function updateSshKey(string $identifier, string $newName): SshKeyData
     {
-        if (empty($sshKeyIdentifier))
-            throw new ExternalApiException('No SSH key identifier provided. SSH key is required to request a new server, it should be added to the server provider account beforehand.');
-
-        $response = $this->postJson('/droplets', [
-            'name' => $data->name,
-            'region' => $data->region,
-            'size' => $data->size,
-            'image' => (string) config('providers.list.digital_ocean_v2.default_image'),
-            'ssh_keys' => [$sshKeyIdentifier],
-            'monitoring' => true,
+        $response = $this->put('/account/keys/' . $identifier, [
+            'name' => $newName,
         ]);
-        $data = $this->decodeJson($response->body());
+        $data = $this->decodeJson(($response->body()));
 
-        return $this->serverDataFromResponseData($data->droplet);
-    }
-
-    public function getServer(string $serverId): ServerData
-    {
-        $response = $this->getJson('/droplets/' . $serverId);
-        $data = $this->decodeJson($response->body());
-
-        return $this->serverDataFromResponseData($data->droplet);
-    }
-
-    public function getAllServers(): ServerDataCollection
-    {
-        $response = $this->getJson('/droplets');
-        $data = $this->decodeJson($response->body());
-
-        $servers = new ServerDataCollection;
-
-        foreach ($data->droplets as $droplet) {
-            $servers->push($this->serverDataFromResponseData($droplet));
-        }
-
-        return $servers;
-    }
-
-    public function getServerPublicIp4(string $serverId): string|null
-    {
-        $response = $this->getJson('/droplets/' . $serverId);
-        $data = $this->decodeJson($response->body());
-
-        return $this->publicIpFromNetworks($data->droplet->networks->v4);
+        return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
     /**
