@@ -173,4 +173,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(UserSshKey::class);
     }
+
+    /**
+     * Get a relation with the VCS providers connected by this user.
+     */
+    public function vcsProviders(): HasMany
+    {
+        return $this->hasMany(VcsProvider::class);
+    }
 }

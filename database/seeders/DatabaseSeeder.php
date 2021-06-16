@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             PythonSeeder::class,
             ServerSshKeySeeder::class,
             DeploySshKeySeeder::class,
+            VcsProviderSeeder::class,
         ]);
     }
 }
