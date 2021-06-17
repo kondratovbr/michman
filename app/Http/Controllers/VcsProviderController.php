@@ -59,8 +59,7 @@ class VcsProviderController extends AbstractController
     {
         return Socialite::driver('github')
             ->scopes(['repo', 'admin:public_key'])
-            // ->with(['redirect_uri' => route('vcs.callback', 'github')])
-            ->with(['redirect_uri' => 'http://foo.bar'])
+            ->with(['redirect_uri' => route('vcs.callback', 'github')])
             ->redirect();
     }
 
