@@ -142,6 +142,10 @@ return [
     'vcs' => [
 
         'button' => 'Source Control',
+        'refresh-button' => 'Refresh Token',
+        'unlink-button' => 'Unlink',
+        'connect-to-button' => 'Connect to :provider',
+        'connected' => 'Connected',
 
     ],
 

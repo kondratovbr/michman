@@ -1,3 +1,3 @@
 <x-sub-page name="vcs">
-    Foobar!
+    <x-vcs-page :user="user()" />
 </x-sub-page>
