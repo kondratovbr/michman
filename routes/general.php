@@ -18,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/servers')->name('home');
 
+// URL configured as a default callback route on third-party OAuth services.
+// Unsuccessful OAuth attempts will redirect user to this route as a callback.
+Route::get('oauth/{oauthService}', [OAuthController::class, 'defaultCallback'])
+    ->name('oauth.default-callback');
+
 /*
  * Error page views to be able to serve those pages directly without exception.
  * Useful for rendering error thrown at the web-server (Nginx) or Livewire levels.

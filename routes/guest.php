@@ -20,11 +20,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::prefix('oauth/{oauthService}')
     ->name('oauth.')
-    ->where([
-        'oauthService' => implode('|', Arr::keys(config('auth.oauth_providers'))),
-    ])
     ->group(function () {
-        Route::get('/', [OAuthController::class, 'defaultCallback'])->name('default-callback');
         Route::get('login', [OAuthController::class, 'login'])->name('login');
         Route::get('callback', [OAuthController::class, 'callback'])->name('callback');
     });

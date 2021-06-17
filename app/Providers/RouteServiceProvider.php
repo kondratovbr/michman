@@ -2,13 +2,12 @@
 
 namespace App\Providers;
 
+use App\Support\Arr;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Fortify;
-use Laravel\Jetstream\Jetstream;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -27,30 +26,31 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
-        $this->registerRoutes();
+        $this->configurePatterns();
     }
 
     /**
-     * Register application routes
+     * Define the routes for the application.
+     *
+     * Called by the parent class during booting.
+     * @see \Illuminate\Foundation\Support\Providers\RouteServiceProvider
      */
-    protected function registerRoutes(): void
+    public function map(): void
     {
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(function () {
-                    $this->registerApiRoutes();
-                });
+        Route::middleware('api')
+            ->prefix('api')
+            ->group(function () {
+                $this->registerApiRoutes();
+            });
 
-            Route::middleware('web')
-                ->group(function () {
-                    $this->registerWebRoutes();
-                });
+        Route::middleware('web')
+            ->group(function () {
+                $this->registerWebRoutes();
+            });
 
-            // Customized package routes
-            $this->registerJetstreamRoutes();
-            $this->registerFortifyRoutes();
-        });
+        // Customized package routes
+        $this->registerJetstreamRoutes();
+        $this->registerFortifyRoutes();
     }
 
     /**
@@ -67,21 +67,15 @@ class RouteServiceProvider extends ServiceProvider
     protected function registerWebRoutes(): void
     {
         // Register general routes
-        Route::group([], function () {
-            $this->loadRoutesFrom(base_path('routes/general.php'));
-        });
+        Route::group([], base_path('routes/general.php'));
 
         // Register guest routes
         Route::middleware('guest')
-            ->group(function () {
-                $this->loadRoutesFrom(base_path('routes/guest.php'));
-            });
+            ->group(base_path('routes/guest.php'));
 
         // Register auth'ed user routes
         Route::middleware(['auth:sanctum', 'verified'])
-            ->group(function () {
-                $this->loadRoutesFrom(base_path('routes/app.php'));
-            });
+            ->group(base_path('routes/app.php'));
 
         // Register debug web routes
         // "if" is important here - this way the debug routes
@@ -90,9 +84,7 @@ class RouteServiceProvider extends ServiceProvider
         if (isDebug()) {
             Route::middleware('debug')
                 ->prefix('debug')
-                ->group(function() {
-                    $this->loadRoutesFrom(base_path('routes/debug.php'));
-                });
+                ->group(base_path('routes/debug.php'));
         }
     }
 
@@ -104,9 +96,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::group([
             'domain' => config('jetstream.domain', null),
             'prefix' => config('jetstream.prefix', config('jetstream.path')),
-        ], function () {
-            $this->loadRoutesFrom(base_path('routes/jetstream.php'));
-        });
+        ], base_path('routes/jetstream.php'));
     }
 
     /**
@@ -117,9 +107,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::group([
             'domain' => config('fortify.domain', null),
             'prefix' => config('fortify.prefix'),
-        ], function () {
-            $this->loadRoutesFrom(base_path('routes/fortify.php'));
-        });
+        ], base_path('routes/fortify.php'));
     }
 
     /**
@@ -130,5 +118,21 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
+    }
+
+    /**
+     * Configure custom route parameters patterns.
+     */
+    protected function configurePatterns(): void
+    {
+        Route::pattern(
+            'oauthService',
+            implode('|', Arr::keys(config('auth.oauth_providers')))
+        );
+
+        Route::pattern(
+            'vcsProvider',
+            implode('|', Arr::keys(config('vcs.list')))
+        );
     }
 }

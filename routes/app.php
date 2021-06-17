@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
-use App\Http\Controllers;
+use App\Http\Controllers\VcsProviderController;
+use App\Http\Controllers\ServerController;
 use App\Http\Livewire\AccountView;
 use App\Support\Arr;
 use Illuminate\Support\Facades\Route;
@@ -30,5 +31,16 @@ Route::get('/account/{show}', AccountView::class)
 /*
  * Server routes
  */
-Route::resource('servers', Controllers\ServerController::class)
+Route::resource('servers', ServerController::class)
     ->only(['index', 'show']);
+
+
+/*
+ * VcsProvider routes
+ */
+Route::name('vcs.')->group(function () {
+    Route::get('vcs/link/{vcsProvider}', [VcsProviderController::class, 'redirect'])
+        ->name('redirect');
+    Route::get('oauth/{vcsProvider}/vcs-callback', [VcsProviderController::class, 'callback'])
+        ->name('callback');
+});
