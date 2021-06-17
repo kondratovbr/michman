@@ -3,7 +3,7 @@
 {{--TODO: Maybe use cursor-wait option for when the loading spinner is showing.--}}
 {{--TODO: See how it looks when "disabled". Maybe needs an update.--}}
 
-@props(['textClasses', 'link' => false])
+@props(['border', 'paddingY', 'textClasses', 'capitalize', 'link' => false])
 
 @php
     $classes = implode(' ', [
