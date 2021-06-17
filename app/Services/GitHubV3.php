@@ -45,6 +45,8 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function credentialsAreValid(): bool
     {
-        // TODO: Implement credentialsAreValid() method.
+        $response = $this->get('/user');
+
+        return $response->successful();
     }
 }
