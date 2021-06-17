@@ -6,7 +6,7 @@
                 {{ $title }}
             </span>
         </h3>
-        @if($connected)
+        @if(! $connected)
             <x-buttons.primary class="mt-3">
                 {{ __('account.vcs.connect-to-button', ['provider' => $title]) }}
             </x-buttons.primary>
