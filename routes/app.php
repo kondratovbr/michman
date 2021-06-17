@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
 use App\Http\Controllers;
+use App\Http\Livewire\AccountView;
+use App\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*
+ * Custom user account routes
+ */
+Route::redirect('/account', '/account/profile');
+Route::get('/account/{show}', AccountView::class)
+    ->where(
+        'show',
+        implode('|', Arr::keys(AccountView::VIEWS))
+    )
+    ->name('account.show');
+
+/*
+ * Server routes
+ */
 Route::resource('servers', Controllers\ServerController::class)
     ->only(['index', 'show']);

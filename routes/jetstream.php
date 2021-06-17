@@ -17,16 +17,7 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
         Route::get('/privacy-policy', [PrivacyPolicyController::class, 'show'])->name('policy.show');
     }
 
-    Route::group(['middleware' => ['auth', 'verified']], function () {
-        // Custom user account routes
-        Route::redirect('/account', '/account/profile');
-        Route::get('/account/{show}', AccountView::class)
-            ->where(
-                'show',
-                implode('|', Arr::keys(AccountView::VIEWS))
-            )
-            ->name('account.show');
-
+    Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         // API
         if (Jetstream::hasApiFeatures()) {
             Route::get('/user/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
