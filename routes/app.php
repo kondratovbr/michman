@@ -39,8 +39,10 @@ Route::resource('servers', ServerController::class)
  * VcsProvider routes
  */
 Route::name('vcs.')->group(function () {
-    Route::get('vcs/link/{vcsProvider}', [VcsProviderController::class, 'redirect'])
+    Route::get('vcs/link/{vcsProviderName}', [VcsProviderController::class, 'redirect'])
         ->name('redirect');
-    Route::get('oauth/{vcsProvider}/vcs-callback', [VcsProviderController::class, 'callback'])
+    Route::get('oauth/{vcsProviderName}/vcs-callback', [VcsProviderController::class, 'callback'])
         ->name('callback');
+    Route::get('vcs/{vcsProviderName}/unlink', [VcsProviderController::class, 'unlink'])
+        ->name('unlink');
 });

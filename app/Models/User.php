@@ -152,13 +152,17 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get this user's VcsProvider for a third-party service with the name provided.
      */
-    public function vcs(string $provider): VcsProvider|null
+    public function vcs(string $provider, bool $lock = false): VcsProvider|null
     {
-        /** @var VcsProvider|null $vcsProvider */
-        $vcsProvider = $this->vcsProviders()
+        $query = $this->vcsProviders()
             ->where('provider', $provider)
-            ->latest()
-            ->first();
+            ->latest();
+
+        if ($lock)
+            $query->lockForUpdate();
+
+        /** @var VcsProvider|null $vcsProvider */
+        $vcsProvider = $query->first();
 
         return $vcsProvider;
     }

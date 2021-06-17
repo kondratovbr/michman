@@ -27,10 +27,16 @@
                 </span>
             </p>
             <x-buttons class="mt-3">
-                <x-buttons.primary>
+                <x-buttons.primary
+                    :link="true"
+                    href="{{ route('vcs.redirect', $provider) }}"
+                >
                     {{ __('account.vcs.refresh-button') }}
                 </x-buttons.primary>
-                <x-buttons.secondary>
+                <x-buttons.secondary
+                    :link="true"
+                    href="{{ route('vcs.unlink', $provider) }}"
+                >
                     {{ __('account.vcs.unlink-button') }}
                 </x-buttons.secondary>
             </x-buttons>

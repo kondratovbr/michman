@@ -131,7 +131,7 @@ class RouteServiceProvider extends ServiceProvider
         );
 
         Route::pattern(
-            'vcsProvider',
+            'vcsProviderName',
             implode('|', Arr::keys(config('vcs.list')))
         );
     }
