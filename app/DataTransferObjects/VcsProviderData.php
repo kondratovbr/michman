@@ -2,16 +2,14 @@
 
 namespace App\DataTransferObjects;
 
+use App\Models\User;
 use Spatie\DataTransferObject\DataTransferObject;
 
 class VcsProviderData extends DataTransferObject
 {
-    static function fromRequest($request): self
-    {
-        $validated = $request->validated();
-
-        return new self([
-            //
-        ]);
-    }
+    public User $user;
+    public string $provider;
+    public string|null $token;
+    public string|null $key;
+    public string|null $secret;
 }
