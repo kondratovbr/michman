@@ -17,6 +17,7 @@ class CreateVcsProvidersTable extends Migration
 
             $table->string('provider');
 
+            $table->string('external_id');
             // Some APIs use token-based authentication and some use key/secret.
             $table->text('token')->nullable();
             $table->text('key')->nullable();

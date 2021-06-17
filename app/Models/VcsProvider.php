@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\App;
  *
  * @property int $id
  * @property string $provider
+ * @property string $externalId
  * @property string|null $token
  * @property string|null $key
  * @property string|null $secret
@@ -34,6 +35,7 @@ class VcsProvider extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'provider',
+        'external_id',
         'token',
         'key',
         'secret',
