@@ -150,45 +150,17 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get this user's GitHub VcsProvider, if connected.
+     * Get this user's VcsProvider for a third-party service with the name provided.
      */
-    public function github(): VcsProvider|null
+    public function vcs(string $provider): VcsProvider|null
     {
-        /** @var VcsProvider|null $github */
-        $github = $this->vcsProviders()
-            ->where('provider', 'github')
+        /** @var VcsProvider|null $vcsProvider */
+        $vcsProvider = $this->vcsProviders()
+            ->where('provider', $provider)
             ->latest()
             ->first();
 
-        return $github;
-    }
-
-    /**
-     * Get this user's GitLab VcsProvider, if connected.
-     */
-    public function gitlab(): VcsProvider|null
-    {
-        /** @var VcsProvider|null $gitlab */
-        $gitlab = $this->vcsProviders()
-            ->where('provider', 'gitlab')
-            ->latest()
-            ->first();
-
-        return $gitlab;
-    }
-
-    /**
-     * Get this user's Bitbucket VcsProvider, if connected.
-     */
-    public function bitbucket(): VcsProvider|null
-    {
-        /** @var VcsProvider|null $bitbucket */
-        $bitbucket = $this->vcsProviders()
-            ->where('provider', 'bitbucket')
-            ->latest()
-            ->first();
-
-        return $bitbucket;
+        return $vcsProvider;
     }
 
     /**

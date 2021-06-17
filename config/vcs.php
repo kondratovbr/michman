@@ -9,10 +9,12 @@ use App\Services\GitHubV3;
 return [
 
     'default' => 'github',
-
+    
     'list' => [
 
-        'github_v3' => [
+        // TODO: CRITICAL! Don't forget to implement support for all of these.
+
+        'github' => [
             'provider_class' => GitHubV3::class,
             'base_path' => 'https://api.github.com',
             'auth_type' => 'token',
