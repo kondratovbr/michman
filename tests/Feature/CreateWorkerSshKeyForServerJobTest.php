@@ -16,7 +16,7 @@ class CreateWorkerSshKeyForServerJobTest extends AbstractFeatureTest
 
         $job = new CreateWorkerSshKeyForServerJob($server);
 
-        $this->assertEquals('servers', $job->queue);
+        $this->assertEquals('default', $job->queue);
 
         $this->mock(CreateWorkerSshKeyAction::class, function (MockInterface $mock) use ($server) {
             $mock->shouldReceive('execute')->withAnyArgs()->once();
