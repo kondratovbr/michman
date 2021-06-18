@@ -4,11 +4,20 @@ namespace Tests\Feature;
 
 use App\Actions\Servers\StoreServerAction;
 use App\DataTransferObjects\NewServerData;
+use App\Jobs\Servers\AddServerSshKeyToVcsJob;
 use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
+use App\Jobs\Servers\ConfigureServerJob;
+use App\Jobs\Servers\CreateDatabaseJob;
+use App\Jobs\Servers\CreateServerSshKeyJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
+use App\Jobs\Servers\InstallCacheJob;
+use App\Jobs\Servers\InstallDatabaseJob;
+use App\Jobs\Servers\InstallPythonJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
+use App\Jobs\Servers\UpdateUserSshKeysOnServerJob;
+use App\Jobs\Servers\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
@@ -72,6 +81,15 @@ class StoreServerActionTest extends AbstractFeatureTest
             VerifyRemoteServerIsSuitableJob::class,
             PrepareRemoteServerJob::class,
             UpdateServerAvailabilityJob::class,
+            UpdateUserSshKeysOnServerJob::class,
+            InstallDatabaseJob::class,
+            CreateDatabaseJob::class,
+            InstallCacheJob::class,
+            InstallPythonJob::class,
+            CreateServerSshKeyJob::class,
+            UploadServerSshKeyToServerJob::class,
+            AddServerSshKeyToVcsJob::class,
+            ConfigureServerJob::class,
         ]);
     }
 }
