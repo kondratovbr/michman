@@ -66,14 +66,12 @@ class StoreServerAction
 
             $jobs[] = new CreateServerSshKeyJob($server);
             $jobs[] = new UploadServerSshKeyToServerJob($server);
-            // $jobs[] = new AddServerSshKeyToVcsJob($server);
+            $jobs[] = new AddServerSshKeyToVcsJob($server);
         }
 
         $jobs[] = new ConfigureServerJob($server);
 
         Bus::chain($jobs)->dispatch();
-
-        // TODO: Don't forget to update the test!
 
         return $server;
     }
