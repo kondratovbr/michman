@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Actions\VcsProviders\LinkVcsProviderAction;
+use App\DataTransferObjects\VcsProviderData;
 use App\Facades\Auth;
 use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
 use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
@@ -23,6 +25,7 @@ class OAuthController extends AbstractController
 
     public function __construct(
         private CreateNewUser $createNewUser,
+        private LinkVcsProviderAction $linkVcsProvider,
     ) {}
 
     /**
@@ -42,7 +45,7 @@ class OAuthController extends AbstractController
         //       Like, show a separate dialog after registration with accepting terms?
 
         /*
-         * TODO: CRITICAL! Is I want to access user's repositories I will need specific OAuth "scopes" for it:
+         * TODO: CRITICAL! If I want to access user's repositories I will need specific OAuth "scopes" for it:
          *       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
          *       https://laravel.com/docs/8.x/socialite
          *       I think I should just add scopes in the first auth redirect here,
@@ -153,6 +156,8 @@ class OAuthController extends AbstractController
             ]);
             $user->emailVerifiedAt = now();
             $user->save();
+
+            $this->linkVcsProvider->execute($oauthUser, $oauthProvider, $user);
 
             return $user;
         });
