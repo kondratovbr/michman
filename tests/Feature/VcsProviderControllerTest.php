@@ -8,8 +8,8 @@ use Laravel\Socialite\Facades\Socialite;
 use Mockery;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
-use Laravel\Socialite\Contracts\Provider as OauthDriver;
-use Laravel\Socialite\Contracts\User as OauthUser;
+use Laravel\Socialite\Contracts\Provider as OAuthDriver;
+use Laravel\Socialite\Contracts\User as OAuthUser;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 
 class VcsProviderControllerTest extends AbstractFeatureTest
@@ -21,7 +21,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         Socialite::shouldReceive('driver')
             ->once()
             ->with('github')
-            ->andReturn(Mockery::mock(OauthDriver::class, function (MockInterface $mock) {
+            ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
                 $mock->shouldReceive('scopes')
                     ->with(['repo', 'admin:public_key'])
                     ->once()
@@ -48,10 +48,10 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         Socialite::shouldReceive('driver')
             ->once()
             ->with('github')
-            ->andReturn(Mockery::mock(OauthDriver::class, function (MockInterface $mock) {
+            ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
                 $mock->shouldReceive('user')
                     ->once()
-                    ->andReturn(Mockery::mock(OauthUser::class, function (MockInterface $mock) {
+                    ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
                             ->once()
                             ->andReturn('123456789');
@@ -92,10 +92,10 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         Socialite::shouldReceive('driver')
             ->once()
             ->with('github')
-            ->andReturn(Mockery::mock(OauthDriver::class, function (MockInterface $mock) {
+            ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
                 $mock->shouldReceive('user')
                     ->once()
-                    ->andReturn(Mockery::mock(OauthUser::class, function (MockInterface $mock) {
+                    ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
                             ->twice()
                             ->andReturn('123456789');
