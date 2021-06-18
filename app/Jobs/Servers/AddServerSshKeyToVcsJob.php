@@ -2,15 +2,19 @@
 
 namespace App\Jobs\Servers;
 
+use App\Exceptions\NotImplementedException;
 use App\Jobs\AbstractJob;
+use App\Models\Server;
 
 class AddServerSshKeyToVcsJob extends AbstractJob
 {
-    public function __construct()
+    protected Server $server;
+
+    public function __construct(Server $server)
     {
         $this->setQueue('providers');
 
-        //
+        $this->server = $server->withoutRelations();
     }
 
     /**
@@ -18,6 +22,10 @@ class AddServerSshKeyToVcsJob extends AbstractJob
      */
     public function handle(): void
     {
+        // TODO: CRITICAL! Implement.
+
+        throw new NotImplementedException;
+
         //
     }
 }
