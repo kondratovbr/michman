@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use RuntimeException;
-use Laravel\Socialite\Contracts\User as OAuthUser;
 
 class VcsProviderController extends AbstractController
 {
@@ -56,38 +55,25 @@ class VcsProviderController extends AbstractController
                 if ($vcsProvider->externalId != $oauthUser->getId())
                     return;
 
-                switch ($vcsProviderName) {
-                    case 'github':
-                        $this->updateGithub($vcsProvider, $oauthUser);
-                        break;
-                    case 'gitlab':
-                        $this->updateGitlab($vcsProvider, $oauthUser);
-                        break;
-                    case 'bitbucket':
-                        $this->updateBitbucket($vcsProvider, $oauthUser);
-                        break;
-                    default:
-                        throw new RuntimeException('Unknown VCS provider name passed to update a VCS account.');
-                }
+                $this->updateVcsProvider->execute(
+                    $vcsProvider,
+                    VcsProviderData::fromOauth(
+                        $oauthUser,
+                        $vcsProviderName,
+                        Auth::user(),
+                    )
+                );
 
                 return;
             }
 
             $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
 
-            switch ($vcsProviderName) {
-                case 'github':
-                    $this->linkGithub($oauthUser);
-                    break;
-                case 'gitlab':
-                    $this->linkGitlab($oauthUser);
-                    break;
-                case 'bitbucket':
-                    $this->linkBitbucket($oauthUser);
-                    break;
-                default:
-                    throw new RuntimeException('Unknown VCS provider name passed to link to a VCS account.');
-            }
+            $this->storeVcsProvider->execute(VcsProviderData::fromOauth(
+                $oauthUser,
+                $vcsProviderName,
+                Auth::user()),
+            );
         }, 5);
 
         return redirect()->route('account.show', 'vcs');
@@ -153,86 +139,5 @@ class VcsProviderController extends AbstractController
             ->scopes([])
             ->with(['redirect_uri' => route('vcs.callback', 'bitbucket')])
             ->redirect();
-    }
-
-    /**
-     * Link the user's account to a GitHub account as a VcsProvider.
-     */
-    private function linkGithub(OAuthUser $oauthUser): void
-    {
-        $this->storeVcsProvider->execute($this->makeGithubData($oauthUser));
-    }
-
-    /**
-     * Update the existing GitHub VcsProvider.
-     */
-    private function updateGithub(VcsProvider $vcsProvider, OAuthUser $oauthUser): void
-    {
-        $this->updateVcsProvider->execute(
-            $vcsProvider,
-            $this->makeGithubData($oauthUser),
-        );
-    }
-
-    /**
-     * Make a VcsProviderData DTO from an OAuthUser returned from an external service.
-     */
-    private function makeGithubData(OAuthUser $oauthUser): VcsProviderData
-    {
-        return new VcsProviderData(
-            user: Auth::user(),
-            provider: 'github',
-            external_id: (string) $oauthUser->getId(),
-            nickname: $oauthUser->getNickname(),
-            token: (string) $oauthUser->token,
-        );
-    }
-
-    /**
-     * Link the user's account to a GitLab account as a VcsProvider.
-     */
-    private function linkGitlab(OAuthUser $oauthUser): void
-    {
-        // TODO: CRITICAL! Implement.
-
-        throw new NotImplementedException;
-
-        //
-    }
-
-    /**
-     * Update credentials on the existing GitLab VcsProvider.
-     */
-    private function updateGitlab(VcsProvider $vcsProvider, OAuthUser $oauthUser): void
-    {
-        // TODO: CRITICAL! Implement.
-
-        throw new NotImplementedException;
-
-        //
-    }
-
-    /**
-     * Link the user's account to a BitBucket account as a VcsProvider.
-     */
-    private function linkBitbucket(OAuthUser $oauthUser): void
-    {
-        // TODO: CRITICAL! Implement.
-
-        throw new NotImplementedException;
-
-        //
-    }
-
-    /**
-     * Update credentials on the existing Bitbucket VcsProvider.
-     */
-    private function updateBitbucket(VcsProvider $vcsProvider, OAuthUser $oauthUser): void
-    {
-        // TODO: CRITICAL! Implement.
-
-        throw new NotImplementedException;
-
-        //
     }
 }
