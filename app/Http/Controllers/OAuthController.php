@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
-use App\Actions\VcsProviders\LinkVcsProviderAction;
+use App\Actions\VcsProviders\StoreVcsProviderAction;
 use App\DataTransferObjects\VcsProviderData;
 use App\Facades\Auth;
 use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
@@ -25,7 +25,7 @@ class OAuthController extends AbstractController
 
     public function __construct(
         private CreateNewUser $createNewUser,
-        private LinkVcsProviderAction $linkVcsProvider,
+        private StoreVcsProviderAction $storeVcsProvider,
     ) {}
 
     /**
@@ -157,7 +157,11 @@ class OAuthController extends AbstractController
             $user->emailVerifiedAt = now();
             $user->save();
 
-            $this->linkVcsProvider->execute($oauthUser, $oauthProvider, $user);
+            $this->storeVcsProvider->execute(VcsProviderData::fromOauth(
+                $oauthUser,
+                $oauthProvider,
+                $user,
+            ));
 
             return $user;
         });
