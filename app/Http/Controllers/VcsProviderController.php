@@ -27,8 +27,6 @@ class VcsProviderController extends AbstractController
      */
     public function redirect(string $vcsProviderName): SymfonyRedirect
     {
-        $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
-
         return match ($vcsProviderName) {
             'github' => $this->redirectGithub(),
             'gitlab' => $this->redirectGitlab(),
@@ -37,15 +35,12 @@ class VcsProviderController extends AbstractController
         };
     }
 
-    // TODO: I can probably refactor this monstrosity. Move things like scopes in config to get rid of provider-specific methods, for example.
     /**
      * Handle an OAuth callback from a third-party VCS provider.
      */
     public function callback(string $vcsProviderName): RedirectResponse
     {
         // TODO: CRITICAl! Show a success message when the link or refresh is successful.
-
-        $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
 
         DB::transaction(function () use ($vcsProviderName) {
             $oauthUser = Socialite::driver($vcsProviderName)->user();
@@ -54,6 +49,8 @@ class VcsProviderController extends AbstractController
 
             // If the user is already linked we'll just update the credentials.
             if (! is_null($vcsProvider)) {
+                $this->authorize('update', $vcsProvider);
+
                 // User cannot refresh credentials using a different account - they should unlink it first.
                 // TODO: CRITICAL! Show some error to the user in such, don't just leave it like that.
                 if ($vcsProvider->externalId != $oauthUser->getId())
@@ -75,6 +72,8 @@ class VcsProviderController extends AbstractController
 
                 return;
             }
+
+            $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
 
             switch ($vcsProviderName) {
                 case 'github':

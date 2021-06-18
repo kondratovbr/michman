@@ -19,6 +19,14 @@ class VcsProviderPolicy
     }
 
     /**
+     * Determine if a user can update a VcsProvider.
+     */
+    public function update(User $user, VcsProvider $vcsProvider): bool
+    {
+        return $user->is($vcsProvider->user);
+    }
+
+    /**
      * Determine if a user can delete a VcsProvider.
      */
     public function delete(User $user, VcsProvider $vcsProvider): bool
