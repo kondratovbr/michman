@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\VcsProvider;
+use App\Support\Str;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VcsProviderFactory extends Factory
@@ -16,7 +19,30 @@ class VcsProviderFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            // TODO: Seed other providers as well after implementing them.
+            'provider' => 'github',
+            'external_id' => Str::random(8),
+            'token' => Str::random(),
         ];
+    }
+
+    /**
+     * Attach this VCS provider to a random user from a collection provided.
+     *
+     * @return self
+     */
+    public function forRandomUserFrom(Collection $users): self
+    {
+        return $this->afterMaking(fn(VcsProvider $vcsProvider) =>
+            $this->associateUser($vcsProvider, $users->random())
+        );
+    }
+
+    /**
+     * Attach VCS provider to a user.
+     */
+    private function associateUser(VcsProvider $vcsProvider, User $user): void
+    {
+        $vcsProvider->user()->associate($user);
     }
 }
