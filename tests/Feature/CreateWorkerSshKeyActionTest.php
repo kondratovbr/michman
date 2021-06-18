@@ -19,7 +19,7 @@ class CreateWorkerSshKeyActionTest extends AbstractFeatureTest
 
         $this->assertNotNull($sshKey);
         $this->assertNotNull($sshKey->id);
-        $this->assertEquals($server->name, $sshKey->name);
+        $this->assertEquals($server->name . ' - Michman worker key', $sshKey->name);
         $this->assertNull($sshKey->externalId);
         $this->assertNotNull($sshKey->privateKey);
         $this->assertNotNull($sshKey->publicKey);
