@@ -9,7 +9,7 @@ class VcsProviderData extends DataTransferObject
 {
     public User $user;
     public string $provider;
-    public string $externalId;
+    public string $external_id;
     public string|null $token;
     public string|null $key;
     public string|null $secret;
