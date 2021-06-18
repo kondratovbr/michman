@@ -40,6 +40,7 @@ use App\Facades\QrCode;
  * @property-read Collection $providers
  * @property-read Collection $servers
  * @property-read Collection $userSshKeys
+ * @property-read Collection $vcsProviders
  *
  * @method static UserFactory factory(...$parameters)
  */
