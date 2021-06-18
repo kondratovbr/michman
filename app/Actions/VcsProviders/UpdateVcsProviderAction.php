@@ -4,13 +4,20 @@ namespace App\Actions\VcsProviders;
 
 use App\DataTransferObjects\VcsProviderData;
 use App\Models\VcsProvider;
+use Illuminate\Support\Facades\DB;
 
 class UpdateVcsProviderAction
 {
     public function execute(VcsProvider $vcsProvider, VcsProviderData $data): VcsProvider
     {
-        // TODO: CRITICAL! CONTINUE!
+        return DB::transaction(function () use ($vcsProvider, $data) {
+            $vcsProvider = VcsProvider::query()
+                ->lockForUpdate()
+                ->findOrFail($vcsProvider->getKey());
 
-        //
+            $vcsProvider->update($data->toArray());
+
+            return $vcsProvider;
+        }, 5);
     }
 }
