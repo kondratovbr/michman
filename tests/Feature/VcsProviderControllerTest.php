@@ -55,6 +55,9 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                         $mock->shouldReceive('getId')
                             ->once()
                             ->andReturn('123456789');
+                        $mock->shouldReceive('getNickname')
+                            ->once()
+                            ->andReturn('theuser');
                         $mock->token = 'foobar';
                     }));
             }));
@@ -66,6 +69,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
             'user_id' => $user->id,
             'provider' => 'github',
             'external_id' => '123456789',
+            'nickname' => 'theuser',
             'key' => null,
             'secret' => null,
         ]);
@@ -95,6 +99,9 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                         $mock->shouldReceive('getId')
                             ->twice()
                             ->andReturn('123456789');
+                        $mock->shouldReceive('getNickname')
+                            ->once()
+                            ->andReturn('theuser');
                         $mock->token = 'foobar';
                     }));
             }));

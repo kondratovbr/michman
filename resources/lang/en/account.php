@@ -145,7 +145,7 @@ return [
         'refresh-button' => 'Refresh Token',
         'unlink-button' => 'Unlink',
         'connect-to-button' => 'Connect to :provider',
-        'connected' => 'Connected',
+        'connected' => 'Connected to :username',
 
     ],
 

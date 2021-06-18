@@ -22,6 +22,7 @@ class VcsProviderFactory extends Factory
             // TODO: Seed other providers as well after implementing them.
             'provider' => 'github',
             'external_id' => Str::random(8),
+            'nickname' => $this->faker->userName,
             'token' => Str::random(),
         ];
     }

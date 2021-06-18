@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\App;
  * @property int $id
  * @property string $provider
  * @property string $externalId
+ * @property string $nickname
  * @property string|null $token
  * @property string|null $key
  * @property string|null $secret
@@ -36,6 +37,7 @@ class VcsProvider extends AbstractModel
     protected $fillable = [
         'provider',
         'external_id',
+        'nickname',
         'token',
         'key',
         'secret',

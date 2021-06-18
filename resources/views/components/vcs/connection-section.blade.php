@@ -23,7 +23,7 @@
             <p class="mt-2 text-green-400">
                 <x-icon><i class="fas fa-check"></i></x-icon>
                 <span class="ml-1">
-                    {{ __('account.vcs.connected') }}
+                    {{ __('account.vcs.connected', ['username' => user()->vcs($provider)->nickname]) }}
                 </span>
             </p>
             <x-buttons class="mt-3">

@@ -183,6 +183,7 @@ class VcsProviderController extends AbstractController
             user: Auth::user(),
             provider: 'github',
             external_id: (string) $oauthUser->getId(),
+            nickname: $oauthUser->getNickname(),
             token: (string) $oauthUser->token,
         );
     }
