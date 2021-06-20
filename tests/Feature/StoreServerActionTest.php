@@ -51,7 +51,7 @@ class StoreServerActionTest extends AbstractFeatureTest
 
         Bus::fake();
 
-        $server = $action->execute($data);
+        $server = $action->execute($data, $user);
 
         $this->assertNotNull($server);
         $this->assertEquals($provider->id, $server->provider->id);
