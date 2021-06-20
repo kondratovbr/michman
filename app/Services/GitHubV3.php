@@ -2,20 +2,26 @@
 
 namespace App\Services;
 
+use App\Collections\SshKeyDataCollection;
+use App\DataTransferObjects\SshKeyData;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
+// TODO: CRITICAL! Should I handle possible redirects here? Does Laravel do it automatically?
+
+// TODO: CRITICAL! Have I entirely forgot about pagination in responses?
+
+/*
+ * TODO: CRITICAL! I should also handle the "scope".
+ *       I.e. if we don't have permission to perform some action we should notify the user and give them
+ *       a button to repair permissions.
+ */
+
+// TODO: CRITICAL! Docs mention "304 Not Modified" responses. Do I have to explicitly cache the results somehow?
+
 class GitHubV3 extends AbstractVcsProvider
 {
-    /*
-     * TODO: CRITICAL! CONTINUE!
-     *       Refactor server provider services and VCS services to use a common base class with common function.
-     *       Refactor into not using "getJson" type of methods but provide a single "Accept" header like here.
-     *       Then implement a front-end part of VCS integration, see how Forge does it - pretty simple.
-     *       Don't forget to create a VCS provider model when a user is logging in via VCS OAuth.
-     */
-
     /**
      * Proper GitHub API v3 "Accept" header.
      *
@@ -48,5 +54,83 @@ class GitHubV3 extends AbstractVcsProvider
         $response = $this->get('/user');
 
         return $response->successful();
+    }
+
+    public function getAllSshKeys(): SshKeyDataCollection
+    {
+        $response = $this->get('/user/keys');
+        $data = $this->decodeJson($response->body());
+
+        $collection = new SshKeyDataCollection;
+
+        /** @var object $key */
+        foreach ($data as $key) {
+            $collection->push($this->sshKeyDataFromResponseData($key));
+        }
+
+        return $collection;
+    }
+
+    public function getSshKey(string $id): SshKeyData
+    {
+        $response = $this->get("/user/keys/{$id}");
+        $data = $this->decodeJson($response->body());
+
+        return $this->sshKeyDataFromResponseData($data);
+    }
+
+    public function addSshKey(string $name, string $publicKey): SshKeyData
+    {
+        $response = $this->post('/user/keys', [
+            'title' => $name,
+            'key' => $publicKey,
+        ]);
+        $data = $this->decodeJson($response->body());
+
+        return $this->sshKeyDataFromResponseData($data);
+    }
+
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyData
+    {
+        $addedKeys = $this->getAllSshKeys();
+
+        /** @var SshKeyData $duplicatedAddedKey */
+        $duplicatedAddedKey = $addedKeys->firstWhere('publicKey', $publicKey);
+
+        if ($duplicatedAddedKey !== null) {
+            if ($duplicatedAddedKey->name === $name)
+                return $duplicatedAddedKey;
+
+            return $this->updateSshKey(new SshKeyData(
+                publicKey: $publicKey,
+                name: $name,
+            ));
+        }
+
+        return $this->addSshKey($name, $publicKey);
+    }
+
+    public function updateSshKey(SshKeyData $sshKey): SshKeyData
+    {
+        $this->deleteSshKey($sshKey->id);
+
+        return $this->addSshKey($sshKey->name, $sshKey->publicKey);
+    }
+
+    public function deleteSshKey(string $id): void
+    {
+        $this->delete("/user/keys/{$id}");
+    }
+
+    /**
+     * Convert SSH key object from response format to internal format.
+     */
+    protected function sshKeyDataFromResponseData(object $data): SshKeyData
+    {
+        return new SshKeyData(
+            id: $data->id,
+            publicKey: $data->key,
+            name: $data->title,
+        );
     }
 }
