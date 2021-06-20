@@ -10,7 +10,7 @@ use App\Support\Str;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
-class AddServerSshKeyToProviderJobTest extends AbstractFeatureTest
+class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
 {
     public function test_job_parameters_and_logic()
     {
