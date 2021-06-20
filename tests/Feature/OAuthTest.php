@@ -130,11 +130,67 @@ class OAuthTest extends AbstractFeatureTest
 
     public function test_previously_oauthed_user_can_login_via_oauth()
     {
-        // TODO: Implement.
+        /** @var User $user */
+        $user = User::factory()
+            ->viaGithub()
+            ->withPersonalTeam()
+            ->create([
+                'oauth_id' => '12345',
+            ]);
+
+        Socialite::shouldReceive('driver')
+            ->with('github')
+            ->once()
+            ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
+                $mock->shouldReceive('user')
+                    ->once()
+                    ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
+                        $mock->shouldReceive('getId')
+                            ->once()
+                            ->andReturn('12345');
+                    }));
+            }));
+
+        $response = $this->get('/oauth/github/callback?code=123456789&state=123456789');
+
+        $response->assertRedirect(route('home'));
+        $this->assertAuthenticatedAs($user);
     }
 
     public function test_existing_user_can_enable_oauth_by_logging_in()
     {
-        // TODO: Implement.
+        /** @var User $user */
+        $user = User::factory()
+            ->withPersonalTeam()
+            ->create([
+                'email' => 'foo@bar.baz',
+            ]);
+
+        Socialite::shouldReceive('driver')
+            ->with('github')
+            ->once()
+            ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
+                $mock->shouldReceive('user')
+                    ->once()
+                    ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
+                        $mock->shouldReceive('getId')
+                            ->twice()
+                            ->andReturn('12345');
+                        $mock->shouldReceive('getEmail')
+                            ->once()
+                            ->andReturn('foo@bar.baz');
+                    }));
+            }));
+
+        $response = $this->get('/oauth/github/callback?code=123456789&state=123456789');
+
+        $response->assertRedirect(route('home'));
+        $this->assertAuthenticatedAs($user);
+
+        $user->refresh();
+
+        $this->assertEquals('github', $user->oauthProvider);
+        $this->assertEquals('12345', $user->oauthId);
+        $this->assertNotNull($user->password);
     }
 }
