@@ -83,4 +83,18 @@ class UserFactory extends Factory
             'email' => 'user@example.com',
         ]);
     }
+
+    /**
+     * Create a user that is registered via GitHub OAuth.
+     *
+     * @return $this
+     */
+    public function viaGithub(): static
+    {
+        return $this->state([
+            'password' => null,
+            'oauth_provider' => 'github',
+            'oauth_id' => '1234567890',
+        ]);
+    }
 }
