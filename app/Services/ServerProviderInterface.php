@@ -6,6 +6,11 @@ namespace App\Services;
  * TODO: CRITICAL! Figure out how to avoid hitting the rate limit with these things. Probably move the actual HTTP logic into a singleton for each service, so it can track calls during a request and also between them by using cache. Or maybe just use cache every time?
  */
 
+/*
+ * TODO: CRITICAL! I also need DELETE functions for the APIs to remove stuff when users wants it
+ *       and also to perform a cleanup when user deletes their entire account.
+ */
+
 // TODO: IMPORTANT! Figure out what to do with account statuses. I.e. a provider may lock the account if a payment failed or something. Have to handle it gracefully as well.
 // TODO: Maybe figure out how to check if an account reached its servers limit, so I can check it during server creation for the user.
 
@@ -96,8 +101,17 @@ interface ServerProviderInterface
      */
     public function getSshKey(string $identifier): SshKeyData;
 
+    /*
+     * TODO: CRITICAL! Make sure I update the corresponding model after this each time I do it -
+     *       some providers don't allow to update keys, so the only way to implement this
+     *       is to delete the key and add a new one, which will have a different ID.
+     *       I'll have to refactor this to use SshKeyData as a parameter.
+     *       Check out other "update" method in ALL APIs as well.
+     */
     /**
      * Change the name of an SSH key that was added previously.
+     *
+     * @param string $identifier Provider's ID or fingerprint.
      */
     public function updateSshKey(string $identifier, string $newName): SshKeyData;
 }
