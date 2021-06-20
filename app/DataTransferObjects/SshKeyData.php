@@ -6,8 +6,8 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class SshKeyData extends DataTransferObject
 {
-    public string $id;
-    public string $fingerprint;
+    public string|null $id;
+    public string|null $fingerprint;
     public string $publicKey;
     public string $name;
 }
