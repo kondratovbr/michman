@@ -20,12 +20,13 @@ use App\Jobs\Servers\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Server;
+use App\Models\User;
 use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
 
 class StoreServerAction
 {
-    public function execute(NewServerData $data): Server
+    public function execute(NewServerData $data, User $user): Server
     {
         $attributes = $data->toArray();
         $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
@@ -61,13 +62,13 @@ class StoreServerAction
         ];
 
         if ($data->addSshKeyToVcs) {
-
             // TODO: CRITICAL! CONTINUE! Don't forget to implement and test all of these!
-
             $jobs[] = new CreateServerSshKeyJob($server);
             $jobs[] = new UploadServerSshKeyToServerJob($server);
-            $jobs[] = new AddServerSshKeyToVcsJob($server);
         }
+
+        foreach ($user->vcsProviders as $vcsProvider)
+            $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
 
         $jobs[] = new ConfigureServerJob($server);
 
