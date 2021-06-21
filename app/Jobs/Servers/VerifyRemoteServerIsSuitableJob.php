@@ -20,6 +20,9 @@ class VerifyRemoteServerIsSuitableJob extends AbstractJob
         $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
+
+        // Override the normal backoff time to speed up the server creation process for users.
+        $this->backoff = 10; // 10 sec
     }
 
     /**
