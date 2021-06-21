@@ -40,7 +40,10 @@ class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 
             $api = $this->server->provider->api();
 
-            $addedKey = $api->addSshKeySafely($sshKey->name, $sshKey->publicKeyString);
+            $addedKey = $api->addSshKeySafely(
+                $sshKey->name,
+                $sshKey->getPublicKeyString(false),
+            );
 
             $sshKey->externalId = $addedKey->id;
             $sshKey->save();

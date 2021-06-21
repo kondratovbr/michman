@@ -10,6 +10,7 @@ use phpseclib3\Crypt\Common\PublicKey;
  *
  * @property PublicKey $publicKey
  * @property PrivateKey|null $privateKey
+ *
  * @property-read string $publicKeyString
  * @property-read string|null $privateKeyString
  */
@@ -18,6 +19,10 @@ interface SshKeyInterface
     public function getPublicKeyAttribute(): PublicKey;
 
     public function getPrivateKeyAttribute(): PrivateKey|null;
+
+    public function getPublicKeyString(bool $comment = true): string;
+
+    public function getPrivateKeyString(bool $comment = true): string|null;
 
     public function getPublicKeyStringAttribute(): string;
 

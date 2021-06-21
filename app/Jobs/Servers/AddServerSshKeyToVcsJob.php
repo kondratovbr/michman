@@ -44,7 +44,7 @@ class AddServerSshKeyToVcsJob extends AbstractJob
 
             $vcsProvider->api()->addSshKeySafely(
                 $serverSshKey->name,
-                $serverSshKey->publicKeyString
+                $serverSshKey->getPublicKeyString(false)
             );
         }, 5);
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Interfaces\SshKeyInterface;
+use App\Models\Traits\IsSshKey;
 use Carbon\CarbonInterface;
 use Database\Factories\UserSshKeyFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,8 +25,8 @@ use phpseclib3\Crypt\PublicKeyLoader;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
- * @property null $privateKey
- * @property null $privateKeyString
+ * @property-read null $privateKey
+ * @property-read null $privateKeyString
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -34,7 +35,8 @@ use phpseclib3\Crypt\PublicKeyLoader;
  */
 class UserSshKey extends AbstractModel implements SshKeyInterface
 {
-    use HasFactory;
+    use HasFactory,
+        IsSshKey;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -46,43 +48,14 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    public function getPublicKeyAttribute(): PublicKeyInterface
+    protected function hasPrivateKey(): bool
     {
-        /** @var PublicKeyInterface $publicKey */
-        $publicKey = PublicKeyLoader::load($this->attributes['public_key']);
-
-        return $publicKey;
+        return false;
     }
 
-    public function setPublicKeyAttribute(PublicKeyInterface|PrivateKeyInterface $publicKey): void
+    protected function getSshKeyComment(): string
     {
-        if ($publicKey instanceof PrivateKeyInterface)
-            $publicKey = $publicKey->getPublicKey();
-
-        $this->attributes['public_key'] = $this->keyToString($publicKey);
-    }
-
-    public function getPublicKeyStringAttribute(): string
-    {
-        return $this->keyToString($this->publicKey);
-    }
-
-    public function getPrivateKeyAttribute(): PrivateKeyInterface|null
-    {
-        return null;
-    }
-
-    public function getPrivateKeyStringAttribute(): string|null
-    {
-        return null;
-    }
-
-    /**
-     * Convert a key to an OpenSSH formatted string with a proper comment included.
-     */
-    protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key): string
-    {
-        return $key->toString('OpenSSH', ['comment' => $this->name]);
+        return $this->name;
     }
 
     /**
