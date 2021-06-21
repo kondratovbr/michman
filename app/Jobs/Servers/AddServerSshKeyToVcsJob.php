@@ -3,6 +3,7 @@
 namespace App\Jobs\Servers;
 
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\InteractsWithVcsProviders;
 use App\Models\Server;
 use App\Models\ServerSshKey;
 use App\Models\VcsProvider;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class AddServerSshKeyToVcsJob extends AbstractJob
 {
+    use InteractsWithVcsProviders;
+
     protected Server $server;
     protected VcsProvider $vcsProvider;
 
@@ -26,8 +29,6 @@ class AddServerSshKeyToVcsJob extends AbstractJob
      */
     public function handle(): void
     {
-        // TODO: CRITICAL! Test!
-
         DB::transaction(function () {
             /** @var Server $server */
             $server = Server::query()
