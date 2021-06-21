@@ -421,7 +421,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
     {
         $token = Str::random();
         $name = 'My SSH Public Key';
-        $publicKey = 'ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example';
+        $publicKey = 'ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V';
 
         $this->mockRequest($token, 'post', '/account/keys',
             [

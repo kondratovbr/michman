@@ -113,7 +113,7 @@ class OAuthTest extends AbstractFeatureTest
 
         $this->assertDatabaseHas('vcs_providers', [
             'user_id' => $user->id,
-            'provider' => 'github',
+            'provider' => 'github_v3',
             'external_id' => '123456789',
             'nickname' => 'foobar',
             'key' => null,
@@ -121,9 +121,9 @@ class OAuthTest extends AbstractFeatureTest
         ]);
 
         $this->assertCount(1, $user->vcsProviders);
-        $this->assertNotNull($user->vcs('github'));
+        $this->assertNotNull($user->vcs('github_v3'));
 
-        $vcsProvider = $user->vcs('github');
+        $vcsProvider = $user->vcs('github_v3');
 
         $this->assertEquals('foobarbaz', $vcsProvider->token);
     }

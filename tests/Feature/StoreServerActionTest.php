@@ -21,6 +21,7 @@ use App\Jobs\Servers\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
+use App\Models\VcsProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Bus;
 use Tests\AbstractFeatureTest;
@@ -32,6 +33,7 @@ class StoreServerActionTest extends AbstractFeatureTest
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
         $user = $provider->owner;
+        VcsProvider::factory()->for($user)->create();
 
         /** @var StoreServerAction $action */
         $action = App::make(StoreServerAction::class);

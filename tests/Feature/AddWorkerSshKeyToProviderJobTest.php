@@ -8,6 +8,7 @@ use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
 use App\Support\Str;
 use Mockery\MockInterface;
+use phpseclib3\Crypt\EC;
 use Tests\AbstractFeatureTest;
 
 class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
@@ -16,6 +17,7 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
     {
         /** @var WorkerSshKey $workerSshKey */
         $workerSshKey = WorkerSshKey::factory()->withServer()->create();
+        $key = $workerSshKey->privateKey;
         $server = $workerSshKey->server;
 
         $job = new AddWorkerSshKeyToServerProviderJob($server);
@@ -23,15 +25,18 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
         $this->assertEquals('providers', $job->queue);
 
         $this->mockBind('digital_ocean_v2', ServerProviderInterface::class,
-            function (MockInterface $mock) use ($server) {
+            function (MockInterface $mock) use ($server, $key) {
                 $mock->shouldReceive('addSshKeySafely')
-                    ->with($server->workerSshKey->name, $server->workerSshKey->publicKeyString)
+                    ->with(
+                        $server->name,
+                        trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
+                    )
                     ->once()
                     ->andReturn(new SshKeyData(
                         id: '100500',
                         fingerprint: Str::random(),
-                        publicKey: $server->workerSshKey->publicKeyString,
-                        name: $server->workerSshKey->name,
+                        publicKey: trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
+                        name: $server->name,
                     ));
             }
         );

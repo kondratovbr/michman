@@ -23,7 +23,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
             ->with('github')
             ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
                 $mock->shouldReceive('scopes')
-                    ->with(['repo', 'admin:public_key'])
+                    ->with(['user', 'repo', 'admin:public_key'])
                     ->once()
                     ->andReturnSelf();
                 $mock->shouldReceive('with')
@@ -67,15 +67,15 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         $response->assertRedirect();
         $this->assertDatabaseHas('vcs_providers', [
             'user_id' => $user->id,
-            'provider' => 'github',
+            'provider' => 'github_v3',
             'external_id' => '123456789',
             'nickname' => 'theuser',
             'key' => null,
             'secret' => null,
         ]);
         $this->assertCount(1, $user->vcsProviders);
-        $this->assertNotNull($user->vcs('github'));
-        $this->assertEquals('foobar', $user->vcs('github')->token);
+        $this->assertNotNull($user->vcs('github_v3'));
+        $this->assertEquals('foobar', $user->vcs('github_v3')->token);
     }
 
     public function test_github_refresh()
@@ -85,7 +85,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
 
         /** @var VcsProvider $vcsProvider */
         $vcsProvider = VcsProvider::factory()->for($user)->create([
-            'provider' => 'github',
+            'provider' => 'github_v3',
             'external_id' => '123456789',
         ]);
 
@@ -114,13 +114,13 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         $response->assertRedirect();
         $this->assertDatabaseHas('vcs_providers', [
             'user_id' => $user->id,
-            'provider' => 'github',
+            'provider' => 'github_v3',
             'external_id' => '123456789',
             'key' => null,
             'secret' => null,
         ]);
         $this->assertCount(1, $user->vcsProviders);
-        $this->assertNotNull($user->vcs('github'));
-        $this->assertEquals('foobar', $user->vcs('github')->token);
+        $this->assertNotNull($user->vcs('github_v3'));
+        $this->assertEquals('foobar', $user->vcs('github_v3')->token);
     }
 }
