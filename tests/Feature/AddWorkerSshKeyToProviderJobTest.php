@@ -28,7 +28,7 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
             function (MockInterface $mock) use ($server, $key) {
                 $mock->shouldReceive('addSshKeySafely')
                     ->with(
-                        $server->name,
+                        $server->name . ' - Michman worker key',
                         trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
                     )
                     ->once()
@@ -36,7 +36,7 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
                         id: '100500',
                         fingerprint: Str::random(),
                         publicKey: trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
-                        name: $server->name,
+                        name: $server->name . ' - Michman worker key',
                     ));
             }
         );
@@ -45,6 +45,12 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
 
         $workerSshKey->refresh();
 
+        $this->assertNotNull($workerSshKey);
         $this->assertEquals('100500', $workerSshKey->externalId);
+        $this->assertEquals($server->name . ' - Michman worker key', $workerSshKey->name);
+        $this->assertEquals(
+            trim($key->getPublicKey()->toString('OpenSSH', ['comment' => '']), ' '),
+            $workerSshKey->getPublicKeyString(false)
+        );
     }
 }
