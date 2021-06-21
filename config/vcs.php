@@ -8,6 +8,9 @@ use App\Services\GitHubV3;
 
 return [
 
+    // A real one GitHub API token for development
+    'github_dev_token' => env('GITHUB_DEV_TOKEN', null),
+
     // TODO: Do I even use this?
     'default' => 'github_v3',
     
