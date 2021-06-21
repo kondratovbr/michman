@@ -24,7 +24,7 @@ class WorkerSshKeyFactory extends Factory
     }
 
     /**
-     * Also create a server owning this SSH key.
+     * Also create a server owning this worker SSH key.
      *
      * @return $this
      */
@@ -98,6 +98,6 @@ class WorkerSshKeyFactory extends Factory
         $key = EC::createKey('Ed25519');
         $sshKey->privateKey = $key;
         $sshKey->publicKey = $key->getPublicKey();
-        $sshKey->name = $sshKey->server->name;
+        $sshKey->name = WorkerSshKey::createName($sshKey->server);
     }
 }
