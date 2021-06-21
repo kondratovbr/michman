@@ -4,11 +4,14 @@ namespace App\Jobs\Servers;
 
 use App\Actions\ServerSshKeys\CreateServerSshKeyAction;
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
 
 class CreateServerSshKeyJob extends AbstractJob
 {
+    use IsInternal;
+
     protected Server $server;
 
     public function __construct(Server $server)
