@@ -32,11 +32,16 @@ class VcsProviderFactory extends Factory
      *
      * @return self
      */
-    public function forRandomUserFrom(Collection $users): self
+    public function forRandomUserOnceFrom(Collection $users): self
     {
-        return $this->afterMaking(fn(VcsProvider $vcsProvider) =>
-            $this->associateUser($vcsProvider, $users->random())
-        );
+        $users = $users->shuffle();
+
+        return $this->afterMaking(function (VcsProvider $vcsProvider) use ($users) {
+            if ($users->isEmpty())
+                return;
+
+            $this->associateUser($vcsProvider, $users->pop());
+        });
     }
 
     /**

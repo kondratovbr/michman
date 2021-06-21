@@ -21,6 +21,16 @@ class UserSeeder extends Seeder
         // Seed a predefined generic user useful for development.
         User::factory()->theUser()->withPersonalTeam()->create();
 
+        // Seed a user with an actual email that will have actual API tokens and everything.
+        User::factory([
+            'email' => 'kondratovbr@gmail.com',
+            'password' => null,
+            'oauth_provider' => 'github',
+            'oauth_id' => '5469212',
+        ])
+            ->withPersonalTeam()
+            ->create();
+
         // Seed generic users.
         User::factory()->withPersonalTeam()->times(self::NUM_USERS)->create();
     }

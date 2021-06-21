@@ -16,21 +16,24 @@ class ProviderSeeder extends Seeder
      */
     public function run(): void
     {
-        // Seed the actual dev token from config.
+        // Seed an actual dev token from config.
         Provider::factory([
             'provider' => 'digital_ocean_v2',
             'token' => (string) config('providers.do_dev_token'),
             'name' => 'Dev Token',
         ])
             ->for(
-                User::query()->firstWhere('email', 'admin@example.com'),
+                User::query()->firstWhere('email', (string) config('app.dev_email')),
                 'owner'
             )
             ->create();
 
         // Seed fake tokens.
         Provider::factory()
-            ->forRandomUserFrom(User::all())
+            ->forRandomUserFrom(User::query()
+                ->whereNotIn('email', [(string) config('app.dev_email')])
+                ->get()
+            )
             ->count(static::NUM_PROVIDERS)
             ->create();
     }
