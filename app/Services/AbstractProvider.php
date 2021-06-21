@@ -61,7 +61,7 @@ abstract class AbstractProvider
     /**
      * Decode JSON response throwing en exceptions on failure.
      */
-    protected function decodeJson(string $json): object
+    protected function decodeJson(string $json): array|object
     {
         return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
     }
