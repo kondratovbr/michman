@@ -8,7 +8,7 @@ use App\Services\DigitalOceanV2;
 
 return [
 
-    // A real one DigitalOcean read-only API token for development and testing
+    // A real one DigitalOcean API token for development
     'do_dev_token' => env('DO_DEV_TOKEN', null),
 
     'default' => 'digital_ocean_v2',
