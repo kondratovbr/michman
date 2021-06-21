@@ -102,6 +102,7 @@ class GitHubV3 extends AbstractVcsProvider
                 return $duplicatedAddedKey;
 
             return $this->updateSshKey(new SshKeyData(
+                id: $duplicatedAddedKey->id,
                 publicKey: $publicKey,
                 name: $name,
             ));
