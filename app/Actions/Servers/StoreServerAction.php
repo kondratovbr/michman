@@ -62,13 +62,13 @@ class StoreServerAction
         ];
 
         if ($data->addSshKeyToVcs) {
-            // TODO: CRITICAL! CONTINUE! Don't forget to implement and test all of these!
             $jobs[] = new CreateServerSshKeyJob($server);
+            // TODO: CRITICAL! CONTINUE - test this.
             $jobs[] = new UploadServerSshKeyToServerJob($server);
-        }
 
-        foreach ($user->vcsProviders as $vcsProvider)
-            $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
+            foreach ($user->vcsProviders as $vcsProvider)
+                $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
+        }
 
         $jobs[] = new ConfigureServerJob($server);
 
