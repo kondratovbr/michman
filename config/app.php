@@ -252,6 +252,6 @@ return [
      * Custom Project-specific Parameters
      */
 
-    //
+    'dev_email' => env('DEV_EMAIL', null),
 
 ];
