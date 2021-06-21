@@ -4,15 +4,13 @@ namespace App\Jobs\Servers;
 
 use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
 
 class CreateWorkerSshKeyForServerJob extends AbstractJob
 {
-    /** The number of times the job may be attempted. */
-    public int $tries = 5;
-    /** The number of seconds to wait before retrying the job. */
-    public int $backoff = 5;
+    use IsInternal;
 
     protected Server $server;
 
