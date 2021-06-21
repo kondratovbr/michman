@@ -93,8 +93,8 @@ trait IsSshKey
      */
     protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key, bool $comment = true): string
     {
-        // toString() method in phpseclib3 adds a space at the end if the comment provided is an empty string,
-        // for some reason, so better trim it.
+        // toString() method on a public key in phpseclib3 adds a space at the end
+        // if the comment provided is an empty string, for some reason, so better trim it.
         return trim(
             $comment
                 ? $key->toString('OpenSSH', ['comment' => $this->getSshKeyComment()])
