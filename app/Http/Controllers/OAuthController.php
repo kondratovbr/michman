@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\VcsProviders\StoreVcsProviderAction;
+use App\Actions\VcsProviders\UpdateVcsProviderAction;
 use App\DataTransferObjects\VcsProviderData;
 use App\Facades\Auth;
 use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
@@ -26,6 +27,7 @@ class OAuthController extends AbstractController
     public function __construct(
         private CreateNewUser $createNewUser,
         private StoreVcsProviderAction $storeVcsProvider,
+        private UpdateVcsProviderAction $updateVcsProvider,
     ) {}
 
     /**
@@ -68,6 +70,8 @@ class OAuthController extends AbstractController
 
         if (is_null($user))
             $user = $this->registerUserByOauth($oauthProvider, $oauthUser);
+
+        $this->updateVcs($oauthProvider, $oauthUser, $user);
 
         Auth::login($user, true);
 
@@ -157,13 +161,41 @@ class OAuthController extends AbstractController
             $user->emailVerifiedAt = now();
             $user->save();
 
-            $this->storeVcsProvider->execute(VcsProviderData::fromOauth(
-                $oauthUser,
-                (string) config("auth.oauth_providers.{$oauthProvider}.vcs_provider"),
-                $user,
-            ));
-
             return $user;
         });
+    }
+
+    /**
+     * Create or update a VCS provider for the authenticated user corresponding with the OAuth provider used.
+     */
+    private function updateVcs(string $oauthProvider, OauthUser $oauthUser, User $user): void
+    {
+        DB::transaction(function () use ($oauthProvider, $oauthUser, $user) {
+            $vcsProviderName = (string) config("auth.oauth_providers.{$oauthProvider}.vcs_provider");
+
+            // This OAuth provider is not configured to be used as a VCS provider.
+            if (is_null($vcsProviderName))
+                return;
+
+            $vcsProviderData = VcsProviderData::fromOauth(
+                $oauthUser,
+                $vcsProviderName,
+                $user,
+            );
+
+            $vcsProvider = $user->vcs($vcsProviderName, true);
+
+            // The user has no VcsProvider configured so we can create one immediately.
+            if (is_null($vcsProvider)) {
+                $this->storeVcsProvider->execute($vcsProviderData);
+                return;
+            }
+
+            // If the user has a VcsProvider configured we will update the token,
+            // but only if it is associated with the same account,
+            // otherwise don't touch it.
+            if ($vcsProvider->externalId === $vcsProviderData->external_id)
+                $this->updateVcsProvider->execute($vcsProvider,$vcsProviderData);
+        }, 5);
     }
 }
