@@ -321,7 +321,7 @@ class DigitalOceanForm extends Component
             dbName: $this->state['db_name'],
             cache: $this->state['cache'],
             addSshKeyToVcs: $this->state['add_ssh_key_to_vcs'],
-        ));
+        ), Auth::user());
 
         dd($server);
 

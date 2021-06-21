@@ -131,8 +131,11 @@ class RouteServiceProvider extends ServiceProvider
         );
 
         Route::pattern(
-            'vcsProviderName',
-            implode('|', Arr::keys(config('vcs.list')))
+            'vcsProviderOauthName',
+            implode('|', Arr::keys(Arr::filter(
+                config('auth.oauth_providers'),
+                fn(array $oauthProviderConfig) => ! empty($oauthProviderConfig['vcs_provider'])
+            )))
         );
     }
 }

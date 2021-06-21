@@ -159,7 +159,7 @@ class OAuthController extends AbstractController
 
             $this->storeVcsProvider->execute(VcsProviderData::fromOauth(
                 $oauthUser,
-                $oauthProvider,
+                (string) config("auth.oauth_providers.{$oauthProvider}.vcs_provider"),
                 $user,
             ));
 

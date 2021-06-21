@@ -130,12 +130,15 @@ return [
         // TODO: CRITICAL! Don't forget to implement support for at least GitHub, GitLab and BitBucket.
         'github' => [
             'icon' => 'fab fa-github',
+            'vcs_provider' => 'github_v3',
         ],
         'gitlab' => [
             'icon' => 'fab fa-gitlab',
+            'vcs_provider' => 'gitlab',
         ],
         'bitbucket' => [
             'icon' => 'fab fa-bitbucket',
+            'vcs_provider' => 'bitbucket',
         ],
     ],
 

@@ -18,10 +18,10 @@ class VcsProviderData extends DataTransferObject
     public string|null $key;
     public string|null $secret;
 
-    public static function fromOauth(OAuthUser $oauthUser, string $providerName, User $user): static
+    public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName, User $user): static
     {
-        return match ($providerName) {
-            'github' => static::github($oauthUser, $user),
+        return match ($vcsProviderName) {
+            'github_v3' => static::github($oauthUser, $user),
             'gitlab' => static::gitlab($oauthUser, $user),
             'bitbucket' => static::bitbucket($oauthUser, $user),
             default => throw new RuntimeException('Unknown VCS provider name.')
@@ -32,7 +32,7 @@ class VcsProviderData extends DataTransferObject
     {
         return new static(
             user: $user,
-            provider: 'github',
+            provider: 'github_v3',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
             token: (string) $oauthUser->token,
