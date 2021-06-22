@@ -1,11 +1,9 @@
 <x-sub-page name="pythons">
 
-    Foobar 0
+    <livewire:pythons.update-python-config-form :server="$server" />
+
     <x-section-separator/>
-    Foobar 1
-    <x-section-separator/>
-    Foobar 2
-    <x-section-separator/>
-    Foobar 3
+
+    <livewire:pythons.pythons-index-table :server="$server" />
 
 </x-sub-page>
