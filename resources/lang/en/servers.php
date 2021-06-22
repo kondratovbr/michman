@@ -21,10 +21,6 @@ return [
 
     ],
 
-    'show' => [
-        //
-    ],
-
     'types' => [
         'app' => [
             'name' => 'App Server',
@@ -73,5 +69,25 @@ return [
         'none' => 'None',
         'redis' => 'Redis',
         'memcached' => 'Memcached',
+    ],
+
+    'projects' => [
+        'button' => 'Projects',
+    ],
+
+    'pythons' => [
+        'button' => 'Pythons',
+
+        'table' => [
+            'title' => 'Python Versions',
+            'version' => 'Version',
+            'status' => 'Status',
+        ],
+
+        'versions' => [
+            '3_9' => '3.9',
+            '3_8' => '3.8',
+            '2_7' => '2.7',
+        ],
     ],
 ];
