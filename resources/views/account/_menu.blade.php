@@ -5,6 +5,7 @@
 {{--TODO: Active link shouldn't hover?--}}
 {{--TODO: Why are transitions a bit sluggish? Try with prod CSS (optimized)?--}}
 {{--TODO: Make sure it looks OK in Russian on all screens as well. Text may not fit.--}}
+{{--TODO: IMPORTANT! Don't forget to implement changes on other side menus if I do some here. Maybe DRY them out.--}}
 
 <aside x-data="{ current: '{{ $this->show }}' }">
     <ul class="flex flex-col items-stretch text-gray-200">
