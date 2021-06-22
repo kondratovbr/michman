@@ -4,13 +4,14 @@
     <ul class="flex flex-col items-stretch text-gray-200">
 
         <x-menu.item show="projects">
-            <x-slot name="icon"><i class="far fa-user"></i></x-slot>
-            Projects
+{{--            TODO: CRITICAL! This is a placeholder icon. The actual one (fas fa-browser) is comes only in FontAwesome Pro. Should pay for it and use the icon. Maybe some other places required paid icons as well.--}}
+            <x-slot name="icon"><i class="fas fa-square"></i></x-slot>
+            {{ __('servers.projects.button') }}
         </x-menu.item>
 
         <x-menu.item show="pythons">
-            <x-slot name="icon"><i class="far fa-user"></i></x-slot>
-            Projects
+            <x-slot name="icon"><i class="fab fa-python"></i></x-slot>
+            {{ __('servers.pythons.button') }}
         </x-menu.item>
 
     </ul>
