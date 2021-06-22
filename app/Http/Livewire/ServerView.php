@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Server;
+
 class ServerView extends AbstractSubpagesView
 {
     protected const LAYOUT = 'layouts.app-with-menu';
@@ -17,4 +19,6 @@ class ServerView extends AbstractSubpagesView
     // TODO: CRITICAL! Don't forget to change this default once ready. Should be on server's projects index.
     /** @var string The name of a sub-page that will be shown by default. */
     protected const DEFAULT_SHOW = 'pythons';
+
+    public Server $server;
 }
