@@ -82,6 +82,7 @@ return [
             'title' => 'Python Versions',
             'version' => 'Version',
             'status' => 'Status',
+            'cli' => 'CLI',
         ],
 
         'versions' => [

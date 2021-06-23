@@ -17,4 +17,13 @@ class PythonPolicy
     {
         return $user->is($server->provider->owner);
     }
+
+    /**
+     * Determine whether a user is allowed to install a new Python instance on a server.
+     */
+    public function create(User $user, Server $server, string $version): bool
+    {
+        return $user->is($server->provider->owner)
+            && $server->pythons()->where('version', $version)->count() === 0;
+    }
 }
