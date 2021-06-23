@@ -8,7 +8,7 @@ use Illuminate\Database\Seeder;
 
 class WorkerSshKeySeeder extends Seeder
 {
-    /** @var int Fraction of existing servers to create SSH keys for. */
+    /** @var int Fraction of existing servers to create worker SSH keys for. */
     private const FRACTION = 0.5;
 
     /**
