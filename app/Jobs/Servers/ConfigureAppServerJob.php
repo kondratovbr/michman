@@ -4,23 +4,28 @@ namespace App\Jobs\Servers;
 
 use App\Actions\Servers\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleData;
+use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests!
+
 class ConfigureAppServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 
     protected Server $server;
+    protected NewServerData $data;
 
-    public function __construct(Server $server)
+    public function __construct(Server $server, NewServerData $data)
     {
         $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
+        $this->data = $data;
     }
 
     /**
@@ -35,6 +40,10 @@ class ConfigureAppServerJob extends AbstractJob
                 ->firstOrFail();
 
             Bus::chain([
+                new InstallDatabaseJob($server, $this->data->database),
+                new CreateDatabaseJob($server, $this->data->dbName),
+                new InstallCacheJob($server, $this->data->cache),
+                new CreatePythonJob($server, $this->data->pythonVersion),
                 new InstallNginxJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!

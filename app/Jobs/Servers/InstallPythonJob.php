@@ -4,25 +4,25 @@ namespace App\Jobs\Servers;
 
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
-use App\Models\Server;
+use App\Models\Python;
 use App\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
+// TODO: CRITICAL! Cover with tests!
+
 class InstallPythonJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 
-    protected Server $server;
-    protected string $pythonVersion;
+    protected Python $python;
 
-    public function __construct(Server $server, string $pythonVersion)
+    public function __construct(Python $python)
     {
         $this->setQueue('servers');
 
-        $this->server = $server->withoutRelations();
-        $this->pythonVersion = $pythonVersion;
+        $this->python = $python->withoutRelations();
     }
 
     /**
@@ -31,34 +31,34 @@ class InstallPythonJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
+            /** @var Python $python */
+            $python = Python::query()
+                ->with('server')
                 ->lockForUpdate()
-                ->firstOrFail();
+                ->findOrFail($this->python->getKey());
 
-            if (! Arr::hasValue(config("servers.types.{$server->type}.install"), 'python')) {
+            if (! Arr::hasValue(config("servers.types.{$python->server->type}.install"), 'python')) {
                 $this->fail(new RuntimeException('This type of server should not have Python installed.'));
                 return;
             }
 
-            if ($server->pythons()->where('version', $this->pythonVersion)->get()->isNotEmpty()) {
+            if ($python->server->pythons()->where('version', $python->version)->get()->isNotEmpty()) {
                 $this->fail(new RuntimeException('This Python version model is already created for this server.'));
                 return;
             }
 
-            $python = $server->pythons()->create([
-                'version' => $this->pythonVersion,
+            $python = $python->server->pythons()->create([
+                'version' => $python->version,
             ]);
 
-            $scriptClass = (string) config("servers.python.{$this->pythonVersion}.scripts_namespace") . '\InstallPythonScript';
+            $scriptClass = (string) config("servers.python.{$python->version}.scripts_namespace") . '\InstallPythonScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this version of Python.');
 
             $script = App::make($scriptClass);
 
-            $script->execute($server);
+            $script->execute($python->server);
         }, 5);
     }
 }

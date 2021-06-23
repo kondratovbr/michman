@@ -6,13 +6,9 @@ use App\DataTransferObjects\NewServerData;
 use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\AddServerSshKeyToVcsJob;
 use App\Jobs\Servers\ConfigureServerJob;
-use App\Jobs\Servers\CreateDatabaseJob;
 use App\Jobs\Servers\CreateServerSshKeyJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
-use App\Jobs\Servers\InstallCacheJob;
-use App\Jobs\Servers\InstallDatabaseJob;
-use App\Jobs\Servers\InstallPythonJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Jobs\Servers\UpdateUserSshKeysOnServerJob;
@@ -23,57 +19,56 @@ use App\Models\Server;
 use App\Models\User;
 use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 
 class StoreServerAction
 {
     public function execute(NewServerData $data, User $user): Server
     {
-        $attributes = $data->toArray();
-        $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
-        $attributes['sudo_password'] = Str::random(32);
+        return DB::transaction(function () use ($data, $user) {
+            $attributes = $data->toArray();
+            $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
+            $attributes['sudo_password'] = Str::random(32);
 
-        /** @var Server $server */
-        $server = $data->provider->servers()->create($attributes);
+            /** @var Server $server */
+            $server = $data->provider->servers()->create($attributes);
 
-        /*
-         * TODO: CRITICAL! Don't forget to:
-         *       - Generate SSH keys on the server. Or rather generate locally and send to the server.
-         *       - Add server's SSH keys to user's VCS if needed.
-         *       - ...
-         */
+            /*
+             * TODO: CRITICAL! Don't forget to:
+             *       - Generate SSH keys on the server. Or rather generate locally and send to the server.
+             *       - Add server's SSH keys to user's VCS if needed.
+             *       - ...
+             */
 
-        $jobs = [
+            $jobs = [
 
-            new CreateWorkerSshKeyForServerJob($server),
-            new AddWorkerSshKeyToServerProviderJob($server),
-            new RequestNewServerFromProviderJob($server, $data),
-            new GetServerPublicIpJob($server),
-            new VerifyRemoteServerIsSuitableJob($server),
-            new PrepareRemoteServerJob($server),
-            new UpdateServerAvailabilityJob($server),
-            new UpdateUserSshKeysOnServerJob($server),
-            new InstallDatabaseJob($server, $data->database),
-            new CreateDatabaseJob($server, $data->dbName),
-            new InstallCacheJob($server, $data->cache),
-            new InstallPythonJob($server, $data->pythonVersion),
+                new CreateWorkerSshKeyForServerJob($server),
+                new AddWorkerSshKeyToServerProviderJob($server),
+                new RequestNewServerFromProviderJob($server, $data),
+                new GetServerPublicIpJob($server),
+                new VerifyRemoteServerIsSuitableJob($server),
+                new PrepareRemoteServerJob($server),
+                new UpdateServerAvailabilityJob($server),
+                new UpdateUserSshKeysOnServerJob($server),
+                new CreateServerSshKeyJob($server),
 
-            // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
+                // TODO: CRITICAL! CONTINUE - test this.
+                new UploadServerSshKeyToServerJob($server),
 
-        ];
+                // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
-        if ($data->addSshKeyToVcs) {
-            $jobs[] = new CreateServerSshKeyJob($server);
-            // TODO: CRITICAL! CONTINUE - test this.
-            $jobs[] = new UploadServerSshKeyToServerJob($server);
+            ];
 
-            foreach ($user->vcsProviders as $vcsProvider)
-                $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
-        }
+            if ($data->addSshKeyToVcs) {
+                foreach ($user->vcsProviders as $vcsProvider)
+                    $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
+            }
 
-        $jobs[] = new ConfigureServerJob($server);
+            $jobs[] = new ConfigureServerJob($server, $data);
 
-        Bus::chain($jobs)->dispatch();
+            Bus::chain($jobs)->dispatch();
 
-        return $server;
+            return $server;
+        }, 5);
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Jobs\Servers;
 
+use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
+
+// TODO: CRITICAL! Cover with tests!
 
 class ConfigureServerJob extends AbstractJob
 {
@@ -14,12 +17,14 @@ class ConfigureServerJob extends AbstractJob
     public int $backoff = 10;
 
     protected Server $server;
+    protected NewServerData $data;
 
-    public function __construct(Server $server)
+    public function __construct(Server $server, NewServerData $data)
     {
         $this->setQueue('default');
 
         $this->server = $server->withoutRelations();
+        $this->data = $data;
     }
 
     /**
@@ -39,7 +44,7 @@ class ConfigureServerJob extends AbstractJob
             if (empty($jobClass))
                 throw new \RuntimeException('Job class for this server type is not configured.');
 
-            $jobClass::dispatch($server);
+            $jobClass::dispatch($server, $this->data);
         }, 5);
     }
 }
