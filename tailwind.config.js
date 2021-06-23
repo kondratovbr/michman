@@ -123,12 +123,6 @@ module.exports = {
             black: colors.black,
             white: colors.white,
             navy: {
-                //original: '#000080',
-                //light: '#151EA6',
-                //DEFAULT: '#1F266B',
-                //dark: '#00017A',
-                //darkest: '#03005B',
-
                 DEFAULT: '#003d7a',
                 '900': '#0066cc',
                 '800': '#005cb8',
@@ -142,11 +136,6 @@ module.exports = {
                 '50': '#000a14',
             },
             gold: {
-                //light: '#FED701',
-                //DEFAULT: '#FEC203',
-                //dark: '#FCB305',
-                //darkest: '#F08E00',
-
                 DEFAULT: '#998100',
                 '900': '#ffd700',
                 '800': '#e6c200',
@@ -158,6 +147,10 @@ module.exports = {
                 '200': '#4d4100',
                 '100': '#332b00',
             },
+            code: {
+                'text': '#A9B7C6',
+                'bg': '#2B2B2B',
+            }
         },
 
         extend: {
@@ -218,6 +211,15 @@ module.exports = {
                 '11-sub-2': 'calc(2.75rem - 2px)',
                 '1.25': '0.3125rem',
                 '7.5': '1.875rem',
+                '1-em': '0.25em',
+                '1.5-em': '0.375em',
+                '2-em': '0.5em',
+                '3-em': '0.75em',
+                '4-em': '1em',
+                '5-em': '1.25em',
+                '6-em': '1.5em',
+                '7-em': '1.75em',
+                '8-em': '2em',
             },
             // Reusable transition durations
             transitionDuration: {
