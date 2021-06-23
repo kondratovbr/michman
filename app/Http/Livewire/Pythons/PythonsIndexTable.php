@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Pythons;
 
 use App\Models\Python;
 use App\Models\Server;
+use App\Support\Arr;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -15,6 +16,7 @@ class PythonsIndexTable extends LivewireComponent
 
     public Server $server;
 
+    public array $pythonVersions;
     public Collection $pythons;
 
     /** @var string[] */
@@ -27,6 +29,7 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function mount(): void
     {
+        $this->pythonVersions = Arr::keys(config('servers.python'));
         $this->pythons = $this->server->pythons;
     }
 

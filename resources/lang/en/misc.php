@@ -6,5 +6,6 @@ return [
     'saved' => 'Saved',
     'or' => 'or',
     'n/a' => 'N/A',
+    'installed' => 'Installed',
 
 ];

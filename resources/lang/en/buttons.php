@@ -9,5 +9,6 @@ return [
     'enable' => 'Enable',
     'confirm' => 'Confirm',
     'back' => 'Back',
+    'install' => 'Install',
 
 ];
