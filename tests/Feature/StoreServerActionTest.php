@@ -33,7 +33,12 @@ class StoreServerActionTest extends AbstractFeatureTest
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
         $user = $provider->owner;
-        VcsProvider::factory()->for($user)->create();
+        VcsProvider::factory([
+            'provider' => 'github_v3',
+        ])->for($user)->create();
+        VcsProvider::factory([
+            'provider' => 'gitlab',
+        ])->for($user)->create();
 
         /** @var StoreServerAction $action */
         $action = App::make(StoreServerAction::class);
@@ -84,12 +89,9 @@ class StoreServerActionTest extends AbstractFeatureTest
             PrepareRemoteServerJob::class,
             UpdateServerAvailabilityJob::class,
             UpdateUserSshKeysOnServerJob::class,
-            InstallDatabaseJob::class,
-            CreateDatabaseJob::class,
-            InstallCacheJob::class,
-            InstallPythonJob::class,
             CreateServerSshKeyJob::class,
             UploadServerSshKeyToServerJob::class,
+            AddServerSshKeyToVcsJob::class,
             AddServerSshKeyToVcsJob::class,
             ConfigureServerJob::class,
         ]);
