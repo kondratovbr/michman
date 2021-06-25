@@ -24,9 +24,15 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
      broadcaster: 'pusher',
      key: process.env.MIX_PUSHER_APP_KEY,
      cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-     forceTLS: true,
+     // TODO: CRITICAL! Don't forget to configure TLS for production!
+     //forceTLS: true,
+     forceTLS: false,
+     //enabledTransports: ['ws', 'wss'],
+     enabledTransports: ['ws'],
      // These two parameters are needed to make beyondcode/laravel-websockets work.
      // Port should be the same as configure in broadcasting.php.
      wsHost: window.location.hostname,
      wsPort: 6001,
+     // This disables Pusher API statistics. beyondcode/laravel-websockets has its own statistic gathering engine.
+     disableStats: true,
  });
