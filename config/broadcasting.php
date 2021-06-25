@@ -30,6 +30,18 @@ return [
 
     'connections' => [
 
+        'beyondcode' => [
+            'driver' => 'pusher',
+            'key' => env('WEBSOCKETS_APP_KEY'),
+            'secret' => env('WEBSOCKETS_APP_SECRET'),
+            'app_id' => env('WEBSOCKETS_APP_ID'),
+            'options' => [
+                'host' => env('WEBSOCKETS_HOST', '127.0.0.1'),
+                'port' => env('WEBSOCKETS_PORT', 6001),
+                'scheme' => env('WEBSOCKETS_SCHEME', 'http'),
+            ],
+        ],
+
         'pusher' => [
             'driver' => 'pusher',
             'key' => env('PUSHER_APP_KEY'),
