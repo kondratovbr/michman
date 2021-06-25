@@ -44,7 +44,6 @@
         <x-slot name="actions">
             <x-buttons>
                 <x-buttons.primary
-                    dusk="confirm-password-button"
                     wire:click="confirmPassword"
                     wire:loading.attr="disabled"
                 >
