@@ -6,12 +6,12 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="referrer" content="always">
 
-        @livewireStyles
+{{--        @livewireStyles--}}
 
         <title>Blank Page</title>
     </head>
     <body>
 
-        @livewireScripts
+{{--        @livewireScripts--}}
     </body>
 </html>
