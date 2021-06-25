@@ -32,4 +32,12 @@ class DebugController extends AbstractController
     {
         phpinfo();
     }
+
+    /**
+     * Show a completely blank page.
+     */
+    public function blank(): View
+    {
+        return view('blank');
+    }
 }
