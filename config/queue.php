@@ -86,6 +86,7 @@ return [
         'default', // For quick-running jobs that don't interact with external services or servers.
         'providers', // For jobs that interact with third-party APIs of server providers and VCS providers.
         'servers', // For jobs that interact with managed servers over SSH.
+        'events', // For handling the events.
     ],
 
 ];
