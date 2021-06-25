@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Servers;
 
+use App\Events\Pythons\PythonInstalledEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Python;
@@ -59,6 +60,8 @@ class InstallPythonJob extends AbstractJob
             $script = App::make($scriptClass);
 
             $script->execute($python->server);
+
+            event(new PythonInstalledEvent($python));
         }, 5);
     }
 }
