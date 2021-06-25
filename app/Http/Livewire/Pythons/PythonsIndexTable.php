@@ -23,10 +23,25 @@ class PythonsIndexTable extends LivewireComponent
     public array $pythonVersions;
     public Collection $pythons;
 
-    /** @var string[] */
+    public bool $dd = false;
+
     protected $listeners = [
-        'python-stored' => '$refresh',
+        'echo:foo,bar' => 'foobar',
     ];
+
+    /**
+     * Define the component's event listeners.
+     *
+     * @return string[]
+     */
+    // public function getListeners(): array
+    // {
+    //     return [
+    //         'python-stored' => '$refresh',
+    //         "echo:private-servers.{$this->server->getKey()},pythons.installed" => 'foobar',
+    //         'echo:foo,bar' => 'foobar',
+    //     ];
+    // }
 
     protected function rules(): array
     {
@@ -42,6 +57,8 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function mount(): void
     {
+        $this->authorize('index', [Python::class, $this->server]);
+
         $this->pythonVersions = Arr::keys(config('servers.python'));
         $this->pythons = $this->server->pythons;
     }
@@ -70,12 +87,18 @@ class PythonsIndexTable extends LivewireComponent
         ));
     }
 
+    public function foobar(): void
+    {
+        $this->dd = true;
+    }
+
     /**
      * Render the component.
      */
     public function render(): View
     {
-        $this->authorize('index', [Python::class, $this->server]);
+        if ($this->dd)
+            dd('Foobar during render()');
 
         return view('pythons.index-table');
     }
