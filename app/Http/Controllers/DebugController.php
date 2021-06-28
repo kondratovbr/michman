@@ -38,6 +38,14 @@ class DebugController extends AbstractController
      */
     public function blank(): View
     {
-        return view('blank');
+        return view('debug.blank');
+    }
+
+    /**
+     * Show a Pusher test page.
+     */
+    public function pusher(): View
+    {
+        return view('debug.pusher');
     }
 }

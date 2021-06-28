@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Provider;
 use App\Models\Server;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class ServerSeeder extends Seeder
@@ -16,6 +17,16 @@ class ServerSeeder extends Seeder
      */
     public function run(): void
     {
+        // Make sure the dev user has a server seeded.
+        Server::factory()
+            ->for(
+                User::query()
+                    ->firstWhere('email', (string) config('app.dev_email'))
+                    ->providers()->first()
+            )
+            ->create();
+
+        // Seed the rest of the servers.
         Server::factory()
             ->forRandomProviderFrom(Provider::all())
             ->count(static::NUM_SERVERS)

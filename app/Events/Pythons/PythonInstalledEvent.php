@@ -6,8 +6,5 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class PythonInstalledEvent extends AbstractPythonEvent implements ShouldBroadcast
 {
-    public function broadcastAs(): string
-    {
-        return 'pythons.installed';
-    }
+    //
 }

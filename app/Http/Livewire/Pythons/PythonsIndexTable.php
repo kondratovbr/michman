@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Pythons;
 
 use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\PythonData;
+use App\Events\Pythons\PythonInstalledEvent;
+use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Python;
 use App\Models\Server;
 use App\Support\Arr;
@@ -16,32 +18,26 @@ use Illuminate\Support\Facades\Validator;
 
 class PythonsIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests;
+    use AuthorizesRequests,
+        ListensForEchoes;
 
     public Server $server;
 
     public array $pythonVersions;
     public Collection $pythons;
 
-    public bool $dd = false;
-
     protected $listeners = [
-        'echo:foo,bar' => 'foobar',
+        'python-stored' => '$refresh',
     ];
 
-    /**
-     * Define the component's event listeners.
-     *
-     * @return string[]
-     */
-    // public function getListeners(): array
-    // {
-    //     return [
-    //         'python-stored' => '$refresh',
-    //         "echo:private-servers.{$this->server->getKey()},pythons.installed" => 'foobar',
-    //         'echo:foo,bar' => 'foobar',
-    //     ];
-    // }
+    protected function configureEchoListeners(): void
+    {
+        $this->echoPrivate(
+            'servers.' . $this->server->getKey(),
+            PythonInstalledEvent::class,
+            'foobar',
+        );
+    }
 
     protected function rules(): array
     {
@@ -89,7 +85,7 @@ class PythonsIndexTable extends LivewireComponent
 
     public function foobar(): void
     {
-        $this->dd = true;
+        dd('Foobar!');
     }
 
     /**
@@ -97,9 +93,6 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function render(): View
     {
-        if ($this->dd)
-            dd('Foobar during render()');
-
         return view('pythons.index-table');
     }
 }
