@@ -55,21 +55,21 @@ services:
         healthcheck:
             test: ["CMD", "mysqladmin", "ping"]
 
-#    websockets:
-#        image: sail-8.0/app
-#        command: 'php artisan websockets:serve'
-#        volumes:
-#            - '.:/var/www/html'
-#        ports:
-#            - '6001:6001'
-#        environment:
-#            # Required by Laravel Sail
-#            WWWUSER: '${WWWUSER}'
-#        networks:
-#            - sail
-#        depends_on:
-#            - redis
-#            - mysql
+    websockets:
+        image: sail-8.0/app
+        command: 'php artisan websockets:serve'
+        volumes:
+            - '.:/var/www/html'
+        ports:
+            - '6001:6001'
+        environment:
+            # Required by Laravel Sail
+            WWWUSER: '${WWWUSER}'
+        networks:
+            - sail
+        depends_on:
+            - redis
+            - mysql
 
     mailhog:
         image: 'mailhog/mailhog:latest'

@@ -4,6 +4,10 @@ namespace App\Http\Livewire\Traits;
 
 use App\Support\Arr;
 
+/*
+ * TODO: Maybe think about refactoring broadcasting channels into channel classes, if there's ever too many of them.
+ */
+
 trait ListensForEchoes
 {
     private array $broadcastListeners = [];
