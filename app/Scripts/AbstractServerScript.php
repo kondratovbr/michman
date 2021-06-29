@@ -3,12 +3,15 @@
 namespace App\Scripts;
 
 use App\Models\Server;
+use App\Scripts\Traits\RunsStatically;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
 
 abstract class AbstractServerScript
 {
+    use RunsStatically;
+
     /** Server to run command on. */
     private Server $server;
     /** SSH session to a remote server with SFTP support. */

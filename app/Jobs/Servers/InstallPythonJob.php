@@ -6,8 +6,6 @@ use App\Events\Pythons\PythonInstalledEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Python;
-use App\Support\Arr;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
@@ -38,28 +36,19 @@ class InstallPythonJob extends AbstractJob
                 ->lockForUpdate()
                 ->findOrFail($this->python->getKey());
 
-            if (! Arr::hasValue(config("servers.types.{$python->server->type}.install"), 'python')) {
-                $this->fail(new RuntimeException('This type of server should not have Python installed.'));
+            if ($python->installed())
                 return;
-            }
-
-            if ($python->server->pythons()->where('version', $python->version)->get()->isNotEmpty()) {
-                $this->fail(new RuntimeException('This Python version model is already created for this server.'));
-                return;
-            }
-
-            $python = $python->server->pythons()->create([
-                'version' => $python->version,
-            ]);
 
             $scriptClass = (string) config("servers.python.{$python->version}.scripts_namespace") . '\InstallPythonScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this version of Python.');
 
-            $script = App::make($scriptClass);
+            $patchVersion = $scriptClass::run($python->server);
 
-            $script->execute($python->server);
+            $python->status = Python::STATUS_INSTALLED;
+            $python->patchVersion = $patchVersion;
+            $python->save();
 
             event(new PythonInstalledEvent($python));
         }, 5);

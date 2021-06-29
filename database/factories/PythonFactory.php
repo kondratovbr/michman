@@ -20,6 +20,8 @@ class PythonFactory extends Factory
         return [
             // TODO: Seed other versions as well. Also seed multiple versions of Python per server.
             'version' => '3_8',
+            'status' => Python::STATUS_INSTALLED,
+            'patch_version' => '3.8.0',
         ];
     }
 

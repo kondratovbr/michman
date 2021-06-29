@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Python;
+
 return [
 
     'index' => [
@@ -80,15 +82,22 @@ return [
 
         'table' => [
             'title' => 'Python Versions',
+            'description' => 'Install and update different versions of Python on the server.',
             'version' => 'Version',
             'status' => 'Status',
             'cli' => 'CLI',
+            'patch-version' => 'Patch Version',
         ],
 
         'versions' => [
             '3_9' => '3.9',
             '3_8' => '3.8',
             '2_7' => '2.7',
+        ],
+
+        'statuses' => [
+            Python::STATUS_INSTALLED => 'Installed',
+            Python::STATUS_INSTALLING => 'Installing',
         ],
     ],
 ];

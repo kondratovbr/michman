@@ -35,10 +35,13 @@ class PythonsIndexTable extends LivewireComponent
         $this->echoPrivate(
             'servers.' . $this->server->getKey(),
             PythonInstalledEvent::class,
-            'foobar',
+            '$refresh',
         );
     }
 
+    /**
+     * Get the validation rules for the input data.
+     */
     protected function rules(): array
     {
         return [
@@ -56,7 +59,6 @@ class PythonsIndexTable extends LivewireComponent
         $this->authorize('index', [Python::class, $this->server]);
 
         $this->pythonVersions = Arr::keys(config('servers.python'));
-        $this->pythons = $this->server->pythons;
     }
 
     /**
@@ -64,12 +66,6 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function install(StorePythonAction $storePython, string $version): void
     {
-        /*
-         * TODO: CRITICAL! CONTINUE. Figure out a local setup of WebSockets with beyondcode/laravel-websockets and configure the app.
-         *       Then, figure out Laravel Echo + Livewire. Or maybe just setup a free Pusher account first to try it all out.
-         *       Then, implement the front-end part.
-         */
-
         $version = Validator::make(
             ['version' => $version],
             $this->rules(),
@@ -93,6 +89,9 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function render(): View
     {
+        // TODO: Is there are caching opportunity here? So, no reloading these from the DB every time?
+        $this->pythons = $this->server->pythons()->get();
+
         return view('pythons.index-table');
     }
 }

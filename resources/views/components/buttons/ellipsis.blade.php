@@ -1,14 +1,10 @@
-@props(['capitalize', 'link' => false, 'size' => null])
+@props(['link' => false, 'size' => null])
 
 @php
     $classes = implode(' ', [
-        'inline-flex items-center justify-center min-w-16 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
-        ($capitalize ?? true) ? 'capitalize' : '',
-        match ($size ?? null) {
-            'small' => 'py-0 px-2 mt-2px text-sm',
-            default => 'py-1 px-4 mt-2px'
-        },
-        'text-gray-300 bg-transparent ring-2 ring-gray-400 ring-opacity-0 border-2 border-gray-400 border-opacity-0 underline',
+        'inline-flex items-center justify-center min-w-8 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
+        'py-1 px-2',
+        'text-gray-300 bg-transparent ring-2 ring-gray-400 ring-opacity-0 border-2 border-gray-400 border-opacity-0',
         'hover:ring-opacity-100 hover:text-gray-200',
         'active:bg-gray-600 active:text-gray-100',
         'focus:ring-opacity-100 focus:border-opacity-100 focus:outline-none focus:ring focus:ring-opacity-50',
@@ -19,10 +15,10 @@
 
 @if($link)
     <a {{ $attributes->merge(['class' => $classes])->except('type') }}>
-        {{ $slot }}
+        <x-icon><i class="fas fa-ellipsis-h"></i></x-icon>
     </a>
 @else
     <button {{ $attributes->merge(['class' => $classes, 'type' => 'button']) }}>
-        {{ $slot }}
+        <x-icon size="6"><i class="fas fa-ellipsis-h text-2xl"></i></x-icon>
     </button>
 @endif

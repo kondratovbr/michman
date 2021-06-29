@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property string $version
+ * @property string|null $status
+ * @property string|null $patchVersion
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -23,13 +25,31 @@ class Python extends AbstractModel
 {
     use HasFactory;
 
+    public const STATUS_INSTALLED = 'installed';
+    public const STATUS_INSTALLING = 'installing';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'version',
+        'status',
+        'patch_version',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    public function getStatusAttribute(): string
+    {
+        return $this->attributes['status'] ?? static::STATUS_INSTALLING;
+    }
+
+    /**
+     * Determine if this instance of Python was installed on the server.
+     */
+    public function installed(): bool
+    {
+        return $this->status === static::STATUS_INSTALLED;
+    }
 
     /**
      * Get a relation with the server where this Python instance is installed.
