@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\PythonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,7 @@ class Python extends AbstractModel
 
     public const STATUS_INSTALLED = 'installed';
     public const STATUS_INSTALLING = 'installing';
+    public const STATUS_UPDATING = 'updating';
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -44,11 +46,22 @@ class Python extends AbstractModel
     }
 
     /**
-     * Determine if this instance of Python was installed on the server.
+     * Check if this instance of Python was installed on the server.
      */
-    public function installed(): bool
+    public function isInstalled(): bool
     {
-        return $this->status === static::STATUS_INSTALLED;
+        return in_array($this->status, [
+            static::STATUS_INSTALLED,
+            static::STATUS_UPDATING,
+        ]);
+    }
+
+    /**
+     * Check if this instance of Python is currently updating.
+     */
+    public function isUpdating(): bool
+    {
+        return $this->status === static::STATUS_UPDATING;
     }
 
     /**

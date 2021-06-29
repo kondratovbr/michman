@@ -1,4 +1,4 @@
-{{--TODO: This table (maybe others as well) jumps a bit when it refreshes and something changes. Seemingly because buttons change the height of rows and when there are no buttons the width of columns changes as well. Should fix those somehow so it doesn't jump.--}}
+{{--TODO: This table (maybe others as well) jumps a bit when it refreshes and something changes. Seemingly because buttons change the height of rows and when there are no buttons the width of columns changes as well. Should fix those somehow so it doesn't jump. It also jumps when a badge width changes, which inevitably happens sometimes.--}}
 
 {{--TODO: CRITICAL! Unfinished!--}}
 
@@ -38,13 +38,34 @@
                 @if(! is_null($python))
                     <x-td>{{ $python->patchVersion }}</x-td>
                     <x-td><x-pythons.status-badge :python="$python" /></x-td>
-                    <x-td class="min-w-64">
-                        <x-buttons.ellipsis wire:loading.attr="disabled" />
+                    <x-td class="min-w-14 flex justify-center items-center">
+{{--                        TODO: Maybe make a generally smaller version of this dropdown. The paddings are a bit too big and disproportionte to the text.--}}
+                        <x-ellipsis-dropdown :disabled="$python->status !== 'installed'">
+
+                            <x-dropdown.menu align="right">
+                                <x-dropdown.button
+                                    class="text-sm"
+                                    wire:click="patch('{{ $python->getKey() }}')"
+                                    wire:loading.attr="disabled"
+                                >
+                                    {{ __('servers.pythons.table.patch-button') }}
+                                </x-dropdown.button>
+                                <x-dropdown.separator/>
+                                <x-dropdown.button
+                                    class="text-sm"
+                                    wire:click="remove('{{ $python->getKey() }}')"
+                                    wire:loading.attr="disabled"
+                                >
+                                    {{ __('servers.pythons.table.remove-button', ['version' => __("servers.pythons.versions.{$version}")]) }}
+                                </x-dropdown.button>
+                            </x-dropdown.menu>
+
+                        </x-ellipsis-dropdown>
                     </x-td>
                 @else
                     <x-td>—</x-td>
                     <x-td>—</x-td>
-                    <x-td class="min-w-64">
+                    <x-td class="min-w-14 flex justify-center items-center">
                         <x-buttons.primary
                             size="small"
                             wire:click="install('{{ $version }}')"

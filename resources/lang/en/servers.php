@@ -87,6 +87,8 @@ return [
             'status' => 'Status',
             'cli' => 'CLI',
             'patch-version' => 'Patch Version',
+            'patch-button' => 'Update Patch Version',
+            'remove-button' => 'Uninstall Python :version',
         ],
 
         'versions' => [
@@ -98,6 +100,7 @@ return [
         'statuses' => [
             Python::STATUS_INSTALLED => 'Installed',
             Python::STATUS_INSTALLING => 'Installing',
+            Python::STATUS_UPDATING => 'Updating',
         ],
     ],
 ];

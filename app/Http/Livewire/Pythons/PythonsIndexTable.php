@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Pythons;
 
+use App\Actions\Pythons\PatchPythonAction;
 use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\PythonData;
 use App\Events\Pythons\PythonInstalledEvent;
+use App\Events\Pythons\PythonPatchedEvent;
+use App\Events\Pythons\PythonRemovedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Python;
 use App\Models\Server;
@@ -34,21 +37,13 @@ class PythonsIndexTable extends LivewireComponent
     {
         $this->echoPrivate(
             'servers.' . $this->server->getKey(),
-            PythonInstalledEvent::class,
+            [
+                PythonInstalledEvent::class,
+                PythonPatchedEvent::class,
+                PythonRemovedEvent::class,
+            ],
             '$refresh',
         );
-    }
-
-    /**
-     * Get the validation rules for the input data.
-     */
-    protected function rules(): array
-    {
-        return [
-            'version' => Rules::string()
-                ->in(Arr::keys(config('servers.python')))
-                ->required(),
-        ];
     }
 
     /**
@@ -68,7 +63,9 @@ class PythonsIndexTable extends LivewireComponent
     {
         $version = Validator::make(
             ['version' => $version],
-            $this->rules(),
+            ['version' => Rules::string(1, 8)
+                ->in(Arr::keys(config('servers.python')))
+                ->required()],
         )->validate()['version'];
 
         $this->authorize('create', [Python::class, $this->server, $version]);
@@ -79,9 +76,32 @@ class PythonsIndexTable extends LivewireComponent
         ));
     }
 
-    public function foobar(): void
+    /**
+     * Update a Python installation on the server to the most recent patch version available.
+     */
+    public function patch(PatchPythonAction $patchPython, string $pythonKey): void
     {
-        dd('Foobar!');
+        $pythonKey = Validator::make(
+            ['python_key' => $pythonKey],
+            ['python_key' => Rules::string(1, 16)
+                ->in($this->pythons->pluck('id')->toArray())
+                ->required()],
+        )->validate()['python_key'];
+
+        /** @var Python $python */
+        $python = $this->server->pythons()->findOrFail($pythonKey);
+
+        $this->authorize('update', $python);
+
+        $patchPython->execute($python);
+    }
+
+    /**
+     * Remove a Python installation from the server.
+     */
+    public function remove(string $pythonKey): void
+    {
+        //
     }
 
     /**

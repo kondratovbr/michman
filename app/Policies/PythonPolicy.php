@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Python;
 use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -25,5 +26,24 @@ class PythonPolicy
     {
         return $user->is($server->provider->owner)
             && $server->pythons()->where('version', $version)->count() === 0;
+    }
+
+    /**
+     * Determine whether a user is allowed to update a Python model and its corresponding instance on a server.
+     */
+    public function update(User $user, Python $python): bool
+    {
+        return $user->is($python->server->provider->owner);
+    }
+
+    /**
+     * Determine whether a user is allowed to delete a Python instance from a server.
+     */
+    public function delete(User $user, Python $python): bool
+    {
+        // TODO: CRITICAL! Put a correct check here.
+        return false;
+
+        return $user->is($python->server->provider->owner);
     }
 }

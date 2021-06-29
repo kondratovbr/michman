@@ -2,7 +2,7 @@
 {{--TODO: Maybe extract buttons as a component.--}}
 {{--TODO: Add a loading spinner, like Bulma does.--}}
 {{--TODO: Maybe use cursor-wait option for when the loading spinner is showing.--}}
-{{--TODO: See how it looks when "disabled". Maybe needs an update.--}}
+{{--TODO: See how it looks when "disabled". Maybe needs an update. Check other buttons as well.--}}
 
 @props(['capitalize', 'link' => false, 'size' => null])
 

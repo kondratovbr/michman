@@ -2,16 +2,16 @@
 
 namespace App\Jobs\Servers;
 
-use App\Events\Pythons\PythonInstalledEvent;
+use App\Events\Pythons\PythonPatchedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Python;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: CRITICAL! Test and cover with tests!
 
-class InstallPythonJob extends AbstractJob
+class PatchPythonJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 
@@ -32,17 +32,16 @@ class InstallPythonJob extends AbstractJob
         DB::transaction(function () {
             /** @var Python $python */
             $python = Python::query()
-                ->with('server')
                 ->lockForUpdate()
                 ->findOrFail($this->python->getKey());
 
-            if ($python->isInstalled())
+            if (! $python->isUpdating())
                 return;
 
-            $scriptClass = (string) config("servers.python.{$python->version}.scripts_namespace") . '\InstallPythonScript';
+            $scriptClass = (string) config("servers.python.{$python->version}.scripts_namespace") . '\PatchPythonScript';
 
             if (! class_exists($scriptClass))
-                throw new RuntimeException('No installation script exists for this version of Python.');
+                throw new RuntimeException('No patching script exists for this version of Python.');
 
             $patchVersion = $scriptClass::run($python->server);
 
@@ -50,7 +49,7 @@ class InstallPythonJob extends AbstractJob
             $python->patchVersion = $patchVersion;
             $python->save();
 
-            event(new PythonInstalledEvent($python));
+            event(new PythonPatchedEvent($python));
         }, 5);
     }
 }
