@@ -20,9 +20,7 @@ use Laravel\Socialite\Contracts\User as OauthUser;
 
 class OAuthController extends AbstractController
 {
-    /*
-     * TODO: IMPORTANT! Cover this with tests.
-     */
+    // TODO: CRITICAL! Update tests.
 
     public function __construct(
         private CreateNewUser $createNewUser,
@@ -35,7 +33,14 @@ class OAuthController extends AbstractController
      */
     public function login(string $oauthProvider): SymfonyRedirect
     {
-        return Socialite::driver($oauthProvider)->redirect();
+        $socialite = Socialite::driver($oauthProvider);
+
+        $vcsProviderName = $this->getVcsProviderName($oauthProvider);
+
+        if (! is_null($vcsProviderName))
+            $socialite->scopes(config("vcs.list.{$vcsProviderName}.oauth_scopes"));
+
+        return $socialite->redirect();
     }
 
     /**
@@ -171,7 +176,7 @@ class OAuthController extends AbstractController
     private function updateVcs(string $oauthProvider, OauthUser $oauthUser, User $user): void
     {
         DB::transaction(function () use ($oauthProvider, $oauthUser, $user) {
-            $vcsProviderName = (string) config("auth.oauth_providers.{$oauthProvider}.vcs_provider");
+            $vcsProviderName = $this->getVcsProviderName($oauthProvider);
 
             // This OAuth provider is not configured to be used as a VCS provider.
             if (is_null($vcsProviderName))
@@ -197,5 +202,13 @@ class OAuthController extends AbstractController
             if ($vcsProvider->externalId === $vcsProviderData->external_id)
                 $this->updateVcsProvider->execute($vcsProvider,$vcsProviderData);
         }, 5);
+    }
+
+    /**
+     * Get a VCS provider name from config by its OAuth provider name.
+     */
+    private function getVcsProviderName(string $vcsProviderOauthName): string|null
+    {
+        return config("auth.oauth_providers.{$vcsProviderOauthName}.vcs_provider");
     }
 }
