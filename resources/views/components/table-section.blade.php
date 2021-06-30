@@ -9,9 +9,8 @@
         @endisset
     </x-section-title>
 
-{{--    TODO: CRITICAL! I remover "overflow-y-hidden" from x-box here. Has it broke something?--}}
     <x-box class="lg:order-1 lg:col-span-2 mt-5 lg:mt-0">
-        <table class="table-auto text-left w-full border-collapse">
+        <table class="table-auto text-left w-full border-separate border-spacing-0">
             @isset($header)
                 <thead class="px-4 py-3 sm:px-6 bg-navy-200 border-b-2 border-gray-600">
                     {{ $header }}

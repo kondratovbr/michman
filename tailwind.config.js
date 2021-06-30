@@ -251,6 +251,7 @@ module.exports = {
             borderWidth: ['hover', 'active', 'last', 'input-checked'],
             borderColor: ['hover', 'active', 'focus', 'input-checked'],
             borderOpacity: ['focus', 'group-hover', 'group-active', 'group-focus'],
+            borderRadius: ['first', 'last'],
             boxShadow: ['focus', 'input-checked'],
             cursor: ['disabled', 'input-disabled'],
             display: [],
