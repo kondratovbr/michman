@@ -5,7 +5,6 @@ namespace App\Actions\Servers;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\Servers\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\AddServerSshKeyToVcsJob;
-use App\Jobs\Servers\ConfigureServerJob;
 use App\Jobs\Servers\CreateServerSshKeyJob;
 use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
@@ -20,6 +19,7 @@ use App\Models\User;
 use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class StoreServerAction
 {
@@ -64,7 +64,12 @@ class StoreServerAction
                     $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
             }
 
-            $jobs[] = new ConfigureServerJob($server, $data);
+            $configurationJobClass = (string) config('servers.types.' . $server->type . '.configuration_job_class');
+
+            if (empty($configurationJobClass))
+                throw new RuntimeException('Job class for this server type is not configured.');
+
+            $jobs[] = new $configurationJobClass($server, $data);
 
             Bus::chain($jobs)->dispatch();
 
