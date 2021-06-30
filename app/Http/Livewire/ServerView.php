@@ -11,14 +11,13 @@ class ServerView extends AbstractSubpagesView
     protected const VIEW = 'servers.show';
 
     public const VIEWS = [
-        'projects' => 'projects.show',
-        'pythons' => 'pythons.show',
+        'projects' => 'projects.index',
+        'pythons' => 'pythons.index',
         //
     ];
 
-    // TODO: CRITICAL! Don't forget to change this default once ready. Should be on server's projects index.
     /** @var string The name of a sub-page that will be shown by default. */
-    protected const DEFAULT_SHOW = 'pythons';
+    protected const DEFAULT_SHOW = 'projects';
 
     public Server $server;
 }
