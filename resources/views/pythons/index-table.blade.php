@@ -4,7 +4,7 @@
 
 {{--TODO: CRITICAL! Make sure that versions that are in use by projects cannot be removed.--}}
 
-{{--TODO: IMPORTANT! The table doesn't properly fit on some screen sizes. Should check it.--}}
+{{--TODO: IMPORTANT! The table doesn't properly fit on some screen sizes. Should check it. Check other index tables as well.--}}
 
 <x-table-section>
 

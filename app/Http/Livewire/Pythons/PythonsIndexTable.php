@@ -109,7 +109,7 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function render(): View
     {
-        // TODO: Is there are caching opportunity here? So, no reloading these from the DB every time?
+        // TODO: Is there are caching opportunity here? So, no reloading these from the DB every time? See other similar Livewire tables as well.
         $this->pythons = $this->server->pythons()->get();
 
         return view('pythons.index-table');
