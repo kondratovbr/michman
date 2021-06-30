@@ -66,7 +66,7 @@ return [
     // NOTE: The order of versions here is important - it is the order the versions will be shown in the UI.
     'python' => [
         '3_9' => [
-            'scripts_namespace' => null,
+            'scripts_namespace' => 'App\Scripts\Root\Python3_9',
             'cli' => 'python3.9',
         ],
         '3_8' => [

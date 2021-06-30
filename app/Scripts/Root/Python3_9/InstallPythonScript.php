@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace App\Scripts\Root\Python3_8;
+namespace App\Scripts\Root\Python3_9;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Support\Str;
 use phpseclib3\Net\SFTP;
 use RuntimeException;
 
@@ -25,16 +24,16 @@ class InstallPythonScript extends AbstractServerScript
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libssl-dev libffi-dev python3-dev');
         $this->read();
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y python3.8 python3-pip python3-venv python3-virtualenv');
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y python3.9 python3-pip python3-venv python3-virtualenv');
         $this->read();
 
         // Verify that Python works.
-        if (trim($this->exec('python3.8 -c \'print("foobar")\'')) != 'foobar')
-            throw new RuntimeException('Python 3.8 installation failed - Python not accessible.');
+        if (trim($this->exec('python3.9 -c \'print("foobar")\'')) != 'foobar')
+            throw new RuntimeException('Python 3.9 installation failed - Python not accessible.');
 
         return trim(explode(
             ' ',
-            $this->exec('python3.8 --version'),
+            $this->exec('python3.9 --version'),
             2
         )[1]);
     }
