@@ -33,13 +33,6 @@ class StoreServerAction
             /** @var Server $server */
             $server = $data->provider->servers()->create($attributes);
 
-            /*
-             * TODO: CRITICAL! Don't forget to:
-             *       - Generate SSH keys on the server. Or rather generate locally and send to the server.
-             *       - Add server's SSH keys to user's VCS if needed.
-             *       - ...
-             */
-
             $jobs = [
 
                 new CreateWorkerSshKeyForServerJob($server),
@@ -51,8 +44,6 @@ class StoreServerAction
                 new UpdateServerAvailabilityJob($server),
                 new UpdateUserSshKeysOnServerJob($server),
                 new CreateServerSshKeyJob($server),
-
-                // TODO: CRITICAL! CONTINUE - test this.
                 new UploadServerSshKeyToServerJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
@@ -67,7 +58,7 @@ class StoreServerAction
             $configurationJobClass = (string) config('servers.types.' . $server->type . '.configuration_job_class');
 
             if (empty($configurationJobClass))
-                throw new RuntimeException('Job class for this server type is not configured.');
+                throw new RuntimeException('Configuration job class for this server type is not configured.');
 
             $jobs[] = new $configurationJobClass($server, $data);
 
