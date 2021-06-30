@@ -9,6 +9,11 @@
             {{ __('servers.projects.button') }}
         </x-menu.item>
 
+        <x-menu.item show="firewall">
+            <x-slot name="icon"><i class="fas fa-door-open"></i></x-slot>
+            {{ __('servers.firewall.button') }}
+        </x-menu.item>
+
         <x-menu.item show="pythons">
             <x-slot name="icon"><i class="fab fa-python"></i></x-slot>
             {{ __('servers.pythons.button') }}

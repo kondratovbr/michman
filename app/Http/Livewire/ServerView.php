@@ -13,6 +13,7 @@ class ServerView extends AbstractSubpagesView
     public const VIEWS = [
         'projects' => 'projects.index',
         'pythons' => 'pythons.index',
+        'firewall' => 'firewall.index',
         //
     ];
 

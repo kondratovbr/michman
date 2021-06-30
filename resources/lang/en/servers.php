@@ -118,4 +118,10 @@ return [
             Python::STATUS_UPDATING => 'Updating',
         ],
     ],
+
+    'firewall' => [
+        'button' => 'Firewall',
+
+        //
+    ],
 ];
