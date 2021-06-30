@@ -16,7 +16,7 @@ class FirewallRuleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'can_delete' => true,
         ];
     }
 }

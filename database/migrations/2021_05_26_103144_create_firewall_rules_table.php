@@ -18,6 +18,7 @@ class CreateFirewallRulesTable extends Migration
             $table->string('name');
             $table->string('port');
             $table->string('from_ip')->nullable();
+            $table->boolean('can_delete')->nullable();
 
             $table->timestamps();
         });

@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Servers;
 
-use App\Actions\Servers\StoreFirewallRuleAction;
+use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleData;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
@@ -52,19 +52,15 @@ class ConfigureAppServerJob extends AbstractJob
 
             ])->dispatch();
 
-            // TODO: CRITICAL! Continue. Implement these:
-
             $storeFirewallRuleAction->execute(new FirewallRuleData(
-                server: $server,
                 name: 'HTTP',
                 port: '80',
-            ));
+            ), $server);
 
             $storeFirewallRuleAction->execute(new FirewallRuleData(
-                server: $server,
                 name: 'HTTPS',
                 port: '443',
-            ));
+            ), $server);
 
         }, 5);
     }

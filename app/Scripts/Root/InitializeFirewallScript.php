@@ -6,22 +6,18 @@ use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
 
-class ConfigureFirewallScript extends AbstractServerScript
+class InitializeFirewallScript extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): void
     {
-        $this->init($server, $ssh ?? $server->sftp('root'));
+        $this->init($server, $ssh);
 
-        $this->setTimeout(60 * 5); // 5 min
         foreach ([
             'ufw disable',
             'ufw logging on',
             'ufw default deny routed',
             'ufw default deny incoming',
             'ufw default allow outgoing',
-            "ufw limit in {$server->sshPort}/tcp",
-            'ufw --force enable',
-            'ufw status verbose',
         ] as $command) {
             $this->exec($command);
         }

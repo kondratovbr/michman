@@ -123,11 +123,17 @@ return [
         'button' => 'Firewall',
 
         'form' => [
-            'title' => 'Open a Port In The Firewall',
+            'title' => 'Open a Port In Firewall',
         ],
 
         'table' => [
-            'title' => 'Firewall Open Ports',
+            'title' => 'Open Ports',
+            'name' => 'Name',
+            'port' => 'Port',
+            'type' => 'Type',
+            'from-ip' => 'From IP',
+            'any' => 'Any',
+            'allow' => 'Allow',
         ],
     ],
 ];

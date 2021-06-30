@@ -2,10 +2,13 @@
 
 namespace App\Jobs\Servers;
 
+use App\Actions\Firewall\StoreFirewallRuleAction;
+use App\DataTransferObjects\FirewallRuleData;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Server;
-use App\Scripts\Root\ConfigureFirewallScript;
+use App\Scripts\Root\EnableFirewallScript;
+use App\Scripts\Root\InitializeFirewallScript;
 use App\Scripts\Root\ConfigureSshServerScript;
 use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
 use App\Scripts\Root\CreateSudoUserScript;
@@ -36,10 +39,12 @@ class PrepareRemoteServerJob extends AbstractJob
      * Execute the job.
      */
     public function handle(
+        StoreFirewallRuleAction $storeFirewallRule,
         UpgradePackagesScript $upgradePackages,
         InstallBasePackagesScript $installBasePackages,
         ConfigureUnattendedUpgradesScript $configureUnattendedUpgrades,
-        ConfigureFirewallScript $configureFirewall,
+        InitializeFirewallScript $initializeFirewall,
+        EnableFirewallScript $enableFirewall,
         CreateSudoUserScript $createSudoUser,
         ConfigureSshServerScript $configureSshServer,
         RebootServerScript $rebootServer,
@@ -48,10 +53,12 @@ class PrepareRemoteServerJob extends AbstractJob
             $upgradePackages,
             $installBasePackages,
             $configureUnattendedUpgrades,
-            $configureFirewall,
+            $initializeFirewall,
+            $enableFirewall,
             $createSudoUser,
             $configureSshServer,
             $rebootServer,
+            $storeFirewallRule,
         ) {
             /** @var Server $server */
             $server = Server::query()
@@ -67,7 +74,14 @@ class PrepareRemoteServerJob extends AbstractJob
 
             $configureUnattendedUpgrades->execute($server, $ssh);
 
-            $configureFirewall->execute($server, $ssh);
+            $initializeFirewall->execute($server, $ssh);
+
+            $storeFirewallRule->execute(new FirewallRuleData(
+                name: 'SSH',
+                port: '22',
+            ), $server, true);
+
+            $enableFirewall->execute($server, $ssh);
 
             $createSudoUser->execute(
                 $server,

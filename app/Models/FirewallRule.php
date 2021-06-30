@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ForceBooleanCast;
 use Carbon\CarbonInterface;
 use Database\Factories\FirewallRuleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $name
  * @property string $port
  * @property string $fromIp
+ * @property bool $canDelete
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -30,10 +32,16 @@ class FirewallRule extends AbstractModel
         'name',
         'port',
         'from_ip',
+        'can_delete',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /** @var string[] The attributes castings. */
+    protected $casts = [
+        'can_delete' => ForceBooleanCast::class,
+    ];
 
     /**
      * Get a relation to the server that has this rule.
