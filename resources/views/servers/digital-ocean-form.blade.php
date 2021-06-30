@@ -5,7 +5,7 @@
 <div class="space-y-6">
 
     <x-field wire:key="provider_id">
-        <x-label>API Credentials</x-label>
+        <x-label>{{ __('servers.create.credentials') }}</x-label>
         <x-select
             name="state.provider_id"
             :options="$providers"
@@ -21,13 +21,13 @@
     @isset($apiErrorCode)
 {{--        TODO: IMPORTANT! Make this more concise and detailed, add more explanations for different erorr codes and add a link/button to contact suport.--}}
         <x-message colors="danger">
-            <p class="max-w-prose">Something went wrong while calling DigitalOcean API.</p>
-            <p class="max-w-prose">DigitalOcean API error code: {{ $apiErrorCode }}</p>
+            <p class="max-w-prose">{{ __('servers.create.digital-ocean.something-wrong') }}</p>
+            <p class="max-w-prose">{{ __('servers.create.digital-ocean.error-code', ['code' => $apiErrorCode]) }}</p>
         </x-message>
     @else
-{{--        TODO: Don't forget to add an explanation here. Not everyone knows where the name will be used and even WTF is it. --}}
+{{--        TODO: Don't forget to add an explanation here. Not everyone knows where the name will be used and even WTF is it.--}}
         <x-field>
-            <x-label>Name</x-label>
+            <x-label>{{ __('servers.create.name') }}</x-label>
             <x-inputs.text
                 name="state.name"
                 wire:model="state.name"
@@ -38,7 +38,7 @@
 
         @isset($state['provider_id'])
             <x-field>
-                <x-label>Region</x-label>
+                <x-label>{{ __('servers.create.region') }}</x-label>
                 <x-search-select
                     name="state.region"
                     :options="$availableRegions"
@@ -52,7 +52,7 @@
 
             @isset($state['region'])
                 <x-field>
-                    <x-label>Size</x-label>
+                    <x-label>{{ __('servers.create.size') }}</x-label>
                     <x-search-select
                         name="state.size"
                         :options="$availableSizes"
@@ -66,7 +66,7 @@
 
                 @isset($state['size'])
                     <x-field>
-                        <x-label>Type</x-label>
+                        <x-label>{{ __('servers.create.type') }}</x-label>
                         <x-select
                             name="state.type"
                             :options="$types"
@@ -87,7 +87,7 @@
                     @isset($state['type'])
                         @if($this->shouldInstall('python'))
                             <x-field>
-                                <x-label>Python Version</x-label>
+                                <x-label>{{ __('servers.create.python-version') }}</x-label>
                                 <x-select
                                     name="state.python_version"
                                     :options="$pythonVersions"
@@ -100,7 +100,7 @@
                         @endif
                         @if($this->shouldInstall('database'))
                             <x-field>
-                                <x-label>Database</x-label>
+                                <x-label>{{ __('servers.create.database') }}</x-label>
                                 <x-select
                                     name="state.database"
                                     :options="$databases"
@@ -113,7 +113,7 @@
                             @if($state['database'] !== 'none')
 {{--                                TODO: Maybe database name here isn't necessary? Leave this to other stages of deployment?--}}
                                 <x-field>
-                                    <x-label>Database Name</x-label>
+                                    <x-label>{{ __('servers.create.db-name') }}</x-label>
                                     <x-inputs.text
                                         name="state.db_name"
                                         wire:model="state.db_name"
@@ -124,7 +124,7 @@
                         @endif
                         @if($this->shouldInstall('cache'))
                             <x-field>
-                                <x-label>Cache</x-label>
+                                <x-label>{{ __('servers.create.cache') }}</x-label>
                                 <x-select
                                     name="state.cache"
                                     :options="$caches"
@@ -145,7 +145,7 @@
                     <x-checkbox-new
                         name="state.add_ssh_key_to_vcs"
                         wire:model="state.add_ssh_key_to_vcs"
-                    >Add server's SSH key to source control providers</x-checkbox-new>
+                    >{{ __('servers.create.add-key-to-vcs') }}</x-checkbox-new>
                 </x-field>
             </div>
 
@@ -154,7 +154,7 @@
 
     <x-message colors="info">
         <div class="max-w-prose space-y-3">
-            <p>The following will be installed on the server:</p>
+            <p>{{ __('servers.create.will-be-installed') }}</p>
             <ul class="list-disc list-outside ml-3 ">
                 @foreach(config('servers.types.' . $state['type'] . '.install') ?? [] as $program)
                     @if($program == 'database')

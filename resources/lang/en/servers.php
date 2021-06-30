@@ -20,6 +20,21 @@ return [
 
         'title' => 'Provision New Server',
         'button' => 'Create Server',
+        'credentials' => 'API Credentials',
+        'name' => 'Name',
+        'region' => 'Region',
+        'size' => 'Size',
+        'type' => 'Type',
+        'python-version' => 'Python Version',
+        'database' => 'Database',
+        'db-name' => 'Database Name',
+        'cache' => 'Cache',
+        'add-key-to-vcs' => 'Add server\'s SSH key to source control providers',
+        'will-be-installed' => 'The following will be installed on the server:',
+        'digital-ocean' => [
+            'something-wrong' => 'Something went wrong while calling DigitalOcean API.',
+            'error-code' => 'DigitalOcean API error code: :code',
+        ],
 
     ],
 
