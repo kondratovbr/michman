@@ -122,6 +122,12 @@ return [
     'firewall' => [
         'button' => 'Firewall',
 
-        //
+        'form' => [
+            'title' => 'Open a Port In The Firewall',
+        ],
+
+        'table' => [
+            'title' => 'Firewall Open Ports',
+        ],
     ],
 ];

@@ -42,6 +42,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $pythons
  * @property-read Collection $deploySshKeys
  * @property-read ServerSshKey $serverSshKey
+ * @property-read Collection $firewallRules
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -243,5 +244,13 @@ class Server extends AbstractModel
     public function serverSshKey(): HasOne
     {
         return $this->hasOne(ServerSshKey::class);
+    }
+
+    /**
+     * Get a relation with the firewall rules created for this server.
+     */
+    public function firewallRules(): HasMany
+    {
+        return $this->hasMany(FirewallRule::class);
     }
 }
