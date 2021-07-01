@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Servers;
 
+use App\Events\Firewall\FirewallRuleAddedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\FirewallRule;
@@ -40,7 +41,13 @@ class AddFirewallRuleToServerJob extends AbstractJob
                 $rule->port,
                 // We're going to "limit" the SSH port using the UFW built-in config as an additional brute-force protection for SSH.
                 $rule->port == $rule->server->sshPort,
+                $rule->fromIp,
             );
+
+            $rule->status = FirewallRule::STATUS_ADDED;
+            $rule->save();
+
+            event(new FirewallRuleAddedEvent($rule));
         }, 5);
     }
 }
