@@ -53,7 +53,7 @@ class FirewallCreateForm extends LivewireComponent
         $storeFirewallRule->execute(new FirewallRuleData(
             name: $validated['name'],
             port: $validated['port'],
-            fromIp: $validated['fromIp'],
+            from_ip: $validated['fromIp'],
         ), $this->server);
 
         $this->reset(

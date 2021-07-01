@@ -9,6 +9,6 @@ class FirewallRuleData extends DataTransferObject
 {
     public string $name;
     public string $port;
-    public string|null $fromIp = null;
-    public bool $canDelete = true;
+    public string|null $from_ip = null;
+    public bool $can_delete = true;
 }
