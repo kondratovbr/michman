@@ -32,6 +32,6 @@ class FirewallRulePolicy
      */
     public function delete(User $user, FirewallRule $rule): bool
     {
-        return $user->is($rule->user);
+        return $user->is($rule->user) && $rule->canDelete;
     }
 }
