@@ -50,8 +50,8 @@
 
     <x-slot name="actions">
         <x-buttons>
-            <x-buttons.primary wire:click.prevent="store">{{ __('servers.create.button') }}</x-buttons.primary>
             <x-buttons.secondary wire:click.prevent="cancel">{{ __('buttons.cancel') }}</x-buttons.secondary>
+            <x-buttons.primary wire:click.prevent="store">{{ __('servers.create.button') }}</x-buttons.primary>
         </x-buttons>
     </x-slot>
 
