@@ -131,4 +131,14 @@ class Rules extends AbstractBaseRules
             'email',
         ]);
     }
+
+    static public function ip(): static
+    {
+        return new static([
+            'string',
+            'min:4',
+            'max:40',
+            'ip',
+        ]);
+    }
 }
