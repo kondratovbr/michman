@@ -1,9 +1,8 @@
-@props(['capitalize', 'link' => false, 'size' => null])
+@props(['size' => null, 'loading' => false])
 
 @php
     $classes = implode(' ', [
         'inline-flex items-center justify-center rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
-        ($capitalize ?? true) ? 'capitalize' : '',
         match ($size ?? null) {
             'small' => 'py-0.5 px-2',
             default => 'py-1.5 px-4'
@@ -18,12 +17,23 @@
     ]);
 @endphp
 
-@if($link)
-    <a {{ $attributes->merge(['class' => $classes])->except('type') }}>
+<button
+    {{ $attributes->merge(['class' => $classes, 'type' => 'button']) }}
+    x-data="{ loading: {{ $loading ? 'true' : 'false' }} }"
+    x-bind:disabled="loading"
+    x-on:click="loading = true"
+>
+    <div
+        class="justify-center items-center"
+        x-bind:class="{ 'flex': loading, 'hidden': ! loading}"
+        x-cloak
+    >
+        <x-icon><i class="block fas fa-spinner fa-spin"></i></x-icon>
+    </div>
+    <div
+        class="justify-center items-center"
+        x-bind:class="{ 'flex': ! loading, 'hidden': loading}"
+    >
         <x-icon><i class="far fa-trash-alt"></i></x-icon>
-    </a>
-@else
-    <button {{ $attributes->merge(['class' => $classes, 'type' => 'button']) }}>
-        <x-icon><i class="far fa-trash-alt"></i></x-icon>
-    </button>
-@endif
+    </div>
+</button>
