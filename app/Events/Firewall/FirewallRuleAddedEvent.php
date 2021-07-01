@@ -2,7 +2,9 @@
 
 namespace App\Events\Firewall;
 
-class FirewallRuleAddedEvent extends AbstractFirewallEvent
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class FirewallRuleAddedEvent extends AbstractFirewallEvent implements ShouldBroadcast
 {
     //
 }

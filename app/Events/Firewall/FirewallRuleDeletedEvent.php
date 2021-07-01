@@ -2,7 +2,9 @@
 
 namespace App\Events\Firewall;
 
-class FirewallRuleDeletedEvent extends AbstractFirewallEvent
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class FirewallRuleDeletedEvent extends AbstractFirewallEvent implements ShouldBroadcast
 {
     //
 }
