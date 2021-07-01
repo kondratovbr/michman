@@ -12,7 +12,8 @@ trait InteractsWithUfw
         // Rule syntax example:
         // allow from 192.168.0.4 to any port 66 proto tcp
 
-        $fromIp ??= 'any';
+        if (empty($fromIp))
+            $fromIp = 'any';
 
         return "{$type} from {$fromIp} to any port {$port} proto tcp";
     }

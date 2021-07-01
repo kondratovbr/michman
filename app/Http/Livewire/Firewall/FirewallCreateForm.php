@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Firewall;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleData;
+use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\FirewallRule;
 use App\Models\Server;
 use App\Rules\PortRule;
@@ -16,13 +17,14 @@ use Livewire\Component as LivewireComponent;
 
 class FirewallCreateForm extends LivewireComponent
 {
-    use AuthorizesRequests;
+    use AuthorizesRequests,
+        TrimsInput;
 
     public Server $server;
 
-    public string $name = '';
-    public string $port = '';
-    public string $fromIp = '';
+    public string|null $name = null;
+    public string|null $port = null;
+    public string|null $fromIp = null;
 
     public function rules(): array
     {
