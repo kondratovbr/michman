@@ -16,8 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $port
  * @property string $fromIp
  * @property bool $canDelete
+ * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @property-read User $user
  *
  * @property-read Server $server
  *
@@ -27,12 +30,17 @@ class FirewallRule extends AbstractModel
 {
     use HasFactory;
 
+    public const STATUS_ADDED = 'added';
+    public const STATUS_ADDING = 'adding';
+    public const STATUS_DELETING = 'deleting';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
         'port',
         'from_ip',
         'can_delete',
+        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -42,6 +50,46 @@ class FirewallRule extends AbstractModel
     protected $casts = [
         'can_delete' => ForceBooleanCast::class,
     ];
+
+    /**
+     * Get the status of this firewall rule.
+     */
+    public function getStatusAttribute(): string
+    {
+        return $this->attributes['status'] ?? static::STATUS_ADDED;
+    }
+
+    /**
+     * Get the owner of the server where this firewall rule belongs.
+     */
+    public function getUserAttribute(): User
+    {
+        return $this->server->provider->owner;
+    }
+
+    /**
+     * Check if the rule was added to the server.
+     */
+    public function isAdded(): bool
+    {
+        return $this->status === static::STATUS_ADDED;
+    }
+
+    /**
+     * Check if the rule is in the process of being added to the server.
+     */
+    public function isAdding(): bool
+    {
+        return $this->status === static::STATUS_ADDING;
+    }
+
+    /**
+     * Check if the rule is in the process of being deleted from the server.
+     */
+    public function isDeleting(): bool
+    {
+        return $this->status === static::STATUS_DELETING;
+    }
 
     /**
      * Get a relation to the server that has this rule.
