@@ -8,7 +8,7 @@ use App\Scripts\Traits\InteractsWithUfw;
 use phpseclib3\Net\SFTP;
 use RuntimeException;
 
-class AddFirewallRuleScript extends AbstractServerScript
+class DeleteFirewallRuleScript extends AbstractServerScript
 {
     use InteractsWithUfw;
 
@@ -21,7 +21,7 @@ class AddFirewallRuleScript extends AbstractServerScript
     ): void {
         $this->init($server, $ssh);
 
-        $command = 'ufw ' . $this->ufwRule($port, $limit ? 'limit' : 'allow', $fromIp);
+        $command = 'ufw delete ' . $this->ufwRule($port, $limit ? 'limit' : 'allow', $fromIp);
 
         $this->exec($command);
 
