@@ -124,6 +124,18 @@ return [
 
         'form' => [
             'title' => 'Open a Port In Firewall',
+            'button' => 'Open Port',
+            'name' => [
+                'title' => 'Name',
+            ],
+            'port' => [
+                'title' => 'Port',
+                'help' => 'You may provide a port range using a colon character (1:65535)',
+            ],
+            'from-ip' => [
+                'title' => 'From IP',
+                'help' => 'You may provide an IPv4 or IPv6 address and you may also provide a subnet.',
+            ],
         ],
 
         'table' => [

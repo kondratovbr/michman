@@ -29,12 +29,17 @@
                     <x-badge colors="success">{{ __('servers.firewall.table.allow') }}</x-badge>
                 </x-td>
                 <x-td>{{ $rule->fromIp ?? __('servers.firewall.table.any') }}</x-td>
-                <x-td>
-                    @if($rule->canDelete)
-                        <x-buttons.trash
-                            wire:click="delete"
-                            wire:loading.attr="disabled"
-                        />
+                <x-td class="flex justify-end items-center">
+                    @if($rule->isAdded() && $rule->canDelete)
+                        <x-buttons.trash wire:click="delete('{{ $rule->getKey() }}')" />
+                    @endif
+                    @if($rule->isDeleting())
+                        <x-buttons.trash :loading="true" />
+                    @endif
+                    @if($rule->isAdding())
+                        <div class="mr-4">
+                            <x-spinner/>
+                        </div>
                     @endif
                 </x-td>
             </x-tr>
