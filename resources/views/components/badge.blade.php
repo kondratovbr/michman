@@ -15,8 +15,7 @@
 ]) }}
 >
     @if($loading)
-{{--        TODO: CRITICAL! This is a temporary spinner. The actual one is "fad fa-spinner-third" and is found in a paid FontAwesome version. I should pay for it and use it. I also have some other places that require paid FA icons. And check if the wobble is too big - FA has an SVG+JS version that they say helps with it.--}}
-        <x-icon class="block -ml-1 mr-1"><i class="block fas fa-spinner fa-spin"></i></x-icon>
+        <x-spinner class="-ml-1 mr-1" />
     @endif
     <span>{{ $slot }}</span>
 </div>
