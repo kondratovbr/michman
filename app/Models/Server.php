@@ -33,6 +33,8 @@ use phpseclib3\Net\SSH2;
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
+ * @property-read User $user
+ *
  * @property-read Provider $provider
  * @property-read WorkerSshKey $workerSshKey
  * @property-read Collection $logs
@@ -80,6 +82,14 @@ class Server extends AbstractModel
     public function getSshPortAttribute(): string
     {
         return $this->attributes['ssh_port'] ?? (string) config('servers.default_ssh_port');
+    }
+
+    /**
+     * Get the owner of this server.
+     */
+    public function getUserAttribute(): User
+    {
+        return $this->provider->owner;
     }
 
     /**
