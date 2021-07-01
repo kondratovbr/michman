@@ -17,18 +17,24 @@ class StoreFirewallRuleAction
      */
     public function execute(FirewallRuleData $data, Server $server, bool $sync = false): FirewallRule
     {
-        DB::transaction(function () use($data, $server, $sync) {
+        return DB::transaction(function () use($data, $server, $sync) {
             /** @var Server $server */
             $server = Server::query()
                 ->lockForUpdate()
                 ->findOrFail($server->getKey());
 
-            $rule = $server->firewallRules()->create($data->toArray());
+            $attributes = $data->toArray();
+
+            $attributes['status'] = FirewallRule::STATUS_ADDING;
+
+            $rule = $server->firewallRules()->create($attributes);
 
             if ($sync)
                 AddFirewallRuleToServerJob::dispatchSync($rule);
             else
                 AddFirewallRuleToServerJob::dispatch($rule);
+
+            return $rule;
         }, 5);
     }
 }
