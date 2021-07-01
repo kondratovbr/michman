@@ -2,9 +2,11 @@
 
 {{--TODO: CRITICAL! Unfinished!--}}
 
+{{--TODO: CRITICAL! Does deleting works? Do loading animation show up?--}}
+
 {{--TODO: CRITICAL! Make sure that versions that are in use by projects cannot be removed.--}}
 
-{{--TODO: IMPORTANT! The table doesn't properly fit on some screen sizes. Should check it. Check other index tables as well.--}}
+{{--TODO: CRITICAL! The table doesn't properly fit on some screen sizes. Breaks completely on smaller desktops. Should check it. Check other index tables as well.--}}
 
 <x-table-section>
 
@@ -18,7 +20,6 @@
             <x-th>{{ __('servers.pythons.table.cli') }}</x-th>
             <x-th>{{ __('servers.pythons.table.patch-version') }}</x-th>
             <x-th>{{ __('servers.pythons.table.status') }}</x-th>
-            {{-- Buttons, like "install", "delete", "patch". --}}
             <x-th></x-th>
         </x-tr-header>
     </x-slot>
