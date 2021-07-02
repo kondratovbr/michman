@@ -12,6 +12,7 @@ class BladeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // TODO: Do I even use this?
         Blade::directive('alpine', function (string $variables) {
             return <<<PHP
 <?php
