@@ -152,5 +152,11 @@ return [
 
     'database' => [
         'button' => 'Database',
+
+        'table' => [
+            'title' => 'Databases',
+            'empty' => 'No databases created yet.',
+            'name' => 'Name',
+        ],
     ],
 ];
