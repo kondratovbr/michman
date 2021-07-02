@@ -157,6 +157,7 @@ return [
             'title' => 'Create Database',
             'name' => 'Name',
             'button' => 'Create',
+            'grant-access' => 'Grant Full Access to',
         ],
 
         'table' => [
