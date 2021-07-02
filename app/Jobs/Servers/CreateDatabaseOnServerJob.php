@@ -2,27 +2,25 @@
 
 namespace App\Jobs\Servers;
 
+use App\Events\Databases\DatabaseCreatedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
-use App\Models\Server;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-class CreateDatabaseJob extends AbstractJob
+class CreateDatabaseOnServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 
-    protected Server $server;
-    protected string $dbName;
+    protected Database $database;
 
-    public function __construct(Server $server, string $dbName)
+    public function __construct(Database $database)
     {
         $this->setQueue('servers');
 
-        $this->server = $server->withoutRelations();
-        $this->dbName = $dbName;
+        $this->database = $database->withoutRelations();
     }
 
     /**
@@ -31,21 +29,19 @@ class CreateDatabaseJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function() {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
+            /** @var Database $database */
+            $database = Database::query()
+                ->with('server')
                 ->lockForUpdate()
-                ->firstOrFail();
+                ->findOrFail($this->database->getKey());
+
+            $server = $database->server;
 
             if (empty($server->installedDatabase))
                 throw new RuntimeException('No database installed on this server.');
 
-            /** @var Database $database */
-            $database = $server->databases()->create([
-                'name' => $this->dbName,
-            ]);
-
-            $scriptClass = (string) config("servers.databases.{$server->installedDatabase}.scripts_namespace") . '\CreateDatabaseScript';
+            $scriptClass = (string) config("servers.databases.{$server->installedDatabase}.scripts_namespace")
+                . '\CreateDatabaseScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No database creation script exists for this database.');
@@ -53,6 +49,11 @@ class CreateDatabaseJob extends AbstractJob
             $script = App::make($scriptClass);
 
             $script->execute($server, $database->name);
+
+            $database->status = Database::STATUS_CREATED;
+            $database->save();
+
+            event(new DatabaseCreatedEvent($database));
         }, 5);
     }
 }
