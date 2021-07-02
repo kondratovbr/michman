@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+// TODO: CRITICAL! CONTINUE! Implement and test manual creation, granting user access, removal. Then, implement updating - user should be able to change permissions on databases after they're created.
+
+// TODO: CRITICAL! Cover with tests.
+
 class DatabasesIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
