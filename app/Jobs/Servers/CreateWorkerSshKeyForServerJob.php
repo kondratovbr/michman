@@ -7,6 +7,7 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class CreateWorkerSshKeyForServerJob extends AbstractJob
 {
@@ -34,7 +35,7 @@ class CreateWorkerSshKeyForServerJob extends AbstractJob
                 ->firstOrFail();
 
             if (isset($server->workerSshKey)) {
-                $this->fail(new \RuntimeException('The server already has a workerSshKey.'));
+                $this->fail(new RuntimeException('The server already has a workerSshKey.'));
                 return;
             }
 
