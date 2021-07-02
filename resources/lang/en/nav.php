@@ -2,6 +2,7 @@
 
 return [
 
+    'dashboard' => 'Dashboard',
     'servers' => 'Servers',
     'projects' => 'Projects',
     'account' => 'Account',

@@ -1,5 +1,6 @@
-{{--TODO: Add icons everywhere.--}}
-{{-- TODO: Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
+{{--TODO: CRITICAL! Add icons everywhere.--}}
+{{-- TODO: CRITICAL! Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
+{{--TODO: IMPORTANT! Does my enlarging-on-hover transition looks jittery? Only in some browsers? Should I do something about it?--}}
 
 <nav
     class="relative hidden md:block bg-navy-300 z-40"
@@ -35,11 +36,21 @@
             <div class="-ml-1.5 flex items-stretch">
                 {{-- Navigation Links --}}
                 <div class="hidden md:flex">
-{{--                    TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
+{{--                    TODO: CRITICAL! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
                     <x-navbar.link routeName="home">
-                        <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
-                        {{ __('nav.servers') }}
+                        <x-slot name="icon"><i class="fas fa-border-all"></i></x-slot>
+                        {{ __('nav.dashboard') }}
                     </x-navbar.link>
+
+                    @if($user->servers->isEmpty())
+                        <x-navbar.link routeName="home">
+                            <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
+                            {{ __('nav.servers') }}
+                        </x-navbar.link>
+                    @else
+                        @include('partials._servers-dropdown')
+                    @endif
+
                     <x-navbar.link routeName="home">
                         <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
                         {{ __('nav.projects') }}

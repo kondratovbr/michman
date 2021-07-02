@@ -6,7 +6,7 @@ return [
 
     'index' => [
 
-        'title' => 'Servers',
+        'title' => 'Active Servers',
 
         'table' => [
             'server' => 'Server',

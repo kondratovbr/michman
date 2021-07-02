@@ -58,15 +58,15 @@
                 }"
             @endif
         >
-            <div>
+            <div class="flex items-center">
                 @isset($icon)
                     <x-icon class="mr-2">{{ $icon }}</x-icon>
                 @endisset
-                {{ $slot }}
+                <div>{{ $slot }}</div>
+                @isset($iconRight)
+                    <x-icon class="ml-2">{{ $iconRight }}</x-icon>
+                @endisset
             </div>
-            @isset($iconRight)
-                <x-icon class="ml-2">{{ $iconRight }}</x-icon>
-            @endisset
         </div>
     </div>
 </a>
