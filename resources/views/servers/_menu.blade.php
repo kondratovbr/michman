@@ -10,7 +10,7 @@
             {{ __('servers.projects.button') }}
         </x-menu.item>
 
-        <x-menu.item show="database">
+        <x-menu.item show="databases">
             <x-slot name="icon"><i class="fas fa-database"></i></x-slot>
             {{ __('servers.database.button') }}
         </x-menu.item>
