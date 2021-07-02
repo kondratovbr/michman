@@ -6,12 +6,5 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class DatabaseData extends DataTransferObject
 {
-    static function fromRequest($request): self
-    {
-        $validated = $request->validated();
-
-        return new self([
-            //
-        ]);
-    }
+    public string $name;
 }
