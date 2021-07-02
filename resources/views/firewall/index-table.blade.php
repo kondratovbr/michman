@@ -48,7 +48,7 @@
 
     @if($firewallRules->isEmpty())
         <x-slot name="empty">
-            <p>{{ __('servers.firewall.table.empty') }}</p>
+            <p class="max-w-prose">{{ __('servers.firewall.table.empty') }}</p>
         </x-slot>
     @endif
 
