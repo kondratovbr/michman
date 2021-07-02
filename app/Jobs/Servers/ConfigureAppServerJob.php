@@ -2,11 +2,13 @@
 
 namespace App\Jobs\Servers;
 
+use App\Actions\Databases\StoreDatabaseAction;
 use App\Actions\Firewall\StoreFirewallRuleAction;
+use App\DataTransferObjects\DatabaseData;
 use App\DataTransferObjects\FirewallRuleData;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +17,14 @@ use Illuminate\Support\Facades\DB;
 
 class ConfigureAppServerJob extends AbstractJob
 {
-    use InteractsWithRemoteServers;
+    use IsInternal;
 
     protected Server $server;
     protected NewServerData $data;
 
     public function __construct(Server $server, NewServerData $data)
     {
-        $this->setQueue('servers');
+        $this->setQueue('default');
 
         $this->server = $server->withoutRelations();
         $this->data = $data;
@@ -31,8 +33,14 @@ class ConfigureAppServerJob extends AbstractJob
     /**
      * Execute the job.
      */
-    public function handle(StoreFirewallRuleAction $storeFirewallRuleAction): void {
-        DB::transaction(function () use ($storeFirewallRuleAction) {
+    public function handle(
+        StoreFirewallRuleAction $storeFirewallRule,
+        StoreDatabaseAction $storeDatabase,
+    ): void {
+        DB::transaction(function () use (
+            $storeFirewallRule,
+            $storeDatabase,
+        ) {
             /** @var Server $server */
             $server = Server::query()
                 ->whereKey($this->server->getKey())
@@ -41,7 +49,6 @@ class ConfigureAppServerJob extends AbstractJob
 
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
-                new CreateDatabaseJob($server, $this->data->dbName),
                 new InstallCacheJob($server, $this->data->cache),
                 new CreatePythonJob($server, $this->data->pythonVersion),
                 new InstallNginxJob($server),
@@ -52,12 +59,16 @@ class ConfigureAppServerJob extends AbstractJob
 
             ])->dispatch();
 
-            $storeFirewallRuleAction->execute(new FirewallRuleData(
+            $storeDatabase->execute(new DatabaseData(
+                name: $this->data->dbName,
+            ), $server);
+
+            $storeFirewallRule->execute(new FirewallRuleData(
                 name: 'HTTP',
                 port: '80',
             ), $server);
 
-            $storeFirewallRuleAction->execute(new FirewallRuleData(
+            $storeFirewallRule->execute(new FirewallRuleData(
                 name: 'HTTPS',
                 port: '443',
             ), $server);
