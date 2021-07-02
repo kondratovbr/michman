@@ -1,4 +1,5 @@
 {{--TODO: CRITICAL! Values/links are placeholders. Don't forget to put the actual ones.--}}
+{{--TODO: CRITICAL! Make sure the irrelevant buttons aren't shown and menus cannot be accessed. Based on the server's type.--}}
 
 <aside x-data="{ current: '{{ $this->show }}' }">
     <ul class="flex flex-col items-stretch text-gray-200">
