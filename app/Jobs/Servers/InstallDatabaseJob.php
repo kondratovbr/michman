@@ -74,7 +74,6 @@ class InstallDatabaseJob extends AbstractJob
             $script->execute($server);
 
             $server->installedDatabase = $this->database;
-
             $server->save();
         }, 5);
     }

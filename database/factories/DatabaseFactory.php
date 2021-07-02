@@ -29,7 +29,7 @@ class DatabaseFactory extends Factory
     public function forRandomServerFrom(Collection $servers): static
     {
         return $this->afterMaking(
-            fn (Database $database) => $this->associateServer($database, $servers->random())
+            fn(Database $database) => $this->associateServer($database, $servers->random())
         );
     }
 

@@ -34,7 +34,7 @@ class FirewallRuleFactory extends Factory
     public function forRandomServerFrom(Collection $servers): static
     {
         return $this->afterMaking(
-            fn (FirewallRule $rule) => $this->associateServer($rule, $servers->random())
+            fn(FirewallRule $rule) => $this->associateServer($rule, $servers->random())
         );
     }
 

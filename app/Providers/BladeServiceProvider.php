@@ -17,7 +17,7 @@ class BladeServiceProvider extends ServiceProvider
 <?php
     \$data = array_combine(
         array_map(
-            fn (\$variable) => str_replace('$', '', trim(\$variable, ' ')),
+            fn(\$variable) => str_replace('$', '', trim(\$variable, ' ')),
             explode(',', '$variables')
         ),
         [$variables]

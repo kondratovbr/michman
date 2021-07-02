@@ -31,7 +31,7 @@ class DatabaseUserFactory extends Factory
     public function forRandomServerFrom(Collection $servers): static
     {
         return $this->afterMaking(
-            fn (DatabaseUser $databaseUser) => $this->associateServer($databaseUser, $servers->random())
+            fn(DatabaseUser $databaseUser) => $this->associateServer($databaseUser, $servers->random())
         );
     }
 
