@@ -3,6 +3,7 @@
 namespace App\Actions\Databases;
 
 use App\DataTransferObjects\DatabaseData;
+use App\Jobs\Servers\CreateDatabaseOnServerJob;
 use App\Models\Database;
 use App\Models\Server;
 
@@ -10,8 +11,15 @@ class StoreDatabaseAction
 {
     public function execute(DatabaseData $data, Server $server): Database
     {
-        // TODO: CRITICAL! Implement.
+        $attributes = $data->toArray();
 
-        //
+        $attributes['status'] ??= Database::STATUS_CREATING;
+
+        /** @var Database $database */
+        $database = $server->databases()->create($attributes);
+
+        CreateDatabaseOnServerJob::dispatch($database);
+
+        return $database;
     }
 }
