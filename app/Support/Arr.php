@@ -59,7 +59,7 @@ class Arr extends IlluminateArr
      *
      * Array keys are preserved.
      */
-    public static function filter(array $array, \Closure $callback): array
+    public static function filter(array $array, \Closure $callback = null): array
     {
         return array_filter($array, $callback, 0);
     }
