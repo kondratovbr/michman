@@ -23,6 +23,6 @@ class DatabasePolicy
      */
     public function create(User $user, Server $server): bool
     {
-        return $user->is($server->user);
+        return $user->is($server->user) && ! is_null($server->installedDatabase);
     }
 }
