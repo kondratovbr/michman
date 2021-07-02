@@ -82,10 +82,10 @@ return [
     'databases' => [
         'mysql-8_0' => [
             'scripts_namespace' => 'App\Scripts\Root\Mysql8_0',
-            // TODO: CRITICAL! Don't forget to add encodings and collations for other databases as well.
-            'default_encoding' => 'utf8mb4',
+            // TODO: CRITICAL! Don't forget to add charsets and collations for other databases as well.
+            'default_charset' => 'utf8mb4',
             'default_collation' => 'utf8mb4_unicode_ci',
-            'encodings' => [
+            'charsets' => [
 
             ],
             'collations' => [
