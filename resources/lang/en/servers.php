@@ -153,6 +153,10 @@ return [
     'database' => [
         'button' => 'Database',
 
+        'form' => [
+
+        ],
+
         'table' => [
             'title' => 'Databases',
             'empty' => 'No databases created yet.',
