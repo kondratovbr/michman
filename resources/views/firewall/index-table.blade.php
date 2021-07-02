@@ -46,4 +46,10 @@
         @endforeach
     </x-slot>
 
+    @if($firewallRules->isEmpty())
+        <x-slot name="empty">
+            <p>{{ __('servers.firewall.table.empty') }}</p>
+        </x-slot>
+    @endif
+
 </x-table-section>

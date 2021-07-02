@@ -140,6 +140,7 @@ return [
 
         'table' => [
             'title' => 'Open Ports',
+            'empty' => 'No firewall rules added yet.',
             'name' => 'Name',
             'port' => 'Port',
             'type' => 'Type',
