@@ -49,29 +49,18 @@ class ConfigureAppServerJob extends AbstractJob
 
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
+                new CreateDatabaseJob($server, $this->data->dbName),
                 new InstallCacheJob($server, $this->data->cache),
                 new CreatePythonJob($server, $this->data->pythonVersion),
                 new InstallNginxJob($server),
+                new CreateFirewallRuleJob($server, 'HTTP', '80'),
+                new CreateFirewallRuleJob($server, 'HTTPS', '443'),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
                 //
 
             ])->dispatch();
-
-            $storeDatabase->execute(new DatabaseData(
-                name: $this->data->dbName,
-            ), $server);
-
-            $storeFirewallRule->execute(new FirewallRuleData(
-                name: 'HTTP',
-                port: '80',
-            ), $server);
-
-            $storeFirewallRule->execute(new FirewallRuleData(
-                name: 'HTTPS',
-                port: '443',
-            ), $server);
 
         }, 5);
     }
