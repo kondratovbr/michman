@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\CarbonInterface;
+use Database\Factories\DatabaseFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property-read Server $server
  * @property-read Collection $databaseUsers
+ *
+ * @method static DatabaseFactory factory(...$parameters)
  */
 class Database extends AbstractModel
 {
