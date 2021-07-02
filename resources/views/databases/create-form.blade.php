@@ -1,6 +1,6 @@
 <x-form-section submit="store">
 
-    <x-slot name="title"></x-slot>
+    <x-slot name="title">{{ __('servers.database.form.title') }}</x-slot>
 
     <x-slot name="form"></x-slot>
 
