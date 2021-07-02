@@ -33,6 +33,7 @@ class DatabaseUser extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
+        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
