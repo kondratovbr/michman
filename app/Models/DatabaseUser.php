@@ -44,7 +44,7 @@ class DatabaseUser extends AbstractModel
      */
     public function databases(): BelongsToMany
     {
-        return $this->belongsToMany(Database::class, 'database_database_users')
+        return $this->belongsToMany(Database::class, 'database_database_user')
             ->withTimestamps();
     }
 }
