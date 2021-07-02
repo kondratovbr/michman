@@ -154,7 +154,7 @@ return [
         'button' => 'Database',
 
         'form' => [
-
+            'title' => 'Create Database',
         ],
 
         'table' => [
