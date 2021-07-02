@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Database;
+use App\Models\Server;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DatabaseFactory extends Factory
@@ -16,7 +18,26 @@ class DatabaseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->domainName,
+            'status' => Database::STATUS_CREATED,
         ];
+    }
+
+    /**
+     * Attach databases to random servers from a collection.
+     */
+    public function forRandomServerFrom(Collection $servers): static
+    {
+        return $this->afterMaking(
+            fn (Database $database) => $this->associateServer($database, $servers->random())
+        );
+    }
+
+    /**
+     * Attach a database to a server.
+     */
+    protected function associateServer(Database $database, Server $server): void
+    {
+        $database->server()->associate($server);
     }
 }
