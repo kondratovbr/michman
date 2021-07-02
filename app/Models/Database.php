@@ -38,6 +38,7 @@ class Database extends AbstractModel
         'name',
         'encoding',
         'collation',
+        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
