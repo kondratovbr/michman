@@ -16,17 +16,16 @@ class DatabaseSeeder extends Seeder
             ProviderSeeder::class,
             ServerSeeder::class,
             WorkerSshKeySeeder::class,
-
-            // TODO: Don't forget to implement these following seeders:
+            VcsProviderSeeder::class,
             FirewallRuleSeeder::class,
-            UserSshKeySeeder::class,
             DatabaseModelSeeder::class,
             DatabaseUserSeeder::class,
+
+            // TODO: Don't forget to implement these following seeders:
             PythonSeeder::class,
+            UserSshKeySeeder::class,
             ServerSshKeySeeder::class,
             DeploySshKeySeeder::class,
-            
-            VcsProviderSeeder::class,
         ]);
     }
 }
