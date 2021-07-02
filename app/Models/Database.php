@@ -15,8 +15,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id
  * @property string $name
- * @property string $charset
- * @property string $collation
  * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
@@ -36,8 +34,6 @@ class Database extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
-        'charset',
-        'collation',
         'status',
     ];
 

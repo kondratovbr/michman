@@ -16,8 +16,6 @@ class CreateDatabasesTable extends Migration
             $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('name');
-            $table->string('charset');
-            $table->string('collation');
             $table->string('status')->nullable();
 
             $table->timestamps();
