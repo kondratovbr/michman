@@ -14,6 +14,7 @@ class ServerView extends AbstractSubpagesView
         'projects' => 'projects.index',
         'pythons' => 'pythons.index',
         'firewall' => 'firewall.index',
+        'database' => 'database.show',
         //
     ];
 

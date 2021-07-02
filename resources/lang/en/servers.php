@@ -149,4 +149,8 @@ return [
             'allow' => 'Allow',
         ],
     ],
+
+    'database' => [
+        'button' => 'Database',
+    ],
 ];
