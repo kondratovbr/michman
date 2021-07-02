@@ -4,7 +4,7 @@
 
 {{--TODO: IMPORTANT! Add a loading animation when the rule is created until it is added and also when it is set to be deleted until it is actually deleted.--}}
 
-{{--TODO: CRITICAL! CONTINUE! Test the adding and the deletion. Also, re-test the server creation part and update tests.--}}
+{{--TODO: CRITICAL! CONTINUE! Test the adding and the deletion. Also, re-test the server creation part and update tests. And re-test statuses - I've made some changes.--}}
 
 <x-table-section>
 
