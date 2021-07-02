@@ -52,11 +52,11 @@ class FirewallRule extends AbstractModel
     ];
 
     /**
-     * Get the status of this firewall rule.
+     * Get the current status of this firewall rule.
      */
     public function getStatusAttribute(): string
     {
-        return $this->attributes['status'] ?? static::STATUS_ADDED;
+        return $this->attributes['status'] ?? static::STATUS_ADDING;
     }
 
     /**
