@@ -34,7 +34,7 @@ trait InteractsWithMysql
     }
 
     /**
-     * Get a list of databases that exist on the server.
+     * Get the list of databases that exist on the server.
      *
      * @return string[]
      */
@@ -46,16 +46,55 @@ trait InteractsWithMysql
             $password
         );
 
-        /*
-         * The "explode" here is to make sure we don't search for the dbName in the text that MySQL
-         * outputs before the list of databases. Just in case the dbName matches some of it,
-         * like if it was "Database" or "command" for some reason.
-         * See what MySQL outputs for the SHOW DATABASES command,
-         * notice that it is different depending on the SSH session being interactive or not.
-         */
-        $databases = Str::splitLines(explode('Database', $output, 2)[1]);
+        // TODO: Can I achieve this cleaner? There's gotta be an easier to work with mode for MySQL CLI.
 
-        return Arr::map($databases, fn (string $dbName) => trim($dbName));
+        // Clear the output from preceding garbage.
+        $output = explode('Database', $output, 2)[1];
+
+        // Split the output values by lines.
+        $lines = Str::splitLines($output);
+
+        // There may be empty lines so filter them.
+        $lines = Arr::filter($lines, fn(string $line) => ! empty($line));
+
+        // Also trim them just in case.
+        return Arr::trimValues($lines);
+    }
+
+    /**
+     * Get the list of database users that exist on the server.
+     */
+    protected function getDatabaseUsersMysql(string $dbUser = 'root', string $password = null): array
+    {
+        $output = $this->execMysql(
+            'SELECT host, user FROM mysql.user',
+            $dbUser,
+            $password
+        );
+
+        // TODO: Can I achieve this cleaner? There's gotta be an easier to work with mode for MySQL CLI.
+
+        // Clear the output from preceding garbage.
+        $output = explode('user', $output, 2)[1];
+
+        // Split the output values by lines.
+        $lines = Str::splitLines($output);
+
+        // There will be empty lines, so filter them.
+        $lines = Arr::filter($lines, fn(string $line) => ! empty($line));
+
+        // Split the lines by values.
+        return Arr::map($lines, function (string $line): array {
+            // MySQL CLI separates values on a line by \t (next tab stop) character.
+            $values = explode("\t", $line);
+            // Also trim them just in case.
+            $values = Arr::trimValues($values);
+
+            return [
+                'host' => $values[0],
+                'user' => $values[1],
+            ];
+        });
     }
 
     /**
