@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Unfinished! Editing is now implemented at all!--}}
+{{--TODO: CRITICAL! Unfinished! Editing is not implemented at all!--}}
 {{--TODO: CRITICAL! Make sure a user that is being used by an active project cannot be deleted.--}}
 {{--TODO: IMPORTANT! Is "Sync Users" function (like in Forge) necessary?--}}
 
@@ -21,6 +21,7 @@
                     @if($databaseUser->isCreated())
                         <x-buttons.edit/>
                         <x-buttons.trash
+                            class="ml-2"
                             wire:click="delete('{{ $databaseUser->getKey() }}')"
                             wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
                         />
@@ -28,6 +29,7 @@
                     @if($databaseUser->isDeleting())
                         <x-buttons.edit disabled />
                         <x-buttons.trash
+                            class="ml-2"
                             :loading="true"
                             wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
                         />
