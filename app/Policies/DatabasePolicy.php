@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Database;
 use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -24,5 +25,13 @@ class DatabasePolicy
     public function create(User $user, Server $server): bool
     {
         return $user->is($server->user) && ! is_null($server->installedDatabase);
+    }
+
+    /**
+     * Determine whether a user is allowed to delete a database from a server.
+     */
+    public function delete(User $user, Database $database): bool
+    {
+        return $user->is($database->user);
     }
 }
