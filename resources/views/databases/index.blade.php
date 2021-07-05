@@ -9,6 +9,11 @@
     <livewire:databases.databases-index-table :server="$server" />
 
     <x-section-separator/>
+
+    <livewire:database-users.create-database-user-form :server="$server" />
+
     <x-section-separator/>
+
+    <livewire:database-users.database-users-index-table :server="$server" />
 
 </x-sub-page>

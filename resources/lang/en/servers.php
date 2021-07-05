@@ -157,12 +157,28 @@ return [
             'title' => 'Create Database',
             'name' => 'Name',
             'button' => 'Create',
-            'grant-access' => 'Grant Full Access to',
+            'grant-access' => 'Grant Full Access For Users',
         ],
 
         'table' => [
             'title' => 'Databases',
             'empty' => 'No databases created yet.',
+            'name' => 'Name',
+        ],
+    ],
+
+    'database-users' => [
+        'form' => [
+            'title' => 'Create Database User',
+            'name' => 'Name',
+            'password' => 'Password',
+            'button' => 'Create',
+            'grant-access' => 'Grant Full Access To Databases',
+        ],
+
+        'table' => [
+            'title' => 'Database Users',
+            'empty' => 'No database users created yet.',
             'name' => 'Name',
         ],
     ],
