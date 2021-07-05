@@ -25,6 +25,8 @@ use Livewire\Component;
 
 // TODO: This form should probably be horizontal, like Forge does.
 
+// TODO: CRITICAL! Unfinished! Doesn't react after a server is created, nothing gets updated on the page.
+
 class DigitalOceanForm extends Component
 {
     use AuthorizesRequests;

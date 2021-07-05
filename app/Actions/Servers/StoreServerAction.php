@@ -47,6 +47,7 @@ class StoreServerAction
                 new UploadServerSshKeyToServerJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
+                // TODO: CRITICAL! Should I also create a database user here?
 
             ];
 
