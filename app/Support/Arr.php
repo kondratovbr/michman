@@ -267,4 +267,14 @@ class Arr extends IlluminateArr
     {
         return static::first(static::keys($array));
     }
+
+    /**
+     * Trim the strings in an array.
+     *
+     * @param string[] $array
+     */
+    public static function trimValues(array $array): array
+    {
+        return static::map($array, fn(string $item) => trim($item));
+    }
 }
