@@ -27,7 +27,7 @@ class CreateDatabaseForm extends LivewireComponent
 
     public Collection $databaseUsers;
 
-    public string|null $name = '';
+    public string|null $name = null;
     /** @var bool[] */
     public array $grantedUsers = [];
 
@@ -80,13 +80,15 @@ class CreateDatabaseForm extends LivewireComponent
 
         DB::beginTransaction();
 
+        // TODO: CRITICAL! Should these two actions be chained somehow? I cannot grant user privileges before the DB is actually created and jobs may complete in random order.
+
         $database = $storeDatabase->execute(new DatabaseData(
             name: $validated['name'],
         ), $this->server);
 
         foreach ($validated['grantedUsers'] as $grantedUserKey) {
             /** @var DatabaseUser $databaseUser */
-            $databaseUser = DatabaseUser::query()->whereKey($grantedUserKey)->firstOrFail();
+            $databaseUser = DatabaseUser::query()->findOrFail($grantedUserKey);
             $grantAccess->execute($databaseUser, $database);
         }
 
