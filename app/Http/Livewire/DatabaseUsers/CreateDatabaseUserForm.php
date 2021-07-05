@@ -14,6 +14,7 @@ use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
@@ -36,9 +37,9 @@ class CreateDatabaseUserForm extends LivewireComponent
         'database-stored' => '$refresh',
     ];
 
-    public function prepareForValidation($attributes): array
+    protected function prepareForValidation($attributes): array
     {
-        $attributes['grantedDatabases'] = Arr::keys(Arr::filter($this->grantedDatabases));
+        $attributes['grantedDatabases'] = Arr::keys(Arr::filter($attributes['grantedDatabases']));
 
         return $attributes;
     }
@@ -78,6 +79,8 @@ class CreateDatabaseUserForm extends LivewireComponent
 
         $this->authorize('create', [DatabaseUser::class, $this->server]);
 
+        DB::beginTransaction();
+
         // TODO: CRITICAL! Should these two actions be chained somehow? I cannot grant user privileges before the user is actually created and jobs may complete in random order.
 
         $databaseUser = $storeDatabaseUser->execute(new DatabaseUserData(
@@ -90,6 +93,8 @@ class CreateDatabaseUserForm extends LivewireComponent
             $database = Database::query()->findOrFail($grantedDatabaseKey);
             $grantAccess->execute($databaseUser, $database);
         }
+
+        DB::commit();
 
         $this->reset(
             'name',
