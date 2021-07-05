@@ -46,7 +46,7 @@ abstract class AbstractServerScript
     /**
      * Initialize an SSH session.
      */
-    private function initialize(): SFTP
+    protected function initialize(): SFTP
     {
         if (! isset($this->server))
             throw new \RuntimeException('Server model instance is not set. It is required to perform any actions over SSH.');
@@ -249,41 +249,11 @@ abstract class AbstractServerScript
     }
 
     /**
-     * Execute a MySQL query locally on the server over SSH.
-     */
-    protected function execMysql(string $query, string $dbUser = 'root', string $password = null): string|bool
-    {
-        $this->initialize();
-
-        return $this->exec(
-            $this->mysqlCommand($query, $dbUser, $password),
-            true,
-            false,
-            $this->mysqlCommand(
-                $query,
-                $dbUser,
-                // Scrubbing the password from logs.
-                is_null($password) ? null : 'PASSWORD',
-            ),
-        );
-    }
-
-    /**
      * Initialize the script instance - set Server and SSH session.
      */
     protected function init(Server $server, SFTP|null $ssh = null): void
     {
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp());
-    }
-
-    /**
-     * Create a command to run an SQL query over a local MySQL server on a remote server over SSH.
-     */
-    private function mysqlCommand(string $query, string $dbUser, string $password = null): string
-    {
-        return isset($password)
-            ? "mysql -u {$dbUser} -p{$password} -e \"{$query}\""
-            : "mysql -u {$dbUser} -e \"{$query}\"";
     }
 }

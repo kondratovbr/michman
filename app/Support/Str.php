@@ -9,5 +9,13 @@ use Illuminate\Support\Str as IlluminateStr;
  */
 class Str extends IlluminateStr
 {
-    //
+    /**
+     * Split a string by all possible end-of-line characters.
+     *
+     * @return string[]
+     */
+    public static function splitLines(string $string): array
+    {
+        return preg_split("/\r\n|\n|\r/", $string);
+    }
 }

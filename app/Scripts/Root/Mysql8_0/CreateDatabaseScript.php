@@ -5,11 +5,14 @@ namespace App\Scripts\Root\Mysql8_0;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
-use App\Support\Str;
+use App\Scripts\Traits\InteractsWithMysql;
+use App\Support\Arr;
 use phpseclib3\Net\SFTP;
 
 class CreateDatabaseScript extends AbstractServerScript
 {
+    use InteractsWithMysql;
+
     public function execute(Server $server, string $dbName, SFTP $ssh = null): void
     {
         $this->init($server, $ssh);
@@ -23,13 +26,11 @@ class CreateDatabaseScript extends AbstractServerScript
         if ($this->getExitStatus() !== 0)
             throw new ServerScriptException('Command to create a new database failed.');
 
-        $output = $this->execMysql(
-            "SHOW DATABASES",
-            'root',
-            $server->databaseRootPassword,
-        );
-
-        if (! Str::contains($output, $dbName))
+        if (! Arr::hasValue(
+            $this->getDatabasesMysql('root', $server->databaseRootPassword),
+            $dbName
+        )) {
             throw new ServerScriptException('New database was not created.');
+        }
     }
 }

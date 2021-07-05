@@ -5,11 +5,14 @@ namespace App\Scripts\Root\Mysql8_0;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 class InstallDatabaseScript extends AbstractServerScript
 {
+    use InteractsWithMysql;
+
     /** @var string MySQL authentication plugin to configure for root. */
     protected const MYSQL_AUTH_PLUGIN = 'caching_sha2_password';
 
