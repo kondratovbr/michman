@@ -12,7 +12,7 @@ class DatabasePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether a user is allowed to see the index of the database of a server.
+     * Determine whether a user is allowed to see the index of databases on a server.
      */
     public function index(User $user, Server $server): bool
     {
@@ -20,7 +20,7 @@ class DatabasePolicy
     }
 
     /**
-     * Determine whether a user is allowed to create a new database for a server.
+     * Determine whether a user is allowed to create a new database on a server.
      */
     public function create(User $user, Server $server): bool
     {
