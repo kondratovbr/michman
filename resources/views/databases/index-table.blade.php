@@ -17,7 +17,25 @@
         @foreach($databases as $database)
             <x-tr>
                 <x-td>{{ $database->name }}</x-td>
-                <x-td></x-td>
+                <x-td class="flex justify-end items-center min-h-14">
+                    @if($database->isCreated())
+                        <x-buttons.trash
+                            wire:click="delete('{{ $database->getKey() }}')"
+                            wire:key="delete-database-button-{{ $database->getKey() }}"
+                        />
+                    @endif
+                    @if($database->isDeleting())
+                        <x-buttons.trash
+                            :loading="true"
+                            wire:key="delete-database-button-{{ $database->getKey() }}"
+                        />
+                    @endif
+                    @if($database->isCreating())
+                        <div class="mr-4.5">
+                            <x-spinner/>
+                        </div>
+                    @endif
+                </x-td>
             </x-tr>
         @endforeach
     </x-slot>
