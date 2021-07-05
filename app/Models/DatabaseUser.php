@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property int $id
  * @property string $name
+ * @property string|null $password
  * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
@@ -33,11 +34,17 @@ class DatabaseUser extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
+        'password',
         'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /** @var string[] The attributes that should be cast. */
+    protected $casts = [
+        'password' => 'encrypted',
+    ];
 
     /**
      * Get the current status of this database user.

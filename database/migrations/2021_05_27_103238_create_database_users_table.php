@@ -16,6 +16,8 @@ class CreateDatabaseUsersTable extends Migration
             $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('name');
+            // Password is stored encrypted and only temporarily - while the user is being created on a server.
+            $table->text('password')->nullable();
             $table->string('status')->nullable();
 
             $table->timestamps();
