@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read User $user
+ *
  * @property-read Server $server
  * @property-read Collection $databaseUsers
  *
@@ -30,6 +32,7 @@ class Database extends AbstractModel
 
     public const STATUS_CREATED = 'created';
     public const STATUS_CREATING = 'creating';
+    public const STATUS_DELETING = 'deleting';
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -46,6 +49,38 @@ class Database extends AbstractModel
     public function getStatusAttribute(): string
     {
         return $this->attributes['status'] ?? static::STATUS_CREATING;
+    }
+
+    /**
+     * Get the user who owns a server with this database.
+     */
+    public function getUserAttribute(): User
+    {
+        return $this->server->user;
+    }
+
+    /**
+     * Determine if this database was created on the server.
+     */
+    public function isCreated(): bool
+    {
+        return $this->status === static::STATUS_CREATED;
+    }
+
+    /**
+     * Determine if this database is in the process of being created on the server.
+     */
+    public function isCreating(): bool
+    {
+        return $this->status === static::STATUS_CREATING;
+    }
+
+    /**
+     * Determine if this database is in the process of being deleted from the server.
+     */
+    public function isDeleting(): bool
+    {
+        return $this->status === static::STATUS_DELETING;
     }
 
     /**
