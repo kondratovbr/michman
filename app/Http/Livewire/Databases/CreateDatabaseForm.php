@@ -33,7 +33,6 @@ class CreateDatabaseForm extends LivewireComponent
 
     /** @var string[] */
     protected $listeners = [
-        // TODO: CRITICAL! Does this work? Test. The event is thrown from a different component on the same page.
         'database-user-stored' => '$refresh',
     ];
 
@@ -43,6 +42,8 @@ class CreateDatabaseForm extends LivewireComponent
     public function rules(): array
     {
         return [
+            // TODO: CRITICAL! Make sure users cannot use reserved words like "information_schema".
+            //       Those are different for each database as well.
             'name' => Rules::alphaNumDashString(1, 255)->required(),
             'grantedUsers' => Rules::array(),
             'grantedUsers.*' => Rules::integer()
@@ -90,6 +91,13 @@ class CreateDatabaseForm extends LivewireComponent
         }
 
         DB::commit();
+
+        $this->reset(
+            'name',
+            'grantedUsers',
+        );
+
+        $this->emit('database-stored');
     }
 
     /**
