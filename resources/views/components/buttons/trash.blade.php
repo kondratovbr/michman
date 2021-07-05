@@ -1,12 +1,9 @@
-@props(['size' => null, 'loading' => false])
+@props(['loading' => false])
 
 @php
     $classes = implode(' ', [
         'inline-flex items-center justify-center rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
-        match ($size ?? null) {
-            'small' => 'py-0.5 px-2',
-            default => 'py-1.5 px-4'
-        },
+        'py-1.5 px-4',
         'bg-red-600 text-gray-100',
         'hover:bg-red-700',
         'active:bg-red-800',
