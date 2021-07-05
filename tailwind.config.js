@@ -173,6 +173,7 @@ module.exports = {
             },
             // Some specific additional margin values
             margin: {
+                '4.5': '1.125rem',
                 '2px': '2px',
                 '1-em': '0.25em',
                 '2-em': '0.5em',
