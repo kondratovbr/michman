@@ -37,6 +37,21 @@ class CreateDatabaseForm extends LivewireComponent
     ];
 
     /**
+     * Initialize the component.
+     */
+    public function mount(): void
+    {
+        $this->authorize('index', [Database::class, $this->server]);
+    }
+
+    protected function prepareForValidation($attributes): array
+    {
+        $attributes['grantedUsers'] = Arr::keys(Arr::filter($attributes['grantedUsers']));
+
+        return $attributes;
+    }
+
+    /**
      * Get the validation rules.
      */
     public function rules(): array
@@ -52,29 +67,13 @@ class CreateDatabaseForm extends LivewireComponent
     }
 
     /**
-     * Initialize the component.
-     */
-    public function mount(): void
-    {
-        $this->authorize('index', [Database::class, $this->server]);
-    }
-
-    /**
      * Store a new database.
      */
     public function store(
         StoreDatabaseAction $storeDatabase,
         GrantDatabaseUserAccessToDatabase $grantAccess,
     ): void {
-        $grantedUsers = Arr::keys(Arr::filter($this->grantedUsers));
-
-        $validated = Validator::make(
-            [
-                'name' => $this->name,
-                'grantedUsers' => $grantedUsers,
-            ],
-            $this->rules(),
-        )->validate();
+        $validated = $this->validate();
 
         $this->authorize('create', [Database::class, $this->server]);
 
@@ -85,6 +84,8 @@ class CreateDatabaseForm extends LivewireComponent
         $database = $storeDatabase->execute(new DatabaseData(
             name: $validated['name'],
         ), $this->server);
+
+        // TODO: CRITICAL! CONTINUE! Implement and test this and the second one in DB user creation. Then go to covering stuff with tests, I skipped quite some.
 
         foreach ($validated['grantedUsers'] as $grantedUserKey) {
             /** @var DatabaseUser $databaseUser */
