@@ -5,12 +5,17 @@ namespace App\Http\Livewire\DatabaseUsers;
 use App\Broadcasting\ServersChannel;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
+use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Server;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
+
+// TODO: CRITICAL! Cover with tests.
+
+// TODO: CRITICAL! Update the removal logic to account for DatabaseUser-to-Database connections and for the permissions on the server.
 
 class DatabaseUsersIndexTable extends LivewireComponent
 {
@@ -24,6 +29,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
     /** @var string[] */
     protected $listeners = [
         'database-user-stored' => '$refresh',
+        'database-user-updated' => '$refresh',
     ];
 
     protected function configureEchoListeners(): void
@@ -32,6 +38,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
             ServersChannel::name($this->server),
             [
                 DatabaseUserCreatedEvent::class,
+                DatabaseUserUpdatedEvent::class,
                 DatabaseUserDeletedEvent::class,
             ],
             '$refresh',
