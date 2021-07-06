@@ -31,10 +31,6 @@ class InstallDatabaseJob extends AbstractJob
      */
     public function handle(): void
     {
-        /*
-         * TODO: CRITICAL! Test this again on a new server - I'm not sure it works.
-         */
-
         if (is_null($this->database) || $this->database === 'none')
             return;
 
