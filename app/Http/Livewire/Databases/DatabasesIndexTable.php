@@ -6,6 +6,7 @@ use App\Actions\Databases\DeleteDatabaseAction;
 use App\Broadcasting\ServersChannel;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseDeletedEvent;
+use App\Events\Databases\DatabaseUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Database;
 use App\Models\Server;
@@ -22,6 +23,8 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests.
 
+// TODO: CRITICAL! Update the removal logic to account for DatabaseUser-to-Database connections and for the permissions on the server.
+
 class DatabasesIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -34,6 +37,7 @@ class DatabasesIndexTable extends LivewireComponent
 
     protected $listeners = [
         'database-stored' => '$refresh',
+        'database-updated' => '$refresh',
     ];
 
     protected function configureEchoListeners(): void
@@ -42,6 +46,7 @@ class DatabasesIndexTable extends LivewireComponent
             ServersChannel::name($this->server),
             [
                 DatabaseCreatedEvent::class,
+                DatabaseUpdatedEvent::class,
                 DatabaseDeletedEvent::class,
             ],
             '$refresh',
