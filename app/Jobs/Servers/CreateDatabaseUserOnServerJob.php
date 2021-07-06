@@ -4,6 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\HandlesDatabases;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\App;
@@ -14,7 +15,8 @@ use RuntimeException;
 
 class CreateDatabaseUserOnServerJob extends AbstractJob
 {
-    use InteractsWithRemoteServers;
+    use InteractsWithRemoteServers,
+        HandlesDatabases;
 
     protected DatabaseUser $databaseUser;
 
@@ -39,20 +41,20 @@ class CreateDatabaseUserOnServerJob extends AbstractJob
 
             $server = $databaseUser->server;
 
-            if (empty($server->installedDatabase))
-                throw new RuntimeException('No database installed on this server.');
+            $this->getDatabaseScript(
+                $server,
+                'CreateDatabaseUserScript',
+            )->execute(
+                $server,
+                $databaseUser->name,
+                $databaseUser->password,
+            );
 
-            $scriptClass = (string) config("servers.databases.{$server->installedDatabase}.scripts_namespace")
-                . '\CreateDatabaseUserScript';
+            if ($databaseUser->status === DatabaseUser::STATUS_CREATING)
+                $databaseUser->status = DatabaseUser::STATUS_CREATED;
 
-            if (! class_exists($scriptClass))
-                throw new RuntimeException('No database user creation script exists for this database.');
-
-            $script = App::make($scriptClass);
-
-            $script->execute($server, $databaseUser->name, $databaseUser->password);
-
-            $databaseUser->status = DatabaseUser::STATUS_CREATED;
+            // We don't need to store the password anymore,
+            // so just delete it for a bit of added security.
             $databaseUser->password = null;
             $databaseUser->save();
 
