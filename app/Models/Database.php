@@ -32,6 +32,7 @@ class Database extends AbstractModel
 
     public const STATUS_CREATED = 'created';
     public const STATUS_CREATING = 'creating';
+    public const STATUS_UPDATING = 'updating';
     public const STATUS_DELETING = 'deleting';
 
     /** @var string[] The attributes that are mass assignable. */
@@ -73,6 +74,14 @@ class Database extends AbstractModel
     public function isCreating(): bool
     {
         return $this->status === static::STATUS_CREATING;
+    }
+
+    /**
+     * Determine if this database is in the process of being updated on the server.
+     */
+    public function isUpdating(): bool
+    {
+        return $this->status === static::STATUS_UPDATING;
     }
 
     /**
