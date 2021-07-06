@@ -34,7 +34,7 @@
                             wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
                         />
                     @endif
-                    @if($databaseUser->isCreating())
+                    @if($databaseUser->isCreating() || $databaseUser->isUpdating())
                         <div class="mr-4.5">
                             <x-spinner/>
                         </div>
