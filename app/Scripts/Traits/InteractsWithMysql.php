@@ -28,7 +28,7 @@ trait InteractsWithMysql
                 $query,
                 $dbUser,
                 // Scrubbing the password from logs.
-                is_null($password) ? null : 'PASSWORD',
+                is_null($password) ? null : '[SCRUBBED]',
             ),
         );
     }
