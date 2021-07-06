@@ -30,7 +30,7 @@
                             wire:key="delete-database-button-{{ $database->getKey() }}"
                         />
                     @endif
-                    @if($database->isCreating())
+                    @if($database->isCreating() || $database->isUpdating())
                         <div class="mr-4.5">
                             <x-spinner/>
                         </div>
