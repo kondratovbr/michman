@@ -4,6 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Events\Databases\DatabaseDeletedEvent;
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\HandlesDatabases;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
 use Illuminate\Support\Facades\App;
@@ -14,7 +15,8 @@ use RuntimeException;
 
 class DeleteDatabaseJob extends AbstractJob
 {
-    use InteractsWithRemoteServers;
+    use InteractsWithRemoteServers,
+        HandlesDatabases;
 
     protected Database $database;
 
@@ -39,18 +41,13 @@ class DeleteDatabaseJob extends AbstractJob
 
             $server = $database->server;
 
-            if (empty($server->installedDatabase))
-                throw new RuntimeException('No database installed on this server.');
-
-            $scriptClass = (string) config("servers.databases.{$server->installedDatabase}.scripts_namespace")
-                . '\DeleteDatabaseScript';
-
-            if (! class_exists($scriptClass))
-                throw new RuntimeException('No database deletion script exists for this database.');
-
-            $script = App::make($scriptClass);
-
-            $script->execute($server, $database->name);
+            $this->getDatabaseScript(
+                $server,
+                'DeleteDatabaseScript',
+            )->execute(
+                $server,
+                $database->name,
+            );
 
             $database->delete();
 
