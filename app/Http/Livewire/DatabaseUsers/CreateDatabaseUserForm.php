@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\DatabaseUsers;
 
-use App\Actions\DatabaseUsers\GrantDatabaseUserAccessToDatabase;
+use App\Actions\DatabaseUsers\GrantDatabaseUserAccessToDatabaseAction;
 use App\Actions\DatabaseUsers\StoreDatabaseUserAction;
 use App\DataTransferObjects\DatabaseUserData;
 use App\Http\Livewire\Traits\TrimsInput;
@@ -17,6 +17,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
+
+// TODO: CRITICAL! Cover with tests!
 
 class CreateDatabaseUserForm extends LivewireComponent
 {
@@ -50,8 +52,6 @@ class CreateDatabaseUserForm extends LivewireComponent
     public function rules(): array
     {
         return [
-            // TODO: CRITICAL! Make sure users cannot use reserved words like "information_schema".
-            //       Those are different for each database as well.
             'name' => Rules::alphaNumDashString(1, 255)->required(),
             'password' => Rules::alphaNumDashString(1, 255)->required(),
             'grantedDatabases' => Rules::array(),
@@ -71,30 +71,19 @@ class CreateDatabaseUserForm extends LivewireComponent
     /**
      * Store a new database user.
      */
-    public function store(
-        StoreDatabaseUserAction $storeDatabaseUser,
-        GrantDatabaseUserAccessToDatabase $grantAccess,
-    ): void {
+    public function store(StoreDatabaseUserAction $storeDatabaseUser): void {
         $validated = $this->validate();
 
         $this->authorize('create', [DatabaseUser::class, $this->server]);
 
-        DB::beginTransaction();
-
-        // TODO: CRITICAL! Should these two actions be chained somehow? I cannot grant user privileges before the user is actually created and jobs may complete in random order.
-
-        $databaseUser = $storeDatabaseUser->execute(new DatabaseUserData(
+        // TODO: CRITICAL! CONTINUE! Finish and test this.
+        $storeDatabaseUser->execute(new DatabaseUserData(
             name: $validated['name'],
             password: $validated['password'],
-        ), $this->server);
-
-        foreach ($validated['grantedDatabases'] as $grantedDatabaseKey) {
-            /** @var Database $database */
-            $database = Database::query()->findOrFail($grantedDatabaseKey);
-            $grantAccess->execute($databaseUser, $database);
-        }
-
-        DB::commit();
+        ),
+            $this->server,
+            Database::query()->findMany($validated['grantedDatabases']),
+        );
 
         $this->reset(
             'name',
@@ -103,6 +92,7 @@ class CreateDatabaseUserForm extends LivewireComponent
         );
 
         $this->emit('database-user-stored');
+        $this->emit('database-updated');
     }
 
     /**
