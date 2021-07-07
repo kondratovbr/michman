@@ -32,6 +32,6 @@ class DatabaseUserPolicy
      */
     public function delete(User $user, DatabaseUser $databaseUser): bool
     {
-        return $user->is($databaseUser->user);
+        return $user->is($databaseUser->user) && ! $databaseUser->isBusy();
     }
 }
