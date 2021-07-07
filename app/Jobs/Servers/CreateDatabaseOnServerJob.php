@@ -2,14 +2,11 @@
 
 namespace App\Jobs\Servers;
 
-use App\Events\Databases\DatabaseCreatedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\HandlesDatabases;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -53,8 +50,6 @@ class CreateDatabaseOnServerJob extends AbstractJob
                 $database->status = Database::STATUS_CREATED;
 
             $database->save();
-
-            event(new DatabaseCreatedEvent($database));
         }, 5);
     }
 }

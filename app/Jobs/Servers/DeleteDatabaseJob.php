@@ -2,14 +2,11 @@
 
 namespace App\Jobs\Servers;
 
-use App\Events\Databases\DatabaseDeletedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\HandlesDatabases;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -50,8 +47,6 @@ class DeleteDatabaseJob extends AbstractJob
             );
 
             $database->delete();
-
-            event(new DatabaseDeletedEvent($server));
         }, 5);
     }
 }
