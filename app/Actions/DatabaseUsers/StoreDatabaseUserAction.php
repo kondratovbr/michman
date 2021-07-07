@@ -38,10 +38,14 @@ class StoreDatabaseUserAction
 
         DB::commit();
 
-        Bus::chain([
+        $jobs = [
             new CreateDatabaseUserOnServerJob($databaseUser),
-            $grantJob ?? null,
-        ])->dispatch();
+        ];
+
+        if (! is_null($grantJob ?? null))
+            $jobs[] = $grantJob;
+
+        Bus::chain($jobs)->dispatch();
 
         return $databaseUser;
     }
