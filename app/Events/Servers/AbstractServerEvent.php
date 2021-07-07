@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace App\Events;
+namespace App\Events\Servers;
 
+use App\Broadcasting\ServersChannel;
+use App\Events\AbstractEvent;
 use App\Models\Server;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -18,11 +19,11 @@ abstract class AbstractServerEvent extends AbstractEvent
      */
     public $afterCommit = true;
 
-    protected Server $server;
+    public int $serverKey;
 
     public function __construct(Server $server)
     {
-        $this->server = $server->withoutRelations();
+        $this->serverKey = $server->getKey();
     }
 
     /**
@@ -30,6 +31,6 @@ abstract class AbstractServerEvent extends AbstractEvent
      */
     public function broadcastOn(): Channel|array
     {
-        return new PrivateChannel('servers.' . $this->server->getKey());
+        return ServersChannel::channelInstance($this->serverKey);
     }
 }
