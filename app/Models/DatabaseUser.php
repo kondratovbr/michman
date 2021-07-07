@@ -109,6 +109,14 @@ class DatabaseUser extends AbstractModel
     }
 
     /**
+     * Determine if these is some changes pending on this database user.
+     */
+    public function isBusy(): bool
+    {
+        return $this->status !== static::STATUS_CREATED;
+    }
+
+    /**
      * Get a relation with the server where this database user is created.
      */
     public function server(): BelongsTo

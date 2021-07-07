@@ -106,6 +106,14 @@ class Database extends AbstractModel
     }
 
     /**
+     * Determine if there is some changes pending for this database.
+     */
+    public function isBusy(): bool
+    {
+        return $this->status !== static::STATUS_CREATED;
+    }
+
+    /**
      * Get a relation with the server that holds this database.
      */
     public function server(): BelongsTo
