@@ -4,6 +4,7 @@ namespace App\Broadcasting;
 
 use App\Models\Server;
 use App\Models\User;
+use Illuminate\Broadcasting\PrivateChannel;
 
 class ServersChannel implements BroadcastingChannelInterface
 {
@@ -23,8 +24,21 @@ class ServersChannel implements BroadcastingChannelInterface
     /**
      * Get the channel's name.
      */
-    public static function name(Server $server): string
+    public static function name(Server|int $server): string
     {
-        return 'servers.' . $server->getKey();
+        $serverKey = $server instanceof Server
+            ? $server->getKey()
+            : $server;
+
+        return 'servers.' . $serverKey;
+
+    }
+
+    /**
+     * Get an instance of Laravel's Channel class corresponding with this broadcasting class.
+     */
+    public static function channelInstance(Server|int $server): PrivateChannel
+    {
+        return new PrivateChannel(static::name($server));
     }
 }
