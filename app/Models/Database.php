@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\Databases\DatabaseCreatedEvent;
+use App\Events\Databases\DatabaseDeletedEvent;
+use App\Events\Databases\DatabaseUpdatedEvent;
 use Carbon\CarbonInterface;
 use Database\Factories\DatabaseFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,6 +33,9 @@ class Database extends AbstractModel
 {
     use HasFactory;
 
+    // TODO: Can I simplify this whole status thing by using a single flag like "busy"?
+    //       The front-end will only show a single spinner then.
+
     public const STATUS_CREATED = 'created';
     public const STATUS_CREATING = 'creating';
     public const STATUS_UPDATING = 'updating';
@@ -43,6 +49,13 @@ class Database extends AbstractModel
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /** @var string[] The event map for the model. */
+    protected $dispatchesEvents = [
+        'created' => DatabaseCreatedEvent::class,
+        'updated' => DatabaseUpdatedEvent::class,
+        'deleted' => DatabaseDeletedEvent::class,
+    ];
 
     /**
      * Get the current status of this database.

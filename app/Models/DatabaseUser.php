@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
+use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
+use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
 use Carbon\CarbonInterface;
 use Database\Factories\DatabaseUserFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -48,6 +51,13 @@ class DatabaseUser extends AbstractModel
     /** @var string[] The attributes that should be cast. */
     protected $casts = [
         'password' => 'encrypted',
+    ];
+
+    /** @var string[] The event map for the model. */
+    protected $dispatchesEvents = [
+        'created' => DatabaseUserCreatedEvent::class,
+        'updated' => DatabaseUserUpdatedEvent::class,
+        'deleted' => DatabaseUserDeletedEvent::class,
     ];
 
     /**
