@@ -9,8 +9,6 @@ use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Arr;
 use phpseclib3\Net\SFTP;
 
-// TODO: CRITICAL! Cover with tests?
-
 class CreateDatabaseUserScript extends AbstractServerScript
 {
     use InteractsWithMysql;
@@ -37,12 +35,10 @@ class CreateDatabaseUserScript extends AbstractServerScript
             fn(array $userData) => $userData['user'] === $userName
         );
 
-        if (is_null($createdUser)) {
-            throw new ServerScriptException('New user was not created.');
-        }
+        if (is_null($createdUser))
+            throw new ServerScriptException('New database user was not created.');
 
-        if ($createdUser['host'] !== '%') {
-            throw new ServerScriptException('New user was created with a wrong host.');
-        }
+        if ($createdUser['host'] !== '%')
+            throw new ServerScriptException('New database user was created with a wrong host.');
     }
 }
