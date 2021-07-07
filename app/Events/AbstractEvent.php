@@ -9,5 +9,5 @@ abstract class AbstractEvent
      *
      * @var string
      */
-    public $queue = 'events';
+    public $queue = 'broadcasting';
 }
