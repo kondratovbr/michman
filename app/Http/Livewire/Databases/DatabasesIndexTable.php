@@ -58,18 +58,18 @@ class DatabasesIndexTable extends LivewireComponent
      */
     public function mount(): void
     {
-        //
+        $this->authorize('index', [Database::class, $this->server]);
     }
 
     /**
      * Delete a database.
      */
-    public function delete(DeleteDatabaseAction $deleteDatabase, string $databaseKey): void
+    public function delete(DeleteDatabaseAction $action, string $databaseKey): void
     {
         $databaseKey = Validator::make(
             ['database_key' => $databaseKey],
             ['database_key' => Rules::string(1, 16)
-                ->in($this->databases->pluck('id')->toArray())
+                ->in($this->databases->modelKeys())
                 ->required()],
         )->validate()['database_key'];
 
@@ -78,7 +78,7 @@ class DatabasesIndexTable extends LivewireComponent
 
         $this->authorize('delete', $database);
 
-        $deleteDatabase->execute($database);
+        $action->execute($database);
     }
 
     /**
