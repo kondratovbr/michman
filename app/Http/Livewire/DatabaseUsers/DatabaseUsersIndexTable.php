@@ -2,15 +2,19 @@
 
 namespace App\Http\Livewire\DatabaseUsers;
 
+use App\Actions\DatabaseUsers\DeleteDatabaseUserAction;
 use App\Broadcasting\ServersChannel;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
+use App\Models\DatabaseUser;
 use App\Models\Server;
+use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests.
@@ -50,7 +54,27 @@ class DatabaseUsersIndexTable extends LivewireComponent
      */
     public function mount(): void
     {
-        //
+        $this->authorize('index', [DatabaseUser::class, $this->server]);
+    }
+
+    /**
+     * Delete a database user.
+     */
+    public function delete(DeleteDatabaseUserAction $action, string $databaseUserKey): void
+    {
+        $databaseUserKey = Validator::make(
+            ['database_user_key' => $databaseUserKey],
+            ['database_user_key' => Rules::string(1, 16)
+                ->in($this->databaseUsers->modelKeys())
+                ->required()],
+        )->validate()['database_user_key'];
+
+        /** @var DatabaseUser $databaseUser */
+        $databaseUser = $this->server->databaseUsers()->findOrFail($databaseUserKey);
+
+        $this->authorize('delete', $databaseUser);
+
+        $action->execute($databaseUser);
     }
 
     /**
