@@ -2,9 +2,6 @@
 
 namespace App\Jobs\Servers;
 
-use App\Collections\EloquentCollection;
-use App\Events\Databases\DatabaseUpdatedEvent;
-use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\HandlesDatabases;
 use App\Jobs\Traits\InteractsWithRemoteServers;
@@ -37,12 +34,10 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var EloquentCollection $databaseUsers */
             $databaseUsers = DatabaseUser::query()
                 ->lockForUpdate()
                 ->findMany($this->databaseUsers->modelKeys());
 
-            /** @var EloquentCollection $databases */
             $databases = Database::query()
                 ->lockForUpdate()
                 ->findMany($this->databases->modelKeys());
@@ -55,13 +50,13 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
                 ->findOrFail($databases->first()->server->getKey());
 
             $ssh = $server->sftp();
-            $script = $this->getDatabaseScript($server, 'GrantDatabaseUserAccessToDatabaseScript');
+            $grantScript = $this->getDatabaseScript($server, 'GrantDatabaseUserAccessToDatabaseScript');
 
             /** @var DatabaseUser $databaseUser */
             foreach ($databaseUsers as $databaseUser) {
                 /** @var Database $database */
                 foreach ($databases as $database) {
-                    $script->execute(
+                    $grantScript->execute(
                         $server,
                         $database->name,
                         $databaseUser->name,
@@ -70,21 +65,14 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
                 }
             }
 
-            $databaseUsers->updateStatus(DatabaseUser::STATUS_CREATED);
-            $databases->updateStatus(Database::STATUS_CREATED);
-
-            foreach ($databaseUsers as $databaseUser)
-                event(new DatabaseUserUpdatedEvent($databaseUser));
-
-            foreach ($databases as $database)
-                event(new DatabaseUpdatedEvent($database));
+            $this->updateStatuses($databaseUsers, $databases);
         }, 5);
     }
 
     /**
      * Check that databases and database users aren't empty and all belong to the same server.
      */
-    protected function runChecks(Collection $databaseUsers, Collection $databases): void
+    private function runChecks(Collection $databaseUsers, Collection $databases): void
     {
         if ($databaseUsers->isEmpty())
             throw new RuntimeException('No database users found.');
@@ -100,5 +88,22 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
 
         if (! $databaseUsers->first()->server->is($databases->first()->server))
             throw new RuntimeException('The databases and database users belong to different servers.');
+    }
+
+    /**
+     * Set statuses to CREATED.
+     */
+    private function updateStatuses(Collection $databaseUsers, Collection $databases): void
+    {
+        // We don't do mass updates here because we're in an asynchronous job
+        // and we need to send events anyway.
+        foreach ($databaseUsers as $databaseUser) {
+            $databaseUser->status = DatabaseUser::STATUS_CREATED;
+            $databaseUser->save();
+        }
+        foreach ($databases as $database) {
+            $database->status = Database::STATUS_CREATED;
+            $database->save();
+        }
     }
 }
