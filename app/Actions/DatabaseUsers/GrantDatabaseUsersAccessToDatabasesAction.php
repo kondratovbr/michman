@@ -18,16 +18,16 @@ class GrantDatabaseUsersAccessToDatabasesAction
 {
     public function execute(
         BaseCollection $databaseUsers,
-        BaseCollection $databases
+        BaseCollection $databases,
     ): GrantDatabaseUsersAccessToDatabasesJob|null {
         return DB::transaction(function () use ($databaseUsers, $databases) {
             if ($databaseUsers->isEmpty()) {
-                Log::warning('GrantDatabaseUsersAccessToDatabasesAction called but no databaseUsers supplied.');
+                Log::warning(static::class . ' called but no databaseUsers supplied.');
                 return null;
             }
 
             if ($databases->isEmpty()) {
-                Log::warning('GrantDatabaseUsersAccessToDatabasesAction called but no databases supplied.');
+                Log::warning(static::class . ' called but no databases supplied.');
                 return null;
             }
 
@@ -36,13 +36,9 @@ class GrantDatabaseUsersAccessToDatabasesAction
 
             $this->runServerChecks($databaseUsers, $databases);
 
-            $databaseUsers->updateStatus(DatabaseUser::STATUS_UPDATING);
-            $databases->updateStatus(Database::STATUS_UPDATING);
+            $this->attachModels($databaseUsers, $databases);
 
-            /** @var Database $database */
-            foreach ($databases as $database) {
-                $database->databaseUsers()->attach($databaseUsers);
-            }
+            $this->updateStatuses($databaseUsers, $databases);
 
             return new GrantDatabaseUsersAccessToDatabasesJob($databaseUsers, $databases);
         }, 5);
@@ -51,7 +47,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
     /**
      * Reload and lockForUpdate database users.
      */
-    protected function lockDatabaseUsers(BaseCollection $databaseUsers): EloquentCollection
+    private function lockDatabaseUsers(BaseCollection $databaseUsers): EloquentCollection
     {
         /** @var EloquentCollection $collection */
         $collection = DatabaseUser::query()
@@ -68,7 +64,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
     /**
      * Reload and lockForUpdate databases.
      */
-    protected function lockDatabases(BaseCollection $databases): EloquentCollection
+    private function lockDatabases(BaseCollection $databases): EloquentCollection
     {
         /** @var EloquentCollection $collection */
         $collection = Database::query()
@@ -85,7 +81,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
     /**
      * Check that databases and database users all belong to the same server.
      */
-    protected function runServerChecks(Collection $databaseUsers, Collection $databases): void
+    private function runServerChecks(Collection $databaseUsers, Collection $databases): void
     {
         if ($databaseUsers->pluck('server_id')->unique()->count() > 1)
             throw new RuntimeException('The database users belong to different servers.');
@@ -95,5 +91,33 @@ class GrantDatabaseUsersAccessToDatabasesAction
 
         if (! $databaseUsers->first()->server->is($databases->first()->server))
             throw new RuntimeException('The databases and database users belong to different servers.');
+    }
+
+    /**
+     * Attach every database user to every database.
+     */
+    private function attachModels(Collection $databaseUsers, Collection $databases): void
+    {
+        /** @var Database $database */
+        foreach ($databases as $database) {
+            $database->databaseUsers()->attach($databaseUsers);
+        }
+    }
+
+    /**
+     * Set status as UPDATING for database users and databases.
+     */
+    private function updateStatuses(Collection $databaseUsers, Collection $databases): void
+    {
+        /** @var DatabaseUser $databaseUser */
+        foreach ($databaseUsers as $databaseUser) {
+            $databaseUser->status = DatabaseUser::STATUS_UPDATING;
+            $databaseUser->save();
+        }
+        /** @var Database $database */
+        foreach ($databases as $database) {
+            $database->status = Database::STATUS_UPDATING;
+            $database->save();
+        }
     }
 }
