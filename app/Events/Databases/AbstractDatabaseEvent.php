@@ -2,17 +2,17 @@
 
 namespace App\Events\Databases;
 
-use App\Events\AbstractServerEvent;
+use App\Events\Servers\AbstractServerEvent;
 use App\Models\Database;
 
 abstract class AbstractDatabaseEvent extends AbstractServerEvent
 {
-    public Database $database;
+    public int $databaseKey;
 
     public function __construct(Database $database)
     {
         parent::__construct($database->server);
 
-        $this->database = $database->withoutRelations();
+        $this->databaseKey = $database->getKey();
     }
 }

@@ -2,17 +2,17 @@
 
 namespace App\Events\Firewall;
 
-use App\Events\AbstractServerEvent;
+use App\Events\Servers\AbstractServerEvent;
 use App\Models\FirewallRule;
 
 abstract class AbstractFirewallEvent extends AbstractServerEvent
 {
-    public FirewallRule $rule;
+    public int $ruleKey;
 
     public function __construct(FirewallRule $rule)
     {
         parent::__construct($rule->server);
 
-        $this->rule = $rule->withoutRelations();
+        $this->ruleKey = $rule->getKey();
     }
 }

@@ -2,17 +2,17 @@
 
 namespace App\Events\Pythons;
 
-use App\Events\AbstractServerEvent;
+use App\Events\Servers\AbstractServerEvent;
 use App\Models\Python;
 
 abstract class AbstractPythonEvent extends AbstractServerEvent
 {
-    public Python $python;
+    public int $pythonKey;
 
     public function __construct(Python $python)
     {
         parent::__construct($python->server);
 
-        $this->python = $python->withoutRelations();
+        $this->pythonKey = $python->getKey();
     }
 }

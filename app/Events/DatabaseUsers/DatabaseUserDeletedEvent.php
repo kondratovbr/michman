@@ -2,10 +2,10 @@
 
 namespace App\Events\DatabaseUsers;
 
-use App\Events\AbstractServerEvent;
+use App\Events\Servers\AbstractServerEvent;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class DatabaseUserDeletedEvent extends AbstractServerEvent implements ShouldBroadcast
+class DatabaseUserDeletedEvent extends AbstractDatabaseUserEvent implements ShouldBroadcast
 {
     //
 }

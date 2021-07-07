@@ -2,17 +2,17 @@
 
 namespace App\Events\DatabaseUsers;
 
-use App\Events\AbstractServerEvent;
+use App\Events\Servers\AbstractServerEvent;
 use App\Models\DatabaseUser;
 
 abstract class AbstractDatabaseUserEvent extends AbstractServerEvent
 {
-    public DatabaseUser $databaseUser;
+    public int $databaseUserKey;
 
     public function __construct(DatabaseUser $databaseUser)
     {
         parent::__construct($databaseUser->server);
 
-        $this->databaseUser = $databaseUser->withoutRelations();
+        $this->databaseUserKey = $databaseUser->getKey();
     }
 }
