@@ -25,12 +25,12 @@ trait HasTasksCounter
 
     public function getTasksAttribute(): int
     {
-        return (int) $this->attributes[$this->tasksAttributeName];
+        return (int) ($this->attributes[$this->tasksAttributeName] ?? 0);
     }
 
-    public function setTasksAttribute(int $value): void
+    public function setTasksAttribute(int|null $value): void
     {
-        $this->attributes[$this->tasksAttributeName] = $value;
+        $this->attributes[$this->tasksAttributeName] = (int) ($value ?? 0);
     }
 
     public function tasksAttributeName(): string
@@ -100,6 +100,14 @@ trait HasTasksCounter
         } else {
             $this->logWarning();
         }
+    }
+
+    /**
+     * Check if there is any tasks pending for this model.
+     */
+    public function hasTasks(): bool
+    {
+        return $this->tasks > 0;
     }
 
     /**

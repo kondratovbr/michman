@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property int $id
  * @property string $name
- * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -35,27 +34,13 @@ class Database extends AbstractModel implements HasTasksCounterInterface
     use HasFactory,
         HasTasksCounter;
 
-    // TODO: Can I simplify this whole status thing by using a single flag like "busy"?
-    //       The front-end will only show a single spinner then.
-
-    public const STATUS_CREATED = 'created';
-    public const STATUS_CREATING = 'creating';
-    public const STATUS_UPDATING = 'updating';
-    public const STATUS_DELETING = 'deleting';
-
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
-        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
-
-    /** @var array The model's default values for attributes. */
-    protected $attributes = [
-        'tasks' => 0,
-    ];
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
@@ -65,59 +50,11 @@ class Database extends AbstractModel implements HasTasksCounterInterface
     ];
 
     /**
-     * Get the current status of this database.
-     */
-    public function getStatusAttribute(): string
-    {
-        return $this->attributes['status'] ?? static::STATUS_CREATING;
-    }
-
-    /**
      * Get the user who owns a server with this database.
      */
     public function getUserAttribute(): User
     {
         return $this->server->user;
-    }
-
-    /**
-     * Determine if this database was created on the server.
-     */
-    public function isCreated(): bool
-    {
-        return $this->status === static::STATUS_CREATED;
-    }
-
-    /**
-     * Determine if this database is in the process of being created on the server.
-     */
-    public function isCreating(): bool
-    {
-        return $this->status === static::STATUS_CREATING;
-    }
-
-    /**
-     * Determine if this database is in the process of being updated on the server.
-     */
-    public function isUpdating(): bool
-    {
-        return $this->status === static::STATUS_UPDATING;
-    }
-
-    /**
-     * Determine if this database is in the process of being deleted from the server.
-     */
-    public function isDeleting(): bool
-    {
-        return $this->status === static::STATUS_DELETING;
-    }
-
-    /**
-     * Determine if there is some changes pending for this database.
-     */
-    public function isBusy(): bool
-    {
-        return $this->status !== static::STATUS_CREATED;
     }
 
     /**

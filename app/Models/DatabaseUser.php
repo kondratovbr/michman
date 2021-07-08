@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $name
  * @property string|null $password
- * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -36,16 +35,10 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
     use HasFactory,
         HasTasksCounter;
 
-    public const STATUS_CREATED = 'created';
-    public const STATUS_CREATING = 'creating';
-    public const STATUS_UPDATING = 'updating';
-    public const STATUS_DELETING = 'deleting';
-
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
         'password',
-        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -56,11 +49,6 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
         'password' => 'encrypted',
     ];
 
-    /** @var array The model's default values for attributes. */
-    protected $attributes = [
-        'tasks' => 0,
-    ];
-
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
         'created' => DatabaseUserCreatedEvent::class,
@@ -69,59 +57,11 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
     ];
 
     /**
-     * Get the current status of this database user.
-     */
-    public function getStatusAttribute(): string
-    {
-        return $this->attributes['status'] ?? static::STATUS_CREATING;
-    }
-
-    /**
      * Get the user who owns the server with this database user.
      */
     public function getUserAttribute(): User
     {
         return $this->server->provider->owner;
-    }
-
-    /**
-     * Determine if this database user was created on the server.
-     */
-    public function isCreated(): bool
-    {
-        return $this->status === static::STATUS_CREATED;
-    }
-
-    /**
-     * Determine if this database user is in the state of being created on the server.
-     */
-    public function isCreating(): bool
-    {
-        return $this->status === static::STATUS_CREATING;
-    }
-
-    /**
-     * Determine if this database user is in the process of being updated on the server.
-     */
-    public function isUpdating(): bool
-    {
-        return $this->status === static::STATUS_UPDATING;
-    }
-
-    /**
-     * Determine if this database user is in the state of being deleted from the server.
-     */
-    public function isDeleting(): bool
-    {
-        return $this->status === static::STATUS_DELETING;
-    }
-
-    /**
-     * Determine if these is some changes pending on this database user.
-     */
-    public function isBusy(): bool
-    {
-        return $this->status !== static::STATUS_CREATED;
     }
 
     /**

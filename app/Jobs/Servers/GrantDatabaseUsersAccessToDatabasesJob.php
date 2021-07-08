@@ -99,21 +99,4 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
         if (! $databaseUsers->first()->server->is($databases->first()->server))
             throw new RuntimeException('The databases and database users belong to different servers.');
     }
-
-    /**
-     * Set statuses to CREATED.
-     */
-    private function updateStatuses(Collection $databaseUsers, Collection $databases): void
-    {
-        // We don't do mass updates here because we're in an asynchronous job
-        // and we need to send events anyway.
-        foreach ($databaseUsers as $databaseUser) {
-            $databaseUser->status = DatabaseUser::STATUS_CREATED;
-            $databaseUser->save();
-        }
-        foreach ($databases as $database) {
-            $database->status = Database::STATUS_CREATED;
-            $database->save();
-        }
-    }
 }

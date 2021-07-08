@@ -15,7 +15,7 @@ interface HasTasksCounterInterface
 {
     public function getTasksAttribute(): int;
 
-    public function setTasksAttribute(int $value): void;
+    public function setTasksAttribute(int|null $value): void;
 
     /**
      * Get the tasks DB column name.
