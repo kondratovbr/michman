@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
 
-// TODO: CRITICAL! As per MySQL docs I also have to revoke permissions for database users - they aren't automatically cleaned when a database is deleted.
-
 class DeleteDatabaseAction
 {
     public function __construct(
