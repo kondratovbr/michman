@@ -16,7 +16,7 @@ class CreateDatabasesTable extends Migration
             $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('name');
-            $table->unsignedInteger('tasks');
+            $table->unsignedInteger('tasks')->default(0);
 
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ class CreateDatabaseUsersTable extends Migration
             $table->string('name');
             // Password is stored encrypted and only temporarily - while the user is being created on a server.
             $table->text('password')->nullable();
-            $table->unsignedInteger('tasks');
+            $table->unsignedInteger('tasks')->default(0);
 
             $table->timestamps();
         });
