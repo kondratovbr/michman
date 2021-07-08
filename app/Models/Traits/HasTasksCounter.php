@@ -25,7 +25,10 @@ trait HasTasksCounter
 
     public function getTasksAttribute(): int
     {
-        return (int) ($this->attributes[$this->tasksAttributeName] ?? 0);
+        if (is_null($this->attributes[$this->tasksAttributeName] ?? null))
+            return 0;
+
+        return (int) $this->attributes[$this->tasksAttributeName];
     }
 
     public function setTasksAttribute(int|null $value): void
@@ -75,7 +78,7 @@ trait HasTasksCounter
             $this->setUpdatedAtAttributes($now);
             $this->fireUpdatedEvent();
         } else {
-            $this->logWarning();
+            $this->logFailedQueryWarning();
         }
     }
 
@@ -98,7 +101,7 @@ trait HasTasksCounter
             $this->setUpdatedAtAttributes($now);
             $this->fireUpdatedEvent();
         } else {
-            $this->logWarning();
+            $this->logFailedQueryWarning();
         }
     }
 
@@ -124,12 +127,12 @@ trait HasTasksCounter
     /**
      * Log a warning that the update query has failed.
      */
-    private function logWarning(): void
+    private function logFailedQueryWarning(): void
     {
         Log::warning(
             'Query to update the task counter on a model returned 0 (no records were updated). Class: '
             . $this::class
-            . ' Key: '
+            . ', key: '
             . $this->getKey()
         );
     }
@@ -153,10 +156,15 @@ trait HasTasksCounter
      */
     private function incrementAttributes(int $amount): void
     {
-        $this->attributes[$this->tasksAttributeName()] += $amount;
         // We're doing this after we updated this value in the DB,
-        // so we should set the "original" as well.
+        // so we should set the "original" as well as "attributes".
+
+        if (is_null($this->original[$this->tasksAttributeName()] ?? null))
+            $this->original[$this->tasksAttributeName()] = 0;
+
         $this->original[$this->tasksAttributeName()] += $amount;
+
+        $this->attributes[$this->tasksAttributeName()] = $this->original[$this->tasksAttributeName()];
     }
 
     /**
@@ -164,9 +172,19 @@ trait HasTasksCounter
      */
     private function decrementAttributes(int $amount): void
     {
-        $this->attributes[$this->tasksAttributeName()] -= $amount;
         // We're doing this after we updated this value in the DB,
-        // so we should set the "original" as well.
-        $this->original[$this->tasksAttributeName()] -= $amount;
+        // so we should set the "original" as well as "attributes".
+
+        if (is_null($this->original[$this->tasksAttributeName()] ?? null))
+            $this->original[$this->tasksAttributeName()] = 0;
+        else
+            $this->original[$this->tasksAttributeName()] -= $amount;
+
+        if ($this->original[$this->tasksAttributeName()] < 0) {
+            Log::warning('The "tasks" attribute value went below zero. Class: ' . $this::class . ', key: ' . $this->getKey());
+            $this->original[$this->tasksAttributeName()] = 0;
+        }
+
+        $this->attributes[$this->tasksAttributeName()] = $this->original[$this->tasksAttributeName()];
     }
 }
