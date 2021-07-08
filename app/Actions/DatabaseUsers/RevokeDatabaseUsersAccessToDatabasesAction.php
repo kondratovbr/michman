@@ -34,8 +34,6 @@ class RevokeDatabaseUsersAccessToDatabasesAction
 
             $this->runServerChecks($databaseUsers, $databases);
 
-            $this->updateStatuses($databaseUsers, $databases);
-
             $this->detachModels($databaseUsers, $databases);
 
             return new RevokeDatabaseUsersAccessToDatabasesJob($databaseUsers, $databases);
@@ -89,28 +87,6 @@ class RevokeDatabaseUsersAccessToDatabasesAction
 
         if (! $databaseUsers->first()->server->is($databases->first()->server))
             throw new RuntimeException('The databases and database users belong to different servers.');
-    }
-
-    /**
-     * Set statuses as UPDATING unless models are already in DELETING status.
-     */
-    private function updateStatuses(Collection $databaseUsers, Collection $databases): void
-    {
-        /** @var DatabaseUser $databaseUser */
-        foreach ($databaseUsers as $databaseUser) {
-            if ($databaseUser->status !== DatabaseUser::STATUS_DELETING) {
-                $databaseUser->status = DatabaseUser::STATUS_UPDATING;
-                $databaseUser->save();
-            }
-        }
-
-        /** @var Database $database */
-        foreach ($databases as $database) {
-            if ($database->status !== Database::STATUS_DELETING) {
-                $database->status = Database::STATUS_UPDATING;
-                $database->save();
-            }
-        }
     }
 
     /**

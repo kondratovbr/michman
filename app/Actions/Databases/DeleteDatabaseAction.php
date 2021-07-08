@@ -27,9 +27,6 @@ class DeleteDatabaseAction
                 ->lockForUpdate()
                 ->findOrFail($database->getKey());
 
-            $database->status = Database::STATUS_DELETING;
-            $database->save();
-
             if ($database->databaseUsers->isNotEmpty()) {
                 $revokeJob = $this->revokeAction->execute(
                     $database->databaseUsers,

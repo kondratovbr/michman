@@ -38,8 +38,6 @@ class GrantDatabaseUsersAccessToDatabasesAction
 
             $this->attachModels($databaseUsers, $databases);
 
-            $this->updateStatuses($databaseUsers, $databases);
-
             return new GrantDatabaseUsersAccessToDatabasesJob($databaseUsers, $databases);
         }, 5);
     }
@@ -101,23 +99,6 @@ class GrantDatabaseUsersAccessToDatabasesAction
         /** @var Database $database */
         foreach ($databases as $database) {
             $database->databaseUsers()->attach($databaseUsers);
-        }
-    }
-
-    /**
-     * Set status as UPDATING for database users and databases.
-     */
-    private function updateStatuses(Collection $databaseUsers, Collection $databases): void
-    {
-        /** @var DatabaseUser $databaseUser */
-        foreach ($databaseUsers as $databaseUser) {
-            $databaseUser->status = DatabaseUser::STATUS_UPDATING;
-            $databaseUser->save();
-        }
-        /** @var Database $database */
-        foreach ($databases as $database) {
-            $database->status = Database::STATUS_UPDATING;
-            $database->save();
         }
     }
 }

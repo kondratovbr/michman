@@ -20,14 +20,10 @@ class StoreDatabaseUserAction
 
     public function execute(DatabaseUserData $data, Server $server, Collection $grantedDatabases = null): DatabaseUser
     {
-        $attributes = $data->toArray();
-
-        $attributes['status'] = DatabaseUser::STATUS_CREATING;
-
         DB::beginTransaction();
 
         /** @var DatabaseUser $databaseUser */
-        $databaseUser = $server->databaseUsers()->create($attributes);
+        $databaseUser = $server->databaseUsers()->create($data->toArray());
 
         if (! is_null($grantedDatabases) && $grantedDatabases->isNotEmpty()) {
             $grantJob = $this->grantAction->execute(

@@ -21,14 +21,10 @@ class StoreDatabaseAction
 
     public function execute(DatabaseData $data, Server $server, Collection $grantedUsers = null): Database
     {
-        $attributes = $data->toArray();
-
-        $attributes['status'] ??= Database::STATUS_CREATING;
-
         DB::beginTransaction();
 
         /** @var Database $database */
-        $database = $server->databases()->create($attributes);
+        $database = $server->databases()->create($data->toArray());
 
         if (! is_null($grantedUsers) && $grantedUsers->isNotEmpty()) {
             $grantJob = $this->grantAction->execute(
