@@ -19,7 +19,6 @@ class DatabaseFactory extends Factory
     {
         return [
             'name' => $this->faker->domainName,
-            'status' => Database::STATUS_CREATED,
         ];
     }
 

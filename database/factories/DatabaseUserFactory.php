@@ -20,7 +20,6 @@ class DatabaseUserFactory extends Factory
         return [
             'name' => $this->faker->userName,
             'password' => null,
-            'status' => DatabaseUser::STATUS_CREATED,
         ];
     }
 
