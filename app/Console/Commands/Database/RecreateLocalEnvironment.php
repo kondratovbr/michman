@@ -20,6 +20,8 @@ class RecreateLocalEnvironment extends AbstractCommand
      */
     public function perform(): int
     {
+        // TODO: Do I also need to run the event broadcasting worker somewhere here to handle whatever events were created during seeding?
+
         if ($this->confirm('Do you want to refresh the database?', true)) {
             $this->call('db:wipe');
             $this->call('migrate');
