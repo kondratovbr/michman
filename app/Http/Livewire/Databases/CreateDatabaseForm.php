@@ -3,7 +3,11 @@
 namespace App\Http\Livewire\Databases;
 
 use App\Actions\Databases\StoreDatabaseAction;
+use App\Broadcasting\ServersChannel;
 use App\DataTransferObjects\DatabaseData;
+use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
+use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
+use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\Database;
 use App\Models\DatabaseUser;
@@ -20,7 +24,8 @@ use Livewire\Component as LivewireComponent;
 class CreateDatabaseForm extends LivewireComponent
 {
     use AuthorizesRequests,
-        TrimsInput;
+        TrimsInput,
+        ListensForEchoes;
 
     public Server $server;
 
@@ -34,6 +39,18 @@ class CreateDatabaseForm extends LivewireComponent
     protected $listeners = [
         'database-user-stored' => '$refresh',
     ];
+
+    protected function configureEchoListeners(): void
+    {
+        $this->echoPrivate(
+            ServersChannel::name($this->server),
+            [
+                DatabaseUserCreatedEvent::class,
+                DatabaseUserDeletedEvent::class,
+            ],
+            '$refresh',
+        );
+    }
 
     /**
      * Initialize the component.
