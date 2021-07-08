@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\DatabaseUsers;
 
-use App\Actions\DatabaseUsers\GrantDatabaseUserAccessToDatabaseAction;
 use App\Actions\DatabaseUsers\StoreDatabaseUserAction;
+use App\Broadcasting\ServersChannel;
 use App\DataTransferObjects\DatabaseUserData;
+use App\Events\Databases\DatabaseCreatedEvent;
+use App\Events\Databases\DatabaseDeletedEvent;
+use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\Database;
 use App\Models\DatabaseUser;
@@ -14,8 +17,6 @@ use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests!
@@ -23,7 +24,8 @@ use Livewire\Component as LivewireComponent;
 class CreateDatabaseUserForm extends LivewireComponent
 {
     use AuthorizesRequests,
-        TrimsInput;
+        TrimsInput,
+        ListensForEchoes;
 
     public Server $server;
 
@@ -38,6 +40,18 @@ class CreateDatabaseUserForm extends LivewireComponent
     protected $listeners = [
         'database-stored' => '$refresh',
     ];
+
+    protected function configureEchoListeners(): void
+    {
+        $this->echoPrivate(
+            ServersChannel::name($this->server),
+            [
+                DatabaseCreatedEvent::class,
+                DatabaseDeletedEvent::class,
+            ],
+            '$refresh',
+        );
+    }
 
     protected function prepareForValidation($attributes): array
     {
