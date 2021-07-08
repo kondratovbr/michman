@@ -7,6 +7,7 @@ use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
 
 class CreateDatabaseUserScript extends AbstractServerScript
@@ -21,6 +22,11 @@ class CreateDatabaseUserScript extends AbstractServerScript
     ): void {
         $this->init($server, $ssh);
 
+        if ($this->mysqlUserExists($userName, 'root', $server->databaseRootPassword)) {
+            Log::warning("The MySQL user {$userName} that was requested to be created already exists.");
+            return;
+        }
+
         $this->execMysql(
             "CREATE USER '{$userName}'@'%' IDENTIFIED BY '{$password}'",
             'root',
@@ -30,10 +36,7 @@ class CreateDatabaseUserScript extends AbstractServerScript
         if ($this->getExitStatus() !== 0)
             throw new ServerScriptException('Command to create a new database user failed.');
 
-        $createdUser = Arr::first(
-            $this->getDatabaseUsersMysql('root', $server->databaseRootPassword),
-            fn(array $userData) => $userData['user'] === $userName
-        );
+        $createdUser = $this->mysqlGetDatabaseUser($userName, 'root', $server->databaseRootPassword);
 
         if (is_null($createdUser))
             throw new ServerScriptException('New database user was not created.');

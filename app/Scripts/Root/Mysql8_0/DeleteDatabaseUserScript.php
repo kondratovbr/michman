@@ -7,6 +7,7 @@ use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
 
 class DeleteDatabaseUserScript extends AbstractServerScript
@@ -17,6 +18,11 @@ class DeleteDatabaseUserScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
+        if (! $this->mysqlUserExists($userName, 'root', $server->databaseRootPassword)) {
+            Log::warning("The MySQL user {$userName} that was requested to be deleted doesn't exist.");
+            return;
+        }
+
         $this->execMysql(
             "DROP USER '{$userName}'@'%'",
             'root',
@@ -26,12 +32,7 @@ class DeleteDatabaseUserScript extends AbstractServerScript
         if ($this->getExitStatus() !== 0)
             throw new ServerScriptException('Command to drop a database user failed.');
 
-        $createdUser = Arr::first(
-            $this->getDatabaseUsersMysql('root', $server->databaseRootPassword),
-            fn(array $userData) => $userData['user'] === $userName
-        );
-
-        if (! is_null($createdUser))
+        if ($this->mysqlUserExists($userName, 'root', $server->databaseRootPassword))
             throw new ServerScriptException('The database user was not deleted.');
     }
 }

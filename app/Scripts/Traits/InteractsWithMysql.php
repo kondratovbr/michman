@@ -38,7 +38,7 @@ trait InteractsWithMysql
      *
      * @return string[]
      */
-    protected function getDatabasesMysql(string $dbUser = 'root', string $password = null): array
+    protected function mysqlGetDatabases(string $dbUser = 'root', string $password = null): array
     {
         $output = $this->execMysql(
             'SHOW DATABASES',
@@ -64,7 +64,7 @@ trait InteractsWithMysql
     /**
      * Get the list of database users that exist on the server.
      */
-    protected function getDatabaseUsersMysql(string $dbUser = 'root', string $password = null): array
+    protected function mysqlGetDatabaseUsers(string $dbUser = 'root', string $password = null): array
     {
         $output = $this->execMysql(
             'SELECT host, user FROM mysql.user',
@@ -95,6 +95,48 @@ trait InteractsWithMysql
                 'user' => $values[1],
             ];
         });
+    }
+
+    /**
+     * Check if a database user has been granted full access to a database on the server.
+     */
+    protected function mysqlUserHasGrants(
+        string $dbName,
+        string $userName,
+        string $dbUser = 'root',
+        string $password = null,
+    ): bool {
+        return Str::contains(
+            $this->execMysql(
+                "SHOW GRANTS FOR '{$userName}'@'%'",
+                $dbUser,
+                $password,
+            ),
+            // Notice that syntax here is a bit different than in the query above -
+            // MySQL outputs with backticks.
+            "GRANT ALL PRIVILEGES ON `{$dbName}`.* TO `{$userName}`@`%`"
+        );
+    }
+
+    /**
+     * Get a database user information as:
+     * ['host' => '%', 'user' => 'theuser']
+     * or null if the user doesn't exist.
+     */
+    protected function mysqlGetDatabaseUser(string $userName, string $dbUser = 'root', string $password = null): array|null
+    {
+        return Arr::first(
+            $this->mysqlGetDatabaseUsers($dbUser, $password),
+            fn(array $userData) => $userData['user'] === $userName
+        );
+    }
+
+    /**
+     * Check if a database user exists on the server.
+     */
+    protected function mysqlUserExists(string $userName, string $dbUser = 'root', string $password = null): bool
+    {
+        return ! is_null($this->mysqlGetDatabaseUser($userName, $dbUser, $password));
     }
 
     /**

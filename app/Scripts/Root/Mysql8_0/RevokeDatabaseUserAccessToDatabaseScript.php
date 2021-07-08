@@ -7,6 +7,7 @@ use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Str;
+use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
 use RuntimeException;
 
@@ -21,6 +22,16 @@ class RevokeDatabaseUserAccessToDatabaseScript extends AbstractServerScript
         SFTP $ssh = null,
     ): void {
         $this->init($server, $ssh);
+
+        if (! $this->mysqlUserHasGrants(
+            $dbName,
+            $userName,
+            'root',
+            $server->databaseRootPassword,
+        )) {
+            Log::warning("The dbUser '{$userName}' doesn't have privileges on database '{$dbName}' that were requested to be revoked.");
+            return;
+        }
 
         $this->execMysql(
             "REVOKE ALL PRIVILEGES ON {$dbName}.* FROM '{$userName}'@'%'",
@@ -37,15 +48,11 @@ class RevokeDatabaseUserAccessToDatabaseScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if (Str::contains(
-            $this->execMysql(
-                "SHOW GRANTS FOR '{$userName}'@'%'",
-                'root',
-                $server->databaseRootPassword,
-            ),
-            // Notice that syntax here is a bit different than in the query above -
-            // MySQL outputs with backticks.
-            "GRANT ALL PRIVILEGES ON `{$dbName}`.* TO `{$userName}`@`%`"
+        if ($this->mysqlUserHasGrants(
+            $dbName,
+            $userName,
+            'root',
+            $server->databaseRootPassword,
         )) {
             throw new RuntimeException('Privileges were not revoked.');
         }
