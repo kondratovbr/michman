@@ -17,6 +17,7 @@ class CreateDatabasesTable extends Migration
 
             $table->string('name');
             $table->string('status')->nullable();
+            $table->unsignedInteger('tasks');
 
             $table->timestamps();
         });

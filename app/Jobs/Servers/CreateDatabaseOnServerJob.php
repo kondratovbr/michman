@@ -22,6 +22,8 @@ class CreateDatabaseOnServerJob extends AbstractJob
         $this->setQueue('servers');
 
         $this->database = $database->withoutRelations();
+
+        $this->database->incrementTasks();
     }
 
     /**
@@ -46,10 +48,7 @@ class CreateDatabaseOnServerJob extends AbstractJob
                 $database->name,
             );
 
-            if ($database->status === Database::STATUS_CREATING)
-                $database->status = Database::STATUS_CREATED;
-
-            $database->save();
+            $database->decrementTasks();
         }, 5);
     }
 }

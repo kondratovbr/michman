@@ -25,6 +25,8 @@ class CreateDatabaseUserOnServerJob extends AbstractJob
         $this->setQueue('servers');
 
         $this->databaseUser = $databaseUser->withoutRelations();
+
+        $this->databaseUser->incrementTasks();
     }
 
     /**
@@ -50,15 +52,12 @@ class CreateDatabaseUserOnServerJob extends AbstractJob
                 $databaseUser->password,
             );
 
-            if ($databaseUser->status === DatabaseUser::STATUS_CREATING)
-                $databaseUser->status = DatabaseUser::STATUS_CREATED;
-
             // We don't need to store the password anymore,
             // so just delete it for a bit of added security.
             $databaseUser->password = null;
             $databaseUser->save();
 
-            event(new DatabaseUserCreatedEvent($databaseUser));
+            $databaseUser->decrementTasks();
         }, 5);
     }
 }

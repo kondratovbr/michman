@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
+use App\Models\Interfaces\HasTasksCounterInterface;
+use App\Models\Traits\HasTasksCounter;
 use Carbon\CarbonInterface;
 use Database\Factories\DatabaseUserFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,9 +31,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @method static DatabaseUserFactory factory(...$parameters)
  */
-class DatabaseUser extends AbstractModel
+class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
 {
-    use HasFactory;
+    use HasFactory,
+        HasTasksCounter;
 
     public const STATUS_CREATED = 'created';
     public const STATUS_CREATING = 'creating';
@@ -51,6 +54,11 @@ class DatabaseUser extends AbstractModel
     /** @var string[] The attributes that should be cast. */
     protected $casts = [
         'password' => 'encrypted',
+    ];
+
+    /** @var array The model's default values for attributes. */
+    protected $attributes = [
+        'tasks' => 0,
     ];
 
     /** @var string[] The event map for the model. */

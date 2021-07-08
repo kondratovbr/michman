@@ -18,26 +18,26 @@
             <x-tr>
                 <x-td>{{ $databaseUser->name }}</x-td>
                 <x-td class="flex justify-end items-center min-h-14">
-                    @if($databaseUser->isCreated())
+{{--                    @if($databaseUser->isDeleting())--}}
+{{--                        <x-buttons.edit disabled />--}}
+{{--                        <x-buttons.trash--}}
+{{--                            class="ml-2"--}}
+{{--                            :loading="true"--}}
+{{--                            wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"--}}
+{{--                        />--}}
+{{--                    @endif--}}
+{{--                    @if($databaseUser->isCreating() || $databaseUser->isUpdating())--}}
+                    @if($databaseUser->tasks > 0)
+                        <div class="mr-4.5">
+                            <x-spinner/>
+                        </div>
+                    @else
                         <x-buttons.edit/>
                         <x-buttons.trash
                             class="ml-2"
                             wire:click="delete('{{ $databaseUser->getKey() }}')"
                             wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
                         />
-                    @endif
-                    @if($databaseUser->isDeleting())
-                        <x-buttons.edit disabled />
-                        <x-buttons.trash
-                            class="ml-2"
-                            :loading="true"
-                            wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
-                        />
-                    @endif
-                    @if($databaseUser->isCreating() || $databaseUser->isUpdating())
-                        <div class="mr-4.5">
-                            <x-spinner/>
-                        </div>
                     @endif
                 </x-td>
             </x-tr>

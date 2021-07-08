@@ -20,6 +20,8 @@ class DeleteDatabaseUserJob extends AbstractJob
         $this->setQueue('servers');
 
         $this->databaseUser = $databaseUser->withoutRelations();
+
+        $this->databaseUser->incrementTasks();
     }
 
     /**

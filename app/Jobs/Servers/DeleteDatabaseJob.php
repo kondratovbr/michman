@@ -22,6 +22,8 @@ class DeleteDatabaseJob extends AbstractJob
         $this->setQueue('servers');
 
         $this->database = $database->withoutRelations();
+
+        $this->database->incrementTasks();
     }
 
     /**

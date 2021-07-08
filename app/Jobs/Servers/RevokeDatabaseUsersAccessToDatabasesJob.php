@@ -8,7 +8,7 @@ use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
 use App\Models\DatabaseUser;
 use App\Models\Server;
-use Illuminate\Database\Eloquent\Collection;
+use App\Collections\EloquentCollection as Collection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
@@ -26,6 +26,11 @@ class RevokeDatabaseUsersAccessToDatabasesJob extends AbstractJob
 
         $this->databaseUsers = $databaseUsers;
         $this->databases = $databases;
+
+        DB::beginTransaction();
+        $this->databaseUsers->incrementTasks();
+        $this->databases->incrementTasks();
+        DB::commit();
     }
 
     /**
@@ -34,10 +39,12 @@ class RevokeDatabaseUsersAccessToDatabasesJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function () {
+            /** @var Collection $databaseUsers */
             $databaseUsers = DatabaseUser::query()
                 ->lockForUpdate()
                 ->findMany($this->databaseUsers->modelKeys());
 
+            /** @var Collection $databases */
             $databases = Database::query()
                 ->lockForUpdate()
                 ->findMany($this->databases->modelKeys());
@@ -65,7 +72,8 @@ class RevokeDatabaseUsersAccessToDatabasesJob extends AbstractJob
                 }
             }
 
-            $this->updateStatuses($databaseUsers, $databases);
+            $databaseUsers->decrementTasks();
+            $databases->decrementTasks();
         }, 5);
     }
 

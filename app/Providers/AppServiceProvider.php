@@ -5,8 +5,6 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Date;
 use Carbon\CarbonImmutable;
-use Illuminate\Bus\Dispatcher;
-use App\Services\JobDispatcher;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,11 +15,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // Switch to using the immutable versions of Carbon objects across the whole application.
         Date::use(CarbonImmutable::class);
-
-        // Use a custom queue dispatcher class.
-        $this->app->extend(Dispatcher::class, function ($dispatcher, $app) {
-            return new JobDispatcher($app, $dispatcher);
-        });
     }
 
     /**

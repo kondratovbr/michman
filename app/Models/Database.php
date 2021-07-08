@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseDeletedEvent;
 use App\Events\Databases\DatabaseUpdatedEvent;
+use App\Models\Interfaces\HasTasksCounterInterface;
+use App\Models\Traits\HasTasksCounter;
 use Carbon\CarbonInterface;
 use Database\Factories\DatabaseFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Database Eloquent model
@@ -29,9 +30,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @method static DatabaseFactory factory(...$parameters)
  */
-class Database extends AbstractModel
+class Database extends AbstractModel implements HasTasksCounterInterface
 {
-    use HasFactory;
+    use HasFactory,
+        HasTasksCounter;
 
     // TODO: Can I simplify this whole status thing by using a single flag like "busy"?
     //       The front-end will only show a single spinner then.
@@ -49,6 +51,11 @@ class Database extends AbstractModel
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /** @var array The model's default values for attributes. */
+    protected $attributes = [
+        'tasks' => 0,
+    ];
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
