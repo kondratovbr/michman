@@ -34,13 +34,9 @@ class CreateDatabaseTest extends AbstractFeatureTest
         $this->actingAs($user);
 
         $this->mock(DatabasePolicy::class, function (MockInterface $mock) use ($user, $server) {
-            $mock->shouldReceive('index')
-                ->withArgs(fn(User $userArg, Server $serverArg) => $userArg->is($user) && $serverArg->is($server))
-                ->once()
-                ->andReturnTrue();
             $mock->shouldReceive('create')
                 ->withArgs(fn(User $userArg, Server $serverArg) => $userArg->is($user) && $serverArg->is($server))
-                ->once()
+                ->twice()
                 ->andReturnTrue();
         });
 
@@ -82,7 +78,7 @@ class CreateDatabaseTest extends AbstractFeatureTest
         $this->actingAs($user);
 
         $this->mock(DatabasePolicy::class, function (MockInterface $mock) use ($user, $server) {
-            $mock->shouldReceive('index')
+            $mock->shouldReceive('create')
                 ->withArgs(fn(User $userArg, Server $serverArg) => $userArg->is($user) && $serverArg->is($server))
                 ->once()
                 ->andReturnTrue();
@@ -120,7 +116,7 @@ class CreateDatabaseTest extends AbstractFeatureTest
         $this->actingAs($user);
 
         $this->mock(DatabasePolicy::class, function (MockInterface $mock) use ($user, $server) {
-            $mock->shouldReceive('index')
+            $mock->shouldReceive('create')
                 ->withArgs(fn(User $userArg, Server $serverArg) => $userArg->is($user) && $serverArg->is($server))
                 ->once()
                 ->andReturnTrue();
