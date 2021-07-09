@@ -24,6 +24,18 @@ class DatabaseUserFactory extends Factory
     }
 
     /**
+     * Also create a server for this database user.
+     *
+     * @return $this
+     */
+    public function withServer(): static
+    {
+        return $this->state([
+            'server_id' => Server::factory()->withProvider(),
+        ]);
+    }
+
+    /**
      * Attach database users to random servers from a collection.
      *
      * @return $this
