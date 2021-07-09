@@ -19,8 +19,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests!
-
 class CreateDatabaseUserForm extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -90,7 +88,6 @@ class CreateDatabaseUserForm extends LivewireComponent
 
         $this->authorize('create', [DatabaseUser::class, $this->server]);
 
-        // TODO: CRITICAL! CONTINUE! Finish and test this.
         $storeDatabaseUser->execute(new DatabaseUserData(
             name: $validated['name'],
             password: $validated['password'],
