@@ -313,7 +313,7 @@ class DigitalOceanForm extends Component
         $this->validate();
 
         $server = $action->execute(new NewServerData(
-            provider: Auth::user()->providers()->whereKey($this->state['provider_id'])->firstOrFail(),
+            provider: Auth::user()->providers()->findOrFail($this->state['provider_id']),
             name: $this->state['name'],
             region: $this->state['region'],
             size: $this->state['size'],
