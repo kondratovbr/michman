@@ -22,6 +22,8 @@ class ServerFactory extends Factory
             // TODO: Seed other types as well.
             'type' => 'app',
             'ssh_port' => (string) config('servers.default_ssh_port'),
+            // TODO: Seed others as well.
+            'installed_database' => 'mysql-8_0',
         ];
     }
 
