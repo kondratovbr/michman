@@ -68,11 +68,14 @@ class OAuthController extends AbstractController
 
         $oauthUser = Socialite::driver($oauthProvider)->user();
 
+        // If user previously registered via OAuth.
         $user = $this->findUserByOauthId($oauthProvider, $oauthUser);
 
+        // If user registered normally but tries to login viw OAuth with the same email.
         if (is_null($user))
             $user = $this->findUserByEmail($oauthProvider, $oauthUser);
 
+        // If this is a new user trying to register via OAuth.
         if (is_null($user))
             $user = $this->registerUserByOauth($oauthProvider, $oauthUser);
 
