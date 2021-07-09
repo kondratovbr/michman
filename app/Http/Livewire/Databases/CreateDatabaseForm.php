@@ -19,8 +19,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests!
-
 class CreateDatabaseForm extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -83,7 +81,7 @@ class CreateDatabaseForm extends LivewireComponent
             'name' => Rules::alphaNumDashString(1, 255)->required(),
             'grantedUsers' => Rules::array(),
             'grantedUsers.*' => Rules::integer()
-                ->in($this->server->databaseUsers->pluck(DatabaseUser::keyName())->toArray()),
+                ->in($this->server->databaseUsers->modelKeys()),
         ];
     }
 
