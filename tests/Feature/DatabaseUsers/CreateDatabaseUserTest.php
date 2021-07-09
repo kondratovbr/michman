@@ -98,6 +98,35 @@ class CreateDatabaseUserTest extends AbstractFeatureTest
             ->assertHasErrors('name');
     }
 
+    public function test_database_user_with_empty_password_cannot_be_created()
+    {
+        /** @var Server $server */
+        $server = Server::factory()
+            ->withProvider()
+            ->create();
+        $user = $server->user;
+
+        $this->actingAs($user);
+
+        $this->mock(DatabaseUserPolicy::class, function (MockInterface $mock) use ($user, $server) {
+            $mock->shouldReceive('create')
+                ->withArgs(fn(User $userArg, Server $serverArg) => $userArg->is($user) && $serverArg->is($server))
+                ->once()
+                ->andReturnTrue();
+        });
+
+        Livewire::test(CreateDatabaseUserForm::class, ['server' => $server])
+            ->set('name', 'foobar')
+            ->set('password', '')
+            ->set('grantedDatabases', [])
+            ->call('store', Mockery::mock(StoreDatabaseUserAction::class,
+                function (MockInterface $mock) {
+                    $mock->shouldNotHaveBeenCalled();
+                }
+            ))
+            ->assertHasErrors('password');
+    }
+
     public function test_databases_from_different_server_cannot_be_attached()
     {
         /** @var Server $server */
