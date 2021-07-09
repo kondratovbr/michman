@@ -65,7 +65,7 @@ class CreateDatabaseUserForm extends LivewireComponent
     {
         return [
             'name' => Rules::alphaNumDashString(1, 255)->required(),
-            'password' => Rules::alphaNumDashString(1, 255)->required(),
+            'password' => Rules::alphaNumDashString(8, 255)->required(),
             'grantedDatabases' => Rules::array(),
             'grantedDatabases.*' => Rules::integer()
                 ->in($this->server->databases->pluck('id')->toArray()),
