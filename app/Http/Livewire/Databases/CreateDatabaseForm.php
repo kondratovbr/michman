@@ -55,7 +55,7 @@ class CreateDatabaseForm extends LivewireComponent
      */
     public function mount(): void
     {
-        $this->authorize('index', [Database::class, $this->server]);
+        $this->authorize('create', [Database::class, $this->server]);
     }
 
     protected function prepareForValidation($attributes): array
