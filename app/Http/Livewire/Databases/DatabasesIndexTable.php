@@ -21,8 +21,6 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Add a confirmation window on database deletion and make sure a database that's in use by an active project cannot be deleted. See how Forge does it.
 
-// TODO: CRITICAL! Cover with tests.
-
 class DatabasesIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
