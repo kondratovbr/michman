@@ -41,6 +41,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'testing' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/test.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
