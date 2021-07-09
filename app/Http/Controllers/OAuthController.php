@@ -20,8 +20,6 @@ use Laravel\Socialite\Contracts\User as OauthUser;
 
 class OAuthController extends AbstractController
 {
-    // TODO: CRITICAL! Update tests.
-
     public function __construct(
         private CreateNewUser $createNewUser,
         private StoreVcsProviderAction $storeVcsProvider,
