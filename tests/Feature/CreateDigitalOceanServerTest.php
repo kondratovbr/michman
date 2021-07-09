@@ -7,7 +7,6 @@ use App\DataTransferObjects\NewServerData;
 use App\Http\Livewire\Servers\DigitalOceanForm;
 use App\Models\Provider;
 use App\Models\Server;
-use App\Models\User;
 use App\Policies\ServerPolicy;
 use App\Support\Str;
 use Livewire\Livewire;
@@ -66,13 +65,14 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
             ->set('availableSizes', ['size_1' => 'Size 1', 'size_2' => 'Size 2'])
             ->set('state', $state)
             ->call('store', Mockery::mock(StoreServerAction::class,
-                function (MockInterface $mock) use ($serverData) {
+                function (MockInterface $mock) {
                     $mock->expects('execute')
                         ->withAnyArgs()
                         ->once()
                         ->andReturn(new Server);
                 }
             ))
+            ->assertOk()
             ->assertHasNoErrors();
     }
 
