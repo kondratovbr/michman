@@ -23,8 +23,6 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests.
 
-// TODO: CRITICAL! Update the removal logic to account for DatabaseUser-to-Database connections and for the permissions on the server.
-
 class DatabasesIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
