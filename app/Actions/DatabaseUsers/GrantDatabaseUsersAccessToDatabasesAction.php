@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests!
-
 class GrantDatabaseUsersAccessToDatabasesAction
 {
     public function execute(

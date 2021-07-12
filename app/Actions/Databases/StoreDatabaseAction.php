@@ -11,8 +11,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class StoreDatabaseAction
 {
     public function __construct(
