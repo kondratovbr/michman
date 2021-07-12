@@ -8,8 +8,6 @@ use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class DeleteDatabaseJob extends AbstractJob
 {
     use InteractsWithRemoteServers,
