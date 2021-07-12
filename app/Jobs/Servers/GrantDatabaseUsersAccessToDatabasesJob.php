@@ -12,8 +12,6 @@ use App\Collections\EloquentCollection as Collection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests!
-
 class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
 {
     use InteractsWithRemoteServers,
