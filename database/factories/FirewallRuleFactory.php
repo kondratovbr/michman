@@ -27,6 +27,18 @@ class FirewallRuleFactory extends Factory
     }
 
     /**
+     * Also create a server for this firewall rule.
+     *
+     * @return $this
+     */
+    public function withServer(): static
+    {
+        return $this->state([
+            'server_id' => Server::factory()->withProvider(),
+        ]);
+    }
+
+    /**
      * Attach firewall rules to random servers from a collection.
      *
      * @return $this
