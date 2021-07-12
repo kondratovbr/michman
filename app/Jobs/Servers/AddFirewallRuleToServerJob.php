@@ -9,8 +9,6 @@ use App\Models\FirewallRule;
 use App\Scripts\Root\AddFirewallRuleScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class AddFirewallRuleToServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;

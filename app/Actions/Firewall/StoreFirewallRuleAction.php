@@ -8,8 +8,6 @@ use App\Models\FirewallRule;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class StoreFirewallRuleAction
 {
     /**
