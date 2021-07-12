@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\App;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
 
@@ -146,7 +147,8 @@ class Server extends AbstractModel
      */
     protected function newSshSession(): SSH2
     {
-        return new SSH2($this->publicIp, $this->sshPort);
+        return App::make(SSH2::class, [$this->publicIp, $this->sshPort]);
+        // return new SSH2($this->publicIp, $this->sshPort);
     }
 
     /**
@@ -154,7 +156,8 @@ class Server extends AbstractModel
      */
     protected function newSftpSession(): SFTP
     {
-        return new SFTP($this->publicIp, $this->sshPort);
+        return App::make(SFTP::class, [$this->publicIp, $this->sshPort]);
+        // return new SFTP($this->publicIp, $this->sshPort);
     }
 
     /**
