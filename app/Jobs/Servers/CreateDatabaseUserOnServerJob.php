@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests!
-
 class CreateDatabaseUserOnServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers,
