@@ -21,9 +21,7 @@ class CreateDatabaseTest extends AbstractFeatureTest
     public function test_database_can_be_created()
     {
         /** @var Server $server */
-        $server = Server::factory()
-            ->withProvider()
-            ->create();
+        $server = Server::factory()->withProvider()->create();
         $user = $server->user;
 
         $databaseUsers = DatabaseUser::factory()
