@@ -14,7 +14,8 @@ use Tests\AbstractFeatureTest;
 
 class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
 {
-    public function test_job_parameters_and_logic(){
+    public function test_job_parameters_and_logic()
+    {
         /** @var User $user */
         $user = User::factory()->withPersonalTeam()->create();
         /** @var VcsProvider $vcsProvider */
