@@ -20,10 +20,7 @@ class StoreDatabaseActionTest extends AbstractFeatureTest
     public function test_database_gets_stored()
     {
         /** @var Server $server */
-        $server = Server::factory()
-            ->withProvider()
-            ->create();
-
+        $server = Server::factory()->withProvider()->create();
         $user = $server->user;
 
         $databaseUsers = DatabaseUser::factory()
