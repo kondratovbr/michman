@@ -3,33 +3,22 @@
 namespace Tests\Feature\Databases;
 
 use App\Actions\Databases\StoreDatabaseAction;
-use App\Actions\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesAction;
-use App\Collections\EloquentCollection;
 use App\DataTransferObjects\DatabaseData;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseUpdatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
 use App\Jobs\Servers\CreateDatabaseOnServerJob;
 use App\Jobs\Servers\GrantDatabaseUsersAccessToDatabasesJob;
-use App\Models\Database;
 use App\Models\DatabaseUser;
 use App\Models\Server;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as BaseCollection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
-use Mockery;
-use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
 class StoreDatabaseActionTest extends AbstractFeatureTest
 {
     public function test_database_gets_stored()
     {
-        /*
-         * TODO: CRITICAL! CONTINUE! The problem is that with my mocking the grant job constructs before the database even gets stored in the DB, so the tasks counter doesn't get incremented.
-         */
-
         /** @var Server $server */
         $server = Server::factory()
             ->withProvider()
@@ -44,28 +33,8 @@ class StoreDatabaseActionTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $action = new StoreDatabaseAction(Mockery::mock(
-            GrantDatabaseUsersAccessToDatabasesAction::class,
-            function (MockInterface $mock) use ($databaseUsers) {
-                $database = new Database([
-                    'name' => 'foobar',
-                ]);
-                $database->id = Database::query()->max('id') + 1;
-
-                $mock->shouldReceive('execute')
-                    ->withArgs(function (BaseCollection $usersArg, BaseCollection $databasesArg) use ($databaseUsers) {
-                        return $databasesArg->count() == 1
-                            && $databasesArg->first()->name == 'foobar'
-                            && $usersArg->count() == 3
-                            && $usersArg->pluck('id')->toArray() == $databaseUsers->modelKeys();
-                    })
-                    ->once()
-                    ->andReturn(new GrantDatabaseUsersAccessToDatabasesJob(
-                        $databaseUsers,
-                        new EloquentCollection([$database]),
-                    ));
-            }
-        ));
+        /** @var StoreDatabaseAction $action */
+        $action = $this->app->make(StoreDatabaseAction::class);
 
         Bus::fake();
         Event::fake();
@@ -82,15 +51,26 @@ class StoreDatabaseActionTest extends AbstractFeatureTest
         $this->assertEquals(2, $database->tasks);
         $this->assertTrue($database->hasTasks());
 
+        $this->assertEquals(3, $database->databaseUsers->count());
+
+        $databaseUsers = $database->databaseUsers;
+
+        /** @var DatabaseUser $databaseUser */
+        foreach ($databaseUsers as $databaseUser) {
+            $this->assertEquals(1, $databaseUser->tasks);
+            $this->assertTrue($databaseUser->hasTasks());
+        }
+
         Bus::assertChained([
             CreateDatabaseOnServerJob::class,
             GrantDatabaseUsersAccessToDatabasesJob::class,
         ]);
 
-        Event::assertDispatched(fn(DatabaseCreatedEvent $event) => $event->databaseKey === $database->getKey());
-        Event::assertDispatchedTimes(fn(DatabaseUpdatedEvent $event) => $event->databaseKey === $database->getKey(), 2);
-        Event::assertDispatched(fn(DatabaseUserUpdatedEvent $event) => $event->databaseUserKey === $databaseUsers->modelKeys()[0]);
-        Event::assertDispatched(fn(DatabaseUserUpdatedEvent $event) => $event->databaseUserKey === $databaseUsers->modelKeys()[1]);
-        Event::assertDispatched(fn(DatabaseUserUpdatedEvent $event) => $event->databaseUserKey === $databaseUsers->modelKeys()[2]);
+        Event::assertDispatched(fn(DatabaseCreatedEvent $event) => $event->databaseKey === $database->getKey(), 1);
+        Event::assertDispatched(fn(DatabaseUpdatedEvent $event) => $event->databaseKey === $database->getKey(), 2);
+
+        Event::assertDispatched(fn(DatabaseUserUpdatedEvent $event) => $event->databaseUserKey === $databaseUsers->modelKeys()[0], 1);
+        Event::assertDispatched(fn(DatabaseUserUpdatedEvent $event) => $event->databaseUserKey === $databaseUsers->modelKeys()[1], 1);
+        Event::assertDispatched(fn(DatabaseUserUpdatedEvent $event) => $event->databaseUserKey === $databaseUsers->modelKeys()[2], 1);
     }
 }
