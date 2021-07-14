@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\VcsProvider;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+// TODO: CRITICAL! Cover with tests!
+
 class VcsProviderPolicy
 {
     use HandlesAuthorization;

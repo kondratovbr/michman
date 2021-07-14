@@ -6,6 +6,8 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+// TODO: CRITICAL! Cover with tests!
+
 class TeamPolicy
 {
     use HandlesAuthorization;
