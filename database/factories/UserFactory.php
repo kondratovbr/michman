@@ -61,6 +61,18 @@ class UserFactory extends Factory
     }
 
     /**
+     * Have a TFA enabled for the user.
+     *
+     * @return $this
+     */
+    public function tfaEnabled(): static
+    {
+        return $this->state([
+            'two_factor_secret' => Str::random(),
+        ]);
+    }
+
+    /**
      * Create a predefined generic admin user.
      *
      * @return $this
