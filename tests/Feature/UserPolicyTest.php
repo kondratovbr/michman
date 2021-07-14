@@ -9,7 +9,7 @@ use Tests\AbstractFeatureTest;
 
 class UserPolicyTest extends AbstractFeatureTest
 {
-    public function test_successful_enable_tfa_actions()
+    public function test_successful_enable_tfa_action()
     {
         /** @var User $user */
         $user = User::factory([
