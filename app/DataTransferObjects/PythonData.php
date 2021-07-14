@@ -7,6 +7,5 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class PythonData extends DataTransferObject
 {
-    public Server $server;
     public string $version;
 }
