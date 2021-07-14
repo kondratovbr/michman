@@ -16,7 +16,7 @@ class PythonPolicy
      */
     public function index(User $user, Server $server): bool
     {
-        return $user->is($server->provider->owner);
+        return $user->is($server->user);
     }
 
     /**
@@ -24,7 +24,7 @@ class PythonPolicy
      */
     public function create(User $user, Server $server, string $version): bool
     {
-        return $user->is($server->provider->owner)
+        return $user->is($server->user)
             && $server->pythons()->where('version', $version)->count() === 0;
     }
 
@@ -33,7 +33,7 @@ class PythonPolicy
      */
     public function update(User $user, Python $python): bool
     {
-        return $user->is($python->server->provider->owner);
+        return $user->is($python->user);
     }
 
     /**
@@ -41,9 +41,9 @@ class PythonPolicy
      */
     public function delete(User $user, Python $python): bool
     {
-        // TODO: CRITICAL! Put a correct check here.
+        // TODO: CRITICAL! Put a correct check here and don't forget to cover with a test.
         return false;
 
-        return $user->is($python->server->provider->owner);
+        return $user->is($python->user);
     }
 }
