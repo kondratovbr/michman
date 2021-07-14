@@ -28,6 +28,18 @@ class VcsProviderFactory extends Factory
     }
 
     /**
+     * Also create a user owning this VCS provider.
+     *
+     * @return $this
+     */
+    public function withUser(): static
+    {
+        return $this->state([
+            'user_id' => User::factory()->withPersonalTeam(),
+        ]);
+    }
+
+    /**
      * Attach this VCS provider to a random user from a collection provided.
      *
      * @return self
