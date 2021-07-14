@@ -26,6 +26,18 @@ class PythonFactory extends Factory
     }
 
     /**
+     * Also create a server for this python.
+     *
+     * @return $this
+     */
+    public function withServer(): static
+    {
+        return $this->state([
+            'server_id' => Server::factory()->withProvider(),
+        ]);
+    }
+
+    /**
      * Create Python models for a random server from collection,
      * making sure to do it no more than once for every one of them.
      *
