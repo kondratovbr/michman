@@ -7,8 +7,6 @@ use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-// TODO: CRITICAL! Cover with tests! And other policies as well.
-
 class DatabasePolicy
 {
     use HandlesAuthorization;
