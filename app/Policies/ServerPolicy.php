@@ -5,8 +5,6 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-// TODO: CRITICAL! Cover with tests!
-
 class ServerPolicy
 {
     use HandlesAuthorization;
