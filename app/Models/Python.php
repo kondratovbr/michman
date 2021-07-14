@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read User $user
+ *
  * @property-read Server $server
  *
  * @method static PythonFactory factory(...$parameters)
@@ -42,6 +44,11 @@ class Python extends AbstractModel
     public function getStatusAttribute(): string
     {
         return $this->attributes['status'] ?? static::STATUS_INSTALLING;
+    }
+
+    public function getUserAttribute(): User
+    {
+        return $this->server->provider->owner;
     }
 
     /**
