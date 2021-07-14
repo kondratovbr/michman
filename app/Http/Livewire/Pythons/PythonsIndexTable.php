@@ -71,9 +71,8 @@ class PythonsIndexTable extends LivewireComponent
         $this->authorize('create', [Python::class, $this->server, $version]);
 
         $storePython->execute(new PythonData(
-            server: $this->server,
             version: $version,
-        ));
+        ), $this->server);
     }
 
     /**
@@ -101,7 +100,7 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function remove(string $pythonKey): void
     {
-        // TODO: CRITICAL! Implement.
+        // TODO: CRITICAL! Implement and cover with tests.
 
         //
     }
