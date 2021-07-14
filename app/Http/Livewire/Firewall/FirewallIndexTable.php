@@ -16,8 +16,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests.
-
 class FirewallIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
