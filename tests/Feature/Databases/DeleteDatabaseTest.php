@@ -20,9 +20,7 @@ class DeleteDatabaseTest extends AbstractFeatureTest
     public function test_database_can_be_deleted()
     {
         /** @var Database $database */
-        $database = Database::factory()
-            ->withServer()
-            ->create();
+        $database = Database::factory()->withServer()->create();
         $server = $database->server;
         $user = $database->user;
 
@@ -63,14 +61,10 @@ class DeleteDatabaseTest extends AbstractFeatureTest
         $user = $server->user;
 
         /** @var Server $anotherServer */
-        $anotherServer = Server::factory()
-            ->for($server->provider)
-            ->create();
+        $anotherServer = Server::factory()->for($server->provider)->create();
 
         /** @var Database $database */
-        $database = Database::factory()
-            ->for($anotherServer)
-            ->create();
+        $database = Database::factory()->for($anotherServer)->create();
 
         $this->actingAs($user);
 
@@ -89,6 +83,39 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                     }
                 ),
                 (string) $database->id,
+            )
+            ->assertHasErrors('database_key');
+    }
+
+    public function test_database_with_empty_key_cannot_be_deleted()
+    {
+        /** @var Server $server */
+        $server = Server::factory()->withProvider()->create();
+        $user = $server->user;
+
+        /** @var Server $anotherServer */
+        $anotherServer = Server::factory()->for($server->provider)->create();
+
+        /** @var Database $database */
+        $database = Database::factory()->for($anotherServer)->create();
+
+        $this->actingAs($user);
+
+        $this->mock(DatabasePolicy::class, function (MockInterface $mock) use ($user, $server) {
+            $mock->shouldReceive('index')
+                ->withArgs(fn(User $userArg, Server $serverArg) => $userArg->is($user) && $serverArg->is($server))
+                ->once()
+                ->andReturnTrue();
+        });
+
+        Livewire::test(DatabasesIndexTable::class, ['server' => $server])
+            ->call('delete',
+                Mockery::mock(DeleteDatabaseAction::class,
+                    function (MockInterface $mock) {
+                        $mock->shouldNotHaveBeenCalled();
+                    }
+                ),
+                '',
             )
             ->assertHasErrors('database_key');
     }
