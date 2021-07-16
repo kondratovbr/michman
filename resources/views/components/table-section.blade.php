@@ -9,7 +9,7 @@
         @endisset
     </x-section-title>
 
-{{--    TODO: CRITICAL! The "overflow-x-auto" is a temporary crotch for tables that don't quite fit. Should do something about them.--}}
+{{--    TODO: IMPORTANT! The "overflow-x-auto" is a temporary crotch for tables that don't quite fit. Should do something about them.--}}
     <x-box class="lg:order-1 lg:col-span-2 mt-5 lg:mt-0 overflow-x-auto">
         @isset($empty)
             <x-box.content>
@@ -28,5 +28,9 @@
             </table>
         @endisset
     </x-box>
+
+    @isset($modal)
+        {{ $modal }}
+    @endisset
 
 </div>
