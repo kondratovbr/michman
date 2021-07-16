@@ -325,7 +325,7 @@ class DigitalOceanForm extends Component
             addSshKeyToVcs: $this->state['add_ssh_key_to_vcs'],
         ), Auth::user());
 
-        dd($server);
+        // dd($server);
 
         // TODO: CRITICAL! UNFINISHED! Don't forget to provide some feedback on success or failure. And don't forget to show the sudo password to the user!
     }
