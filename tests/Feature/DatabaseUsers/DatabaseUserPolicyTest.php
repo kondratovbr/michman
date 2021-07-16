@@ -123,4 +123,32 @@ class DatabaseUserPolicyTest extends AbstractFeatureTest
 
         $this->assertFalse($result);
     }
+
+    public function test_successful_update_action()
+    {
+        /** @var DatabaseUser $databaseUser */
+        $databaseUser = DatabaseUser::factory()->withServer()->create();
+
+        /** @var DatabaseUserPolicy $policy */
+        $policy = $this->app->make(DatabaseUserPolicy::class);
+
+        $result = $policy->update($databaseUser->user, $databaseUser);
+
+        $this->assertTrue($result);
+    }
+
+    public function test_update_action_with_db_user_owned_by_different_user()
+    {
+        /** @var User $user */
+        $user = User::factory()->withPersonalTeam()->create();
+        /** @var DatabaseUser $databaseUser */
+        $databaseUser = DatabaseUser::factory()->withServer()->create();
+
+        /** @var DatabaseUserPolicy $policy */
+        $policy = $this->app->make(DatabaseUserPolicy::class);
+
+        $result = $policy->update($user, $databaseUser);
+
+        $this->assertFalse($result);
+    }
 }
