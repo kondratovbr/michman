@@ -147,8 +147,10 @@ class Server extends AbstractModel
      */
     protected function newSshSession(): SSH2
     {
-        return App::make(SSH2::class, [$this->publicIp, $this->sshPort]);
-        // return new SSH2($this->publicIp, $this->sshPort);
+        return App::make(SSH2::class, [
+            'host' => $this->publicIp,
+            'port' => $this->sshPort,
+        ]);
     }
 
     /**
@@ -156,8 +158,10 @@ class Server extends AbstractModel
      */
     protected function newSftpSession(): SFTP
     {
-        return App::make(SFTP::class, [$this->publicIp, $this->sshPort]);
-        // return new SFTP($this->publicIp, $this->sshPort);
+        return App::make(SFTP::class, [
+            'host' => $this->publicIp,
+            'port' => $this->sshPort,
+        ]);
     }
 
     /**
