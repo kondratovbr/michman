@@ -6,12 +6,21 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="referrer" content="always">
 
-{{--        @livewireStyles--}}
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        @livewireStyles
+
+        <script src="{{ mix('js/app.js') }}" defer></script>
 
         <title>Blank Page</title>
     </head>
     <body>
 
-{{--        @livewireScripts--}}
+        <div x-data="select({})"></div>
+
+        <div x-data="focusableDialog({})"></div>
+
+        @livewireScripts
     </body>
 </html>
