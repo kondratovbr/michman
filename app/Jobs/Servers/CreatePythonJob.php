@@ -36,9 +36,8 @@ class CreatePythonJob extends AbstractJob
                 ->findOrFail($this->server->id);
 
             $storePython->execute(new PythonData(
-                server: $server,
                 version: $this->version,
-            ));
+            ), $server);
         }, 5);
     }
 }
