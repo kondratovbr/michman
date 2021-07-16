@@ -18,5 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('test', TestController::class);
 Route::get('routes', [DebugController::class, 'routes']);
 Route::get('phpinfo', [DebugController::class, 'phpInfo']);
+Route::get('empty', [DebugController::class, 'empty']);
 Route::get('blank', [DebugController::class, 'blank']);
 Route::get('pusher', [DebugController::class, 'pusher']);

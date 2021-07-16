@@ -28,13 +28,21 @@ class DebugController extends AbstractController
     /**
      * Show a standard phpinfo page.
      */
-    public function phpInfo()
+    public function phpInfo(): void
     {
         phpinfo();
     }
 
     /**
-     * Show a completely blank page.
+     * Show a completely empty HTML page.
+     */
+    public function empty(): View
+    {
+        return view('debug.empty');
+    }
+
+    /**
+     * Show a blank page.
      */
     public function blank(): View
     {
