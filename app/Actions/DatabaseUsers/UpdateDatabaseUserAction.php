@@ -11,6 +11,10 @@ class UpdateDatabaseUserAction
     {
         // TODO: CRITICAL! Implement and test!
 
+        return $databaseUser;
+
+        dd(static::class, $databaseUser, $newPassword, $grantedDatabases);
+
         //
     }
 }
