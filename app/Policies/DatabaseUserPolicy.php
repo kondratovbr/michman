@@ -28,6 +28,14 @@ class DatabaseUserPolicy
     }
 
     /**
+     * Determine whether a user is allowed to update an existing database user.
+     */
+    public function update(User $user, DatabaseUser $databaseUser): bool
+    {
+        return $user->is($databaseUser->user);
+    }
+
+    /**
      * Determine whether a user is allowed to delete a database user from a server.
      */
     public function delete(User $user, DatabaseUser $databaseUser): bool
