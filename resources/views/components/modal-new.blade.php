@@ -83,6 +83,7 @@
         <div
             {{-- This component contains functions that handle focus changes (Tab button),
             so that when modal is shown focus is kept inside the modal. --}}
+{{--                TODO: CRITICAL! CONTINUE. Front-end error: "focusableDialog is not defined". The modal doesn't work. Multiple modals on one page get confused.--}}
             x-data="focusableDialog()"
 {{--            x-init="init()"--}}
             {{-- These directives overrides focus-changing buttons (tab, shift+tab)
