@@ -44,7 +44,8 @@
                         {{ __('account.profile.delete.sorry.contact-button') }}
                     </x-buttons.primary>
                     <x-buttons.secondary
-                        wire:click="$toggle('confirmingUserDeletion')"
+                        x-on:click.prevent="show = false"
+{{--                        wire:click="$toggle('confirmingUserDeletion')"--}}
                         wire:loading.attr="disabled"
                     >
                         {{ __('buttons.cancel') }}
