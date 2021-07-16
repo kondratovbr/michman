@@ -31,7 +31,7 @@ class CreateDatabaseUserForm extends LivewireComponent
 
     public string|null $name = null;
     public string|null $password = null;
-    /** @var bool[] */
+    /** @var bool[] Database key => (bool) true - databases to grant access to for the new user. */
     public array $grantedDatabases = [];
 
     /** @var string[] */
@@ -58,9 +58,6 @@ class CreateDatabaseUserForm extends LivewireComponent
         return $attributes;
     }
 
-    /**
-     * Get the validation rules.
-     */
     public function rules(): array
     {
         return [
