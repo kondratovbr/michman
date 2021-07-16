@@ -90,8 +90,6 @@ class CreateDatabaseForm extends LivewireComponent
      */
     public function store(StoreDatabaseAction $storeDatabase): void
     {
-        // TODO: CRITICAL! CONTINUE! DatabaseCreatedEvent gets broadcasted twice here for some reason. And that's with no workers running. So, only from actions.
-
         $validated = $this->validate();
 
         $this->authorize('create', [Database::class, $this->server]);
