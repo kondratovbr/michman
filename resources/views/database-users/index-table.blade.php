@@ -32,7 +32,7 @@
                             <x-spinner/>
                         </div>
                     @else
-                        <x-buttons.edit/>
+                        <x-buttons.edit wire:click="openModal('{{ $databaseUser->getKey() }}')" />
                         <x-buttons.trash
                             class="ml-2"
                             wire:click="delete('{{ $databaseUser->getKey() }}')"
@@ -42,6 +42,11 @@
                 </x-td>
             </x-tr>
         @endforeach
+
+    </x-slot>
+
+    <x-slot name="modal">
+        @include('database-users._update-modal')
     </x-slot>
 
     @if($databaseUsers->isEmpty())
