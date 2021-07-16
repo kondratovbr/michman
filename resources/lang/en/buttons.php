@@ -10,5 +10,6 @@ return [
     'confirm' => 'Confirm',
     'back' => 'Back',
     'install' => 'Install',
+    'update' => 'Update',
 
 ];
