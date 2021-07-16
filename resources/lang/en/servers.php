@@ -174,6 +174,8 @@ return [
             'password' => 'Password',
             'button' => 'Create',
             'grant-access' => 'Grant Full Access To Databases',
+            'new-password' => 'New Password',
+            'edit-user' => 'Edit Database User (:name)',
         ],
 
         'table' => [
