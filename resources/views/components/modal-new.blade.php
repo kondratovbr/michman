@@ -4,7 +4,7 @@
 {{-- Container for a modal --}}
 <div
     {{-- Some Livewire functions require a unique ID here. --}}
-{{--    id="{{ $id ?? md5($attributes->wire('model')) }}"--}}
+    id="{{ $id ?? md5($attributes->wire('model')) }}"
     class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
     {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
 {{--        TODO: IMPORTANT! Test the scroll prevention om mobile. I still haven't figured it out for desktop. --}}
@@ -84,7 +84,7 @@
             {{-- This component contains functions that handle focus changes (Tab button),
             so that when modal is shown focus is kept inside the modal. --}}
             x-data="focusableDialog()"
-            x-init="init()"
+{{--            x-init="init()"--}}
             {{-- These directives overrides focus-changing buttons (tab, shift+tab)
             to use previously declared handlers instead of default logic. --}}
             x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
