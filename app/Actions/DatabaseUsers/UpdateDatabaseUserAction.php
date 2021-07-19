@@ -2,18 +2,59 @@
 
 namespace App\Actions\DatabaseUsers;
 
+use App\Collections\EloquentCollection;
+use App\Jobs\DatabaseUsers\UpdateDatabaseUserPasswordJob;
+use App\Jobs\Servers\GrantDatabaseUsersAccessToDatabasesJob;
+use App\Jobs\Servers\RevokeDatabaseUsersAccessToDatabasesJob;
 use App\Models\DatabaseUser;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 
 class UpdateDatabaseUserAction
 {
-    public function execute(DatabaseUser $databaseUser, string $newPassword, Collection $grantedDatabases): DatabaseUser
-    {
+    public function execute(
+        DatabaseUser $databaseUser,
+        string $newPassword,
+        EloquentCollection $grantedDatabases,
+    ): DatabaseUser {
         // TODO: CRITICAL! Implement and test!
 
-        return $databaseUser;
+        return DB::transaction(function () use ($databaseUser, $newPassword, $grantedDatabases) {
+            /** @var DatabaseUser $databaseUser */
+            $databaseUser = DatabaseUser::query()->lockForUpdate()->findOrFail($databaseUser->getKey());
 
-        dd(static::class, $databaseUser, $newPassword, $grantedDatabases);
+            $jobs = [];
+
+            /** @var EloquentCollection $databasesToRevoke */
+            $databasesToRevoke = $databaseUser->databases->diff($grantedDatabases);
+            $databasesToGrant = $grantedDatabases->diff($databaseUser->databases);
+
+            if (! empty($newPassword)) {
+                $databaseUser->password = $newPassword;
+                $databaseUser->save();
+                $jobs[] = new UpdateDatabaseUserPasswordJob($databaseUser);
+            }
+
+            $databaseUser->databases()->sync($grantedDatabases);
+
+            if ($databasesToRevoke->isNotEmpty()) {
+                $jobs[] = new RevokeDatabaseUsersAccessToDatabasesJob(
+                    collection([$databaseUser]),
+                    $databasesToRevoke,
+                );
+            }
+
+            if ($databasesToGrant->isNotEmpty()) {
+                $jobs[] = new GrantDatabaseUsersAccessToDatabasesJob(
+                    collection([$databaseUser]),
+                    $databasesToGrant,
+                );
+            }
+
+            Bus::chain($jobs)->dispatch();
+
+            return $databaseUser;
+        }, 5);
 
         //
     }
