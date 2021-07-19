@@ -5,7 +5,7 @@ namespace Tests\Integration;
 use App\Models\User;
 use Tests\AbstractIntegrationTest;
 
-class TestUserViewHelper extends AbstractIntegrationTest
+class UserViewHelperTest extends AbstractIntegrationTest
 {
     public function test_user_view_helper_returns_authenticated_user()
     {
