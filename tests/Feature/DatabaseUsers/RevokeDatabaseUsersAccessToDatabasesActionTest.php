@@ -37,8 +37,6 @@ class RevokeDatabaseUsersAccessToDatabasesActionTest extends AbstractFeatureTest
             $database->databaseUsers()->attach($databaseUsers);
         }
 
-        $this->actingAs($server->user);
-
         /** @var RevokeDatabaseUsersAccessToDatabasesAction $action */
         $action = $this->app->make(RevokeDatabaseUsersAccessToDatabasesAction::class);
 

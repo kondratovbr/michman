@@ -19,8 +19,6 @@ class StoreFirewallRuleActionTest extends AbstractFeatureTest
         $server = Server::factory()->withProvider()->create();
         $user = $server->user;
 
-        $this->actingAs($user);
-
         /** @var StoreFirewallRuleAction $action */
         $action = $this->app->make(StoreFirewallRuleAction::class);
 

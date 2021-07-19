@@ -26,14 +26,10 @@ class StoreDatabaseUserActionTest extends AbstractFeatureTest
             ->withProvider()
             ->create();
 
-        $user = $server->user;
-
         $databases = Database::factory()
             ->for($server)
             ->count(3)
             ->create();
-
-        $this->actingAs($user);
 
         /** @var StoreDatabaseUserAction $action */
         $action = $this->app->make(StoreDatabaseUserAction::class);

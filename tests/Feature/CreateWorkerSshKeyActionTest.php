@@ -13,7 +13,7 @@ class CreateWorkerSshKeyActionTest extends AbstractFeatureTest
         /** @var Server $server */
         $server = Server::factory()->withProvider()->create();
 
-        $action = new CreateWorkerSshKeyAction;
+        $action = $this->app->make(CreateWorkerSshKeyAction::class);
 
         $sshKey = $action->execute($server);
 

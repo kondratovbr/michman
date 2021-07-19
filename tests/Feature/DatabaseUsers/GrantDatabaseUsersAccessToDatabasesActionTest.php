@@ -31,9 +31,7 @@ class GrantDatabaseUsersAccessToDatabasesActionTest extends AbstractFeatureTest
             ->for($server)
             ->count(2)
             ->create();
-
-        $this->actingAs($server->user);
-
+        
         /** @var GrantDatabaseUsersAccessToDatabasesAction $action */
         $action = $this->app->make(GrantDatabaseUsersAccessToDatabasesAction::class);
 
