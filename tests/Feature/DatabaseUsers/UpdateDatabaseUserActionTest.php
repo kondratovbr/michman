@@ -12,7 +12,6 @@ use App\Models\Database;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
 use Tests\AbstractFeatureTest;
 
 class UpdateDatabaseUserActionTest extends AbstractFeatureTest
@@ -20,9 +19,7 @@ class UpdateDatabaseUserActionTest extends AbstractFeatureTest
     public function test_database_user_gets_updated()
     {
         /** @var DatabaseUser $databaseUser */
-        $databaseUser = DatabaseUser::factory([
-            'password' => Hash::make('foobarbaz'),
-        ])->withServer()->create();
+        $databaseUser = DatabaseUser::factory()->withServer()->create();
         $server = $databaseUser->server;
         $databases = Database::factory()->for($server)->count(2)->create();
         $databaseUser->databases()->sync($databases);
