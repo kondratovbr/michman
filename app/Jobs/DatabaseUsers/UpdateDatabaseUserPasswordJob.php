@@ -7,8 +7,7 @@ use App\Jobs\Traits\HandlesDatabases;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\DB;
-
-// TODO: CRITICAL! Cover with tests.
+use RuntimeException;
 
 class UpdateDatabaseUserPasswordJob extends AbstractJob
 {
@@ -37,6 +36,12 @@ class UpdateDatabaseUserPasswordJob extends AbstractJob
                 ->with('server')
                 ->lockForUpdate()
                 ->findOrFail($this->databaseUser->getKey());
+
+            if (empty($databaseUser->password ?? null)) {
+                $this->fail(new RuntimeException('Database user has no password stored in the DB.'));
+                return;
+            }
+
             $server = $databaseUser->server;
 
             $script = $this->getDatabaseScript($server, 'UpdateDatabaseUserPasswordScript');
