@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use App\Collections\EloquentCollection;
 use App\Support\Arr;
 use App\Support\Str;
 
@@ -58,5 +59,15 @@ if (! function_exists('')) {
     function randomFloat(): float
     {
         return (float) rand() / (float) getrandmax();
+    }
+}
+
+if (! function_exists('collection')) {
+    /**
+     * Turn the provided array into an instance of custom EloquentCollection.
+     */
+    function collection(array $items): EloquentCollection
+    {
+        return new EloquentCollection($items);
     }
 }
