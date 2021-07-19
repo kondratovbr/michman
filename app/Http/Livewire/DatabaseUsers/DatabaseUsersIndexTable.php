@@ -40,7 +40,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
     public DatabaseUser $updatingUser;
     /** @var string Currently typed new database user's password. */
     public string $password = '';
-    /** @var bool[] Database key => (bool) true - databases to grant access to for the user. */
+    /** @var bool[] [databaseKey => (bool) true] - databases to grant access to for the user. */
     public array $grantedDatabases = [];
 
     /** @var string[] */
@@ -106,6 +106,11 @@ class DatabaseUsersIndexTable extends LivewireComponent
     public function openModal(string $databaseUserKey): void
     {
         $this->updatingUser = $this->getDatabaseUser($databaseUserKey);
+
+        $this->grantedDatabases = $this->updatingUser->databases
+            ->keyBy(Database::keyName())
+            ->map(fn(Database $database) => true)
+            ->toArray();
 
         $this->authorize('update', $this->updatingUser);
 
