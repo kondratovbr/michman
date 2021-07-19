@@ -105,15 +105,15 @@ class DatabaseUsersIndexTable extends LivewireComponent
     {
         $this->updatingUser = $this->getDatabaseUser($databaseUserKey);
 
+        $this->authorize('update', $this->updatingUser);
+
+        $this->password = '';
         $this->grantedDatabases = $this->updatingUser->databases
             ->keyBy(Database::keyName())
             ->map(fn(Database $database) => true)
             ->toArray();
 
-        $this->authorize('update', $this->updatingUser);
-
         $this->resetErrorBag();
-        $this->password = '';
         $this->dispatchBrowserEvent('updating-database-user');
         $this->modalOpen = true;
     }
