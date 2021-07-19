@@ -20,8 +20,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests.
-
 class DatabaseUsersIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -123,8 +121,6 @@ class DatabaseUsersIndexTable extends LivewireComponent
      */
     public function update(UpdateDatabaseUserAction $updateAction): void
     {
-        // TODO: CRITICAL! CONTINUE! Implement and cover with tests!
-
         $validated = $this->validate();
 
         $this->authorize('update', $this->updatingUser);

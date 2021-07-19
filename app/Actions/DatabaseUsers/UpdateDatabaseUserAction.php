@@ -17,8 +17,6 @@ class UpdateDatabaseUserAction
         string $newPassword,
         EloquentCollection $grantedDatabases,
     ): DatabaseUser {
-        // TODO: CRITICAL! Implement and test!
-
         return DB::transaction(function () use ($databaseUser, $newPassword, $grantedDatabases) {
             /** @var DatabaseUser $databaseUser */
             $databaseUser = DatabaseUser::query()->lockForUpdate()->findOrFail($databaseUser->getKey());
@@ -55,7 +53,5 @@ class UpdateDatabaseUserAction
 
             return $databaseUser;
         }, 5);
-
-        //
     }
 }
