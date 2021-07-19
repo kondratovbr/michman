@@ -142,6 +142,8 @@ class DatabaseUsersIndexTable extends LivewireComponent
             'grantedDatabases',
         );
 
+        $this->modalOpen = false;
+
         $this->emit('database-user-stored');
         $this->emit('database-updated');
     }
