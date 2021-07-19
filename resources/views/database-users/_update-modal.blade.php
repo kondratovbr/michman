@@ -27,6 +27,7 @@
                                 <x-checkbox-new
                                     name="grantedDatabases.{{ $database->getKey() }}"
                                     wire:model.defer="grantedDatabases.{{ $database->getKey() }}"
+                                    id="update-database-user-modal-database-{{ $database->getKey() }}"
                                 >{{ $database->name }}</x-checkbox-new>
                             @endforeach
                         </div>
