@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Mockery;
+use Tests\Traits\CreatesApplication;
 
 class AbstractFeatureTest extends TestCase
 {
