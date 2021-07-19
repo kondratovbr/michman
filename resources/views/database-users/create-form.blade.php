@@ -32,6 +32,7 @@
                             <x-checkbox-new
                                 name="grantedDatabases.{{ $database->getKey() }}"
                                 wire:model.defer="grantedDatabases.{{ $database->getKey() }}"
+                                id="create-database-user-database-{{ $database->getKey() }}"
                             >{{ $database->name }}</x-checkbox-new>
                         @endforeach
                     </div>
