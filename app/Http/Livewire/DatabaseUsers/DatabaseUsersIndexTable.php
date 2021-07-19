@@ -73,7 +73,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
     public function rules(): array
     {
         return [
-            'password' => Rules::alphaNumDashString(8, 255)->required(),
+            'password' => Rules::alphaNumDashString(8, 255)->nullable(),
             'grantedDatabases' => Rules::array(),
             'grantedDatabases.*' => Rules::integer()
                 ->in($this->server->databases->pluck('id')->toArray()),
@@ -147,17 +147,6 @@ class DatabaseUsersIndexTable extends LivewireComponent
     }
 
     /**
-     * Render the component.
-     */
-    public function render(): View
-    {
-        $this->databases = $this->server->databases()->oldest()->get();
-        $this->databaseUsers = $this->server->databaseUsers()->oldest()->get();
-
-        return view('database-users.index-table');
-    }
-
-    /**
      * Validate the database user key and fetch the corresponding model.
      */
     protected function getDatabaseUser(string $key): DatabaseUser
@@ -173,5 +162,16 @@ class DatabaseUsersIndexTable extends LivewireComponent
         $databaseUser = $this->server->databaseUsers()->findOrFail($key);
 
         return $databaseUser;
+    }
+
+    /**
+     * Render the component.
+     */
+    public function render(): View
+    {
+        $this->databases = $this->server->databases()->oldest()->get();
+        $this->databaseUsers = $this->server->databaseUsers()->oldest()->get();
+
+        return view('database-users.index-table');
     }
 }
