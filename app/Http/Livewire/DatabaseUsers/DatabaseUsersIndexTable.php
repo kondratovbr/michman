@@ -125,6 +125,8 @@ class DatabaseUsersIndexTable extends LivewireComponent
      */
     public function update(UpdateDatabaseUserAction $updateAction): void
     {
+        // TODO: CRITICAL! CONTINUE! Implement and cover with tests!
+
         $validated = $this->validate();
 
         $this->authorize('update', $this->updatingUser);
