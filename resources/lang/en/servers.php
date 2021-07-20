@@ -184,4 +184,8 @@ return [
             'name' => 'Name',
         ],
     ],
+
+    'ssh' => [
+        'button' => 'SSH Keys',
+    ],
 ];
