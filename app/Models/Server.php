@@ -46,6 +46,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $deploySshKeys
  * @property-read ServerSshKey $serverSshKey
  * @property-read Collection $firewallRules
+ * @property-read Collection $projects
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -269,5 +270,15 @@ class Server extends AbstractModel
     public function firewallRules(): HasMany
     {
         return $this->hasMany(FirewallRule::class);
+    }
+
+    /**
+     * Get a relation with the projects that are using this server.
+     */
+    public function projects(): BelongsToMany
+    {
+        return $this->belongsToMany(Project::class, 'projects_server')
+            ->using(ProjectServerPivot::class)
+            ->withTimestamps();
     }
 }
