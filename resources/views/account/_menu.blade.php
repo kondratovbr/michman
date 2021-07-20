@@ -15,6 +15,7 @@
             {{ __('account.profile.button') }}
         </x-menu.item>
 
+{{--        TODO: CRITICAL! Implement.--}}
         <x-menu.item show="ssh">
             <x-slot name="icon"><i class="fa fa-terminal"></i></x-slot>
             {{ __('account.ssh.button') }}
@@ -30,6 +31,7 @@
             {{ __('account.vcs.button') }}
         </x-menu.item>
 
+{{--        TODO: CRITICAL! I guess hide this button until the API is actually implemented.--}}
         <x-menu.item show="api">
 {{--            TODO: Maybe put a Michman logo or some other icon here.--}}
             <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>

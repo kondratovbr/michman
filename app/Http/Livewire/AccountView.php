@@ -12,6 +12,7 @@ class AccountView extends AbstractSubpagesView
         'profile' => 'profile.show',
         'providers' => 'providers.show',
         'vcs' => 'vcs.show',
+        //
     ];
 
     /** @var string The name of a sub-page that will be shown by default. */
