@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $domain
  * @property string[] $aliases
  * @property bool $allowSubDomains
+ * @property string $type
+ * @property string $root
+ * @property string $pythonVersion
  *
  * @property-read Collection $servers
  *
@@ -28,6 +31,9 @@ class Project extends AbstractModel
         'domain',
         'aliases',
         'allow_sub_domains',
+        'type',
+        'root',
+        'python_version',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -36,11 +42,6 @@ class Project extends AbstractModel
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'aliases' => 'array',
-    ];
-
-    /** @var string[] The accessors to append to the model's array form. */
-    protected $appends = [
-        //
     ];
 
     /** @var string[] The event map for the model. */

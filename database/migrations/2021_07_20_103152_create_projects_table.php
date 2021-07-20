@@ -17,6 +17,9 @@ class CreateProjectsTable extends Migration
             $table->string('domain');
             $table->json('aliases');
             $table->boolean('allow_sub_domains');
+            $table->string('type');
+            $table->string('root');
+            $table->string('python_version');
 
             $table->timestamps();
         });
