@@ -16,6 +16,8 @@ namespace App\Validation;
  * are in Illuminate\Validation\Concerns\ValidatesAttributes class.
  */
 
+use App\Rules\DomainRule;
+
 /**
  * Support class Rules.
  *
@@ -140,5 +142,14 @@ class Rules extends AbstractBaseRules
             'max:40',
             'ip',
         ]);
+    }
+
+    static public function domain(): static
+    {
+        return (new static([
+            'string',
+            'min:2',
+            'max:255',
+        ]))->addRule(new DomainRule);
     }
 }
