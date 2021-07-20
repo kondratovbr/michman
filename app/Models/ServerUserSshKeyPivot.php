@@ -5,7 +5,7 @@ namespace App\Models;
 use Carbon\CarbonInterface;
 
 /**
- * Pivot Model for Server to UserSshKey Relation
+ * Pivot model for Server to UserSshKey relation
  *
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
