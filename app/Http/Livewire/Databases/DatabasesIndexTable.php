@@ -17,8 +17,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! CONTINUE! Implement and test manual creation, granting user access, removal. Then, implement updating - user should be able to change permissions on databases after they're created.
-
 // TODO: CRITICAL! Add a confirmation window on database deletion and make sure a database that's in use by an active project cannot be deleted. See how Forge does it.
 
 class DatabasesIndexTable extends LivewireComponent
