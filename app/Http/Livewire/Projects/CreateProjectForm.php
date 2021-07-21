@@ -17,7 +17,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
-// TODO: CRITICAL! CONTINUE.
+// TODO: CRITICAL! CONTINUE. Try it out.
 
 // TODO: CRITICAL! Cover with tests.
 
@@ -93,9 +93,6 @@ class CreateProjectForm extends Component
         return $rules;
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->authorize('create', [Project::class, $this->server]);
@@ -136,9 +133,6 @@ class CreateProjectForm extends Component
         $this->emit('project-stored');
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('projects.create-project-form');
