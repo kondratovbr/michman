@@ -3,12 +3,7 @@
 namespace App\Validation;
 
 /*
- * TODO: VERY IMPORTANT! Don't forget to cover this whole system with tests.
- */
-
-/*
- * TODO: Some refactoring may be useful - separate static generators and non-static functions for ease of use.
- *   Maybe even move complex rule sets to inherited classes.
+ * TODO: CRITICAL! Don't forget to cover this whole system with tests.
  */
 
 /*
