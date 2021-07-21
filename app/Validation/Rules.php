@@ -12,6 +12,7 @@ namespace App\Validation;
  */
 
 use App\Rules\DomainRule;
+use App\Rules\UnixPathRule;
 
 /**
  * Support class Rules.
@@ -146,5 +147,14 @@ class Rules extends AbstractBaseRules
             'min:2',
             'max:255',
         ]))->addRule(new DomainRule);
+    }
+
+    static public function path(): static
+    {
+        return (new static([
+            'string',
+            'min:1',
+            'max:255',
+        ]))->addRule(new UnixPathRule);
     }
 }
