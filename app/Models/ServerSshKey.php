@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ForceBooleanCast;
 use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Traits\IsSshKey;
 use Carbon\CarbonInterface;
@@ -38,6 +39,11 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /** @var string[] The attributes that should be cast. */
+    protected $casts = [
+        'add_to_vcs' => ForceBooleanCast::class,
+    ];
 
     protected function getSshKeyComment(): string
     {
