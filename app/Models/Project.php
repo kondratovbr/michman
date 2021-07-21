@@ -6,6 +6,7 @@ use App\Casts\Lowercase;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property string $fullDomainName
  *
+ * @property-read User $user
  * @property-read Collection $servers
  *
  * @method static ProjectFactory factory(...$parameters)
@@ -58,6 +60,14 @@ class Project extends AbstractModel
     public function getFullDomainNameProperty(): string
     {
         return ($this->allowSubDomains ? '*.' : '') . $this->domain;
+    }
+
+    /**
+     * Get a relation with the user that owns this project.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**

@@ -41,6 +41,7 @@ use App\Facades\QrCode;
  * @property-read Collection $servers
  * @property-read Collection $userSshKeys
  * @property-read Collection $vcsProviders
+ * @property-read Collection $projects
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -199,5 +200,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function vcsProviders(): HasMany
     {
         return $this->hasMany(VcsProvider::class);
+    }
+
+    /**
+     * Get a relation with the projects this user owns.
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 }
