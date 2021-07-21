@@ -4,7 +4,6 @@ namespace App\Actions\Projects;
 
 use App\DataTransferObjects\NewProjectData;
 use App\Jobs\Databases\CreateDatabaseJob;
-use App\Jobs\Projects\SetupProjectJob;
 use App\Jobs\Pythons\CreatePythonJob;
 use App\Models\Project;
 use App\Models\Server;
@@ -21,8 +20,7 @@ class StoreProjectAction
             /** @var Server $server */
             $server = Server::query()->lockForUpdate()->findOrFail($server->getKey());
 
-            /** @var Project $project */
-            $project = $server->projects()->create($data->toArray());
+            $server->projects()->create($data->toArray());
 
             $jobs = [];
 
@@ -36,8 +34,6 @@ class StoreProjectAction
             ) {
                 $jobs[] = new CreateDatabaseJob($server, $data->db_name, true);
             }
-
-            $jobs[] = new SetupProjectJob($project, $server);
 
             Bus::chain($jobs)->dispatch();
         }, 5);
