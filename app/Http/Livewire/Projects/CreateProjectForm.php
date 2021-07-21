@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\Actions\Projects\StoreProjectAction;
 use App\DataTransferObjects\NewProjectData;
+use App\Facades\Auth;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\Project;
@@ -15,13 +16,13 @@ use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Livewire\Component;
+use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! CONTINUE. Try it out.
 
 // TODO: CRITICAL! Cover with tests.
 
-class CreateProjectForm extends Component
+class CreateProjectForm extends LivewireComponent
 {
     use AuthorizesRequests,
         TrimsInput,
@@ -133,9 +134,18 @@ class CreateProjectForm extends Component
             allow_sub_domains: $validated['allow_sub_domains'],
             create_database: $validated['create_database'] ?? false,
             db_name: $validated['db_name'] ?? null,
-        ), $this->server);
+        ), Auth::user(), $this->server);
 
-        $this->reset();
+        $this->reset(
+            'domain',
+            'aliases',
+            'type',
+            'root',
+            'python_version',
+            'allow_sub_domains',
+            'create_database',
+            'db_name',
+        );
 
         $this->emit('project-stored');
     }
