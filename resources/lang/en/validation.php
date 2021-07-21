@@ -137,6 +137,7 @@ return [
         'provider-credentials-valid' => 'We weren\'t able to access the API using the provided credentials.',
         'port' => 'Enter a valid port (1-65535) or port range (1-65535:1-65535).',
         'domain' => 'Enter a valid domain name (example.com). Use IDN (punycode) for non-latin names.',
+        'path' => 'Enter a valid Unix path.',
     ],
 
     /*
