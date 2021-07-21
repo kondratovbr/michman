@@ -56,7 +56,7 @@ class CreateProjectForm extends Component
         if (is_string($attributes['domain'])) {
             $attributes['domain'] = Str::lower($attributes['domain']);
         }
-        
+
         if (is_string($attributes['aliases'])) {
             $attributes['aliases'] = Arr::map(
                 explode(
