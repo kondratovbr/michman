@@ -17,7 +17,16 @@
         @foreach($projects as $project)
             <x-tr>
                 <x-td></x-td>
-                <x-td>{{ $project->fullDomainName() }}</x-td>
+{{--                TODO: Should somehow handle long domain names here.--}}
+                <x-td>
+                    <div class="ml-2 flex flex-col">
+                        <x-app-link href="{{ route('projects.show', [$project, 'repo']) }}">
+                            {{ $project->fullDomainName }}
+                        </x-app-link>
+{{--                        TODO: CRITICAL! Put here some additional info about the project the same way I do in servers index table.--}}
+                        <p class="text-sm">Foobar</p>
+                    </div>
+                </x-td>
                 <x-td></x-td>
                 <x-td></x-td>
             </x-tr>
