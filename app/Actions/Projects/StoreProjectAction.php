@@ -16,11 +16,12 @@ class StoreProjectAction
 {
     public function execute(NewProjectData $data, Server $server): Project
     {
-        return DB::transaction(function () use ($data, $server) {
+        return DB::transaction(function () use ($data, $server): Project {
             /** @var Server $server */
             $server = Server::query()->lockForUpdate()->findOrFail($server->getKey());
 
-            $server->projects()->create($data->toArray());
+            /** @var Project $project */
+            $project = $server->projects()->create($data->toArray());
 
             $jobs = [];
 
@@ -36,6 +37,8 @@ class StoreProjectAction
             }
 
             Bus::chain($jobs)->dispatch();
+
+            return $project;
         }, 5);
     }
 }
