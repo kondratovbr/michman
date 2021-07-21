@@ -17,8 +17,9 @@ class GrantDatabaseUsersAccessToDatabasesAction
     public function execute(
         BaseCollection $databaseUsers,
         BaseCollection $databases,
+        bool $sync = false,
     ): GrantDatabaseUsersAccessToDatabasesJob|null {
-        return DB::transaction(function () use ($databaseUsers, $databases) {
+        return DB::transaction(function () use ($databaseUsers, $databases, $sync) {
             if ($databaseUsers->isEmpty()) {
                 Log::warning(static::class . ' called but no databaseUsers supplied.');
                 return null;
@@ -35,6 +36,11 @@ class GrantDatabaseUsersAccessToDatabasesAction
             $this->runServerChecks($databaseUsers, $databases);
 
             $this->attachModels($databaseUsers, $databases);
+
+            if ($sync) {
+                GrantDatabaseUsersAccessToDatabasesJob::dispatchSync($databaseUsers, $databases);
+                return null;
+            }
 
             return new GrantDatabaseUsersAccessToDatabasesJob($databaseUsers, $databases);
         }, 5);
