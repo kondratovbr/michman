@@ -2,7 +2,7 @@
 
 use App\Broadcasting\ProjectChannel;
 use App\Broadcasting\ServerChannel;
-use App\Models\User;
+use App\Broadcasting\UserChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('users.{userKey}', function (User $user, $userKey) {
-    return $user->getKey() == $userKey;
-});
+Broadcast::channel(UserChannel::definition(), UserChannel::class);
 
 Broadcast::channel(ServerChannel::definition(), ServerChannel::class);
 
