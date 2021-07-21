@@ -3,15 +3,13 @@
 namespace App\Actions\Pythons;
 
 use App\DataTransferObjects\PythonData;
-use App\Jobs\Servers\InstallPythonJob;
+use App\Jobs\Pythons\InstallPythonJob;
 use App\Models\Python;
 use App\Models\Server;
 
-// TODO: CRITICAL! Test and cover with tests!
-
 class StorePythonAction
 {
-    public function execute(PythonData $data, Server $server): Python
+    public function execute(PythonData $data, Server $server, bool $sync = false): Python
     {
         $attributes = $data->toArray();
 
@@ -20,7 +18,10 @@ class StorePythonAction
         /** @var Python $python */
         $python = $server->pythons()->create($attributes);
 
-        InstallPythonJob::dispatch($python);
+        if ($sync)
+            InstallPythonJob::dispatchSync($python);
+        else
+            InstallPythonJob::dispatch($python);
 
         return $python;
     }
