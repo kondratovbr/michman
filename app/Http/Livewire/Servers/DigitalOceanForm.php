@@ -85,6 +85,7 @@ class DigitalOceanForm extends Component
             'state.provider_id' => Rules::integer()
                 ->in(Arr::keys($this->providers))
                 ->required(),
+            // TODO: CRITICAL! Make the name unique for a user.
             'state.name' => Rules::string(1, 255)->required(),
             'state.region' => Rules::string(1, 255)
                 ->in(Arr::keys($this->availableRegions))
