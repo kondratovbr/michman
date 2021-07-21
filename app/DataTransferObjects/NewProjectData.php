@@ -8,7 +8,7 @@ class NewProjectData extends DataTransferObject
 {
     public string $domain;
     public array $aliases = [];
-    public static $type;
+    public string $type;
     public string $root;
     public string|null $python_version = null;
     public bool $allow_sub_domains;
