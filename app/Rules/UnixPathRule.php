@@ -18,6 +18,7 @@ class UnixPathRule implements Rule
      */
     public function passes($attribute, $value): bool
     {
+        // https://regex101.com/r/eQ7aV6/2
         return (bool) preg_match(
             '/^(\/[^\/ ]*)+\/?$/',
             $value
