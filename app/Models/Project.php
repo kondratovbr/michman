@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $allowSubDomains
  * @property string $type
  * @property string $root
- * @property string $pythonVersion
+ * @property string|null $pythonVersion
  *
  * @property-read Collection $servers
  *
