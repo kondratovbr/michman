@@ -3,7 +3,7 @@
 namespace App\Actions\DatabaseUsers;
 
 use App\Collections\EloquentCollection;
-use App\Jobs\Servers\GrantDatabaseUsersAccessToDatabasesJob;
+use App\Jobs\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesJob;
 use App\Models\Database;
 use App\Models\DatabaseUser;
 use Illuminate\Database\Eloquent\Collection;

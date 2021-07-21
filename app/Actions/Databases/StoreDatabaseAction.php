@@ -4,7 +4,7 @@ namespace App\Actions\Databases;
 
 use App\Actions\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesAction;
 use App\DataTransferObjects\DatabaseData;
-use App\Jobs\Servers\CreateDatabaseOnServerJob;
+use App\Jobs\Databases\CreateDatabaseOnServerJob;
 use App\Models\Database;
 use App\Models\Server;
 use Illuminate\Database\Eloquent\Collection;

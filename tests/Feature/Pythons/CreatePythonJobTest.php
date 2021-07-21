@@ -4,7 +4,7 @@ namespace Tests\Feature\Pythons;
 
 use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\PythonData;
-use App\Jobs\Servers\CreatePythonJob;
+use App\Jobs\Pythons\CreatePythonJob;
 use App\Models\Python;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;

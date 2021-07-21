@@ -3,7 +3,7 @@
 namespace Tests\Feature\DatabaseUsers;
 
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
-use App\Jobs\Servers\CreateDatabaseUserOnServerJob;
+use App\Jobs\DatabaseUsers\CreateDatabaseUserOnServerJob;
 use App\Models\DatabaseUser;
 use App\Models\Server;
 use App\Scripts\Root\Mysql8_0\CreateDatabaseUserScript;

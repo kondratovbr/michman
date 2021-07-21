@@ -1,15 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\ServerSshKeys;
 
-use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
+use App\Actions\ServerSshKeys\CreateServerSshKeyAction;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
-class CreateWorkerSshKeyForServerJob extends AbstractJob
+class CreateServerSshKeyJob extends AbstractJob
 {
     use IsInternal;
 
@@ -25,7 +24,7 @@ class CreateWorkerSshKeyForServerJob extends AbstractJob
     /**
      * Execute the job.
      */
-    public function handle(CreateWorkerSshKeyAction $action): void
+    public function handle(CreateServerSshKeyAction $action): void
     {
         DB::transaction(function () use ($action) {
             /** @var Server $server */
@@ -33,11 +32,6 @@ class CreateWorkerSshKeyForServerJob extends AbstractJob
                 ->whereKey($this->server->getKey())
                 ->lockForUpdate()
                 ->firstOrFail();
-
-            if (isset($server->workerSshKey)) {
-                $this->fail(new RuntimeException('The server already has a workerSshKey.'));
-                return;
-            }
 
             $action->execute($server);
         }, 5);

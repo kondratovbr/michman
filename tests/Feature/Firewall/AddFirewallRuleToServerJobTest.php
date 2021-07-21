@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Firewall;
 
-use App\Jobs\Servers\AddFirewallRuleToServerJob;
+use App\Jobs\FirewallRules\AddFirewallRuleToServerJob;
 use App\Models\FirewallRule;
 use App\Models\Server;
 use App\Scripts\Root\AddFirewallRuleScript;

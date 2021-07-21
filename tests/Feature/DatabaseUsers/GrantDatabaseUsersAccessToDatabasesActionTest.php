@@ -5,7 +5,7 @@ namespace Tests\Feature\DatabaseUsers;
 use App\Actions\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesAction;
 use App\Events\Databases\DatabaseUpdatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
-use App\Jobs\Servers\GrantDatabaseUsersAccessToDatabasesJob;
+use App\Jobs\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesJob;
 use App\Models\Database;
 use App\Models\DatabaseUser;
 use App\Models\Server;

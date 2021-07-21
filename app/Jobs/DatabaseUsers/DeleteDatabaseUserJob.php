@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\DatabaseUsers;
 
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\HandlesDatabases;

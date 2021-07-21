@@ -3,7 +3,7 @@
 namespace Tests\Feature\Databases;
 
 use App\Events\Databases\DatabaseUpdatedEvent;
-use App\Jobs\Servers\CreateDatabaseOnServerJob;
+use App\Jobs\Databases\CreateDatabaseOnServerJob;
 use App\Models\Database;
 use App\Models\Server;
 use App\Scripts\Root\Mysql8_0\CreateDatabaseScript;

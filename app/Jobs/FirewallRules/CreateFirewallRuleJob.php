@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\FirewallRules;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleData;

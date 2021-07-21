@@ -4,7 +4,7 @@ namespace Tests\Feature\DatabaseUsers;
 
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
-use App\Jobs\Servers\DeleteDatabaseUserJob;
+use App\Jobs\DatabaseUsers\DeleteDatabaseUserJob;
 use App\Models\DatabaseUser;
 use App\Models\Server;
 use App\Scripts\Root\Mysql8_0\DeleteDatabaseUserScript;

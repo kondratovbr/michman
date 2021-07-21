@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\ServerSshKeys;
 
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithVcsProviders;

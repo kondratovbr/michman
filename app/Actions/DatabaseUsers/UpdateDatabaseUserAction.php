@@ -4,8 +4,8 @@ namespace App\Actions\DatabaseUsers;
 
 use App\Collections\EloquentCollection;
 use App\Jobs\DatabaseUsers\UpdateDatabaseUserPasswordJob;
-use App\Jobs\Servers\GrantDatabaseUsersAccessToDatabasesJob;
-use App\Jobs\Servers\RevokeDatabaseUsersAccessToDatabasesJob;
+use App\Jobs\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesJob;
+use App\Jobs\DatabaseUsers\RevokeDatabaseUsersAccessToDatabasesJob;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;

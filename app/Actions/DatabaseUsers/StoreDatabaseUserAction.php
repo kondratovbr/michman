@@ -3,7 +3,7 @@
 namespace App\Actions\DatabaseUsers;
 
 use App\DataTransferObjects\DatabaseUserData;
-use App\Jobs\Servers\CreateDatabaseUserOnServerJob;
+use App\Jobs\DatabaseUsers\CreateDatabaseUserOnServerJob;
 use App\Models\DatabaseUser;
 use App\Models\Server;
 use Illuminate\Database\Eloquent\Collection;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\Pythons;
 
 use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\PythonData;
@@ -15,13 +15,15 @@ class CreatePythonJob extends AbstractJob
 
     protected Server $server;
     protected string $version;
+    protected bool $sync;
 
-    public function __construct(Server $server, string $version)
+    public function __construct(Server $server, string $version, bool $sync = false)
     {
         $this->setQueue('default');
 
         $this->server = $server->withoutRelations();
         $this->version = $version;
+        $this->sync = $sync;
     }
 
     /**
@@ -37,7 +39,7 @@ class CreatePythonJob extends AbstractJob
 
             $storePython->execute(new PythonData(
                 version: $this->version,
-            ), $server);
+            ), $server, $this->sync);
         }, 5);
     }
 }

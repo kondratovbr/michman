@@ -2,7 +2,7 @@
 
 namespace App\Actions\Pythons;
 
-use App\Jobs\Servers\PatchPythonJob;
+use App\Jobs\Pythons\PatchPythonJob;
 use App\Models\Python;
 use Illuminate\Support\Facades\DB;
 

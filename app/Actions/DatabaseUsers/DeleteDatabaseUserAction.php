@@ -2,7 +2,7 @@
 
 namespace App\Actions\DatabaseUsers;
 
-use App\Jobs\Servers\DeleteDatabaseUserJob;
+use App\Jobs\DatabaseUsers\DeleteDatabaseUserJob;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;

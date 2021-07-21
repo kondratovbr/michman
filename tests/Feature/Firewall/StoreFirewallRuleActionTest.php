@@ -4,7 +4,7 @@ namespace Tests\Feature\Firewall;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleData;
-use App\Jobs\Servers\AddFirewallRuleToServerJob;
+use App\Jobs\FirewallRules\AddFirewallRuleToServerJob;
 use App\Models\FirewallRule;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;

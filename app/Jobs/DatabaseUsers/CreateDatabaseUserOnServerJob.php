@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\DatabaseUsers;
 
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Jobs\AbstractJob;

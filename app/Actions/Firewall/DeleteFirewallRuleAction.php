@@ -2,7 +2,7 @@
 
 namespace App\Actions\Firewall;
 
-use App\Jobs\Servers\DeleteFirewallRuleJob;
+use App\Jobs\FirewallRules\DeleteFirewallRuleJob;
 use App\Models\FirewallRule;
 use Illuminate\Support\Facades\DB;
 

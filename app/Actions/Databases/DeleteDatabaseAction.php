@@ -3,7 +3,7 @@
 namespace App\Actions\Databases;
 
 use App\Actions\DatabaseUsers\RevokeDatabaseUsersAccessToDatabasesAction;
-use App\Jobs\Servers\DeleteDatabaseJob;
+use App\Jobs\Databases\DeleteDatabaseJob;
 use App\Models\Database;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;

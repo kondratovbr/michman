@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\FirewallRules;
 
-use App\Events\Firewall\FirewallRuleAddedEvent;
+use App\Events\Firewall\FirewallRuleDeletedEvent;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\FirewallRule;
-use App\Scripts\Root\AddFirewallRuleScript;
+use App\Scripts\Root\DeleteFirewallRuleScript;
 use Illuminate\Support\Facades\DB;
 
-class AddFirewallRuleToServerJob extends AbstractJob
+class DeleteFirewallRuleJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 
@@ -25,27 +25,29 @@ class AddFirewallRuleToServerJob extends AbstractJob
     /**
      * Execute the job.
      */
-    public function handle(AddFirewallRuleScript $addFirewallRule): void
+    public function handle(DeleteFirewallRuleScript $deleteFirewallRule): void
     {
-        DB::transaction(function () use ($addFirewallRule) {
+        DB::transaction(function () use ($deleteFirewallRule) {
             /** @var FirewallRule $rule */
             $rule = FirewallRule::query()
                 ->with('server')
                 ->lockForUpdate()
                 ->findOrFail($this->rule->getKey());
 
-            $addFirewallRule->execute(
-                $rule->server,
+            $server = $rule->server;
+
+            $deleteFirewallRule->execute(
+                $server,
                 $rule->port,
-                // We're going to "limit" the SSH port using the UFW built-in config as an additional brute-force protection for SSH.
                 $rule->port == $rule->server->sshPort,
                 $rule->fromIp,
             );
 
-            $rule->status = FirewallRule::STATUS_ADDED;
-            $rule->save();
+            $rule->delete();
 
-            event(new FirewallRuleAddedEvent($rule));
+            // TODO: CRITICAL! Am I sure there's nothing else to do here?
+
+            event(new FirewallRuleDeletedEvent($server));
         }, 5);
     }
 }

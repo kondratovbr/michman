@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Servers;
+namespace App\Jobs\Databases;
 
 use App\Actions\Databases\StoreDatabaseAction;
 use App\DataTransferObjects\DatabaseData;

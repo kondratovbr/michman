@@ -3,7 +3,7 @@
 namespace App\Actions\Firewall;
 
 use App\DataTransferObjects\FirewallRuleData;
-use App\Jobs\Servers\AddFirewallRuleToServerJob;
+use App\Jobs\FirewallRules\AddFirewallRuleToServerJob;
 use App\Models\FirewallRule;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;

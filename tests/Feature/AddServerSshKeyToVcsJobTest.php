@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\DataTransferObjects\SshKeyData;
-use App\Jobs\Servers\AddServerSshKeyToVcsJob;
+use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
 use App\Models\ServerSshKey;
 use App\Models\User;
 use App\Models\VcsProvider;

@@ -4,7 +4,7 @@ namespace Tests\Feature\Databases;
 
 use App\Events\Databases\DatabaseDeletedEvent;
 use App\Events\Databases\DatabaseUpdatedEvent;
-use App\Jobs\Servers\DeleteDatabaseJob;
+use App\Jobs\Databases\DeleteDatabaseJob;
 use App\Models\Database;
 use App\Models\Server;
 use App\Scripts\Root\Mysql8_0\DeleteDatabaseScript;

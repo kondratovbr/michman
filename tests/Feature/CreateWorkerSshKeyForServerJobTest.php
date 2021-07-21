@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
-use App\Jobs\Servers\CreateWorkerSshKeyForServerJob;
+use App\Jobs\WorkerSshKeys\CreateWorkerSshKeyForServerJob;
 use App\Models\Server;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
