@@ -10,8 +10,12 @@ class StoreVcsProviderAction
     public function execute(VcsProviderData $data): VcsProvider
     {
         /*
-         * TODO: CRITICAL! I should somehow handle a situation when the third-party account is already linked to some other user.
+         * TODO: CRITICAL! I should somehow handle a situation when the third-party account is already linked to some other Michman user.
          *       Is it normal? Can we work like that? Maybe just warn the user?
+         */
+
+        /*
+         * TODO: CRITICAL! I should add existing server SSH keys to the new VCS provider on its creation.
          */
 
         /** @var VcsProvider $vcsProvider */
