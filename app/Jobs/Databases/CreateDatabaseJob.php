@@ -15,13 +15,15 @@ class CreateDatabaseJob extends AbstractJob
 
     protected Server $server;
     protected string $dbName;
+    protected bool $sync;
 
-    public function __construct(Server $server, string $dbName)
+    public function __construct(Server $server, string $dbName, bool $sync = false)
     {
         $this->setQueue('default');
 
         $this->server = $server->withoutRelations();
         $this->dbName = $dbName;
+        $this->sync = $sync;
     }
 
     /**
@@ -37,7 +39,7 @@ class CreateDatabaseJob extends AbstractJob
 
             $storeDatabase->execute(new DatabaseData(
                 name: $this->dbName,
-            ), $server);
+            ), $server, null, $this->sync);
         }, 5);
     }
 }
