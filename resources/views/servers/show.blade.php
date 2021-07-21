@@ -2,7 +2,7 @@
 
 <x-slot name="header">
     <x-page-title>
-        Server
+        {{ $server->name }}
     </x-page-title>
 </x-slot>
 
