@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Projects;
 
 use App\Actions\Projects\StoreProjectAction;
+use App\DataTransferObjects\NewProjectData;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\Project;
@@ -17,6 +18,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 // TODO: CRITICAL! CONTINUE.
+
+// TODO: CRITICAL! Cover with tests.
 
 class CreateProjectForm extends Component
 {
@@ -117,9 +120,20 @@ class CreateProjectForm extends Component
 
         $this->authorize('create', [Project::class, $this->server]);
 
-        dd($validated);
+        $storeAction->execute(new NewProjectData(
+            domain: $validated['domain'],
+            aliases: $validated['aliases'] ?? [],
+            type: $validated['type'],
+            root: $validated['root'],
+            python_version: $validated['python_version'] ?? null,
+            allow_sub_domains: $validated['allow_sub_domains'],
+            create_database: $validated['create_database'] ?? false,
+            db_name: $validated['db_name'] ?? null,
+        ), $this->server);
 
-        //
+        $this->reset();
+
+        $this->emit('project-stored');
     }
 
     /**
