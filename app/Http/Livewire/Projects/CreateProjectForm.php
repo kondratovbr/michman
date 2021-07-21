@@ -53,9 +53,16 @@ class CreateProjectForm extends Component
 
     protected function prepareForValidation($attributes): array
     {
+        if (is_string($attributes['domain'])) {
+            $attributes['domain'] = Str::lower($attributes['domain']);
+        }
+        
         if (is_string($attributes['aliases'])) {
             $attributes['aliases'] = Arr::map(
-                explode(',', $attributes['aliases']),
+                explode(
+                    ',',
+                    Str::lower($attributes['aliases'])
+                ),
                 fn(string $domain) => trim($domain)
             );
         }
