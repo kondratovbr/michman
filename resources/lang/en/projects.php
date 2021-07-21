@@ -57,6 +57,9 @@ return [
 
     'repo' => [
         'button' => 'Repository',
+        'configure' => [
+            'title' => 'Configure Repository',
+        ],
     ],
 
 ];
