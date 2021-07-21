@@ -16,6 +16,9 @@ class ServerChannel implements BroadcastingChannelInterface
         return $user->is($server->user);
     }
 
+    /**
+     * Get the channel's definition string.
+     */
     public static function definition(): string
     {
         return 'servers.{server}';
@@ -30,8 +33,7 @@ class ServerChannel implements BroadcastingChannelInterface
             ? $server->getKey()
             : $server;
 
-        return 'servers.' . $serverKey;
-
+        return "servers.{$serverKey}";
     }
 
     /**
