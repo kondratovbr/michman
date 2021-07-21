@@ -6,12 +6,12 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class NewProjectData extends DataTransferObject
 {
-    static function fromRequest($request): self
-    {
-        $validated = $request->validated();
-
-        return new self([
-            //
-        ]);
-    }
+    public string $domain;
+    public array $aliases = [];
+    public static $type;
+    public string $root;
+    public string|null $python_version = null;
+    public bool $allow_sub_domains;
+    public bool $create_database = false;
+    public string|null $db_name = null;
 }
