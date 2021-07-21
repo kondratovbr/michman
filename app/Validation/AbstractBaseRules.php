@@ -150,7 +150,7 @@ abstract class AbstractBaseRules extends AbstractRules
      */
     public function requiredIfAnotherFieldIs(string $field, mixed $value): static
     {
-        return $this->addRule("required_id:{$field},{$value}");
+        return $this->addRule("required_if:{$field},{$value}");
     }
 
     /**
