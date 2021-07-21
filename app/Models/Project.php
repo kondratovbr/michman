@@ -54,7 +54,7 @@ class Project extends AbstractModel
      */
     public function servers(): BelongsToMany
     {
-        return $this->belongsToMany(Server::class, 'projects_server')
+        return $this->belongsToMany(Server::class, 'project_server')
             ->using(ProjectServerPivot::class)
             ->withTimestamps();
     }
