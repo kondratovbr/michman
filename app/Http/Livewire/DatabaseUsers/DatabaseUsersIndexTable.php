@@ -4,7 +4,7 @@ namespace App\Http\Livewire\DatabaseUsers;
 
 use App\Actions\DatabaseUsers\DeleteDatabaseUserAction;
 use App\Actions\DatabaseUsers\UpdateDatabaseUserAction;
-use App\Broadcasting\ServersChannel;
+use App\Broadcasting\ServerChannel;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
@@ -49,7 +49,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            ServersChannel::name($this->server),
+            ServerChannel::name($this->server),
             [
                 DatabaseUserCreatedEvent::class,
                 DatabaseUserUpdatedEvent::class,

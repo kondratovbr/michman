@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Firewall;
 
 use App\Actions\Firewall\DeleteFirewallRuleAction;
-use App\Broadcasting\ServersChannel;
+use App\Broadcasting\ServerChannel;
 use App\Events\Firewall\FirewallRuleAddedEvent;
 use App\Events\Firewall\FirewallRuleDeletedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
@@ -33,7 +33,7 @@ class FirewallIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            ServersChannel::name($this->server),
+            ServerChannel::name($this->server),
             [
                 FirewallRuleAddedEvent::class,
                 FirewallRuleDeletedEvent::class,

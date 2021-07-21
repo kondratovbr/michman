@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Databases;
 
 use App\Actions\Databases\DeleteDatabaseAction;
-use App\Broadcasting\ServersChannel;
+use App\Broadcasting\ServerChannel;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseDeletedEvent;
 use App\Events\Databases\DatabaseUpdatedEvent;
@@ -37,7 +37,7 @@ class DatabasesIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            ServersChannel::name($this->server),
+            ServerChannel::name($this->server),
             [
                 DatabaseCreatedEvent::class,
                 DatabaseUpdatedEvent::class,

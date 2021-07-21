@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use App\Broadcasting\ServersChannel;
+use App\Broadcasting\ServerChannel;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -19,4 +19,4 @@ Broadcast::channel('users.{userKey}', function (User $user, $userKey) {
     return $user->getKey() == $userKey;
 });
 
-Broadcast::channel(ServersChannel::definition(), ServersChannel::class);
+Broadcast::channel(ServerChannel::definition(), ServerChannel::class);

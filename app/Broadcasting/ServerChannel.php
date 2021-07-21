@@ -6,7 +6,7 @@ use App\Models\Server;
 use App\Models\User;
 use Illuminate\Broadcasting\PrivateChannel;
 
-class ServersChannel implements BroadcastingChannelInterface
+class ServerChannel implements BroadcastingChannelInterface
 {
     /**
      * Authenticate the user's access to the channel.

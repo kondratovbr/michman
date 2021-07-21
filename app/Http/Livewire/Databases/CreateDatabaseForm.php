@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Databases;
 
 use App\Actions\Databases\StoreDatabaseAction;
-use App\Broadcasting\ServersChannel;
+use App\Broadcasting\ServerChannel;
 use App\DataTransferObjects\DatabaseData;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
@@ -41,7 +41,7 @@ class CreateDatabaseForm extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            ServersChannel::name($this->server),
+            ServerChannel::name($this->server),
             [
                 DatabaseUserCreatedEvent::class,
                 DatabaseUserDeletedEvent::class,
