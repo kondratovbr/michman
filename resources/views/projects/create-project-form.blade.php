@@ -47,19 +47,68 @@
                     wire:model.defer="root"
                 />
                 <x-input-error for="root" />
+                <x-help>
+                    <span>{{ __('projects.create.form.root.help') }}</span>
+                    <x-code>/static</x-code>
+                </x-help>
             </x-field>
 
             <x-field class="max-w-sm">
                 <x-label>{{ __('projects.create.form.python-version.label') }}</x-label>
                 <x-select
-                    name="pythonVersion"
+                    name="python_version"
                     :options="$pythonVersions"
                     :default="true"
-                    wire:model="pythonVersion"
+                    wire:model="python_version"
                     wire:key="select-python-version"
                 />
-                <x-input-error for="pythonVersion" />
+                <x-input-error for="python_version" />
             </x-field>
+
+            <x-field>
+                <x-checkbox-new
+                    name="allow_sub_domains"
+                    wire:model="allow_sub_domains"
+                >
+                    {{ __('projects.create.form.allow-sub-domains.label') }}
+                </x-checkbox-new>
+                <x-input-error for="allow_sub_domains" />
+            </x-field>
+
+            @if($server->canCreateDatabase())
+
+                <div
+                    class="space-y-6"
+                    x-data="{ createDatabase: false }"
+                >
+
+                    <x-field>
+                        <x-checkbox-new
+                            name="create_database"
+                            wire:model="create_database"
+                            x-model="createDatabase"
+                        >
+                            {{ __('projects.create.form.create-database.label') }}
+                        </x-checkbox-new>
+                        <x-input-error for="create_database" />
+                    </x-field>
+
+                    <x-field
+                        class="max-w-sm"
+                        x-show="createDatabase"
+                        x-cloak
+                    >
+                        <x-label>{{ __('projects.create.form.db-name.label') }}</x-label>
+                        <x-inputs.text
+                            name="db_name"
+                            wire:model.defer="db_name"
+                        />
+                        <x-input-error for="db_name" />
+                    </x-field>
+
+                </div>
+
+            @endif
 
         </div>
     </x-slot>
