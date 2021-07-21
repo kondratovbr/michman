@@ -5,7 +5,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 /**
- * Class ForceIntegerCast
+ * Force Integer Model Attribute Cast
  *
  * Forces null attributes to be casted to (int) 0.
  */
