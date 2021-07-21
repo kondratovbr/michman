@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use App\Broadcasting\ProjectChannel;
 use App\Broadcasting\ServerChannel;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
@@ -20,3 +21,5 @@ Broadcast::channel('users.{userKey}', function (User $user, $userKey) {
 });
 
 Broadcast::channel(ServerChannel::definition(), ServerChannel::class);
+
+Broadcast::channel(ProjectChannel::definition(), ProjectChannel::class);
