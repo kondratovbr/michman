@@ -2,6 +2,10 @@
 
 namespace App\Http\Livewire\Projects;
 
+use App\Broadcasting\ServerChannel;
+use App\Events\Projects\ProjectCreatedEvent;
+use App\Events\Projects\ProjectDeletedEvent;
+use App\Events\Projects\ProjectUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Project;
 use App\Models\Server;
@@ -21,12 +25,20 @@ class ProjectsIndexTable extends LivewireComponent
 
     /** @var string[] */
     protected $listeners = [
-        //
+        'project-stored' => '$refresh',
     ];
 
     protected function configureEchoListeners(): void
     {
-        //
+        $this->echoPrivate(
+            ServerChannel::name($this->server),
+            [
+                ProjectCreatedEvent::class,
+                ProjectUpdatedEvent::class,
+                ProjectDeletedEvent::class,
+            ],
+            '$refresh',
+        );
     }
 
     public function mount(): void
