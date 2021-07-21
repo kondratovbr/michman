@@ -8,8 +8,11 @@
 return [
 
     'types' => [
-        'python' => [
-            'default_root' => '/public',
+        'django' => [
+            'default_root' => '/static',
+        ],
+        'flask' => [
+            'default_root' => '/flaskr/static',
         ],
         'static' => [
             'default_root' => '/',
