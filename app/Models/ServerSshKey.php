@@ -8,19 +8,16 @@ use Carbon\CarbonInterface;
 use Database\Factories\ServerSshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Crypt;
-use phpseclib3\Crypt\Common\PrivateKey as PrivateKeyInterface;
-use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
-use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * ServerSshKey Eloquent model
  *
- * Represents an SSH key that was created for a server
- * and added to a VCS account as a whole to be used for deployment.
+ * Represents an SSH key that is used by a server
+ * to access project repositories during deployment.
  *
  * @property int $id
  * @property string $name
+ * @property bool $addToVcs
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -36,6 +33,7 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
+        'ass_to_vcs',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */

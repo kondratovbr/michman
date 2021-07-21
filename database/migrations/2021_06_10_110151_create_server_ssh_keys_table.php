@@ -18,6 +18,7 @@ class CreateServerSshKeysTable extends Migration
             $table->string('name');
             $table->text('public_key');
             $table->text('private_key');
+            $table->boolean('add_to_vcs');
 
             $table->timestamps();
         });

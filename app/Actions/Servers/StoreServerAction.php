@@ -43,19 +43,14 @@ class StoreServerAction
                 new PrepareRemoteServerJob($server),
                 new UpdateServerAvailabilityJob($server),
                 new UpdateUserSshKeysOnServerJob($server),
-                new CreateServerSshKeyJob($server),
+                new CreateServerSshKeyJob($server, $data->addSshKeyToVcs),
                 new UploadServerSshKeyToServerJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
                 // TODO: CRITICAL! Should I also create a database user here?
 
             ];
-
-            if ($data->addSshKeyToVcs) {
-                foreach ($user->vcsProviders as $vcsProvider)
-                    $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
-            }
-
+            
             $configurationJobClass = (string) config('servers.types.' . $server->type . '.configuration_job_class');
 
             if (empty($configurationJobClass))
