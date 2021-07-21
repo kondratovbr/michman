@@ -62,7 +62,7 @@ class Project extends AbstractModel
     /**
      * Get a domain name of this project for the front-end.
      */
-    public function getFullDomainNameProperty(): string
+    public function getFullDomainNameAttribute(): string
     {
         return ($this->allowSubDomains ? '*.' : '') . $this->domain;
     }
