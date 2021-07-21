@@ -18,7 +18,7 @@ class ServerFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->domainName,
+            'name' => generateRandomName(),
             // TODO: Seed other types as well.
             'type' => 'app',
             'ssh_port' => (string) config('servers.default_ssh_port'),
