@@ -146,6 +146,14 @@ abstract class AbstractBaseRules extends AbstractRules
     }
 
     /**
+     * Required only when another field has a specific value.
+     */
+    public function requiredIfAnotherFieldIs(string $field, mixed $value): static
+    {
+        return $this->addRule("required_id:{$field},{$value}");
+    }
+
+    /**
      * Use a condition to determine if the field can be nullable or not.
      *
      * If a closure is passed, it will be resolved through a service container.
