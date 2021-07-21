@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Casts\Lowercase;
+use App\Events\Projects\ProjectCreatedEvent;
+use App\Events\Projects\ProjectDeletedEvent;
+use App\Events\Projects\ProjectUpdatedEvent;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,7 +54,9 @@ class Project extends AbstractModel
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
-        //
+        'created' => ProjectCreatedEvent::class,
+        'updated' => ProjectUpdatedEvent::class,
+        'deleted' => ProjectDeletedEvent::class,
     ];
 
     /**
