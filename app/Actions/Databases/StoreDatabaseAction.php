@@ -4,6 +4,7 @@ namespace App\Actions\Databases;
 
 use App\Actions\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesAction;
 use App\DataTransferObjects\DatabaseData;
+use App\Jobs\AbstractJob;
 use App\Jobs\Databases\CreateDatabaseOnServerJob;
 use App\Models\Database;
 use App\Models\Server;
@@ -17,7 +18,7 @@ class StoreDatabaseAction
         protected GrantDatabaseUsersAccessToDatabasesAction $grantAction,
     ) {}
 
-    public function execute(DatabaseData $data, Server $server, Collection $grantedUsers = null): Database
+    public function execute(DatabaseData $data, Server $server, Collection $grantedUsers = null, bool $sync = false): Database
     {
         DB::beginTransaction();
 
@@ -28,7 +29,14 @@ class StoreDatabaseAction
             $grantJob = $this->grantAction->execute(
                 $grantedUsers,
                 collect([$database]),
+                $sync,
             );
+        }
+
+        if ($sync) {
+            CreateDatabaseOnServerJob::dispatchSync($database);
+            DB::commit();
+            return $database;
         }
 
         DB::commit();
