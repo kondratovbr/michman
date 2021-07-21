@@ -3,8 +3,8 @@
 use App\Http\Controllers\VcsProviderController;
 use App\Http\Controllers\ServerController;
 use App\Http\Livewire\AccountView;
+use App\Http\Livewire\ProjectView;
 use App\Http\Livewire\ServerView;
-use App\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::redirect('/account', '/account/profile');
 Route::get('/account/{show}', AccountView::class)
-    ->where('show', implode('|', Arr::keys(AccountView::VIEWS)))
+    ->where('show', AccountView::viewsValidationRegex())
     ->name('account.show');
 
 /*
@@ -31,9 +31,8 @@ Route::get('/account/{show}', AccountView::class)
  */
 Route::get('servers', [ServerController::class, 'index'])->name('server.index');
 Route::get('servers/{server}/{show}', ServerView::class)
-    ->where('show', implode('|', Arr::keys(ServerView::VIEWS)))
+    ->where('show', ServerView::viewsValidationRegex())
     ->name('servers.show');
-
 
 /*
  * VcsProviders routes
@@ -46,3 +45,10 @@ Route::name('vcs.')->group(function () {
     Route::get('vcs/{vcsProviderOauthName}/unlink', [VcsProviderController::class, 'unlink'])
         ->name('unlink');
 });
+
+/*
+ * Projects routes
+ */
+Route::get('projects/{project}/{show}', ProjectView::class)
+    ->where('show', ProjectView::viewsValidationRegex())
+    ->name('projects.show');

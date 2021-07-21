@@ -28,6 +28,16 @@ abstract class AbstractSubpagesView extends LivewireComponent
     protected const DEFAULT_SHOW = '';
 
     /**
+     * Get a regex to validate the "show" route parameter.
+     *
+     * Example: "index|create|foo|bar"
+     */
+    public static function viewsValidationRegex(): string
+    {
+        return implode('|', Arr::keys(static::VIEWS));
+    }
+
+    /**
      * Initialize the component.
      */
     public function mount(string $show = null): void
