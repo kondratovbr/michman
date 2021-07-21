@@ -55,4 +55,8 @@ return [
         ],
     ],
 
+    'repo' => [
+        'button' => 'Repository',
+    ],
+
 ];
