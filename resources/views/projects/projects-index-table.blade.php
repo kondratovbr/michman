@@ -25,7 +25,9 @@
     </x-slot>
 
     @if($projects->isEmpty())
-        <x-slot name="title"></x-slot>
+        <x-slot name="empty">
+            <p class="max-w-prose">{{ __('projects.index.empty') }}</p>
+        </x-slot>
     @endif
 
 </x-table-section>

@@ -6,6 +6,4 @@
 
     <livewire:projects.projects-index-table :server="$server" />
 
-    <x-section-separator/>
-
 </x-sub-page>

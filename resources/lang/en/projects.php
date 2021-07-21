@@ -17,7 +17,7 @@ return [
             'last-deployed' => 'Last Deployed',
         ],
 
-        //
+        'empty' => 'No projects created yet.',
     ],
 
     'create' => [
