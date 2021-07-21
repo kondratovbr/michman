@@ -95,6 +95,14 @@ class Server extends AbstractModel
     }
 
     /**
+     * Check if a database can be created on this server.
+     */
+    public function canCreateDatabase(): bool
+    {
+        return ! empty($this->installedDatabase);
+    }
+
+    /**
      * Open an SSH session to the server with SFTP enabled.
      */
     public function sftp(string $user = null): SFTP
