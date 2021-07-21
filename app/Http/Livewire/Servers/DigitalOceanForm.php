@@ -10,6 +10,7 @@ use App\Models\Server;
 use App\Services\ServerProviderInterface;
 use App\Support\Arr;
 use App\Support\Str;
+use App\Validation\Fields\SupportedPythonVersionField;
 use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
@@ -98,9 +99,7 @@ class DigitalOceanForm extends Component
         ];
 
         if ($this->shouldInstall('python')) {
-            $rules['state.python_version'] = Rules::string(1, 10)
-                ->in(Arr::keys(config('servers.python')))
-                ->required();
+            $rules['state.python_version'] = SupportedPythonVersionField::new()->required();
         }
 
         if ($this->shouldInstall('database')) {
