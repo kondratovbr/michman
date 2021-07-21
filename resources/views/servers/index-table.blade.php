@@ -29,7 +29,9 @@
                         </x-icon>
                         <div class="ml-2 flex flex-col">
 {{--                            TODO: If the name is too long - cut it with the dots at the end.--}}
-                            <x-app-link href="{{ route('servers.show', [$server, 'projects']) }}">{{ $server->name }}</x-app-link>
+                            <x-app-link href="{{ route('servers.show', [$server, 'projects']) }}">
+                                {{ $server->name }}
+                            </x-app-link>
 {{--                            TODO: CRITICAL! Don't forget to implement! It should show some short info about the server, see how Forge does it. Maybe show the server's type somewhere in this table as well, would be nice.--}}
                             <p class="text-sm">Foobar</p>
                         </div>
