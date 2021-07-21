@@ -1,5 +1,7 @@
 {{--TODO: CRITICAL! Unfinished? Need loading animations, etc.--}}
 
+{{--TODO: CRITICAL! Have a default project created and deployed with every suitable new server, like Forge does - to have more mentions of us on the internet.--}}
+
 <x-form-section submit="store">
 
     <x-slot name="title">{{ __('projects.create.title') }}</x-slot>
