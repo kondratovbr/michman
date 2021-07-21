@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\Lowercase;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $type
  * @property string $root
  * @property string|null $pythonVersion
+ *
+ * @property string $fullDomainName
  *
  * @property-read Collection $servers
  *
@@ -48,6 +51,14 @@ class Project extends AbstractModel
     protected $dispatchesEvents = [
         //
     ];
+
+    /**
+     * Get a domain name of this project for the front-end.
+     */
+    public function getFullDomainNameProperty(): string
+    {
+        return ($this->allowSubDomains ? '*.' : '') . $this->domain;
+    }
 
     /**
      * Get a relation with the servers this project is using.
