@@ -13,8 +13,8 @@ return [
 
         'table' => [
             'domain' => 'Domain',
-
-            //
+            'repo' => 'Repository',
+            'last-deployed' => 'Last Deployed',
         ],
 
         //
