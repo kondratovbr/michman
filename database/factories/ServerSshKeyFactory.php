@@ -19,7 +19,7 @@ class ServerSshKeyFactory extends Factory
     public function definition(): array
     {
         return [
-            'add_to_vcs' => true,
+            //
         ];
     }
 
