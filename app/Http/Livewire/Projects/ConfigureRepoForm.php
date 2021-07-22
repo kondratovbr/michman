@@ -23,11 +23,13 @@ class ConfigureRepoForm extends LivewireComponent
 
     public Collection $vcsProviders;
 
-    public int|null $vcsProviderKey = null;
-    public string $repo = '';
-    public string $branch = '';
-    public bool $installDependencies = true;
-    public bool $useDeployKey = false;
+    public array $state = [
+        'vcsProviderKey' => null,
+        'repo' => '',
+        'branch' => '',
+        'installDependencies' => true,
+        'useDeployKey' => null,
+    ];
 
     /** @var string[] */
     protected $listeners = [
@@ -42,6 +44,15 @@ class ConfigureRepoForm extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('update', $this->project);
+
+        $this->resetState();
+    }
+
+    public function resetState()
+    {
+        $this->reset('state');
+
+        $this->state['useDeployKey'] = $this->project->useDeployKey;
     }
 
     public function render(): View
