@@ -22,6 +22,10 @@ class CreateProjectsTable extends Migration
             $table->string('root');
             $table->string('python_version')->nullable();
 
+            $table->string('vcs_provider')->nullable();
+            $table->string('repo')->nullable();
+            $table->string('branch')->nullable();
+
             $table->timestamps();
         });
     }

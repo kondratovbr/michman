@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\Lowercase;
 use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
 use App\Events\Projects\ProjectUpdatedEvent;
@@ -22,6 +21,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $type
  * @property string $root
  * @property string|null $pythonVersion
+ * @property string|null $vcsProvider
+ * @property string|null $repo
+ * @property string|null $branch
  *
  * @property string $fullDomainName
  *
@@ -42,6 +44,9 @@ class Project extends AbstractModel
         'type',
         'root',
         'python_version',
+        'vcs_provider',
+        'repo',
+        'branch',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
