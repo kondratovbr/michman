@@ -38,7 +38,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
 
     protected function getSshKeyComment(): string
     {
-        return $this->server->name . ' - deploy key';
+        return $this->project->domain . ' - deploy key';
     }
 
     /**
