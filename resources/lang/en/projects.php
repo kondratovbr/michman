@@ -59,7 +59,30 @@ return [
         'button' => 'Repository',
         'configure' => [
             'title' => 'Configure Repository',
+            'button' => 'Install Repository',
+            'vcs' => [
+                'label' => 'Provider',
+            ],
+            'repo' => [
+                'label' => 'Repository',
+            ],
+            'branch' => [
+                'label' => 'Branch',
+            ],
+            'install-dependencies' => [
+                'label' => 'Install Dependencies',
+            ],
+            'use-deploy-key' => [
+                'label' => 'Use Deploy Key',
+                'enabled-message' => 'Make sure to add this Deploy Key to your :provider repository settings before proceeding, otherwise the server won\'t be able to clone the repository.',
+                'disabled-message' => 'The server\'s SSH key will be added to your :provider account and the server will have read access to all repositories that your GitHub account has access to.',
+            ],
         ],
+        'providers' => [
+            'github_v3' => 'GitHub',
+            'gitlab' => 'GitLab',
+            'bitbucket' => 'Bitbucket',
+        ]
     ],
 
 ];

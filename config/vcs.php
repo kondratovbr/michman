@@ -24,6 +24,8 @@ return [
             'base_path' => 'https://api.github.com',
             'auth_type' => 'token',
             'disabled' => false,
+            'icon' => 'fab fa-github',
+            'deploy_keys_page_url' => '',
         ],
 
         'gitlab' => [
@@ -32,6 +34,8 @@ return [
             'base_path' => null,
             'auth_type' => 'token',
             'disabled' => true,
+            'icon' => 'fab fa-gitlab',
+            'deploy_keys_page_url' => '',
         ],
 
         'bitbucket' => [
@@ -40,6 +44,8 @@ return [
             'base_path' => null,
             'auth_type' => 'token',
             'disabled' => true,
+            'icon' => 'fab fa-bitbucket',
+            'deploy_keys_page_url' => '',
         ],
 
     ],
