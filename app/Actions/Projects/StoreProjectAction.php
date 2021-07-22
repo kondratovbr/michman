@@ -2,18 +2,28 @@
 
 namespace App\Actions\Projects;
 
+use App\Actions\Databases\StoreDatabaseAction;
+use App\Actions\DeploySshKeys\CreateDeploySshKeyAction;
+use App\Actions\Pythons\StorePythonAction;
+use App\DataTransferObjects\DatabaseData;
 use App\DataTransferObjects\NewProjectData;
-use App\Jobs\Databases\CreateDatabaseJob;
-use App\Jobs\Pythons\CreatePythonJob;
+use App\DataTransferObjects\PythonData;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\User;
-use Illuminate\Support\Facades\Bus;
 
 // TODO: CRITICAL! Cover with tests.
 
+// TODO: CRITICAL! Refactor my dumb "sync" actions - don't run those stupid "create" jobs that don't interact with any external services - just chain actions fot it! And don't forget to update tests.
+
 class StoreProjectAction
 {
+    public function __construct(
+        protected StorePythonAction $storePython,
+        protected StoreDatabaseAction $storeDatabase,
+        protected CreateDeploySshKeyAction $createDeploySshKey,
+    ) {}
+
     public function execute(NewProjectData $data, User $user, Server $server): Project
     {
         /** @var Project $project */
@@ -21,20 +31,22 @@ class StoreProjectAction
 
         $server->projects()->attach($project);
 
-        $jobs = [];
+        $this->createDeploySshKey->execute($project);
 
         if ($server->pythons()->where('version', $data->python_version)->count() < 1) {
-            $jobs[] = new CreatePythonJob($server, $data->python_version, true);
+            $this->storePython->execute(new PythonData(
+                version: $data->python_version,
+            ), $server);
         }
 
         if (
             $data->create_database
             && $server->databases()->where('name', $data->db_name)->count() < 1
         ) {
-            $jobs[] = new CreateDatabaseJob($server, $data->db_name, true);
+            $this->storeDatabase->execute(new DatabaseData(
+                name: $data->db_name,
+            ), $server);
         }
-
-        Bus::chain($jobs)->dispatch();
 
         return $project;
     }
