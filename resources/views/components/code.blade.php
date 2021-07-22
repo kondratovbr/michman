@@ -1,3 +1,6 @@
 <code {{ $attributes->class([
-    'bg-code-bg text-code-text font-mono rounded-md px-1.5-em py-1-em',
+    'bg-code-bg rounded-md',
+    'px-1.5-em py-1-em',
+    'text-code-text font-mono',
+    'whitespace-pre',
 ]) }}>{{ $slot }}</code>
