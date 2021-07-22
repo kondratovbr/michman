@@ -1,5 +1,10 @@
-<code {{ $attributes->class([
-    'text-code-text font-mono bg-code-bg rounded-md px-1.5-em py-1-em',
-]) }}>
-    <pre>{{ $slot }}</pre>
-</code>
+@props(['wrap' => false])
+
+<pre {{ $attributes->class([
+    'bg-code-bg rounded-md',
+    'px-3-em py-2-em',
+    'text-code-text font-mono',
+    $wrap
+        ? 'whitespace-pre-wrap break-all'
+        : 'whitespace-pre overflow-x-scroll',
+]) }}><code>{{ $slot }}</code></pre>
