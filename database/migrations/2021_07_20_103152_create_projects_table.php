@@ -25,6 +25,7 @@ class CreateProjectsTable extends Migration
             $table->string('vcs_provider')->nullable();
             $table->string('repo')->nullable();
             $table->string('branch')->nullable();
+            $table->boolean('use_deploy_key');
 
             $table->timestamps();
         });
