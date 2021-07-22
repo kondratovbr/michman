@@ -13,7 +13,7 @@ class CreateDeploySshKeysTable extends Migration
     {
         Schema::create('deploy_ssh_keys', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('server_id')->references('id')->on('servers');
+            $table->foreignId('project_id')->references('id')->on('projects');
 
             $table->text('public_key');
             $table->text('private_key');

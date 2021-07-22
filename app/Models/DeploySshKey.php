@@ -8,10 +8,6 @@ use Carbon\CarbonInterface;
 use Database\Factories\DeploySshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Crypt;
-use phpseclib3\Crypt\Common\PrivateKey as PrivateKeyInterface;
-use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
-use phpseclib3\Crypt\PublicKeyLoader;
 
 /**
  * DeploySshKey Eloquent model
@@ -23,7 +19,7 @@ use phpseclib3\Crypt\PublicKeyLoader;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
- * @property-read Server $server
+ * @property-read Project $project
  *
  * @method static DeploySshKeyFactory factory(...$parameters)
  */
@@ -45,12 +41,11 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
         return $this->server->name . ' - deploy key';
     }
 
-    // TODO: CRITICAL! This is a mistake. A deploy key should be owned by a project and attached to many servers - all of the servers where the project is deployed. Fix and don't forget the migrations and the inverse part of this relation. The comment in keyToString is also not correct - should include project name.
     /**
-     * Get a relation with the server that has this key.
+     * Get a relation with the project that uses this key.
      */
-    public function server(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Server::class);
+        return $this->belongsTo(Project::class);
     }
 }
