@@ -257,14 +257,6 @@ class Server extends AbstractModel
     }
 
     /**
-     * Get a relation with the deploy SSH keys used by this server.
-     */
-    public function deploySshKey(): HasMany
-    {
-        return $this->hasMany(DeploySshKey::class);
-    }
-
-    /**
      * Get a relation with the SHH key that this server is using to access VCS repositories.
      */
     public function serverSshKey(): HasOne
