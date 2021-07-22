@@ -110,17 +110,6 @@
                                 />
                                 <x-input-error for="state.database" />
                             </x-field>
-                            @if($state['database'] !== 'none')
-{{--                                TODO: Maybe database name here isn't necessary? Leave this to other stages of deployment?--}}
-                                <x-field>
-                                    <x-label>{{ __('servers.create.db-name') }}</x-label>
-                                    <x-inputs.text
-                                        name="state.db_name"
-                                        wire:model="state.db_name"
-                                    />
-                                    <x-input-error for="state.db_name" />
-                                </x-field>
-                            @endif
                         @endif
                         @if($this->shouldInstall('cache'))
                             <x-field>
@@ -138,16 +127,6 @@
                     @endisset
                 @endisset
             @endisset
-
-            <div class="space-y-2 -mt-2">
-{{--                TODO: This checkbox needs some explanatory text, maybe better a link to docs.--}}
-                <x-field>
-                    <x-checkbox-new
-                        name="state.add_ssh_key_to_vcs"
-                        wire:model="state.add_ssh_key_to_vcs"
-                    >{{ __('servers.create.add-key-to-vcs') }}</x-checkbox-new>
-                </x-field>
-            </div>
 
         @endisset
     @endisset

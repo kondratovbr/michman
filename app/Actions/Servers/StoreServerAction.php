@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
+// TODO: CRITICAL! Check and update tests!
+
 class StoreServerAction
 {
     public function execute(NewServerData $data, User $user): Server
@@ -34,7 +36,6 @@ class StoreServerAction
             $server = $data->provider->servers()->create($attributes);
 
             $jobs = [
-
                 new CreateWorkerSshKeyForServerJob($server),
                 new AddWorkerSshKeyToServerProviderJob($server),
                 new RequestNewServerFromProviderJob($server, $data),
@@ -43,11 +44,10 @@ class StoreServerAction
                 new PrepareRemoteServerJob($server),
                 new UpdateServerAvailabilityJob($server),
                 new UpdateUserSshKeysOnServerJob($server),
-                new CreateServerSshKeyJob($server, $data->addSshKeyToVcs),
+                new CreateServerSshKeyJob($server),
                 new UploadServerSshKeyToServerJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
-                // TODO: CRITICAL! Should I also create a database user here?
 
             ];
             

@@ -53,7 +53,6 @@ class ConfigureAppServerJob extends AbstractJob
 
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
-                new CreateDatabaseJob($server, $this->data->dbName),
                 new InstallCacheJob($server, $this->data->cache),
                 new CreatePythonJob($server, $this->data->pythonVersion),
                 new InstallNginxJob($server),

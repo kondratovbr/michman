@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\ForceBooleanCast;
 use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Traits\IsSshKey;
 use Carbon\CarbonInterface;
@@ -18,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property string $name
- * @property bool $addToVcs
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -34,7 +32,6 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'name',
-        'ass_to_vcs',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -42,7 +39,7 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
 
     /** @var string[] The attributes that should be cast. */
     protected $casts = [
-        'add_to_vcs' => ForceBooleanCast::class,
+        //
     ];
 
     protected function getSshKeyComment(): string

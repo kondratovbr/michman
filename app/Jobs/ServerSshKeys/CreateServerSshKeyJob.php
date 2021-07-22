@@ -13,14 +13,12 @@ class CreateServerSshKeyJob extends AbstractJob
     use IsInternal;
 
     protected Server $server;
-    protected bool $addToVcs;
 
-    public function __construct(Server $server, bool $addToVcs)
+    public function __construct(Server $server)
     {
         $this->setQueue('default');
 
         $this->server = $server->withoutRelations();
-        $this->addToVcs = $addToVcs;
     }
 
     /**
@@ -35,7 +33,7 @@ class CreateServerSshKeyJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $action->execute($server, $this->addToVcs);
+            $action->execute($server);
         }, 5);
     }
 }

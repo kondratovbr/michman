@@ -14,7 +14,5 @@ class NewServerData extends DataTransferObject
     public string $type;
     public string|null $pythonVersion = null;
     public string $database = 'none';
-    public string|null $dbName = null;
     public string $cache = 'none';
-    public bool $addSshKeyToVcs = false;
 }

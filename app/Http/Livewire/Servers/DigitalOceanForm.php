@@ -60,9 +60,7 @@ class DigitalOceanForm extends Component
         'type' => 'app',
         'python_version' => '3_9',
         'database' => 'mysql-8_0',
-        'db_name' => null,
         'cache' => 'redis',
-        'add_ssh_key_to_vcs' => true,
     ];
 
     /** Error code returned by the external API, if any. */
@@ -96,7 +94,6 @@ class DigitalOceanForm extends Component
             'state.type' => Rules::string(1, 255)
                 ->in(Arr::keys(config('servers.types')))
                 ->required(),
-            'state.add_ssh_key_to_vcs' => Rules::boolean()->required(),
         ];
 
         if ($this->shouldInstall('python')) {
@@ -107,8 +104,6 @@ class DigitalOceanForm extends Component
             $rules['state.database'] = Rules::string(1, 32)
                 ->in(Arr::keys(Arr::add(config('servers.databases'), 'none', null)))
                 ->required();
-            if ($this->state['database'] != 'none')
-                $rules['state.db_name'] = Rules::string(1, 255)->required();
         }
 
         if ($this->shouldInstall('cache')) {
@@ -164,7 +159,6 @@ class DigitalOceanForm extends Component
         // We generate these defaults after the first API operation,
         // because our API error handling code resets the state on errors.
         $this->state['name'] = generateRandomName();
-        $this->state['db_name'] = Str::kebab(config('app.name'));
 
         if ($this->apiErrorCode) {
             // API returned some error, so we stop and put blank values as defaults,
@@ -208,7 +202,6 @@ class DigitalOceanForm extends Component
                 break;
             case 'state.type':
                 $this->validateOnly('type');
-                $this->state['add_ssh_key_to_vcs'] = (bool) config('servers.types.' . $this->state['type'] . '.add_ssh_key_to_vcs');
                 break;
         }
     }
@@ -320,9 +313,7 @@ class DigitalOceanForm extends Component
             type: $this->state['type'],
             pythonVersion: $this->state['python_version'],
             database: $this->state['database'],
-            dbName: $this->state['db_name'],
             cache: $this->state['cache'],
-            addSshKeyToVcs: $this->state['add_ssh_key_to_vcs'],
         ), Auth::user());
 
         // dd($server);
