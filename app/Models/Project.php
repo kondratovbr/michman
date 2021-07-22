@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ForceBooleanCast;
 use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
 use App\Events\Projects\ProjectUpdatedEvent;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Project Eloquent model
@@ -24,11 +26,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string|null $vcsProvider
  * @property string|null $repo
  * @property string|null $branch
+ * @property bool $useDeployKey
  *
  * @property string $fullDomainName
  *
  * @property-read User $user
  * @property-read Collection $servers
+ * @property-read DeploySshKey|null $deploySshKey
  *
  * @method static ProjectFactory factory(...$parameters)
  */
@@ -47,6 +51,7 @@ class Project extends AbstractModel
         'vcs_provider',
         'repo',
         'branch',
+        'use_deploy_key',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -55,6 +60,7 @@ class Project extends AbstractModel
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'aliases' => 'array',
+        'use_deploy_key' => ForceBooleanCast::class,
     ];
 
     /** @var string[] The event map for the model. */
@@ -88,5 +94,13 @@ class Project extends AbstractModel
         return $this->belongsToMany(Server::class, 'project_server')
             ->using(ProjectServerPivot::class)
             ->withTimestamps();
+    }
+
+    /**
+     * Get a relation with the deploy key used by this project, if any.
+     */
+    public function deploySshKey(): HasOne
+    {
+        return $this->hasOne(DeploySshKey::class);
     }
 }
