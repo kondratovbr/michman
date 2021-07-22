@@ -28,6 +28,8 @@ use Livewire\Component;
 
 // TODO: CRITICAL! Unfinished! Doesn't react after a server is created, nothing gets updated on the page.
 
+// TODO: CRITICAL! Check and update tests!
+
 class DigitalOceanForm extends Component
 {
     use AuthorizesRequests;
