@@ -10,7 +10,7 @@ use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\DisableSshAccessForUserScript;
 use Illuminate\Support\Facades\DB;
 
-class UpdateUserSshKeysOnServerJob extends AbstractJob
+class UpdateWorkerSshKeysOnServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 

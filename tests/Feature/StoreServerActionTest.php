@@ -12,7 +12,7 @@ use App\Jobs\WorkerSshKeys\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
-use App\Jobs\UserSshKeys\UpdateUserSshKeysOnServerJob;
+use App\Jobs\UserSshKeys\UpdateWorkerSshKeysOnServerJob;
 use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
@@ -84,7 +84,7 @@ class StoreServerActionTest extends AbstractFeatureTest
             VerifyRemoteServerIsSuitableJob::class,
             PrepareRemoteServerJob::class,
             UpdateServerAvailabilityJob::class,
-            UpdateUserSshKeysOnServerJob::class,
+            UpdateWorkerSshKeysOnServerJob::class,
             CreateServerSshKeyJob::class,
             UploadServerSshKeyToServerJob::class,
             AddServerSshKeyToVcsJob::class,

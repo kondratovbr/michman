@@ -10,7 +10,7 @@ use App\Jobs\WorkerSshKeys\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
-use App\Jobs\UserSshKeys\UpdateUserSshKeysOnServerJob;
+use App\Jobs\UserSshKeys\UpdateWorkerSshKeysOnServerJob;
 use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
@@ -43,7 +43,7 @@ class StoreServerAction
                 new VerifyRemoteServerIsSuitableJob($server),
                 new PrepareRemoteServerJob($server),
                 new UpdateServerAvailabilityJob($server),
-                new UpdateUserSshKeysOnServerJob($server),
+                new UpdateWorkerSshKeysOnServerJob($server),
                 new CreateServerSshKeyJob($server),
                 new UploadServerSshKeyToServerJob($server),
 
