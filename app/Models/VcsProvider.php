@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\VcsProviders\VcsProviderCreatedEvent;
+use App\Events\VcsProviders\VcsProviderDeletedEvent;
+use App\Events\VcsProviders\VcsProviderUpdatedEvent;
 use App\Services\VcsProviderInterface;
 use Carbon\CarbonInterface;
 use Database\Factories\VcsProviderFactory;
@@ -51,6 +54,13 @@ class VcsProvider extends AbstractModel
         'token' => 'encrypted',
         'key' => 'encrypted',
         'secret' => 'encrypted',
+    ];
+
+    /** @var string[] The event map for the model. */
+    protected $dispatchesEvents = [
+        'created' => VcsProviderCreatedEvent::class,
+        'updated' => VcsProviderUpdatedEvent::class,
+        'deleted' => VcsProviderDeletedEvent::class,
     ];
 
     /** @var VcsProviderInterface An interface to interact with the API. */
