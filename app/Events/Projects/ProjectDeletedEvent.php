@@ -2,29 +2,13 @@
 
 namespace App\Events\Projects;
 
-use App\Broadcasting\ProjectChannel;
-use App\Events\AbstractEvent;
-use App\Models\Project;
-use Illuminate\Broadcasting\Channel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /*
- * TODO: CRITICAL! This event gets broadcasted only on ProjectChannel due to the project probably not existing anymore - we can't get the servers it was attached to. Is this OK?
+ * TODO: CRITICAL! This event gets broadcasted only on ProjectChannel due to the fact that project has to be detached from servers before deletion - we can't get the servers it was attached to. Is this OK?
  */
 
-class ProjectDeletedEvent extends AbstractEvent
+class ProjectDeletedEvent extends AbstractProjectEvent implements ShouldBroadcast
 {
-    protected int $projectKey;
-
-    public function __construct(Project $project)
-    {
-        $this->projectKey = $project->getKey();
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     */
-    public function broadcastOn(): Channel|array
-    {
-        return ProjectChannel::channelInstance($this->projectKey);
-    }
+    //
 }

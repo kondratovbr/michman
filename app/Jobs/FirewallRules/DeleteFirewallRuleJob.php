@@ -9,6 +9,8 @@ use App\Models\FirewallRule;
 use App\Scripts\Root\DeleteFirewallRuleScript;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Refactor FirewallRule to throw event automatically from the mode and then test and cover with tests.
+
 class DeleteFirewallRuleJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
@@ -45,9 +47,7 @@ class DeleteFirewallRuleJob extends AbstractJob
 
             $rule->delete();
 
-            // TODO: CRITICAL! Am I sure there's nothing else to do here?
-
-            event(new FirewallRuleDeletedEvent($server));
+            event(new FirewallRuleDeletedEvent($rule));
         }, 5);
     }
 }
