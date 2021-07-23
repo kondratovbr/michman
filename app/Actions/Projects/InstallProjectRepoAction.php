@@ -5,7 +5,6 @@ namespace App\Actions\Projects;
 use App\DataTransferObjects\ProjectRepoData;
 use App\Jobs\Projects\InstallProjectToServerJob;
 use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
-use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\VcsProvider;
@@ -37,6 +36,8 @@ class InstallProjectRepoAction
 
             if (! $project->useDeployKey)
                 $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
+
+            // TODO: CRITICAL! CONTINUE. I should check that the repo is available from the server somewhere here in a different server and provide a feedback to the user.
 
             $jobs[] = new InstallProjectToServerJob($project, $server);
 
