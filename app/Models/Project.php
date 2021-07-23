@@ -23,7 +23,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $type
  * @property string $root
  * @property string|null $pythonVersion
- * @property string|null $vcsProvider
  * @property string|null $repo
  * @property string|null $branch
  * @property bool $useDeployKey
@@ -33,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read User $user
  * @property-read Collection $servers
  * @property-read DeploySshKey|null $deploySshKey
+ * @property-read VcsProvider|null $vcsProvider
  *
  * @method static ProjectFactory factory(...$parameters)
  */
@@ -102,5 +102,13 @@ class Project extends AbstractModel
     public function deploySshKey(): HasOne
     {
         return $this->hasOne(DeploySshKey::class);
+    }
+
+    /**
+     * Get a relation to the VCS provider this project uses, if any.
+     */
+    public function vcsProvider(): BelongsTo
+    {
+        return $this->belongsTo(VcsProvider::class);
     }
 }

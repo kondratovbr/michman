@@ -14,6 +14,9 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('vcs_provider_id')
+                ->nullable()
+                ->references('id')->on('vcs_providers');
 
             $table->string('domain');
             $table->json('aliases');
@@ -22,7 +25,6 @@ class CreateProjectsTable extends Migration
             $table->string('root');
             $table->string('python_version')->nullable();
 
-            $table->string('vcs_provider')->nullable();
             $table->string('repo')->nullable();
             $table->string('branch')->nullable();
             $table->boolean('use_deploy_key');
