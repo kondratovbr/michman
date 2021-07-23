@@ -19,9 +19,9 @@ use App\Models\User;
 class StoreProjectAction
 {
     public function __construct(
+        protected CreateDeploySshKeyAction $createDeploySshKey,
         protected StorePythonAction $storePython,
         protected StoreDatabaseAction $storeDatabase,
-        protected CreateDeploySshKeyAction $createDeploySshKey,
     ) {}
 
     public function execute(NewProjectData $data, User $user, Server $server): Project
