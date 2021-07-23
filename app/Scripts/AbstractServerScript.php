@@ -5,6 +5,7 @@ namespace App\Scripts;
 use App\Models\Server;
 use App\Scripts\Traits\RunsStatically;
 use App\Support\Str;
+use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
 
@@ -251,9 +252,12 @@ abstract class AbstractServerScript
     /**
      * Initialize the script instance - set Server and SSH session.
      */
-    protected function init(Server $server, SFTP|null $ssh = null): void
+    protected function init(Server $server, SFTP|null $ssh = null, string $user = 'root'): void
     {
+        if (! is_null($ssh) && $user !== 'root')
+            Log::warning(static::class . ': init() method received both an SSH instance and a username different from "root". The existing SSH instance will be used regardless of the username provided.');
+
         $this->setServer($server);
-        $this->setSsh($ssh ?? $server->sftp());
+        $this->setSsh($ssh ?? $server->sftp($user));
     }
 }
