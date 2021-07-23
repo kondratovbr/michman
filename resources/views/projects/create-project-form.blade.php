@@ -49,10 +49,7 @@
                     wire:model.defer="root"
                 />
                 <x-input-error for="root" />
-                <x-help>
-                    <span>{{ __('projects.create.form.root.help') }}</span>
-                    <x-code>/static</x-code>
-                </x-help>
+                <x-help><x-lang key="projects.root-help" /></x-help>
             </x-field>
 
             <x-field class="max-w-sm">

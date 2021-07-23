@@ -1,3 +1,5 @@
+{{--TODO: Looks a bit meh. Any way to improve?--}}
+
 @props(['wrap' => false])
 
 <pre {{ $attributes->class([
