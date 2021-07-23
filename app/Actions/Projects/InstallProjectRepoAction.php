@@ -4,12 +4,15 @@ namespace App\Actions\Projects;
 
 use App\DataTransferObjects\ProjectRepoData;
 use App\Jobs\Projects\InstallProjectToServerJob;
+use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
+use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\VcsProvider;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-class SetupProjectRepoAction
+class InstallProjectRepoAction
 {
     public function execute(
         Project $project,
@@ -30,7 +33,14 @@ class SetupProjectRepoAction
 
             $project->save();
 
-            InstallProjectToServerJob::dispatch($project, $server);
+            $jobs = [];
+
+            if (! $project->useDeployKey)
+                $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
+
+            $jobs[] = new InstallProjectToServerJob($project, $server);
+
+            Bus::chain($jobs)->dispatch();
 
             return $project;
         }, 5);
