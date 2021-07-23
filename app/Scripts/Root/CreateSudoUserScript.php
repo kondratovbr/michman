@@ -14,7 +14,7 @@ class CreateSudoUserScript extends AbstractServerScript
 
         // Create a new user.
         $this->setTimeout(60 * 5); // 5 min
-        $this->exec('useradd --create-home ' . $username);
+        $this->exec('useradd --create-home --shell /usr/bin/bash ' . $username);
         $this->exec(
             "echo {$username}:{$password} | chpasswd",
             true,
