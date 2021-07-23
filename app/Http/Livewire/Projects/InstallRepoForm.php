@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Projects;
 
-use App\Actions\Projects\SetupProjectRepoAction;
+use App\Actions\Projects\InstallProjectRepoAction;
 use App\Broadcasting\UserChannel;
 use App\DataTransferObjects\ProjectRepoData;
 use App\Events\VcsProviders\VcsProviderCreatedEvent;
@@ -91,8 +91,12 @@ class InstallRepoForm extends LivewireComponent
     /**
      * Store the project's repository configuration.
      */
-    public function update(SetupProjectRepoAction $setupAction): void
+    public function update(InstallProjectRepoAction $setupAction): void
     {
+        // TODO: CRITICAL! I should verify the availability of the repo during the process and somehow mark it as unavailable if we can't access it the way it was setup. Probably during cloning of the repo on the server in a Script under a Job. Same with the branch we're going to use.
+
+        // TODO: CRITICAL! I should command the outer Livewire "page" component to refresh after this action - it should display a completely different set of forms.
+
         $validated = $this->validate()['state'];
 
         $this->authorize('update', $this->project);
