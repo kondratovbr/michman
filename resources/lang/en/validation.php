@@ -138,6 +138,7 @@ return [
         'port' => 'Enter a valid port (1-65535) or port range (1-65535:1-65535).',
         'domain' => 'Enter a valid domain name (example.com). Use IDN (punycode) for non-latin names.',
         'path' => 'Enter a valid Unix path.',
+        'repo' => 'Enter a valid Git repository name including a username, example: user/repo',
     ],
 
     /*

@@ -12,6 +12,7 @@ namespace App\Validation;
  */
 
 use App\Rules\DomainRule;
+use App\Rules\GitRepoNameRule;
 use App\Rules\UnixPathRule;
 
 /**
@@ -156,5 +157,14 @@ class Rules extends AbstractBaseRules
             'min:1',
             'max:255',
         ]))->addRule(new UnixPathRule);
+    }
+
+    static public function gitRepoName(): static
+    {
+        return (new static([
+            'string',
+            'min:1',
+            'max:255',
+        ]))->addRule(new GitRepoNameRule);
     }
 }
