@@ -134,4 +134,9 @@ class GitHubV3 extends AbstractVcsProvider
             name: $data->title,
         );
     }
+
+    public static function getFullSshString(string $repo): string
+    {
+        return "git@github.com:{$repo}.git";
+    }
 }
