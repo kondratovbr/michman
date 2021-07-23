@@ -79,6 +79,14 @@ class Project extends AbstractModel
     }
 
     /**
+     * Check if the project has a configured Git repository.
+     */
+    public function repoInstalled(): bool
+    {
+        return isset($this->vcsProvider) && ! empty($this->repo);
+    }
+
+    /**
      * Get a relation with the user that owns this project.
      */
     public function user(): BelongsTo
