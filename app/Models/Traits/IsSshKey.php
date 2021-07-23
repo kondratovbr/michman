@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Support\SshKeyFormatter;
 use App\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
@@ -93,14 +94,7 @@ trait IsSshKey
      */
     protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key, bool $comment = true): string
     {
-        // toString() method on a public key in phpseclib3 adds a space at the end
-        // if the comment provided is an empty string, for some reason, so better trim it.
-        return trim(
-            $comment
-                ? $key->toString('OpenSSH', ['comment' => $this->getSshKeyComment()])
-                : $key->toString('OpenSSH', ['comment' => '']),
-            ' '
-        );
+        return SshKeyFormatter::format($key, $comment ? $this->getSshKeyComment() : null);
     }
 
     /**

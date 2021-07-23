@@ -5,6 +5,7 @@ namespace App\Scripts\Root;
 use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Support\SshKeyFormatter;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Crypt\Common\PublicKey;
 
@@ -23,7 +24,7 @@ class AddSshKeyToUserScript extends AbstractServerScript
 
         $sshKeyString ??= $sshKey instanceof SshKeyInterface
             ? $sshKey->publicKeyString
-            : $sshKey->toString('OpenSSH', ['comment' => $server->name]);
+            : SshKeyFormatter::format($sshKey, $server->name);
 
         $remoteDirectory = $username === 'root'
             ? '/root/.ssh'

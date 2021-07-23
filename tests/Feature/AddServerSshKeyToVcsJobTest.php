@@ -8,6 +8,7 @@ use App\Models\ServerSshKey;
 use App\Models\User;
 use App\Models\VcsProvider;
 use App\Services\VcsProviderInterface;
+use App\Support\SshKeyFormatter;
 use App\Support\Str;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
@@ -36,13 +37,13 @@ class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
                 $mock->shouldReceive('addSshKeySafely')
                     ->with(
                         $server->name . ' - server key',
-                        trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
+                        SshKeyFormatter::format($key->getPublicKey()),
                     )
                     ->once()
                     ->andReturn(new SshKeyData(
                         id: '100500',
                         fingerprint: Str::random(),
-                        publicKey: trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
+                        publicKey: SshKeyFormatter::format($key->getPublicKey()),
                         name: $server->name . ' - server key',
                     ));
             }
@@ -53,9 +54,12 @@ class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
         $serverSshKey->refresh();
 
         $this->assertNotNull($serverSshKey);
-        $this->assertEquals($server->name . ' - server key', $serverSshKey->name);
         $this->assertEquals(
-            trim($key->getPublicKey()->toString('OpenSSH', ['comment' => '']), ' '),
+            $server->name . ' - server key',
+            $serverSshKey->name
+        );
+        $this->assertEquals(
+            SshKeyFormatter::format($key->getPublicKey()),
             $serverSshKey->getPublicKeyString(false)
         );
     }

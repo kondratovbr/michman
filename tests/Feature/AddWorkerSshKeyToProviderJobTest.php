@@ -6,6 +6,7 @@ use App\DataTransferObjects\SshKeyData;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
+use App\Support\SshKeyFormatter;
 use App\Support\Str;
 use Mockery\MockInterface;
 use phpseclib3\Crypt\EC;
@@ -29,13 +30,13 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
                 $mock->shouldReceive('addSshKeySafely')
                     ->with(
                         $server->name . ' - Michman worker key',
-                        trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
+                        SshKeyFormatter::format($key->getPublicKey()),
                     )
                     ->once()
                     ->andReturn(new SshKeyData(
                         id: '100500',
                         fingerprint: Str::random(),
-                        publicKey: trim($key->getPublicKey()->toString('OpenSSH', ['comment' => ''])),
+                        publicKey: SshKeyFormatter::format($key->getPublicKey()),
                         name: $server->name . ' - Michman worker key',
                     ));
             }
@@ -49,7 +50,7 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
         $this->assertEquals('100500', $workerSshKey->externalId);
         $this->assertEquals($server->name . ' - Michman worker key', $workerSshKey->name);
         $this->assertEquals(
-            trim($key->getPublicKey()->toString('OpenSSH', ['comment' => '']), ' '),
+            SshKeyFormatter::format($key->getPublicKey()),
             $workerSshKey->getPublicKeyString(false)
         );
     }
