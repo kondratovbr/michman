@@ -43,7 +43,6 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $databases
  * @property-read Collection $databaseUsers
  * @property-read Collection $pythons
- * @property-read Collection $deploySshKeys
  * @property-read ServerSshKey $serverSshKey
  * @property-read Collection $firewallRules
  * @property-read Collection $projects
