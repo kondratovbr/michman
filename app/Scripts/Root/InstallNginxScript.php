@@ -2,6 +2,7 @@
 
 namespace App\Scripts\Root;
 
+use App\Facades\ConfigView;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Support\Str;
@@ -12,6 +13,8 @@ class InstallNginxScript extends AbstractServerScript
 {
     public function execute(Server $server, SFTP $ssh = null): void
     {
+        $nginxDir = '/etc/nginx';
+
         $this->init($server, $ssh);
 
         /*
@@ -34,10 +37,25 @@ class InstallNginxScript extends AbstractServerScript
 
         $this->disablePty();
 
-        // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
-
         // Create a nologin system user to run Nginx workers as configured in nginx.conf.
         $this->exec('useradd -r -s /usr/sbin/nologin nginx');
+
+        // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
+
+        // Send all the Nginx config files to their intended locations.
+        // TODO: CRITICAL! Check if Blade comment sin .blade files are getting rendered - they shouldn't.
+        foreach ([
+            'nginx.conf' => 'nginx',
+            'proxy_params' => 'proxy_params',
+            // Yes, we're not using UWSGI for deployments, but I'd still like to have its config on the servers just in case.
+            'uwsgi_params' => 'uwsgi_params',
+            'mime_types' => 'mime_types',
+            'gzip.conf' => 'gzip',
+        ] as $file => $view) {
+            $this->sendString("{$nginxDir}/{$file}", ConfigView::render("nginx.{$view}"));
+        }
+
+        //
 
         // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server. See how Forge does it.
 
