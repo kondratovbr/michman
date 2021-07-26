@@ -1,0 +1,40 @@
+# TODO: CRITICAL! Stuff marked with XXX should be changed for every specific project.
+
+server {
+
+    # Limit request body size to 5 Mb.
+    {{-- TODO: Make it changeable by the user. --}}
+    client_max_body_size 5m;
+
+    listen 80;
+
+    {{-- TODO: CRITICAL! Does this work? Check the resulting files on a server. --}}
+    server_name {{ $domain }} {{ $wildcard ? "*.{$domain} : null"}};
+
+    root /home/{{ config('servers.worker_user') }}/{{ $domain }};
+
+    # Will work a little bit faster without logging for these specific files.
+    {{-- TODO: Maybe make the favicon part more generic - there are other favicon files as well. --}}
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    # Disable access_log for static assets and also set up basic caching.
+    location ~* \.(?:ico|css|js|gif|jpe?g|png|svg|eot|ttf|woff|woff2)$ {
+        access_log off;
+        expires 30d;
+        add_header Cache-Control public;
+    }
+
+    # Main location block - will proxy requests to Gunicorn over a socket.
+    location / {
+        include proxy_params;
+        {{-- TODO: CRITICAL! Does this work? The idea that each project should have its own Gunicorn socket file. (The default name was "gunicorn.sock") --}}
+        proxy_pass http://unix:/run/{{ $domain }}.sock;
+    }
+
+    # Deny all requests for dotfiles, except for Let's Encrypt .well-known directory, in case there's one.
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+}
