@@ -52,7 +52,8 @@
                         name="state.installDependencies"
                         wire:model="state.installDependencies"
                     >
-                        {{ __('projects.repo.configure.install-dependencies.label') }}
+                        <span>{{ __('projects.repo.configure.install-dependencies.label') }}</span>
+                        <x-code>requirements.txt</x-code>
                     </x-checkbox-new>
                     <x-input-error for="installDependencies" />
                 </x-field>
