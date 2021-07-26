@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\Arr;
 use App\Support\ConfigViewFactory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Date;
@@ -30,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
             $finder = new FileViewFinder(
                 $app['files'],
                 $app['config']['view.config-views-paths'],
-                $app['config']['view.config-views-extensions'],
+                Arr::keys($app['config']['view.config-views-extensions']),
             );
 
             $factory = new ConfigViewFactory(
