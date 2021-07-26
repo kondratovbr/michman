@@ -196,6 +196,50 @@ abstract class AbstractServerScript
     }
 
     /**
+     * Send a string to a remote file on the server over SFTP.
+     */
+    protected function sendString(string $remotePath, string $content): void
+    {
+        $this->initialize();
+
+        try {
+            $success = $this->ssh->put(
+                $remotePath,
+                $content,
+                SFTP::SOURCE_STRING,
+            );
+        } finally {
+            $this->server->log(
+                type: 'send_string',
+                remoteFile: $remotePath,
+                success: $success ?? false,
+            );
+        }
+    }
+
+    /**
+     * Append a string to the end of a remote file on the server over SFTP.
+     */
+    protected function appendString(string $remotePath, string $content): void
+    {
+        $this->initialize();
+
+        try {
+            $success = $this->ssh->put(
+                $remotePath,
+                $content,
+                SFTP::RESUME,
+            );
+        } finally {
+            $this->server->log(
+                type: 'append_string',
+                remoteFile: $remotePath,
+                success: $success ?? false,
+            );
+        }
+    }
+
+    /**
      * Get the exit status of the last executed command.
      */
     protected function getExitStatus(): false|int
