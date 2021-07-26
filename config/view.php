@@ -50,8 +50,17 @@ return [
         base_path('servers'),
     ],
 
-    // File extensions to consider "config views".
+    /*
+     * File extensions to Blade rendered mapping. Available renderers:
+     *
+     * 'blade' - normal Blade templates
+     * 'file' - text files to use "as-is", no templating applied
+     */
     'config-views-extensions' => [
-        'blade.config',
+        'blade' => 'blade',
+        'conf.blade' => 'blade',
+        'txt.blade' => 'blade',
+        'conf' => 'file',
+        'txt' => 'file',
     ],
 ];
