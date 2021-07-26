@@ -69,7 +69,7 @@ return [
                 'label' => 'Branch',
             ],
             'install-dependencies' => [
-                'label' => 'Install Dependencies',
+                'label' => 'Install Dependencies From',
             ],
             'use-deploy-key' => [
                 'label' => 'Use Deploy Key',
