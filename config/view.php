@@ -44,4 +44,14 @@ return [
     */
 
     'page_title_separator' => ' | ',
+
+    // Directories that should be checked for the Blade templates of server config files.
+    'config-views-paths' => [
+        base_path('servers'),
+    ],
+
+    // File extensions to consider "config views".
+    'config-views-extensions' => [
+        'blade.config',
+    ],
 ];
