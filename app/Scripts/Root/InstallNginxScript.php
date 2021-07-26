@@ -36,7 +36,7 @@ class InstallNginxScript extends AbstractServerScript
 
         // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
 
-        // Create a nologin system user to run Nginx workers as configure in nginx.conf.
+        // Create a nologin system user to run Nginx workers as configured in nginx.conf.
         $this->exec('useradd -r -s /usr/sbin/nologin nginx');
 
         // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server. See how Forge does it.
