@@ -23,7 +23,7 @@ class ConfigViewFactory extends ViewFactory
     ) {
         parent::__construct($engines, $finder, $events);
 
-        $this->extensions = Arr::mapAssoc($extensions, fn($index, $extension) => [$extension, 'blade']);
+        $this->extensions = $extensions;
     }
 
     /**
