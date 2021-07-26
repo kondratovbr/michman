@@ -2,8 +2,18 @@
 
 namespace App\Facades;
 
+use App\Support\ConfigViewFactory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * Facade to render Blade-templated config files.
+ *
+ * @method static string render(string $view, array $data = [])
+ * @method static View make(string $view, array $data = [])
+ *
+ * @see ConfigViewFactory
+ */
 class ConfigView extends Facade
 {
     /**
