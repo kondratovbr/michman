@@ -42,13 +42,36 @@ class InstallNginxScript extends AbstractServerScript
 
         // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
 
-        // Send all the Nginx config files to their intended locations.
-        // TODO: CRITICAL! Check if Blade comment sin .blade files are getting rendered - they shouldn't.
+        // Carefully remove the default config files that we don't need.
+        foreach ([
+            'nginx.conf',
+            'fastcgi.conf',
+            'fastcgi_params',
+            'gzip.conf',
+            'koi-utf',
+            'koi-win',
+            'mime.types',
+            'proxy_params',
+            'scgi_params',
+            'uwsgi_params',
+            'win-utf',
+        ] as $file) {
+            $this->exec("rm -f {$nginxDir}/{$file}");
+        }
+
+        // Remove all "sites" that exist in Nginx config out of the box.
+        $this->exec("rm -rf {$nginxDir}/sites-enabled/* && rm -rf {$nginxDir}/sites-available/*");
+
+        // Send all the custom Nginx config files to their intended locations.
+        // TODO: CRITICAL! Check if Blade comments in .blade files are getting rendered - they shouldn't.
         foreach ([
             'nginx.conf' => 'nginx',
             'proxy_params' => 'proxy_params',
-            // Yes, we're not using UWSGI for deployments, but I'd still like to have its config on the servers just in case.
+            // Yes, we're not using UWSGI or FastCGI for deployments,
+            // but I'd still like to have the configs on the servers just in case
+            // and for the possible future use.
             'uwsgi_params' => 'uwsgi_params',
+            'fastcgi.conf' => 'fastcgi',
             'mime_types' => 'mime_types',
             'gzip.conf' => 'gzip',
         ] as $file => $view) {
@@ -61,6 +84,9 @@ class InstallNginxScript extends AbstractServerScript
 
         // Restart Nginx to load new config.
         $this->exec('systemctl restart nginx');
+
+        if ($this->getExitStatus() !== 0)
+            throw new RuntimeException('systemctl command to restart Nginx failed.');
 
         // Wait a bit for Nginx to be started by systemd.
         $this->setTimeout(60);
