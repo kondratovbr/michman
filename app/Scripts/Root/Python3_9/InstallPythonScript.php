@@ -13,6 +13,11 @@ class InstallPythonScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
+        /*
+         * The PTY and timeout are here to kill the script if apt-get gets stuck at some point -
+         * it's a long-running thing and may get stuck due to external factors.
+         */
+
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
@@ -30,6 +35,9 @@ class InstallPythonScript extends AbstractServerScript
         // Verify that Python works.
         if (trim($this->exec('python3.9 -c \'print("foobar")\'')) != 'foobar')
             throw new RuntimeException('Python 3.9 installation failed - Python not accessible.');
+
+        $this->execPty('pip3.9 install --upgrade pip');
+        $this->read();
 
         return trim(explode(
             ' ',
