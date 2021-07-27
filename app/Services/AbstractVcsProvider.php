@@ -20,10 +20,4 @@ abstract class AbstractVcsProvider extends AbstractProvider implements VcsProvid
 
         return $this->cachePrefix;
     }
-
-    /**
-     * Convert a short repo string, like "username/repo" to
-     * a full SSH designation, like "git@github.com:username/repo.git".
-     */
-    abstract public static function getFullSshString(string $repo): string;
 }
