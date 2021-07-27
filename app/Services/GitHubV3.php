@@ -135,6 +135,11 @@ class GitHubV3 extends AbstractVcsProvider
         );
     }
 
+    public function getSshHostKey(): string
+    {
+        return $this->config('ssh_host_key');
+    }
+
     public static function getFullSshString(string $repo): string
     {
         return "git@github.com:{$repo}.git";
