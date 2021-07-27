@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Broadcasting\UserChannel;
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use App\Support\Str;
@@ -104,6 +105,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameForPersonalTeam(): string
     {
         return ucfirst(explode('@', $this->email, 2)[0]) . "'s Team";
+    }
+
+    /**
+     * The channel the user receives notification broadcasts on.
+     */
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return UserChannel::name($this);
     }
 
     /**
