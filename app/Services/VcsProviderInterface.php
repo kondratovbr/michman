@@ -64,4 +64,15 @@ interface VcsProviderInterface
      * @param string $id
      */
     public function deleteSshKey(string $id): void;
+
+    /**
+     * Get a VCS provider server host key for SSH host verification.
+     */
+    public function getSshHostKey(): string;
+
+    /**
+     * Convert a short repo string, like "username/repo" to
+     * a full SSH designation, like "git@github.com:username/repo.git".
+     */
+    public static function getFullSshString(string $repo): string;
 }
