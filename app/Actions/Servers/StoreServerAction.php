@@ -45,7 +45,7 @@ class StoreServerAction
                 new UpdateServerAvailabilityJob($server),
                 new UpdateWorkerSshKeysOnServerJob($server),
                 new CreateServerSshKeyJob($server),
-                new UploadServerSshKeyToServerJob($server),
+                new UploadServerSshKeyToServerJob($server, (string) config('servers.worker_user')),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
 
