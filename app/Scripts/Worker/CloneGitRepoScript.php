@@ -30,7 +30,7 @@ class CloneGitRepoScript extends AbstractServerScript
         // and add if it doesn't.
         $this->exec("grep -qxF '{$sshHostKey}' {$knownHostsFile} || echo '{$sshHostKey}' >> {$knownHostsFile}");
 
-        // TODO:CRITICAL! CONTINUE. Implement. Need to figure out how to check that the repo is available from the server and show the user some feedback about it. Probably in a separate script before this one.
+        // TODO:CRITICAL! CONTINUE. Implement. Need to figure out how to check that the repo is available from the server and show the user some feedback about it. Probably in a separate script before this one. Or rather implement a Server Alert system, like Forge does.
 
         $this->exec("git clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}");
 
