@@ -37,7 +37,7 @@ class InstallProjectRepoAction
             if (! $project->useDeployKey)
                 $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
 
-            // TODO: CRITICAL! CONTINUE. I should check that the repo is available from the server somewhere here in a different server and provide a feedback to the user.
+            // TODO: CRITICAL! CONTINUE. Implement a notification system similar to the Forge's one to notify users about various mishaps with their servers and projects. Forge calls it "Server Alerts".
 
             $jobs[] = new InstallProjectToServerJob($project, $server);
 
