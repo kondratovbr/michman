@@ -40,7 +40,7 @@ class InstallProjectToServerJob extends AbstractJob
             /** @var Server $server */
             $server = $project->servers()->lockForUpdate()->findOrFail($this->server->getKey());
 
-            // TODO: CRITICAL! CONTINUE.
+            // TODO: CRITICAL! CONTINUE. Run the whole server setup again and then continue by figuring out virtualenv and the project's dependencies.
 
             $ssh = $server->sftp($project->serverUsername);
             $vcs = $project->vcsProvider->api();
