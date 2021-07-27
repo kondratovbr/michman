@@ -5,6 +5,7 @@ namespace App\Actions\Projects;
 use App\DataTransferObjects\ProjectRepoData;
 use App\Jobs\Projects\InstallProjectToServerJob;
 use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
+use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\VcsProvider;
@@ -34,8 +35,10 @@ class InstallProjectRepoAction
 
             $jobs = [];
 
-            if (! $project->useDeployKey)
+            if (! $project->useDeployKey) {
+                $jobs[] = new UploadServerSshKeyToServerJob($server, $project->serverUsername);
                 $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
+            }
 
             // TODO: CRITICAL! CONTINUE. Implement a notification system similar to the Forge's one to notify users about various mishaps with their servers and projects. Forge calls it "Server Alerts".
 
