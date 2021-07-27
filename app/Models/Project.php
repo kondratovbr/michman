@@ -6,6 +6,7 @@ use App\Casts\ForceBooleanCast;
 use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
 use App\Events\Projects\ProjectUpdatedEvent;
+use App\Support\Str;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +28,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $branch
  * @property bool $useDeployKey
  *
- * @property string $fullDomainName
+ * @property-read string $fullDomainName
+ * @property-read string $serverUsername
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -76,6 +78,14 @@ class Project extends AbstractModel
     public function getFullDomainNameAttribute(): string
     {
         return ($this->allowSubDomains ? '*.' : '') . $this->domain;
+    }
+
+    /**
+     * Get a name for a server user that will be created and used to run this project.
+     */
+    public function getServerUsernameAttribute(): string
+    {
+        return Str::replace('.', '_', Str::lower($this->domain));
     }
 
     /**
