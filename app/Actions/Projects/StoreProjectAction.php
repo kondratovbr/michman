@@ -8,6 +8,7 @@ use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\DatabaseData;
 use App\DataTransferObjects\NewProjectData;
 use App\DataTransferObjects\PythonData;
+use App\Jobs\Servers\CreateUserOnServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\User;
@@ -47,6 +48,8 @@ class StoreProjectAction
                 name: $data->db_name,
             ), $server);
         }
+
+        CreateUserOnServerJob::dispatch($server, $project->serverUsername);
 
         return $project;
     }
