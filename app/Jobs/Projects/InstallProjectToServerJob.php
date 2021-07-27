@@ -6,6 +6,7 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Project;
 use App\Models\Server;
+use App\Scripts\Worker\CloneGitRepoScript;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with test.
@@ -28,9 +29,12 @@ class InstallProjectToServerJob extends AbstractJob
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
-        DB::transaction(function () {
+    public function handle(
+        CloneGitRepoScript $cloneRepo,
+    ): void {
+        DB::transaction(function () use (
+            $cloneRepo,
+        ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
             /** @var Server $server */
@@ -38,7 +42,20 @@ class InstallProjectToServerJob extends AbstractJob
 
             // TODO: CRITICAL! CONTINUE.
 
+            $ssh = $server->sftp($project->serverUsername);
+            $vcs = $project->vcsProvider->api();
+
+            $cloneRepo->execute(
+                $server,
+                $project->serverUsername,
+                $vcs::getFullSshString($project->repo),
+                $project->domain,
+                $vcs->getSshHostKey(),
+                $ssh,
+            );
+
             //
+
         }, 5);
     }
 }
