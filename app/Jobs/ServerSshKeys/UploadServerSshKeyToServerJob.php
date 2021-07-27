@@ -13,12 +13,14 @@ class UploadServerSshKeyToServerJob extends AbstractJob
     use InteractsWithRemoteServers;
 
     protected Server $server;
+    protected string $username;
 
-    public function __construct(Server $server)
+    public function __construct(Server $server, string $username)
     {
         $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
+        $this->username = $username;
     }
 
     /**
@@ -36,7 +38,7 @@ class UploadServerSshKeyToServerJob extends AbstractJob
             $uploadServerSshKey->execute(
                 $server,
                 $server->serverSshKey,
-                (string) config('servers.worker_user'),
+                $this->username,
             );
         }, 5);
     }
