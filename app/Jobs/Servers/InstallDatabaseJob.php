@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\Databases;
+namespace App\Jobs\Servers;
 
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;

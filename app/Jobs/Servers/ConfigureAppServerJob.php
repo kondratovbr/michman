@@ -9,7 +9,7 @@ use App\DataTransferObjects\FirewallRuleData;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
 use App\Jobs\Databases\CreateDatabaseJob;
-use App\Jobs\Databases\InstallDatabaseJob;
+use App\Jobs\Servers\InstallDatabaseJob;
 use App\Jobs\FirewallRules\CreateFirewallRuleJob;
 use App\Jobs\Pythons\CreatePythonJob;
 use App\Jobs\Traits\IsInternal;
