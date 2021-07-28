@@ -39,7 +39,7 @@ class AddSshKeyToUserScript extends AbstractServerScript
 
         // Set proper permissions on the file and directory.
         $this->exec("chmod 0600 {$remoteFile}");
-        $this->exec("chown -R {$username} {$remoteDirectory}");
-        $this->exec("chgrp -R {$username} {$remoteDirectory}");
+        $this->exec("chown -R {$username}:{$username} {$remoteDirectory}");
+        $this->exec("chgrp -R {$username}:{$username} {$remoteDirectory}");
     }
 }
