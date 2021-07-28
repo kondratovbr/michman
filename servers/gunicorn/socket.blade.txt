@@ -1,0 +1,10 @@
+[Unit]
+Description=gunicorn socket for {{ $projectName }} at {{ $domain }} project
+
+[Socket]
+ListenStream=/run/{{ $projectName }}.sock
+# Name of the user that will own the socket file. Needed to make sure Nginx can access it.
+SocketUser=nginx
+
+[Install]
+WantedBy=sockets.target
