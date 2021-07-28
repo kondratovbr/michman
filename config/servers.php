@@ -105,14 +105,5 @@ return [
 
     'default_ssh_port' => 22,
     'worker_user' => Str::camel(env('APP_NAME', 'worker')),
-    'required_apt_packages' => [
-        'ufw',
-        'git',
-        'curl',
-        'gnupg',
-        'gzip',
-        'unattended-upgrades',
-        'supervisor',
-    ],
 
 ];

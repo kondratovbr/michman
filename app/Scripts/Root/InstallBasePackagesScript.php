@@ -14,8 +14,10 @@ class InstallBasePackagesScript extends AbstractServerScript
 
         /*
          * TODO: CRITICAL! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
-         *       'dpkg was interrupted, you must manually run 'dpkg --configure -a' to correct the problem.'
+         *       'dpkg was interrupted, you must manually run 'dpkg --configure -a --force-confold --force-confdef' to correct the problem.'
          *       message shows the next time.
+         *       (The "force" parameters instruct dpkg on what to do with conflicting config files -
+         *       this combination should update the ones that weren't modified by the user and keep the ones that were.
          *       Notify myself on an emergency channel since this will probably require some manual fixing.
          *       Or maybe just destroy and recreate the server and try again if it was happening during the initial phase.
          *       Also, there's another possible error:
@@ -31,7 +33,15 @@ class InstallBasePackagesScript extends AbstractServerScript
         $this->setTimeout(60 * 30); // 30 min
         $this->execPty(
             'DEBIAN_FRONTEND=noninteractive apt-get install -y '
-            . implode(' ', config('servers.required_apt_packages'))
+            . implode(' ', [
+                'ufw',
+                'git',
+                'curl',
+                'gnupg',
+                'gzip',
+                'unattended-upgrades',
+                'supervisor',
+            ])
         );
         $this->read();
         $this->disablePty();
