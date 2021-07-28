@@ -27,10 +27,14 @@ class InstallBasePackagesScript extends AbstractServerScript
          *           https://itsfoss.com/could-not-get-lock-error/
          *           https://pingvinus.ru/note/dpkg-lock
          *       Note: I use apt-get in other scripts as well - search for all of them and make sure they work too.
+         *       See:
+         *       https://askubuntu.com/questions/104899/make-apt-get-or-aptitude-run-with-y-but-not-prompt-for-replacement-of-configu
+         *       https://askubuntu.com/questions/163200/e-dpkg-was-interrupted-run-sudo-dpkg-configure-a
          */
 
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
+
         $this->execPty(
             'DEBIAN_FRONTEND=noninteractive apt-get install -y '
             . implode(' ', [
@@ -44,6 +48,7 @@ class InstallBasePackagesScript extends AbstractServerScript
             ])
         );
         $this->read();
+
         $this->disablePty();
     }
 }
