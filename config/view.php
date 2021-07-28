@@ -60,7 +60,11 @@ return [
         'blade' => 'blade',
         'conf.blade' => 'blade',
         'txt.blade' => 'blade',
+        'blade.sh' => 'blade',
+        'blade.py' => 'blade',
         'conf' => 'file',
         'txt' => 'file',
+        'sh' => 'file',
+        'py' => 'file',
     ],
 ];
