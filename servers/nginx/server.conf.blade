@@ -11,7 +11,7 @@ server {
     {{-- TODO: CRITICAL! Does this work? Check the resulting files on a server. --}}
     server_name {{ $domain }} {{ $wildcard ? "*.{$domain} : null"}};
 
-    root /home/{{ config('servers.worker_user') }}/{{ $domain }};
+    root /home/{{ $username }}/{{ $domain }};
 
     # Will work a little bit faster without logging for these specific files.
     {{-- TODO: Maybe make the favicon part more generic - there are other favicon files as well. --}}
@@ -29,7 +29,7 @@ server {
     location / {
         include proxy_params;
         {{-- TODO: CRITICAL! Does this work? The idea that each project should have its own Gunicorn socket file. (The default name was "gunicorn.sock") --}}
-        proxy_pass http://unix:/run/{{ $domain }}.sock;
+        proxy_pass http://unix:/run/{{ $projectName }}.sock;
     }
 
     # Deny all requests for dotfiles, except for Let's Encrypt .well-known directory, in case there's one.
