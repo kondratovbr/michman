@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace App\Scripts\Worker;
+namespace App\Scripts\User;
 
+use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
@@ -11,12 +12,16 @@ class CloneGitRepoScript extends AbstractServerScript
 {
     public function execute(
         Server $server,
-        string $username,
-        string $repoSshString,
-        string $domain,
-        string $sshHostKey,
+        Project $project,
         SFTP $ssh = null,
     ): void {
+        $vcs = $project->vcsProvider->api();
+
+        $username = $project->serverUsername;
+        $repoSshString = $project->vcsProvider->api()::getFullSshString($project->repo);
+        $domain = $project->domain;
+        $sshHostKey = $vcs->getSshHostKey();
+
         $homedir = "/home/{$username}";
         $knownHostsFile = "{$homedir}/.ssh/known_hosts";
         $projectDir = "{$homedir}/{$domain}";
@@ -35,7 +40,5 @@ class CloneGitRepoScript extends AbstractServerScript
 
         if ($this->getExitStatus() !== 0)
             throw new RuntimeException('Cloning the project\'s git repo failed.');
-
-        //
     }
 }

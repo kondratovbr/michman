@@ -6,7 +6,8 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Project;
 use App\Models\Server;
-use App\Scripts\Worker\CloneGitRepoScript;
+use App\Scripts\User\CloneGitRepoScript;
+use App\Scripts\User\CreateProjectVenvScript;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with test.
@@ -17,13 +18,15 @@ class InstallProjectToServerJob extends AbstractJob
 
     protected Project $project;
     protected Server $server;
+    protected bool $installDependencies;
 
-    public function __construct(Project $project, Server $server)
+    public function __construct(Project $project, Server $server, bool $installDependencies)
     {
         $this->setQueue('servers');
 
         $this->project = $project->withoutRelations();
         $this->server = $server->withoutRelations();
+        $this->installDependencies = $installDependencies;
     }
 
     /**
@@ -31,9 +34,10 @@ class InstallProjectToServerJob extends AbstractJob
      */
     public function handle(
         CloneGitRepoScript $cloneRepo,
+        CreateProjectVenvScript $createVenv,
     ): void {
         DB::transaction(function () use (
-            $cloneRepo,
+            $cloneRepo, $createVenv
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -43,18 +47,19 @@ class InstallProjectToServerJob extends AbstractJob
             // TODO: CRITICAL! CONTINUE. Run the whole server setup again and then continue by figuring out virtualenv and the project's dependencies.
 
             $ssh = $server->sftp($project->serverUsername);
-            $vcs = $project->vcsProvider->api();
 
             $cloneRepo->execute(
                 $server,
-                $project->serverUsername,
-                $vcs::getFullSshString($project->repo),
-                $project->domain,
-                $vcs->getSshHostKey(),
+                $project,
                 $ssh,
             );
 
-            //
+            $createVenv->execute(
+                $server,
+                $project,
+                $this->installDependencies,
+                $ssh,
+            );
 
         }, 5);
     }

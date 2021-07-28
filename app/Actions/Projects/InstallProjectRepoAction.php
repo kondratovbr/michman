@@ -42,7 +42,7 @@ class InstallProjectRepoAction
 
             // TODO: CRITICAL! CONTINUE. Implement a notification system similar to the Forge's one to notify users about various mishaps with their servers and projects. Forge calls it "Server Alerts".
 
-            $jobs[] = new InstallProjectToServerJob($project, $server);
+            $jobs[] = new InstallProjectToServerJob($project, $server, $installDependencies);
 
             Bus::chain($jobs)->dispatch();
 

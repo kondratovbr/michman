@@ -248,6 +248,14 @@ abstract class AbstractServerScript
     }
 
     /**
+     * Check if the previous command has failed.
+     */
+    protected function failed(): bool
+    {
+        return $this->getExitStatus() !== 0;
+    }
+
+    /**
      * Execute a command that uses sudo,
      * making sure that the password is supplied if requested.
      */
