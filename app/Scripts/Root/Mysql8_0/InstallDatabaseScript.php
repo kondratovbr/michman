@@ -8,6 +8,7 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
+use RuntimeException;
 
 class InstallDatabaseScript extends AbstractServerScript
 {
@@ -31,6 +32,22 @@ class InstallDatabaseScript extends AbstractServerScript
         $this->disablePty();
 
         $this->exec('systemctl start mysql');
+
+        if ($this->getExitStatus() !== 0)
+            throw new RuntimeException('systemctl command to start MySQL failed.');
+
+        // Wait a bit in case MySQL needs some time to start.
+        $this->setTimeout(60);
+        $this->exec("sleep 30");
+
+        // Verify that MySQL has started.
+        $output = $this->exec('systemctl status mysql');
+        if (
+            ! Str::contains(Str::lower($output), 'active (running)')
+            || $this->getExitStatus() !== 0
+        ) {
+            throw new RuntimeException('MySQL failed to start.');
+        }
 
         $authPlugin = static::MYSQL_AUTH_PLUGIN;
 
