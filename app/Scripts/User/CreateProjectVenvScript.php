@@ -27,19 +27,25 @@ class CreateProjectVenvScript extends AbstractServerScript
         $this->exec("cd {$workdir} && virtualenv venv");
 
         if ($this->failed())
-            throw new RuntimeException('virtualenv" command has failed.');
+            throw new RuntimeException('"virtualenv" command has failed.');
 
         if ($installDependencies) {
             $this->enablePty();
+            $this->setTimeout(60 * 30); // 30 min - pip install may take a long time if there's a lot of stuff to install.
 
-            $this->execPty("cd {$workdir} && source venv/bin/activate");
-            $this->read();
-
-            $this->execPty("pip install -r requirements.txt");
+            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install -r requirements.txt && deactivate");
             $this->read();
 
             if ($this->failed())
-                throw new RuntimeException('"pip install" command has failed.');
+                throw new RuntimeException('"pip install -r requirements.txt" command has failed.');
+
+            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install gunicorn && deactivate");
+            $this->read();
+
+            if ($this->failed())
+                throw new RuntimeException('"pip install gunicorn" command has failed.');
+
+            $this->disablePty();
         }
     }
 }
