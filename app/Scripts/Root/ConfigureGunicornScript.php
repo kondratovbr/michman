@@ -30,7 +30,6 @@ class ConfigureGunicornScript extends AbstractServerScript
         $data = [
             'domain' => $domain,
             'username' => $username,
-            // TODO: CRITICAL! Make sure the projectName is properly handled - it should be a Python "App Module" name - a directory inside the project root. The user should be able to customize it, although we can use the repo name as default - that's how it's usually named.
             'projectName' => $projectName,
         ];
 
@@ -58,10 +57,5 @@ class ConfigureGunicornScript extends AbstractServerScript
         $this->exec("chown {$username}:{$username} {$configFile}");
 
         $this->exec("systemctl daemon-reload");
-
-        $this->exec("systemctl enable {$projectName}.service");
-        $this->exec("systemctl start {$projectName}.service");
-
-        //
     }
 }
