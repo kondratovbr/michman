@@ -36,6 +36,11 @@ class CloneGitRepoScript extends AbstractServerScript
         // and add if it isn't.
         $this->exec("grep -qxF '{$sshHostKey}' {$knownHostsFile} || echo '{$sshHostKey}' >> {$knownHostsFile}");
 
+        // This script is for the initial repo cloning, so we can safely delete the directory.
+        // It may already exist is the cloning was already tried before and failed,
+        // or if the user was tinkering on the server manually.
+        $this->exec("rm -rf {$projectDir}");
+
         $this->exec("git clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}");
 
         if ($this->getExitStatus() !== 0)
