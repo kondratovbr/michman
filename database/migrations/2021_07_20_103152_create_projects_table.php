@@ -29,6 +29,7 @@ class CreateProjectsTable extends Migration
             $table->string('branch')->nullable();
             $table->string('app_name')->nullable();
             $table->boolean('use_deploy_key');
+            $table->string('requirements_file')->nullable();
 
             $table->timestamps();
         });

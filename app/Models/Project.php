@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $branch
  * @property string|null $appName
  * @property bool $useDeployKey
+ * @property string|null $requirementsFile
  *
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
@@ -56,6 +57,7 @@ class Project extends AbstractModel
         'branch',
         'app_name',
         'use_deploy_key',
+        'requirements_file',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
