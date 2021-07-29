@@ -1814,6 +1814,10 @@ return [
         'unicorn',
     ],
 
+    'nouns' =>  [
+        'aglet',
+    ],
+
     'star-wars' => [
         'Luke Skywalker',
         'C-3PO',

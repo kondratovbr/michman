@@ -36,7 +36,10 @@ if (! function_exists('generateRandomName')) {
         $result = rand(0, 9)
             ? implode($separator, [
                 Str::lower(Arr::random(config('dictionary.adjectives'))),
-                Str::lower(Arr::random(config('dictionary.animals'))),
+                Str::lower(Arr::random(Arr::merge(
+                    config('dictionary.animals'),
+                    config('dictionary.nouns'),
+                ))),
             ])
             // Str::kebab() doubles the dashes in source strings, which can exist in these strings,
             // so we replace double dashes with single ones.
