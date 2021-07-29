@@ -33,7 +33,7 @@ class CreateProjectVenvScript extends AbstractServerScript
             $this->enablePty();
             $this->setTimeout(60 * 30); // 30 min - pip install may take a long time if there's a lot of stuff to install.
 
-            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install -r requirements.txt && deactivate");
+            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install -r requirements.txt --ignore-installed && deactivate");
             $this->read();
 
             if ($this->failed())
