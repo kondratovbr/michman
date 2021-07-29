@@ -36,10 +36,10 @@ class InstallProjectToServerJob extends AbstractJob
     public function handle(
         CloneGitRepoScript $cloneRepo,
         CreateProjectVenvScript $createVenv,
-        ConfigureGunicornScript $installGunicorn,
+        ConfigureGunicornScript $configureGunicorn,
     ): void {
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $installGunicorn
+            $cloneRepo, $createVenv, $configureGunicorn
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -48,14 +48,11 @@ class InstallProjectToServerJob extends AbstractJob
 
             $userSsh = $server->sftp($project->serverUsername);
 
-            $cloneRepo->execute(
-                $server,
-                $project,
-                $userSsh,
-            );
+            $cloneRepo->execute($server, $project, $userSsh,);
 
             /*
-             * TODO: CRITICAL! I'm creating a venv inside the project directory. Make sure git won't break it on git pull during deployment.
+             * TODO: CRITICAL! I'm creating a venv inside the project directory.
+             *       Make sure git won't break it on git pull during deployment.
              */
             $createVenv->execute(
                 $server,
@@ -64,7 +61,7 @@ class InstallProjectToServerJob extends AbstractJob
                 $userSsh,
             );
 
-            $installGunicorn->execute($server, $project);
+            $configureGunicorn->execute($server, $project);
 
         }, 5);
     }
