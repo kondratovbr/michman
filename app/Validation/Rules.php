@@ -13,7 +13,8 @@ namespace App\Validation;
 
 use App\Rules\DomainRule;
 use App\Rules\GitRepoNameRule;
-use App\Rules\UnixPathRule;
+use App\Rules\UnixAbsolutePathRule;
+use App\Rules\UnixRelativePathRule;
 
 /**
  * Support class Rules.
@@ -150,13 +151,22 @@ class Rules extends AbstractBaseRules
         ]))->addRule(new DomainRule);
     }
 
-    static public function path(): static
+    static public function absolutePath(): static
     {
         return (new static([
             'string',
             'min:1',
             'max:255',
-        ]))->addRule(new UnixPathRule);
+        ]))->addRule(new UnixAbsolutePathRule);
+    }
+
+    static public function relativePath(): static
+    {
+        return (new static([
+            'string',
+            'min:1',
+            'max:255',
+        ]))->addRule(new UnixRelativePathRule);
     }
 
     static public function gitRepoName(): static
