@@ -22,12 +22,12 @@ class CreateProjectsTable extends Migration
             $table->json('aliases');
             $table->boolean('allow_sub_domains');
             $table->string('type');
-            $table->string('root');
             $table->string('python_version')->nullable();
 
             $table->string('repo')->nullable();
             $table->string('branch')->nullable();
-            $table->string('app_name')->nullable();
+            $table->string('package')->nullable();
+            $table->string('root')->nullable();
             $table->boolean('use_deploy_key');
             $table->string('requirements_file')->nullable();
 

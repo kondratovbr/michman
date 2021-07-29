@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $pythonVersion
  * @property string|null $repo
  * @property string|null $branch
- * @property string|null $appName
+ * @property string|null $package
  * @property bool $useDeployKey
  * @property string|null $requirementsFile
  *
@@ -55,7 +55,7 @@ class Project extends AbstractModel
         'vcs_provider',
         'repo',
         'branch',
-        'app_name',
+        'package',
         'use_deploy_key',
         'requirements_file',
     ];
