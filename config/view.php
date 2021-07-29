@@ -58,8 +58,8 @@ return [
      */
     'config-views-extensions' => [
         'blade' => 'blade',
-        'conf.blade' => 'blade',
-        'txt.blade' => 'blade',
+        'blade.conf' => 'blade',
+        'blade.txt' => 'blade',
         'blade.sh' => 'blade',
         'blade.py' => 'blade',
         'conf' => 'file',
