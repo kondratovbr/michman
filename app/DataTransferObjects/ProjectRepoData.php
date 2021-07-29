@@ -8,5 +8,7 @@ class ProjectRepoData extends DataTransferObject
 {
     public string $repo;
     public string $branch;
+    public string $package;
     public bool $use_deploy_key;
+    public string|null $requirements_file = null;
 }
