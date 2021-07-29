@@ -8,33 +8,24 @@ use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
 
-class InstallGunicornScript extends AbstractServerScript
+class ConfigureGunicornScript extends AbstractServerScript
 {
+    /*
+     * TODO: CRITICAL! CONTINUE. This kinda works but not really - to actually run the service Python should be able to load the environment,
+     *       which means .env should exist and the user should have had a chance to change it.
+     *       So, running the Gunicorn service should be a part of deployment, not repo installation. Repo should be finished at venv and requirements.txt.
+     */
+
     public function execute(Server $server, Project $project, SFTP $ssh = null): void
     {
         $username = $project->serverUsername;
         $domain = $project->domain;
-        $projectDir = "/home/{$username}/{$domain}";
         // Django app module name. Also a directory under a project's root.
         $projectName = explode('/', $project->repo, 2)[1];
         $michmanDir = "/home/{$username}/.michman";
         $configFile = "{$michmanDir}/{$projectName}_gunicorn_config.py";
 
-        $this->init($server, $ssh, $username);
-
-        $this->enablePty();
-        $this->setTimeout(60 * 30); // 30 min
-
-        $this->execPty("cd {$projectDir} && source venv/bin/activate");
-        $this->read();
-
-        $this->execPty("pip install --ignore-installed gunicorn");
-        $this->read();
-
-        $this->execPty("deactivate");
-        $this->read();
-
-        $this->disablePty();
+        $this->init($server, $ssh);
 
         $data = [
             'domain' => $domain,
@@ -43,20 +34,26 @@ class InstallGunicornScript extends AbstractServerScript
             'projectName' => $projectName,
         ];
 
-        $this->sendString(
+        if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.socket",
             ConfigView::render('gunicorn.socket', $data),
-        );
+        )) {
+            throw new \RuntimeException("Failed to send string to file: /etc/systemd/system/{$projectName}.socket");
+        }
 
-        $this->sendString(
+        if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.service",
             ConfigView::render('gunicorn.service', $data),
-        );
+        )) {
+            throw new \RuntimeException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
+        }
 
-        $this->sendString(
+        if (! $this->sendString(
             $configFile,
             ConfigView::render('gunicorn.default_config', $data),
-        );
+        )) {
+            throw new \RuntimeException("Failed to send string to file: {$configFile}");
+        }
 
         $this->exec("chown {$username}:{$username} {$configFile}");
 
