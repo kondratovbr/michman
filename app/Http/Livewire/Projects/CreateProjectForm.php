@@ -38,7 +38,6 @@ class CreateProjectForm extends LivewireComponent
     public string $domain = '';
     public string $aliases = '';
     public string $type = 'django';
-    public string $root = '/static';
     public string $python_version = '3_9';
     public bool $allow_sub_domains = false;
     public bool $create_database = false;
@@ -70,9 +69,6 @@ class CreateProjectForm extends LivewireComponent
             );
         }
 
-        if (isset($attributes['root'][0]) && $attributes['root'][0] != '/')
-            $attributes['root'] = '/' . $attributes['root'];
-
         return $attributes;
     }
 
@@ -89,7 +85,6 @@ class CreateProjectForm extends LivewireComponent
             'type' => Rules::string(1, 16)
                 ->in(Arr::keys(config('projects.types')))
                 ->required(),
-            'root' => Rules::path()->required(),
             'python_version' => SupportedPythonVersionField::new()->required(),
             'allow_sub_domains' => Rules::boolean(),
         ];
@@ -131,7 +126,6 @@ class CreateProjectForm extends LivewireComponent
             domain: $validated['domain'],
             aliases: $validated['aliases'] ?? [],
             type: $validated['type'],
-            root: $validated['root'],
             python_version: $validated['python_version'] ?? null,
             allow_sub_domains: $validated['allow_sub_domains'],
             create_database: $validated['create_database'] ?? false,
@@ -142,7 +136,6 @@ class CreateProjectForm extends LivewireComponent
             'domain',
             'aliases',
             'type',
-            'root',
             'python_version',
             'allow_sub_domains',
             'create_database',

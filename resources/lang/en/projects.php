@@ -68,8 +68,15 @@ return [
             'branch' => [
                 'label' => 'Branch',
             ],
+            'package' => [
+                'label' => 'Python Package Name',
+            ],
             'install-dependencies' => [
-                'label' => 'Install Dependencies From',
+                'label' => 'Install Dependencies',
+            ],
+            'requirements-file' => [
+                'label' => 'Requirements File',
+                'help' => 'You may also put a path relative to the project\'s root if the file is inside some directory.',
             ],
             'use-deploy-key' => [
                 'label' => 'Use Deploy Key',

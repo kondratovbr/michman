@@ -13,6 +13,7 @@ use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\Project;
 use App\Models\Server;
+use App\Support\Str;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,8 +39,12 @@ class InstallRepoForm extends LivewireComponent
         'vcsProviderKey' => null,
         'repo' => '',
         'branch' => 'main',
+        'package' => '',
+        'root' => '/static',
         'installDependencies' => true,
         'useDeployKey' => null,
+        'customPackage' => false,
+        'requirementsFile' => 'requirements.txt',
     ];
 
     /** @var string[] */
@@ -60,17 +65,34 @@ class InstallRepoForm extends LivewireComponent
         );
     }
 
+    protected function prepareForValidation($attributes): array
+    {
+        $pathAttributes = ['package', 'root', 'requirementsFile'];
+        foreach ($pathAttributes as $attr) {
+            $attributes['state'][$attr] = trimRelativePath($attributes['state'][$attr]);
+        }
+
+        return $attributes;
+    }
+
     public function rules(): array
     {
         /*
          * TODO: CRITICAL! Error messages here suck. Check it out. Check out all forms that use $state - the attribute names are all wrong like "state.repo" - should fix it.
          */
 
+        /*
+         * TODO: CRITICAL! CONTINUE. Figure out how to properly validate paths - they should be stored as relative paths for future use (no slash in the beginning), but accepted with or without slashes.
+         */
+
         return [
             'state.vcsProviderKey' => Rules::integer()->in(Auth::user()->vcsProviders->modelKeys())->required(),
             'state.repo' => Rules::gitRepoName()->required(),
             'state.branch' => Rules::alphaNumDashString(1, 255)->required(),
+            'state.package' => Rules::relativePath()->required(),
+            'state.root' => Rules::relativePath()->required(),
             'state.installDependencies' => Rules::boolean(),
+            'state.requirementsFile' => Rules::relativePath()->requiredIfAnotherFieldIs('state.installDependencies', true),
             'state.useDeployKey' => Rules::boolean(),
         ];
     }
@@ -85,7 +107,7 @@ class InstallRepoForm extends LivewireComponent
         $this->resetState();
     }
 
-    public function resetState()
+    public function resetState(): void
     {
         $this->reset('state');
 
@@ -94,33 +116,53 @@ class InstallRepoForm extends LivewireComponent
         $this->state['vcsProviderKey'] = Auth::user()->vcsProviders->first()->getKey();
     }
 
+    public function updatedStatePackage(string $value): void
+    {
+        $this->state['customPackage'] = true;
+    }
+
+    public function updatedStateRepo(string $value): void
+    {
+        if ($this->state['customPackage'])
+            return;
+
+        if (! Str::contains($value, '/'))
+            return;
+
+        [$username, $repo] = explode('/', $value);
+
+        $this->state['package'] = Str::lower($repo);
+    }
+
     /**
      * Store the project's repository configuration.
      */
-    public function update(InstallProjectRepoAction $setupAction): void
+    public function update(InstallProjectRepoAction $installAction): void
     {
-        // TODO: CRITICAL! I should verify the availability of the repo during the process and somehow mark it as unavailable if we can't access it the way it was setup. Probably during cloning of the repo on the server in a Script under a Job. Same with the branch we're going to use.
-
         // TODO: CRITICAL! I should command the outer Livewire "page" component to refresh after this action - it should display a completely different set of forms.
+
+        // TODO: CRITICAL! CONTINUE. Check how my path validation works and continue the implementation of the action.
 
         $validated = $this->validate()['state'];
 
         $this->authorize('update', $this->project);
         $this->authorize('update', $this->server);
 
-        $setupAction->execute(
+        $installAction->execute(
             $this->project,
             Auth::user()->vcsProviders()->findOrFail($validated['vcsProviderKey']),
             new ProjectRepoData(
                 repo: $validated['repo'],
                 branch: $validated['branch'],
+                package: $validated['package'],
                 use_deploy_key: $validated['useDeployKey'],
+                requirements_file: $validated['requirementsFile'],
             ),
             $this->server,
             $validated['installDependencies'],
         );
 
-        $this->reset('state');
+        $this->resetState();
 
         $this->emit('project-updated');
     }

@@ -31,7 +31,7 @@
                     <x-label>{{ __('projects.repo.configure.repo.label') }}</x-label>
                     <x-inputs.text
                         name="state.repo"
-                        wire:model.defer="state.repo"
+                        wire:model="state.repo"
                         placeholder="user/repository"
                     />
                     <x-input-error for="state.repo" />
@@ -47,16 +47,49 @@
                     <x-input-error for="state.branch" />
                 </x-field>
 
-                <x-field>
-                    <x-checkbox-new
-                        name="state.installDependencies"
-                        wire:model="state.installDependencies"
-                    >
-                        <span>{{ __('projects.repo.configure.install-dependencies.label') }}</span>
-                        <x-code>requirements.txt</x-code>
-                    </x-checkbox-new>
-                    <x-input-error for="installDependencies" />
+                <x-field class="max-w-sm">
+                    <x-label>{{ __('projects.repo.configure.package.label') }}</x-label>
+                    <x-inputs.text
+                        name="state.package"
+                        wire:model="state.package"
+                    />
+                    <x-input-error for="state.package" />
+                    <x-help><x-lang key="projects.package-help" /></x-help>
                 </x-field>
+
+                <x-field class="max-w-sm">
+                    <x-label>{{ __('projects.create.form.root.label') }}</x-label>
+                    <x-inputs.text
+                        name="state.root"
+                        wire:model.defer="state.root"
+                    />
+                    <x-input-error for="state.root" />
+                    <x-help><x-lang key="projects.root-help" /></x-help>
+                </x-field>
+
+                <div class="space-y-2">
+                    <x-field>
+                        <x-checkbox-new
+                            name="state.installDependencies"
+                            wire:model="state.installDependencies"
+                        >
+                            <span>{{ __('projects.repo.configure.install-dependencies.label') }}</span>
+                        </x-checkbox-new>
+                        <x-input-error for="installDependencies" />
+                    </x-field>
+
+                    @if($state['installDependencies'])
+                        <x-field class="max-w-sm">
+                            <x-label>{{ __('projects.repo.configure.requirements-file.label') }}</x-label>
+                            <x-inputs.text
+                                name="state.requirementsFile"
+                                wire:model="state.requirementsFile"
+                            />
+                            <x-input-error for="state.requirementsFile" />
+                            <x-help>{{ __('projects.repo.configure.requirements-file.help') }}</x-help>
+                        </x-field>
+                    @endif
+                </div>
 
     {{--            TODO: CRITICAL! This whole thing needs some explanation and a link to docs. Don't forget to provide explanation on where to actually add those deploy keys inside the repo page for all providers.--}}
                 <div class="space-y-3">

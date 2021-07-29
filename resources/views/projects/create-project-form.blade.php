@@ -43,16 +43,6 @@
             </x-field>
 
             <x-field class="max-w-sm">
-                <x-label>{{ __('projects.create.form.root.label') }}</x-label>
-                <x-inputs.text
-                    name="root"
-                    wire:model.defer="root"
-                />
-                <x-input-error for="root" />
-                <x-help><x-lang key="projects.root-help" /></x-help>
-            </x-field>
-
-            <x-field class="max-w-sm">
                 <x-label>{{ __('projects.create.form.python-version.label') }}</x-label>
                 <x-select
                     name="python_version"
