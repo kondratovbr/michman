@@ -143,6 +143,29 @@ abstract class AbstractServerScript
     }
 
     /**
+     * Write a string to the shell.
+     */
+    protected function write(
+        string $input,
+        bool $scrubInput = false,
+        string $logInput = null,
+    ): bool {
+        $this->initialize();
+
+        try {
+            return $result = $this->ssh->write($input);
+        } finally {
+            $this->server->log(
+                type: 'write',
+                content: $scrubInput
+                    ? ($logInput ?? '[Input is scrubbed for security reasons.]')
+                    : $input,
+                success: $result ?? false,
+            );
+        }
+    }
+
+    /**
      * Enable PTY on the current SSH session.
      */
     protected function enablePty(): void
@@ -175,12 +198,12 @@ abstract class AbstractServerScript
     /**
      * Send a local file to the server over SFTP.
      */
-    protected function sendFile(string $remotePath, string $localPath): void
+    protected function sendFile(string $remotePath, string $localPath): bool
     {
         $this->initialize();
 
         try {
-            $success = $this->ssh->put(
+            return (bool) $success = $this->ssh->put(
                 $remotePath,
                 $localPath,
                 SFTP::SOURCE_LOCAL_FILE,
@@ -190,7 +213,7 @@ abstract class AbstractServerScript
                 type: 'send_file',
                 localFile: $localPath,
                 remoteFile: $remotePath,
-                success: $success ?? false,
+                success: (bool) ($success ?? false),
             );
         }
     }
@@ -198,12 +221,12 @@ abstract class AbstractServerScript
     /**
      * Send a string to a remote file on the server over SFTP.
      */
-    protected function sendString(string $remotePath, string $content): void
+    protected function sendString(string $remotePath, string $content): bool
     {
         $this->initialize();
 
         try {
-            $success = $this->ssh->put(
+            return (bool) $success = $this->ssh->put(
                 $remotePath,
                 $content,
                 SFTP::SOURCE_STRING,
@@ -212,7 +235,7 @@ abstract class AbstractServerScript
             $this->server->log(
                 type: 'send_string',
                 remoteFile: $remotePath,
-                success: $success ?? false,
+                success:(bool) ($success ?? false),
             );
         }
     }
@@ -220,12 +243,12 @@ abstract class AbstractServerScript
     /**
      * Append a string to the end of a remote file on the server over SFTP.
      */
-    protected function appendString(string $remotePath, string $content): void
+    protected function appendString(string $remotePath, string $content): bool
     {
         $this->initialize();
 
         try {
-            $success = $this->ssh->put(
+            return (bool) $success = $this->ssh->put(
                 $remotePath,
                 $content,
                 SFTP::RESUME,
@@ -234,7 +257,7 @@ abstract class AbstractServerScript
             $this->server->log(
                 type: 'append_string',
                 remoteFile: $remotePath,
-                success: $success ?? false,
+                success: (bool) ($success ?? false),
             );
         }
     }
