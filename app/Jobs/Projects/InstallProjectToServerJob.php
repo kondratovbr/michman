@@ -6,7 +6,7 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Project;
 use App\Models\Server;
-use App\Scripts\Root\InstallGunicornScript;
+use App\Scripts\Root\ConfigureGunicornScript;
 use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +36,7 @@ class InstallProjectToServerJob extends AbstractJob
     public function handle(
         CloneGitRepoScript $cloneRepo,
         CreateProjectVenvScript $createVenv,
-        InstallGunicornScript $installGunicorn,
+        ConfigureGunicornScript $installGunicorn,
     ): void {
         DB::transaction(function () use (
             $cloneRepo, $createVenv, $installGunicorn
@@ -46,14 +46,12 @@ class InstallProjectToServerJob extends AbstractJob
             /** @var Server $server */
             $server = $project->servers()->lockForUpdate()->findOrFail($this->server->getKey());
 
-            // TODO: CRITICAL! CONTINUE. Run the whole server setup again and then continue by figuring out virtualenv and the project's dependencies.
-
-            $ssh = $server->sftp($project->serverUsername);
+            $userSsh = $server->sftp($project->serverUsername);
 
             $cloneRepo->execute(
                 $server,
                 $project,
-                $ssh,
+                $userSsh,
             );
 
             /*
@@ -63,14 +61,10 @@ class InstallProjectToServerJob extends AbstractJob
                 $server,
                 $project,
                 $this->installDependencies,
-                $ssh,
+                $userSsh,
             );
 
-            $installGunicorn->execute(
-                $server,
-                $project,
-                $ssh,
-            );
+            $installGunicorn->execute($server, $project);
 
         }, 5);
     }
