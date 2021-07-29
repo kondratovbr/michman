@@ -22,6 +22,8 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Make sure the jobs cannot run on an unprepared server. And the whole server view cannot be seen at all as well.
 
+// TODO: CRITICAL! Make sure the main domain is unique server-wide. Maybe also user-wide. Users and some directories on servers are called by the domain name, so it should be unique.
+
 class CreateProjectForm extends LivewireComponent
 {
     use AuthorizesRequests,
