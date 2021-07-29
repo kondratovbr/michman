@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+// TODO: CRITICAL! Don't forget to implement and test the option with deploy keys!
+
 // TODO: CRITICAL! Cover with tests.
 
 class InstallRepoForm extends LivewireComponent

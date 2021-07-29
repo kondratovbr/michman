@@ -18,9 +18,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! CONTINUE. Try it out.
-
 // TODO: CRITICAL! Cover with tests.
+
+// TODO: CRITICAL! Make sure the jobs cannot run on an unprepared server. And the whole server view cannot be seen at all as well.
 
 class CreateProjectForm extends LivewireComponent
 {
