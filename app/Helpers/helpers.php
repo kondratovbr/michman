@@ -74,3 +74,22 @@ if (! function_exists('collection')) {
         return new EloquentCollection($items);
     }
 }
+
+if (! function_exists('trimRelativePath')) {
+    /**
+     * Trim a string that represents a relative Unix path.
+     *
+     * Remove spaces, empty characters, slashes from the beginning and the end,
+     * double slashes.
+     */
+    function trimRelativePath(string $path): string
+    {
+        $path = trim($path, ' \t\n\r\0\x0B/');
+
+        while (Str::contains($path, '//')) {
+            $path = Str::replace('//', '/', $path);
+        }
+
+        return $path;
+    }
+}
