@@ -226,6 +226,7 @@ return [
         'calm',
         'charming',
         'cheerful',
+        'cheeky',
         'comfortable',
         'cooperative',
         'courageous',
