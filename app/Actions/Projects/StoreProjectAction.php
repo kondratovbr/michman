@@ -3,9 +3,11 @@
 namespace App\Actions\Projects;
 
 use App\Actions\Databases\StoreDatabaseAction;
+use App\Actions\DatabaseUsers\StoreDatabaseUserAction;
 use App\Actions\DeploySshKeys\CreateDeploySshKeyAction;
 use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\DatabaseData;
+use App\DataTransferObjects\DatabaseUserData;
 use App\DataTransferObjects\NewProjectData;
 use App\DataTransferObjects\PythonData;
 use App\Jobs\Servers\CreateUserOnServerJob;
@@ -23,6 +25,7 @@ class StoreProjectAction
         protected CreateDeploySshKeyAction $createDeploySshKey,
         protected StorePythonAction $storePython,
         protected StoreDatabaseAction $storeDatabase,
+        protected StoreDatabaseUserAction $storeDatabaseUser,
     ) {}
 
     public function execute(NewProjectData $data, User $user, Server $server): Project
@@ -44,9 +47,19 @@ class StoreProjectAction
             $data->create_database
             && $server->databases()->where('name', $data->db_name)->count() < 1
         ) {
-            $this->storeDatabase->execute(new DatabaseData(
+            $database = $this->storeDatabase->execute(new DatabaseData(
                 name: $data->db_name,
             ), $server);
+
+            if (
+                $data->create_db_user
+                && $server->databaseUsers()->where('name', $data->db_user_name)->count() < 1
+            ) {
+                $this->storeDatabaseUser->execute(new DatabaseUserData(
+                    name: $data->db_user_name,
+                    password: $data->db_user_password,
+                ), $server, collection([$database]));
+            }
         }
 
         CreateUserOnServerJob::dispatch($server, $project->serverUsername);
