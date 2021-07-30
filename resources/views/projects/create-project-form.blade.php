@@ -68,7 +68,7 @@
 
                 <div
                     class="space-y-6"
-                    x-data="{ createDatabase: false }"
+                    x-data="{ createDatabase: @entangle('create_database') }"
                 >
 
                     <x-field>
@@ -82,18 +82,53 @@
                         <x-input-error for="create_database" />
                     </x-field>
 
-                    <x-field
-                        class="max-w-sm"
+                    <div
+                        class="bg-navy-500 rounded-md space-y-6 py-2 px-4"
                         x-show="createDatabase"
                         x-cloak
                     >
-                        <x-label>{{ __('projects.create.form.db-name.label') }}</x-label>
-                        <x-inputs.text
-                            name="db_name"
-                            wire:model.defer="db_name"
-                        />
-                        <x-input-error for="db_name" />
-                    </x-field>
+
+                        <x-field class="max-w-sm">
+                            <x-label>{{ __('projects.create.form.db-name.label') }}</x-label>
+                            <x-inputs.text
+                                name="db_name"
+                                wire:model.defer="db_name"
+                            />
+                            <x-input-error for="db_name" />
+                        </x-field>
+
+                        <div
+                            class="space-y-6"
+                            x-data="{ createDatabaseUser: @entangle('create_db_user') }"
+                        >
+
+                            <x-field>
+                                <x-checkbox-new
+                                    name="create_db_user"
+                                    wire:model="create_db_user"
+                                    x-model="createDatabaseUser"
+                                >
+                                    {{ __('projects.create.form.create-db-user.label') }}
+                                </x-checkbox-new>
+                                <x-input-error for="create_db_user" />
+                            </x-field>
+
+                            <x-field
+                                class="max-w-sm"
+                                x-show="createDatabaseUser"
+                                x-cloak
+                            >
+                                <x-label>{{ __('projects.create.form.db-user-name.label') }}</x-label>
+                                <x-inputs.text
+                                    name="db_user_name"
+                                    wire:model.defer="db_user_name"
+                                />
+                                <x-input-error for="db_user_name" />
+                            </x-field>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
