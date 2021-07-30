@@ -51,6 +51,12 @@ return [
             'db-name' => [
                 'label' => 'Database Name',
             ],
+            'create-db-user' => [
+                'label' => 'Create Database User',
+            ],
+            'db-user-name' => [
+                'label' => 'Database User Name',
+            ],
         ],
     ],
 
