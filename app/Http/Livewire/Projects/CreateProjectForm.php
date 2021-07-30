@@ -24,6 +24,11 @@ use Illuminate\Contracts\View\View;
 
 // TODO: CRITICAL! Make sure the main domain is unique server-wide. Maybe also user-wide. Users and some directories on servers are called by the domain name, so it should be unique.
 
+
+/*
+ * TODO: CRITICAL! CONTINUE. Finish the front-end part and test everything, then continue with the repo installation.
+ */
+
 class CreateProjectForm extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -39,9 +44,11 @@ class CreateProjectForm extends LivewireComponent
     public string $aliases = '';
     public string $type = 'django';
     public string $python_version = '3_9';
-    public bool $allow_sub_domains = false;
-    public bool $create_database = false;
+    public bool $allow_sub_domains = true;
+    public bool $create_database = true;
     public string $db_name = '';
+    public bool $create_db_user = true;
+    public string $db_user_name = '';
 
     /** @var string[] */
     protected $listeners = [
@@ -97,6 +104,16 @@ class CreateProjectForm extends LivewireComponent
                 ->nullable();
         }
 
+        if (optional($this->server)->canCreateDatabaseUser() && $this->create_database) {
+            $rules['create_db_user'] = Rules::boolean();
+            $rules['db_user_name'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('create_db_user', true)
+                ->nullable();
+            $rules['db_user_password'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('create_db_user', true)
+                ->nullable();
+        }
+
         return $rules;
     }
 
@@ -132,6 +149,9 @@ class CreateProjectForm extends LivewireComponent
             allow_sub_domains: $validated['allow_sub_domains'],
             create_database: $validated['create_database'] ?? false,
             db_name: $validated['db_name'] ?? null,
+            create_db_user: $validated['create_db_user'] ?? false,
+            db_user_name: $validated['db_user_name'],
+            db_user_password: $validated['db_user_password'],
         ), Auth::user(), $this->server);
 
         $this->reset(
@@ -142,6 +162,9 @@ class CreateProjectForm extends LivewireComponent
             'allow_sub_domains',
             'create_database',
             'db_name',
+            'create_db_user',
+            'db_user_name',
+            'db_user_password',
         );
 
         $this->emit('project-stored');
