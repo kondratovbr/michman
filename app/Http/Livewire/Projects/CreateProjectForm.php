@@ -26,7 +26,7 @@ use Illuminate\Contracts\View\View;
 
 
 /*
- * TODO: CRITICAL! CONTINUE. Finish the front-end part and test everything, then continue with the repo installation.
+ * TODO: CRITICAL! CONTINUE. Finish the front-end part (don't forget the DB user password field) and test everything, then continue with the repo installation.
  */
 
 class CreateProjectForm extends LivewireComponent
