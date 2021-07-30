@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire\Projects;
 
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Component as LivewireComponent;
 use App\Actions\Projects\StoreProjectAction;
 use App\DataTransferObjects\NewProjectData;
 use App\Facades\Auth;
 use App\Http\Livewire\Traits\ListensForEchoes;
-use App\Http\Livewire\Traits\TrimsInput;
 use App\Models\Project;
 use App\Models\Server;
 use App\Support\Arr;
@@ -15,8 +17,6 @@ use App\Validation\Fields\SupportedPythonVersionField;
 use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests.
 
@@ -27,7 +27,7 @@ use Livewire\Component as LivewireComponent;
 class CreateProjectForm extends LivewireComponent
 {
     use AuthorizesRequests,
-        TrimsInput,
+        TrimsInputBeforeValidation,
         ListensForEchoes;
 
     public Server $server;
@@ -76,11 +76,12 @@ class CreateProjectForm extends LivewireComponent
     {
         /*
          * TODO: CRITICAL! Error messages here probably suck. Check it out.
+         *       Seems like ValidatesInput trait should have handled it. Why doesn't it work?
          */
 
         $rules = [
             'domain' => Rules::domain()->required(),
-            'aliases' => Rules::array(),
+            'aliases' => Rules::array()->nullable(),
             'aliases.*' => Rules::domain(),
             'type' => Rules::string(1, 16)
                 ->in(Arr::keys(config('projects.types')))
@@ -92,7 +93,8 @@ class CreateProjectForm extends LivewireComponent
         if (optional($this->server)->canCreateDatabase()) {
             $rules['create_database'] = Rules::boolean();
             $rules['db_name'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('create_database', true);
+                ->requiredIfAnotherFieldIs('create_database', true)
+                ->nullable();
         }
 
         return $rules;
