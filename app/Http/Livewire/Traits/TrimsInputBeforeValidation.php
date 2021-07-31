@@ -41,11 +41,15 @@ trait TrimsInputBeforeValidation
             ->each(function ($ruleKey) use ($properties) {
                 $propertyName = $this->beforeFirstDot($ruleKey);
 
-                throw_unless(array_key_exists($propertyName, $properties), new \Exception('No property found for validation: ['.$ruleKey.']'));
+                throw_unless(
+                    array_key_exists($propertyName, $properties),
+                    new \Exception('No property found for validation: ['.$ruleKey.']')
+                );
             });
 
         $data = collect($properties)->map(function ($value) {
-            if ($value instanceof Collection || $value instanceof EloquentCollection) return $value->toArray();
+            if ($value instanceof Collection || $value instanceof EloquentCollection)
+                return $value->toArray();
 
             return $value;
         })->all();
@@ -79,15 +83,14 @@ trait TrimsInputBeforeValidation
      */
     private function trimAttribute(string $attribute, mixed $value): mixed
     {
-        if (is_string($value)) {
-            $value = trim($value);
+        if (! is_string($value))
+            return $value;
 
-            if (in_array($attribute, $this->keepEmptyStrings))
-                return $value;
+        $value = trim($value);
 
-            return $value === '' ? null : $value;
-        }
+        if (in_array($attribute, $this->keepEmptyStrings))
+            return $value;
 
-        return $value;
+        return $value === '' ? null : $value;
     }
 }
