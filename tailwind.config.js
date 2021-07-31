@@ -257,7 +257,7 @@ module.exports = {
             cursor: ['disabled', 'input-disabled'],
             display: [],
             margin: ['first', 'last'],
-            opacity: ['disabled', 'group-hover', 'group-active', 'input-disabled'],
+            opacity: ['disabled', 'group-hover', 'group-active', 'input-disabled', 'group-disabled'],
             outline: ['focus'],
             padding: ['first', 'last'],
             ringColor: ['focus', 'input-checked'],
@@ -289,6 +289,15 @@ module.exports = {
             addVariant('group-active', ({ modifySelectors, separator }) => {
                 modifySelectors(({ className }) => {
                     return `.group:active .${e(`group-active${separator}${className}`)}`;
+                });
+            });
+        }),
+
+        // "group-disabled" variant to style labels for most inputs
+        plugin(function({ addVariant, e }) {
+            addVariant('group-disabled', ({ modifySelectors, separator }) => {
+                modifySelectors(({ className }) => {
+                    return `.group:disabled .${e(`group-disabled${separator}${className}`)}`;
                 });
             });
         }),
