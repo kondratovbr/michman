@@ -59,7 +59,6 @@ class InstallProjectToServerJob extends AbstractJob
             $createVenv->execute(
                 $server,
                 $project,
-                $this->installDependencies,
                 $userSsh,
             );
 

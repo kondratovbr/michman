@@ -16,7 +16,6 @@ class CreateProjectVenvScript extends AbstractServerScript
     public function execute(
         Server $server,
         Project $project,
-        bool $installDependencies,
         SFTP $ssh = null,
     ): void {
         $username = $project->serverUsername;
@@ -29,23 +28,24 @@ class CreateProjectVenvScript extends AbstractServerScript
         if ($this->failed())
             throw new RuntimeException('"virtualenv" command has failed.');
 
-        if ($installDependencies) {
-            $this->enablePty();
-            $this->setTimeout(60 * 30); // 30 min - pip install may take a long time if there's a lot of stuff to install.
+        $this->enablePty();
+        $this->setTimeout(60 * 30); // 30 min - pip install may take a long time if there's a lot of stuff to install.
 
-            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install -r requirements.txt --ignore-installed && deactivate");
+        if (! empty($project->requirementsFile)) {
+
+            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install -r {$project->requirementsFile} --ignore-installed && deactivate");
             $this->read();
 
             if ($this->failed())
-                throw new RuntimeException('"pip install -r requirements.txt" command has failed.');
-
-            $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install gunicorn && deactivate");
-            $this->read();
-
-            if ($this->failed())
-                throw new RuntimeException('"pip install gunicorn" command has failed.');
-
-            $this->disablePty();
+                throw new RuntimeException("\"pip install -r {$project->requirementsFile}\" command has failed.");
         }
+
+        $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install gunicorn && deactivate");
+        $this->read();
+
+        if ($this->failed())
+            throw new RuntimeException('"pip install gunicorn" command has failed.');
+
+        $this->disablePty();
     }
 }
