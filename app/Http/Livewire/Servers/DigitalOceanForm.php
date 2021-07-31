@@ -30,6 +30,8 @@ use Livewire\Component;
 
 // TODO: CRITICAL! Check and update tests!
 
+// TODO: Hide the buttons in this form when the form isn't showing at all, i.e. before the provider was chosen.
+
 class DigitalOceanForm extends Component
 {
     use AuthorizesRequests;
