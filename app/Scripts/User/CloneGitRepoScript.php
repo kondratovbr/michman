@@ -25,6 +25,8 @@ class CloneGitRepoScript extends AbstractServerScript
         $homedir = "/home/{$username}";
         $knownHostsFile = "{$homedir}/.ssh/known_hosts";
         $projectDir = "{$homedir}/{$domain}";
+        $sshKeyName = $project->useDeployKey ? $project->deploySshKey->name : 'id_ed25519';
+        $sshKeyFile = "{$homedir}/.ssh/{$sshKeyName}";
 
         $this->init($server, $ssh, $username);
 
@@ -41,7 +43,7 @@ class CloneGitRepoScript extends AbstractServerScript
         // or if the user was tinkering on the server manually.
         $this->exec("rm -rf {$projectDir}");
 
-        $this->exec("git clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}");
+        $this->exec("git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}");
 
         if ($this->getExitStatus() !== 0)
             throw new RuntimeException('Cloning the project\'s git repo failed.');
