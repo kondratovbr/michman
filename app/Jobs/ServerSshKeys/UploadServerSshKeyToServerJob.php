@@ -30,10 +30,7 @@ class UploadServerSshKeyToServerJob extends AbstractJob
     {
         DB::transaction(function () use ($uploadServerSshKey) {
             /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = Server::query()->lockForUpdate()->findOrFail($this->server->getKey());
 
             $uploadServerSshKey->execute(
                 $server,
