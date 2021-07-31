@@ -57,6 +57,9 @@ return [
             'db-user-name' => [
                 'label' => 'Database User Name',
             ],
+            'db-user-password' => [
+                'label' => 'Database User Password',
+            ],
         ],
     ],
 
