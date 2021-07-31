@@ -20,8 +20,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Don't forget to implement and test the option with deploy keys!
-
 // TODO: CRITICAL! Cover with tests.
 
 class InstallRepoForm extends LivewireComponent
@@ -82,7 +80,12 @@ class InstallRepoForm extends LivewireComponent
          */
 
         /*
-         * TODO: CRITICAL! CONTINUE. Figure out how to properly validate paths - they should be stored as relative paths for future use (no slash in the beginning), but accepted with or without slashes.
+         * TODO: CRITICAL! CONTINUE. Now make sure that all the stuff will work with the relative paths stored in the DB.
+         *       I wasn't expecting "package" to a be a path, for example, so check it.
+         *       Check how it is used in scripts and in configs.
+         *       Check "root" as well.
+         *       Then proceed by installing and configuring Ace Editor and implementing .env file editor and deploy script editor.
+         *       Then on to deployments.
          */
 
         return [
