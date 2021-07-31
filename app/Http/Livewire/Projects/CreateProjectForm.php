@@ -24,10 +24,7 @@ use Illuminate\Contracts\View\View;
 
 // TODO: CRITICAL! Make sure the main domain is unique server-wide. Maybe also user-wide. Users and some directories on servers are called by the domain name, so it should be unique.
 
-
-/*
- * TODO: CRITICAL! CONTINUE. Finish the front-end part (don't forget the DB user password field) and test everything, then continue with the repo installation.
- */
+// TODO: CRITICAL! Figure out tasks and maybe statuses for servers/projects during project creation and repo installation.
 
 class CreateProjectForm extends LivewireComponent
 {
