@@ -11,12 +11,13 @@ class ProjectView extends AbstractSubpagesView
     protected const VIEW = 'projects.show';
 
     public const VIEWS = [
-        'repo' => 'projects.repo',
+        'deployment' => 'projects.deployment',
+        'history' => 'projects.history',
         //
     ];
 
     /** @var string The name of a sub-page that will be shown by default. */
-    protected const DEFAULT_SHOW = 'repo';
+    protected const DEFAULT_SHOW = 'deployment';
 
     public Project $project;
 }

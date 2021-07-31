@@ -64,7 +64,6 @@ return [
     ],
 
     'repo' => [
-        'button' => 'Repository',
         'configure' => [
             'title' => 'Configure Repository',
             'button' => 'Install Repository',
@@ -97,7 +96,15 @@ return [
             'github_v3' => 'GitHub',
             'gitlab' => 'GitLab',
             'bitbucket' => 'Bitbucket',
-        ]
+        ],
+    ],
+
+    'deployment' => [
+        'button' => 'Deployment',
+    ],
+
+    'history' => [
+        'button' => 'History',
     ],
 
 ];

@@ -4,9 +4,14 @@
 <aside x-data="{ current: '{{ $this->show }}' }">
     <ul class="flex flex-col items-stretch text-gray-200">
 
-        <x-menu.item show="repo">
+        <x-menu.item show="deployment">
             <x-slot name="icon"><i class="fas fa-code-branch"></i></x-slot>
-            {{ __('projects.repo.button') }}
+            {{ __('projects.deployment.button') }}
+        </x-menu.item>
+
+        <x-menu.item show="history">
+            <x-slot name="icon"><i class="fas fa-history"></i></x-slot>
+            {{ __('projects.history.button') }}
         </x-menu.item>
 
     </ul>
