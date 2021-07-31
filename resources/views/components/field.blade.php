@@ -1,1 +1,3 @@
-<fieldset {{ $attributes }}>{{ $slot }}</fieldset>
+<fieldset {{ $attributes->class([
+    'group',
+]) }}>{{ $slot }}</fieldset>
