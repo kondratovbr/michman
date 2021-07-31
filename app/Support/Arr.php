@@ -279,14 +279,14 @@ class Arr extends IlluminateArr
     }
 
     /**
-     * Expand a dot notation array into a full multi-dimensional array.
+     * Expand a dot notated array into a multi-dimensional one.
      *
      * Reverse of the built-in "dot" helper.
      */
-    public static function undot(array $dotNotationArray): array
+    public static function undot(array $dotNotatedArray): array
     {
         $array = [];
-        foreach ($dotNotationArray as $key => $value) {
+        foreach ($dotNotatedArray as $key => $value) {
             static::set($array, $key, $value);
         }
 
