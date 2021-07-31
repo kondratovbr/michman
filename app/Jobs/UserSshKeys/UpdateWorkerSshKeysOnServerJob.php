@@ -10,6 +10,12 @@ use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\DisableSshAccessForUserScript;
 use Illuminate\Support\Facades\DB;
 
+/*
+ * TODO: CRITICAL! This does not work exactly as intended.
+ *       It should also update the worker key for every user
+ *       we created on the server, i.e. for all project users.
+ */
+
 class UpdateWorkerSshKeysOnServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
