@@ -3,6 +3,7 @@
 namespace App\Actions\Projects;
 
 use App\DataTransferObjects\ProjectRepoData;
+use App\Jobs\DeploySshKeys\UploadDeploySshKeyToServerJob;
 use App\Jobs\Projects\InstallProjectToServerJob;
 use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
 use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
@@ -28,14 +29,14 @@ class InstallProjectRepoAction
             $project = Project::query()->lockForUpdate()->findOrFail($project->getKey());
 
             $project->vcsProvider()->associate($vcsProvider);
-
             $project->fill($data->toArray());
-
             $project->save();
 
             $jobs = [];
 
-            if (! $project->useDeployKey) {
+            if ($project->useDeployKey) {
+                $jobs[] = new UploadDeploySshKeyToServerJob($server, $project);
+            } else {
                 $jobs[] = new UploadServerSshKeyToServerJob($server, $project->serverUsername);
                 $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
             }

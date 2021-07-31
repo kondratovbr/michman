@@ -2,22 +2,27 @@
 
 namespace App\Scripts\Root;
 
+use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Server;
-use App\Models\ServerSshKey;
 use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
 
-class UploadServerSshKeyScript extends AbstractServerScript
+class UploadSshKeyToServerScript extends AbstractServerScript
 {
-    public function execute(Server $server, ServerSshKey $key, string $username, SFTP $ssh = null): void
-    {
+    public function execute(
+        Server $server,
+        SshKeyInterface $key,
+        string $username,
+        string $keyName = 'id_ed25519',
+        SFTP $ssh = null,
+    ): void {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
         $remoteDirectory = $username === 'root'
             ? '/root/.ssh'
             : "/home/{$username}/.ssh";
-        $remotePrivateKeyFile = $remoteDirectory . '/id_ed25519';
-        $remotePublicKeyFile = $remoteDirectory . '/id_ed25519.pub';
+        $remotePrivateKeyFile = $remoteDirectory . "/{$keyName}";
+        $remotePublicKeyFile = $remoteDirectory . "/{$keyName}.pub";
 
         // Create .ssh directory for the user if it doesn't exist.
         $this->exec("mkdir -p -m 0700 {$remoteDirectory}");

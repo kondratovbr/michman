@@ -1,26 +1,27 @@
 <?php declare(strict_types=1);
 
-namespace App\Jobs\ServerSshKeys;
+namespace App\Jobs\DeploySshKeys;
 
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\Root\UploadSshKeyToServerScript;
 use Illuminate\Support\Facades\DB;
 
-class UploadServerSshKeyToServerJob extends AbstractJob
+class UploadDeploySshKeyToServerJob extends AbstractJob
 {
     use InteractsWithRemoteServers;
 
     protected Server $server;
-    protected string $username;
+    protected Project $project;
 
-    public function __construct(Server $server, string $username)
+    public function __construct(Server $server, Project $project)
     {
         $this->setQueue('servers');
 
         $this->server = $server->withoutRelations();
-        $this->username = $username;
+        $this->project = $project->withoutRelations();
     }
 
     /**
@@ -31,11 +32,14 @@ class UploadServerSshKeyToServerJob extends AbstractJob
         DB::transaction(function () use ($uploadSshKey) {
             /** @var Server $server */
             $server = Server::query()->lockForUpdate()->findOrFail($this->server->getKey());
+            /** @var Project $project */
+            $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
 
             $uploadSshKey->execute(
                 $server,
-                $server->serverSshKey,
-                $this->username,
+                $project->deploySshKey,
+                $project->serverUsername,
+                $project->deploySshKey->name,
             );
         }, 5);
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Traits\IsSshKey;
+use App\Support\Str;
 use Carbon\CarbonInterface;
 use Database\Factories\DeploySshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @property-read string $name
  *
  * @property-read Project $project
  *
@@ -35,6 +38,14 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /**
+     * Get a name for the key to use as a filename on servers.
+     */
+    public function getNameAttribute(): string
+    {
+        return Str::snake(Str::lower($this->project->domain));
+    }
 
     protected function getSshKeyComment(): string
     {
