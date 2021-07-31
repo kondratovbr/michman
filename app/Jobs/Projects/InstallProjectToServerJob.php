@@ -48,7 +48,7 @@ class InstallProjectToServerJob extends AbstractJob
 
             $userSsh = $server->sftp($project->serverUsername);
 
-            $cloneRepo->execute($server, $project, $userSsh,);
+            $cloneRepo->execute($server, $project, $userSsh);
 
             /*
              * TODO: CRITICAL! I'm creating a venv inside the project directory.
