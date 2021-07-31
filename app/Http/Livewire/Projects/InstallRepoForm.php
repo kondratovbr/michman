@@ -141,8 +141,6 @@ class InstallRepoForm extends LivewireComponent
     {
         // TODO: CRITICAL! I should command the outer Livewire "page" component to refresh after this action - it should display a completely different set of forms.
 
-        // TODO: CRITICAL! CONTINUE. Check how my path validation works and continue the implementation of the action.
-
         $validated = $this->validate()['state'];
 
         $this->authorize('update', $this->project);
