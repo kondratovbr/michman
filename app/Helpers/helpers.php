@@ -79,12 +79,12 @@ if (! function_exists('trimRelativePath')) {
     /**
      * Trim a string that represents a relative Unix path.
      *
-     * Remove spaces, empty characters, slashes from the beginning and the end,
-     * double slashes.
+     * Remove spaces, empty characters, slashes from the beginning and end,
+     * also replace double slashes with single ones.
      */
     function trimRelativePath(string $path): string
     {
-        $path = trim($path, ' \t\n\r\0\x0B/');
+        $path = trim($path, " \t\n\r\0\x0B/");
 
         while (Str::contains($path, '//')) {
             $path = Str::replace('//', '/', $path);
