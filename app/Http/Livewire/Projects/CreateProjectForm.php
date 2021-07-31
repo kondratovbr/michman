@@ -40,15 +40,18 @@ class CreateProjectForm extends LivewireComponent
     public array $types;
     public array $pythonVersions;
 
-    public string $domain = '';
-    public string $aliases = '';
-    public string $type = 'django';
-    public string $python_version = '3_9';
-    public bool $allow_sub_domains = true;
-    public bool $create_database = true;
-    public string $db_name = '';
-    public bool $create_db_user = true;
-    public string $db_user_name = '';
+    public array $state = [
+        'domain' => '',
+        'aliases' => '',
+        'type' => 'django',
+        'pythonVersion' => '3_9',
+        'allowSubDomains' => true,
+        'createDatabase' => true,
+        'dbName' => '',
+        'createDbUser' => true,
+        'dbUserName' => '',
+        'dbUserPassword' => '',
+    ];
 
     /** @var string[] */
     protected $listeners = [
@@ -62,19 +65,23 @@ class CreateProjectForm extends LivewireComponent
 
     protected function prepareForValidation($attributes): array
     {
-        if (is_string($attributes['domain'])) {
-            $attributes['domain'] = Str::lower($attributes['domain']);
+        $state = $attributes['state'];
+
+        if (is_string($state['domain'])) {
+            $state['domain'] = Str::lower($state['domain']);
         }
 
-        if (is_string($attributes['aliases'])) {
-            $attributes['aliases'] = Arr::map(
+        if (is_string($state['aliases'])) {
+            $state['aliases'] = Arr::map(
                 explode(
                     ',',
-                    Str::lower($attributes['aliases'])
+                    Str::lower($state['aliases'])
                 ),
                 fn(string $domain) => trim($domain)
             );
         }
+
+        $attributes['state'] = $state;
 
         return $attributes;
     }
@@ -87,30 +94,30 @@ class CreateProjectForm extends LivewireComponent
          */
 
         $rules = [
-            'domain' => Rules::domain()->required(),
-            'aliases' => Rules::array()->nullable(),
-            'aliases.*' => Rules::domain(),
-            'type' => Rules::string(1, 16)
+            'state.domain' => Rules::domain()->required(),
+            'state.aliases' => Rules::array()->nullable(),
+            'state.aliases.*' => Rules::domain(),
+            'state.type' => Rules::string(1, 16)
                 ->in(Arr::keys(config('projects.types')))
                 ->required(),
-            'python_version' => SupportedPythonVersionField::new()->required(),
-            'allow_sub_domains' => Rules::boolean(),
+            'state.pythonVersion' => SupportedPythonVersionField::new()->required(),
+            'state.allowSubDomains' => Rules::boolean(),
         ];
 
         if (optional($this->server)->canCreateDatabase()) {
-            $rules['create_database'] = Rules::boolean();
-            $rules['db_name'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('create_database', true)
+            $rules['state.createDatabase'] = Rules::boolean();
+            $rules['state.dbName'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('state.createDatabase', true)
                 ->nullable();
         }
 
-        if (optional($this->server)->canCreateDatabaseUser() && $this->create_database) {
-            $rules['create_db_user'] = Rules::boolean();
-            $rules['db_user_name'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('create_db_user', true)
+        if (optional($this->server)->canCreateDatabaseUser() && $this->state['createDatabase']) {
+            $rules['state.createDbUser'] = Rules::boolean();
+            $rules['state.dbUserName'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('state.createDbUser', true)
                 ->nullable();
-            $rules['db_user_password'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('create_db_user', true)
+            $rules['state.dbUserPassword'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('state.createDbUser', true)
                 ->nullable();
         }
 
@@ -137,7 +144,7 @@ class CreateProjectForm extends LivewireComponent
      */
     public function store(StoreProjectAction $storeAction): void
     {
-        $validated = $this->validate();
+        $validated = $this->validate()['state'];
 
         $this->authorize('create', [Project::class, $this->server]);
 
@@ -145,27 +152,16 @@ class CreateProjectForm extends LivewireComponent
             domain: $validated['domain'],
             aliases: $validated['aliases'] ?? [],
             type: $validated['type'],
-            python_version: $validated['python_version'] ?? null,
-            allow_sub_domains: $validated['allow_sub_domains'],
-            create_database: $validated['create_database'] ?? false,
-            db_name: $validated['db_name'] ?? null,
-            create_db_user: $validated['create_db_user'] ?? false,
-            db_user_name: $validated['db_user_name'],
-            db_user_password: $validated['db_user_password'],
+            python_version: $validated['pythonVersion'] ?? null,
+            allow_sub_domains: $validated['allowSubDomains'],
+            create_database: $validated['createDatabase'] ?? false,
+            db_name: $validated['dbName'] ?? null,
+            create_db_user: $validated['createDbUser'] ?? false,
+            db_user_name: $validated['dbUserName'],
+            db_user_password: $validated['dbUserPassword'],
         ), Auth::user(), $this->server);
 
-        $this->reset(
-            'domain',
-            'aliases',
-            'type',
-            'python_version',
-            'allow_sub_domains',
-            'create_database',
-            'db_name',
-            'create_db_user',
-            'db_user_name',
-            'db_user_password',
-        );
+        $this->reset('state');
 
         $this->emit('project-stored');
     }
