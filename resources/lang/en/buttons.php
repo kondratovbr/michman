@@ -11,5 +11,6 @@ return [
     'back' => 'Back',
     'install' => 'Install',
     'update' => 'Update',
+    'reload' => 'Reload',
 
 ];

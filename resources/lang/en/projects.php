@@ -101,6 +101,10 @@ return [
 
     'deployment' => [
         'button' => 'Deployment',
+
+        'env' => [
+            'title' => 'Site Environment',
+        ],
     ],
 
     'history' => [

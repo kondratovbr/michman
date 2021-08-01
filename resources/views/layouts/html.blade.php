@@ -25,18 +25,60 @@
 
         {{-- Scripts --}}
         <script src="{{ mix('js/app.js') }}" defer></script>
+            {{--
+            TODO: CRITICAL! Should I keep these Ace Editor sources here like that for production?
+                  Serve locally? Package in app.js? Serve from a CDN but check it during some health check regularly?
+                  See how Forge does it.
+                  NOTE: These scripts cannot be just "defer"red - they should be ran before the <script> tag that declares the actual editor field.
+                  These should probably be put above the rest of the page - so the browser starts loading them in parallel with the rest of the page.
+                  https://devdojo.com/tnylea/using-ace-editor-with-livewire
+            --}}
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js"
+            integrity="sha512-GoORoNnxst42zE3rYPj4bNBm0Q6ZRXKNH2D9nEmNvVF/z24ywVnijAWVi/09iBiVDQVf3UlZHpzhAJIdd9BXqw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-monokai.min.js"
+            integrity="sha512-S4i/WUGRs22+8rjUVu4kBjfNuBNp8GVsgcK2lbaFdws4q6TF3Nd00LxqnHhuxS9iVDfNcUh0h6OxFUMP5DBD+g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-sh.min.js"
+            integrity="sha512-e1lzPcRUUhfM9oRrV0pgJs+rAJMA1OGXUYSxlX2UZwaO/GvqlL5ZUKwE2lNf5I/Wq6S6ua0U4GWaRrC2J9AXIw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-python.min.js"
+            integrity="sha512-2Ke4vMGrMfYRM55pT1aA5bw7Pl82Sc7K5Hg8XZYZu+EQrb0AO1mNYTagwZm+MFVAImYS9Mlnm73zcgc01wPXxA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
 
         {{-- Page-specific --}}
         <title>{{ config('app.name', 'App') }}</title>
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="description" content="">
-{{--        TODO: IMPORTANT! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
+{{--        TODO: CRITICAL! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
     </head>
     <body class="font-sans antialiased w-screen overflow-x-hidden text-gray-100 bg-navy-100 {{ isDebug() ? 'debug-screens' : null }}">
 
         {{ $slot }}
 
         @livewireScripts
+
+        @stack('ace-editor')
 
     </body>
 </html>

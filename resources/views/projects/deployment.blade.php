@@ -10,7 +10,11 @@
 
         <x-section-separator/>
 
-        <div>Site Environment</div>
+        <livewire:projects.project-environment-edit-form :project="$project" />
+
+        <x-section-separator/>
+
+        <div>Settings File</div>
 
         <x-section-separator/>
 
