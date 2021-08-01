@@ -76,16 +76,7 @@ class InstallRepoForm extends LivewireComponent
     public function rules(): array
     {
         /*
-         * TODO: CRITICAL! Error messages here suck. Check it out. Check out all forms that use $state - the attribute names are all wrong like "state.repo" - should fix it.
-         */
-
-        /*
-         * TODO: CRITICAL! CONTINUE. Now make sure that all the stuff will work with the relative paths stored in the DB.
-         *       I wasn't expecting "package" to a be a path, for example, so check it.
-         *       Check how it is used in scripts and in configs.
-         *       Check "root" as well.
-         *       Then proceed by installing and configuring Ace Editor and implementing .env file editor and deploy script editor.
-         *       Then on to deployments.
+         * TODO: CRITICAL! Error messages here suck. Check it out. Check out all forms that use $state - the attribute names are all wrong like "state.repo" - should fix it. In other forms as well.
          */
 
         return [
