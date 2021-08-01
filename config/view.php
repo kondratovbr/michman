@@ -62,9 +62,11 @@ return [
         'blade.txt' => 'blade',
         'blade.sh' => 'blade',
         'blade.py' => 'blade',
+        'blade.env' => 'blade',
         'conf' => 'file',
         'txt' => 'file',
         'sh' => 'file',
         'py' => 'file',
+        'env' => 'file',
     ],
 ];
