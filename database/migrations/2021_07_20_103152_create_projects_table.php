@@ -33,6 +33,7 @@ class CreateProjectsTable extends Migration
 
             $table->text('environment')->nullable();
             $table->text('deploy_script')->nullable();
+            $table->text('gunicorn_config')->nullable();
 
             $table->timestamps();
         });

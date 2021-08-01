@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $requirementsFile
  * @property string|null $environment
  * @property string|null $deployScript
+ * @property string|null $gunicornConfig
  *
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
@@ -62,6 +63,7 @@ class Project extends AbstractModel
         'requirements_file',
         'environment',
         'deploy_script',
+        'gunicorn_config',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
