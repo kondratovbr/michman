@@ -18,6 +18,10 @@
 
         <x-section-separator/>
 
+        <div>Gunicorn Config</div>
+
+        <x-section-separator/>
+
         <div>Deployment Trigger URL</div>
 
         <x-section-separator/>
