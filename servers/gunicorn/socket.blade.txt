@@ -1,8 +1,8 @@
 [Unit]
-Description=gunicorn socket for {{ $projectName }} at {{ $domain }} project
+Description=gunicorn socket for {{ $project->projectName }} at {{ $project->domain }} project
 
 [Socket]
-ListenStream=/run/{{ $projectName }}.sock
+ListenStream=/run/{{ $project->projectName }}.sock
 # Name of the user that will own the socket file. Needed to make sure Nginx can access it.
 SocketUser=nginx
 

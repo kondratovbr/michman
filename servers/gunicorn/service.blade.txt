@@ -1,17 +1,17 @@
 [Unit]
-Description=gunicorn daemon for {{ $projectName }} at {{ $domain }} project
-Requires={{ $projectName }}.sock
+Description=gunicorn daemon for {{ $project->projectName }} at {{ $project->domain }} project
+Requires={{ $project->projectName }}.sock
 After=network.target
 
 [Service]
-User={{ $username }}
-Group={{ $username }}
-WorkingDirectory=/home/{{ $username }}/{{ $domain }}
-ExecStart=/home/{{ $username }}/{{ $domain }}/venv/bin/gunicorn \
-    --config /home/{{ $username }}/.michman/{{ $projectName }}_gunicorn_config.py \
+User={{ $project->serverUsername }}
+Group={{ $project->serverUsername }}
+WorkingDirectory=/home/{{ $project->serverUsername }}/{{ $project->domain }}
+ExecStart=/home/{{ $project->serverUsername }}/{{ $project->domain }}/venv/bin/gunicorn \
+    --config /home/{{ $project->serverUsername }}/.michman/{{ $project->projectName }}_gunicorn_config.py \
     --access-logfile - \
-    --bind unix:/run/{{ $projectName }}.sock \
-    {{ $projectName }}.wsgi:application
+    --bind unix:/run/{{ $project->projectName }}.sock \
+    {{ $project->projectName }}.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
