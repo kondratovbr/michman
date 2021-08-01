@@ -18,38 +18,30 @@ class ConfigureGunicornScript extends AbstractServerScript
 
     public function execute(Server $server, Project $project, SFTP $ssh = null): void
     {
+        $this->init($server, $ssh);
+
         $username = $project->serverUsername;
-        $domain = $project->domain;
-        // Django app module name. Also a directory under a project's root.
-        $projectName = explode('/', $project->repo, 2)[1];
+        $projectName = $project->projectName;
         $michmanDir = "/home/{$username}/.michman";
         $configFile = "{$michmanDir}/{$projectName}_gunicorn_config.py";
 
-        $this->init($server, $ssh);
-
-        $data = [
-            'domain' => $domain,
-            'username' => $username,
-            'projectName' => $projectName,
-        ];
-
         if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.socket",
-            ConfigView::render('gunicorn.socket', $data),
+            ConfigView::render('gunicorn.socket', ['project' => $project]),
         )) {
             throw new \RuntimeException("Failed to send string to file: /etc/systemd/system/{$projectName}.socket");
         }
 
         if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.service",
-            ConfigView::render('gunicorn.service', $data),
+            ConfigView::render('gunicorn.service', ['project' => $project]),
         )) {
             throw new \RuntimeException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
         }
 
         if (! $this->sendString(
             $configFile,
-            ConfigView::render('gunicorn.default_config', $data),
+            $project->gunicornConfig,
         )) {
             throw new \RuntimeException("Failed to send string to file: {$configFile}");
         }

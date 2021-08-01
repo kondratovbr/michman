@@ -9,6 +9,7 @@ use App\Models\Server;
 use App\Scripts\Root\ConfigureGunicornScript;
 use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
+use App\Scripts\User\UploadProjectConfigFilesToServerScript;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with test.
@@ -37,9 +38,10 @@ class InstallProjectToServerJob extends AbstractJob
         CloneGitRepoScript $cloneRepo,
         CreateProjectVenvScript $createVenv,
         ConfigureGunicornScript $configureGunicorn,
+        UploadProjectConfigFilesToServerScript $uploadConfigs,
     ): void {
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $configureGunicorn
+            $cloneRepo, $createVenv, $configureGunicorn, $uploadConfigs
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -56,11 +58,9 @@ class InstallProjectToServerJob extends AbstractJob
              *       Will it work is a project repo has "venv" directory for some reason?
              *       Should probably move the venv somewhere else.
              */
-            $createVenv->execute(
-                $server,
-                $project,
-                $userSsh,
-            );
+            $createVenv->execute($server, $project, $userSsh);
+
+            $uploadConfigs->execute($server, $project, $userSsh);
 
             $configureGunicorn->execute($server, $project);
 
