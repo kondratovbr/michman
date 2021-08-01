@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
+ * @property-read string|null $projectName
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -97,6 +98,17 @@ class Project extends AbstractModel
     public function getServerUsernameAttribute(): string
     {
         return Str::replace('.', '_', Str::lower($this->domain));
+    }
+
+    /**
+     * Derive a project name from the repo name of this project.
+     */
+    public function getProjectNameAttribute(): string|null
+    {
+        if (empty($this->repo))
+            return null;
+
+        return explode('/', $this->repo, 2)[1];
     }
 
     /**
