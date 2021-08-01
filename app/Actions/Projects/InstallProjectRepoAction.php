@@ -3,6 +3,7 @@
 namespace App\Actions\Projects;
 
 use App\DataTransferObjects\ProjectRepoData;
+use App\Facades\ConfigView;
 use App\Jobs\DeploySshKeys\UploadDeploySshKeyToServerJob;
 use App\Jobs\Projects\InstallProjectToServerJob;
 use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
@@ -30,6 +31,9 @@ class InstallProjectRepoAction
 
             $project->vcsProvider()->associate($vcsProvider);
             $project->fill($data->toArray());
+            $project->environment = ConfigView::render('default_env_file', ['project' => $project]);
+            $project->deployScript = ConfigView::render('default_deploy_script', ['project' => $project]);
+            $project->gunicornConfig = ConfigView::render('gunicorn.default_config', ['project' => $project]);
             $project->save();
 
             $jobs = [];
