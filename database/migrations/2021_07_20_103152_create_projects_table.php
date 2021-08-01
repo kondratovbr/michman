@@ -31,6 +31,9 @@ class CreateProjectsTable extends Migration
             $table->boolean('use_deploy_key');
             $table->string('requirements_file')->nullable();
 
+            $table->text('environment')->nullable();
+            $table->text('deploy_script')->nullable();
+
             $table->timestamps();
         });
     }

@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $package
  * @property bool $useDeployKey
  * @property string|null $requirementsFile
+ * @property string|null $environment
+ * @property string|null $deployScript
  *
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
@@ -58,6 +60,8 @@ class Project extends AbstractModel
         'package',
         'use_deploy_key',
         'requirements_file',
+        'environment',
+        'deploy_script',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -67,6 +71,7 @@ class Project extends AbstractModel
     protected $casts = [
         'aliases' => 'array',
         'use_deploy_key' => ForceBooleanCast::class,
+        'environment' => 'encrypted',
     ];
 
     /** @var string[] The event map for the model. */
