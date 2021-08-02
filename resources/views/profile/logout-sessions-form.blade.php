@@ -1,12 +1,8 @@
 {{--TODO: IMPORTANT! Unfinished!--}}
 
 <x-action-section>
-    <x-slot name="title">
-        {{ __('account.profile.sessions.title') }}
-    </x-slot>
-    <x-slot name="description">
-        {{ __('account.profile.sessions.description') }}
-    </x-slot>
+    <x-slot name="title">{{ __('account.profile.sessions.title') }}</x-slot>
+    <x-slot name="description">{{ __('account.profile.sessions.description') }}</x-slot>
 
     <x-slot name="content">
         <div class="max-w-prose text-sm">
