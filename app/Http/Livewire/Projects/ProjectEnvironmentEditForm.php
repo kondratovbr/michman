@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Projects;
 
 use App\Actions\Projects\ReloadProjectEnvironmentAction;
 use App\Actions\Projects\UpdateProjectEnvironmentAction;
-use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
 use App\Validation\Rules;
@@ -17,17 +16,11 @@ use Livewire\Component as LivewireComponent;
 class ProjectEnvironmentEditForm extends LivewireComponent
 {
     use AuthorizesRequests,
-        TrimsInputBeforeValidation,
-        ListensForEchoes;
+        TrimsInputBeforeValidation;
 
     public Project $project;
 
     public string $environment = '';
-
-    protected function configureEchoListeners(): void
-    {
-        //
-    }
 
     protected function prepareForValidation($attributes): array
     {
@@ -49,7 +42,12 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     {
         $this->authorize('update', $this->project);
 
-        $this->environment = $this->project->environment ?? '';
+        $this->resetState();
+    }
+
+    protected function resetState(): void
+    {
+        $this->environment = $this->project->refresh()->environment ?? '';
     }
 
     /**
@@ -67,10 +65,12 @@ class ProjectEnvironmentEditForm extends LivewireComponent
         $this->authorize('update', $this->project);
 
         $action->execute($this->project, $environment);
+
+        $this->resetState();
     }
 
     /**
-     * Synchronously load the existing environment from the server (if it exists).
+     * Synchronously load the existing environment from a server (if it exists).
      */
     public function reload(ReloadProjectEnvironmentAction $action): void
     {
@@ -80,7 +80,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
 
         $this->project->refresh();
 
-        $this->environment = $this->project->environment ?? '';
+        $this->resetState();
     }
 
     public function render(): View
