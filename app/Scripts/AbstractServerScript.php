@@ -235,7 +235,7 @@ abstract class AbstractServerScript
             $this->server->log(
                 type: 'send_string',
                 remoteFile: $remotePath,
-                success:(bool) ($success ?? false),
+                success: (bool) ($success ?? false),
             );
         }
     }
@@ -258,6 +258,23 @@ abstract class AbstractServerScript
                 type: 'append_string',
                 remoteFile: $remotePath,
                 success: (bool) ($success ?? false),
+            );
+        }
+    }
+
+    /**
+     * Download a file from a server and return its content as a string.
+     */
+    protected function getString(string $remotePath): string|null
+    {
+        try {
+            $result = $this->ssh->get($remotePath);
+            return $result === false ? null : $result;
+        } finally {
+            $this->server->log(
+                type: 'get_string',
+                remoteFile: $remotePath,
+                success: $result !== false,
             );
         }
     }
