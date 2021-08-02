@@ -14,7 +14,7 @@ class UpdateProjectEnvironmentOnServerScript extends AbstractServerScript
     {
         $this->init($server, $ssh, $project->serverUsername);
 
-        $envFile = "/home/{$project->serverUsername}/{$project->domain}/.env";
+        $envFile = $project->envFilePath;
 
         if (! $this->sendString($envFile, $project->environment))
             throw new RuntimeException("Failed to send string to file: {$envFile}");
