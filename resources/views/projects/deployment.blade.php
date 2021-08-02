@@ -6,7 +6,7 @@
         <livewire:projects.install-repo-form :project="$project" />
     @else
 
-        <div>Repo installed!</div>
+        <livewire:projects.deploy-project-form :project="$project" />
 
         <x-section-separator/>
 
