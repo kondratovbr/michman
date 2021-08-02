@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             UserSshKeySeeder::class,
             ServerSshKeySeeder::class,
             DeploySshKeySeeder::class,
+            DeploymentSeeder::class,
         ]);
     }
 }

@@ -46,6 +46,7 @@ use phpseclib3\Net\SSH2;
  * @property-read ServerSshKey $serverSshKey
  * @property-read Collection $firewallRules
  * @property-read Collection $projects
+ * @property-read Collection $deployments
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -286,6 +287,16 @@ class Server extends AbstractModel
     {
         return $this->belongsToMany(Project::class, 'project_server')
             ->using(ProjectServerPivot::class)
+            ->withTimestamps();
+    }
+
+    /**
+     * Get a relation with the deployments performed on this server.
+     */
+    public function deployments(): BelongsToMany
+    {
+        return $this->belongsToMany(Deployment::class, 'deployment_server')
+            ->using(DeploymentServerPivot::class)
             ->withTimestamps();
     }
 }
