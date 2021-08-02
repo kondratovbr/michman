@@ -1,3 +1,5 @@
+{{--TODO: CRITICAL! Add some explanation and a link to docs (with more detailed explanation).--}}
+
 <x-form-section submit="store">
 
     <x-slot name="title">{{ __('projects.deployment.env.title') }}</x-slot>
