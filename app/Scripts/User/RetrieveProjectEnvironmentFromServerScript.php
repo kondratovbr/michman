@@ -13,6 +13,6 @@ class RetrieveProjectEnvironmentFromServerScript extends AbstractServerScript
     {
         $this->init($server, $ssh, $project->serverUsername);
 
-        return $this->getString("/home/{$project->serverUsername}/{$project->domain}/.env");
+        return $this->getString($project->envFilePath);
     }
 }
