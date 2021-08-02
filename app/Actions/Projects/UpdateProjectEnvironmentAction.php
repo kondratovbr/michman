@@ -6,6 +6,8 @@ use App\Jobs\Projects\UpdateProjectEnvironmentOnAllServersJob;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests!
+
 class UpdateProjectEnvironmentAction
 {
     public function execute(Project $project, string $environment): void
