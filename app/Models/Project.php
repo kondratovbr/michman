@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
  * @property-read string|null $projectName
+ * @property-read string $deployScriptFilePath
+ * @property-read string $envFilePath
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -109,6 +111,22 @@ class Project extends AbstractModel
             return null;
 
         return explode('/', $this->repo, 2)[1];
+    }
+
+    /**
+     * Get the path to the file where the deploy script is stored on a server.
+     */
+    public function getDeployScriptFilePathAttribute(): string
+    {
+        return "/home/{$this->serverUsername}/.michman/{$this->projectName}_deploy.sh";
+    }
+
+    /**
+     * Get the path to the .env file on a server.
+     */
+    public function getEnvFilePathAttribute(): string
+    {
+        return "/home/{$this->serverUsername}/{$this->domain}/.env";
     }
 
     /**
