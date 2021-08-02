@@ -2,22 +2,22 @@
 
 namespace App\Http\Livewire\Projects;
 
+use App\Actions\Projects\ReloadProjectEnvironmentAction;
+use App\Actions\Projects\UpdateProjectEnvironmentAction;
 use App\Http\Livewire\Traits\ListensForEchoes;
-use App\Http\Livewire\Traits\TrimsInput;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-/*
- * TODO: CRITICAL! CONTINUE. https://devdojo.com/tnylea/using-ace-editor-with-livewire
- */
+// TODO: CRITICAL! Cover with tests!
 
 class ProjectEnvironmentEditForm extends LivewireComponent
 {
     use AuthorizesRequests,
-        TrimsInput,
+        TrimsInputBeforeValidation,
         ListensForEchoes;
 
     public Project $project;
@@ -31,7 +31,9 @@ class ProjectEnvironmentEditForm extends LivewireComponent
 
     protected function prepareForValidation($attributes): array
     {
-        $attributes['content'] = trim($attributes['content']);
+        // This will be used as a content of a file, so would be nice to make sure it ends with a newline character.
+        // It won't have more than one since the attributes are trimmed before getting to this method.
+        $attributes['environment'] = $attributes['environment'] . "\n";
 
         return $attributes;
     }
@@ -39,7 +41,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     public function rules(): array
     {
         return [
-            'content' => Rules::string()->required(),
+            'environment' => Rules::string()->nullable(),
         ];
     }
 
@@ -53,17 +55,32 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     /**
      * Update the project's environment.
      */
-    public function update(): void
+    public function update(UpdateProjectEnvironmentAction $action): void
     {
-        dd($this->environment);
+        /*
+         * TODO: CRITICAL! Go through all the rest of my Livewire forms - I'm pretty sure I've been stupid
+         *       and used the raw attributes instead of the validated ones on some occasions.
+         */
 
-
-
-        $content = $this->validate()['content'];
+        $environment = $this->validate()['environment'] ?? null;
 
         $this->authorize('update', $this->project);
 
-        //
+        $action->execute($this->project, $environment);
+    }
+
+    /**
+     * Synchronously load the existing environment from the server (if it exists).
+     */
+    public function reload(ReloadProjectEnvironmentAction $action): void
+    {
+        $this->authorize('update', $this->project);
+
+        $action->execute($this->project);
+
+        $this->project->refresh();
+
+        $this->environment = $this->project->environment ?? '';
     }
 
     public function render(): View

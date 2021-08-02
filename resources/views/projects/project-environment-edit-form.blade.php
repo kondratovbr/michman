@@ -14,7 +14,7 @@
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
             <x-buttons.secondary
-                wire:click.prevent=""
+                wire:click.prevent="reload"
                 wire:loading.attr="disabled"
             >{{ __('buttons.reload') }}</x-buttons.secondary>
             <x-buttons.primary
