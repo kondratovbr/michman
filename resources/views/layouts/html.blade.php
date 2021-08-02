@@ -78,7 +78,5 @@
 
         @livewireScripts
 
-        @stack('ace-editor')
-
     </body>
 </html>

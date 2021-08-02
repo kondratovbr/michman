@@ -5,10 +5,9 @@
     <x-slot name="form">
         <x-field>
             <x-editor
-                name="environment"
+                wire:model="environment"
                 mode="sh"
-{{--                wire:model.defer="content"--}}
-            >{{ $content }}</x-editor>
+            >{{ $environment }}</x-editor>
         </x-field>
     </x-slot>
 

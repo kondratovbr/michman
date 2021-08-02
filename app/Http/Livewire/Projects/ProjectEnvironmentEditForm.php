@@ -22,12 +22,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
 
     public Project $project;
 
-    public string $content = '';
-
-    /** @var string[] */
-    protected $listeners = [
-        //
-    ];
+    public string $environment = '';
 
     protected function configureEchoListeners(): void
     {
@@ -52,7 +47,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     {
         $this->authorize('update', $this->project);
 
-        $this->content = $this->project->environment ?? '';
+        $this->environment = $this->project->environment ?? '';
     }
 
     /**
@@ -60,6 +55,10 @@ class ProjectEnvironmentEditForm extends LivewireComponent
      */
     public function update(): void
     {
+        dd($this->environment);
+
+
+
         $content = $this->validate()['content'];
 
         $this->authorize('update', $this->project);
