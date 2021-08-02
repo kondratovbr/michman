@@ -14,11 +14,7 @@
 
         <x-section-separator/>
 
-        <div>Settings File</div>
-
-        <x-section-separator/>
-
-        <div>Deploy Script</div>
+        <livewire:projects.project-deploy-script-edit-form :project="$project" />
 
         <x-section-separator/>
 

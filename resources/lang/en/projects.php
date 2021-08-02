@@ -105,6 +105,9 @@ return [
         'env' => [
             'title' => 'Site Environment',
         ],
+        'deploy-script' => [
+            'title' => 'Deploy Script',
+        ],
     ],
 
     'history' => [
