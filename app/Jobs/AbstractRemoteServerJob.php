@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Jobs\Middleware\WithoutOverlappingOnModel;
 use App\Models\Server;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use DateTimeInterface;
@@ -37,7 +38,7 @@ abstract class AbstractRemoteServerJob extends AbstractJob
     public function middleware(): array
     {
         return [
-            (new WithoutOverlapping($this->server->getKey()))
+            (new WithoutOverlappingOnModel($this->server))
                 // If another job already works with the same server - retry this one 1 minute later.
                 ->releaseAfter(60)
                 // In case a job with a lock crashes the worker
