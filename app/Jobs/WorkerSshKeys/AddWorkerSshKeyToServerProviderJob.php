@@ -3,14 +3,14 @@
 namespace App\Jobs\WorkerSshKeys;
 
 use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\Traits\InteractsWithServerProviders;
 use App\Models\Server;
 use App\Models\WorkerSshKey;
 use Illuminate\Support\Facades\DB;
 
 class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 {
-    use InteractsWithRemoteServers;
+    use InteractsWithServerProviders;
 
     protected Server $server;
 

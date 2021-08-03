@@ -2,24 +2,21 @@
 
 namespace App\Jobs\Servers;
 
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-class InstallCacheJob extends AbstractJob
+class InstallCacheJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Server $server;
     protected string $cache;
 
     public function __construct(Server $server, string $cache)
     {
-        $this->setQueue('default');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
         $this->cache = $cache;

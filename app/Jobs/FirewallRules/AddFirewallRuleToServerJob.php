@@ -2,22 +2,18 @@
 
 namespace App\Jobs\FirewallRules;
 
-use App\Events\Firewall\FirewallRuleAddedEvent;
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\FirewallRule;
 use App\Scripts\Root\AddFirewallRuleScript;
 use Illuminate\Support\Facades\DB;
 
-class AddFirewallRuleToServerJob extends AbstractJob
+class AddFirewallRuleToServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected FirewallRule $rule;
 
     public function __construct(FirewallRule $rule)
     {
-        $this->setQueue('servers');
+        parent::__construct($rule->server);
 
         $this->rule = $rule->withoutRelations();
     }
@@ -44,8 +40,6 @@ class AddFirewallRuleToServerJob extends AbstractJob
 
             $rule->status = FirewallRule::STATUS_ADDED;
             $rule->save();
-
-            event(new FirewallRuleAddedEvent($rule));
         }, 5);
     }
 }

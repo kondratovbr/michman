@@ -4,7 +4,7 @@ namespace App\Events\Firewall;
 
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class FirewallRuleAddedEvent extends AbstractFirewallEvent implements ShouldBroadcast
+class FirewallRuleUpdatedEvent extends AbstractFirewallEvent implements ShouldBroadcast
 {
     //
 }

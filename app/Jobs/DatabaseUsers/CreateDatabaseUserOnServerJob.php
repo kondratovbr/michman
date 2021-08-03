@@ -2,25 +2,20 @@
 
 namespace App\Jobs\DatabaseUsers;
 
-use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
-use App\Jobs\AbstractJob;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Jobs\Traits\HandlesDatabases;
-use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\DatabaseUser;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use RuntimeException;
 
-class CreateDatabaseUserOnServerJob extends AbstractJob
+class CreateDatabaseUserOnServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers,
-        HandlesDatabases;
+    use HandlesDatabases;
 
     protected DatabaseUser $databaseUser;
 
     public function __construct(DatabaseUser $databaseUser)
     {
-        $this->setQueue('servers');
+        parent::__construct($databaseUser->server);
 
         $this->databaseUser = $databaseUser->withoutRelations();
 

@@ -2,23 +2,20 @@
 
 namespace App\Jobs\Servers;
 
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Scripts\Root\InstallNginxScript;
 use App\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-class InstallNginxJob extends AbstractJob
+class InstallNginxJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
     }

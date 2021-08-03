@@ -3,26 +3,23 @@
 namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
 use Illuminate\Support\Facades\DB;
 
-class VerifyRemoteServerIsSuitableJob extends AbstractJob
+class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
+    // Override the normal backoff time to speed up the server creation process for users.
+    public int $backoff = 10; // 10 sec
 
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
-
-        // Override the normal backoff time to speed up the server creation process for users.
-        $this->backoff = 10; // 10 sec
     }
 
     /**

@@ -4,8 +4,9 @@ namespace App\Http\Livewire\Firewall;
 
 use App\Actions\Firewall\DeleteFirewallRuleAction;
 use App\Broadcasting\ServerChannel;
-use App\Events\Firewall\FirewallRuleAddedEvent;
+use App\Events\Firewall\FirewallRuleCreatedEvent;
 use App\Events\Firewall\FirewallRuleDeletedEvent;
+use App\Events\Firewall\FirewallRuleUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\FirewallRule;
 use App\Models\Server;
@@ -35,7 +36,8 @@ class FirewallIndexTable extends LivewireComponent
         $this->echoPrivate(
             ServerChannel::name($this->server),
             [
-                FirewallRuleAddedEvent::class,
+                FirewallRuleCreatedEvent::class,
+                FirewallRuleUpdatedEvent::class,
                 FirewallRuleDeletedEvent::class,
             ],
             '$refresh',

@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Casts\ForceBooleanCast;
+use App\Events\Firewall\FirewallRuleCreatedEvent;
+use App\Events\Firewall\FirewallRuleDeletedEvent;
+use App\Events\Firewall\FirewallRuleUpdatedEvent;
 use Carbon\CarbonInterface;
 use Database\Factories\FirewallRuleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,6 +52,13 @@ class FirewallRule extends AbstractModel
     /** @var string[] The attributes castings. */
     protected $casts = [
         'can_delete' => ForceBooleanCast::class,
+    ];
+
+    /** @var string[] The event map for the model. */
+    protected $dispatchesEvents = [
+        'created' => FirewallRuleCreatedEvent::class,
+        'updated' => FirewallRuleUpdatedEvent::class,
+        'deleted' => FirewallRuleDeletedEvent::class,
     ];
 
     /**

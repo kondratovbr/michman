@@ -3,23 +3,20 @@
 namespace App\Jobs\Pythons;
 
 use App\Events\Pythons\PythonInstalledEvent;
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Python;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 // TODO: CRITICAL! Cover with tests!
 
-class InstallPythonJob extends AbstractJob
+class InstallPythonJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Python $python;
 
     public function __construct(Python $python)
     {
-        $this->setQueue('servers');
+        parent::__construct($python->server);
 
         $this->python = $python->withoutRelations();
     }

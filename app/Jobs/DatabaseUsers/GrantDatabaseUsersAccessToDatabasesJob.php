@@ -2,9 +2,8 @@
 
 namespace App\Jobs\DatabaseUsers;
 
-use App\Jobs\AbstractJob;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Jobs\Traits\HandlesDatabases;
-use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
 use App\Models\DatabaseUser;
 use App\Models\Server;
@@ -12,17 +11,16 @@ use App\Collections\EloquentCollection as Collection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-class GrantDatabaseUsersAccessToDatabasesJob extends AbstractJob
+class GrantDatabaseUsersAccessToDatabasesJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers,
-        HandlesDatabases;
+    use HandlesDatabases;
 
     protected Collection $databaseUsers;
     protected Collection $databases;
 
     public function __construct(Collection $databaseUsers, Collection $databases)
     {
-        $this->setQueue('servers');
+        parent::__construct($databaseUsers->first()->server);
 
         $this->databaseUsers = $databaseUsers;
         $this->databases = $databases;

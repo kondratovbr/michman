@@ -2,23 +2,20 @@
 
 namespace App\Jobs\DeploySshKeys;
 
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\Root\UploadSshKeyToServerScript;
 use Illuminate\Support\Facades\DB;
 
-class UploadDeploySshKeyToServerJob extends AbstractJob
+class UploadDeploySshKeyToServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Server $server;
     protected Project $project;
 
     public function __construct(Server $server, Project $project)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
         $this->project = $project->withoutRelations();

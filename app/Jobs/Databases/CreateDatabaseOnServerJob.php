@@ -2,22 +2,20 @@
 
 namespace App\Jobs\Databases;
 
-use App\Jobs\AbstractJob;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Jobs\Traits\HandlesDatabases;
-use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\Database;
 use Illuminate\Support\Facades\DB;
 
-class CreateDatabaseOnServerJob extends AbstractJob
+class CreateDatabaseOnServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers,
-        HandlesDatabases;
+    use HandlesDatabases;
 
     protected Database $database;
 
     public function __construct(Database $database)
     {
-        $this->setQueue('servers');
+        parent::__construct($database->server);
 
         $this->database = $database->withoutRelations();
 

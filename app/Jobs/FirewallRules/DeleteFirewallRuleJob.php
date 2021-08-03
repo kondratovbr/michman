@@ -2,24 +2,20 @@
 
 namespace App\Jobs\FirewallRules;
 
-use App\Events\Firewall\FirewallRuleDeletedEvent;
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\FirewallRule;
 use App\Scripts\Root\DeleteFirewallRuleScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Refactor FirewallRule to throw event automatically from the mode and then test and cover with tests.
+// TODO: CRITICAL! Cover with tests!
 
-class DeleteFirewallRuleJob extends AbstractJob
+class DeleteFirewallRuleJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected FirewallRule $rule;
 
     public function __construct(FirewallRule $rule)
     {
-        $this->setQueue('servers');
+        parent::__construct($rule->server);
 
         $this->rule = $rule->withoutRelations();
     }
@@ -46,8 +42,6 @@ class DeleteFirewallRuleJob extends AbstractJob
             );
 
             $rule->delete();
-
-            event(new FirewallRuleDeletedEvent($rule));
         }, 5);
     }
 }

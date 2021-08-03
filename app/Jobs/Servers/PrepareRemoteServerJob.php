@@ -4,8 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleData;
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Scripts\Root\EnableFirewallScript;
 use App\Scripts\Root\InitializeFirewallScript;
@@ -17,20 +16,15 @@ use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Support\Facades\DB;
 
-/*
- * TODO: IMPORTANT! Should I cover all these server interacting jobs with tests?
- *       I don't think I can automatically test the scripts, but at least test the jobs.
- */
+// TODO: CRITICAL! Cover with tests!
 
-class PrepareRemoteServerJob extends AbstractJob
+class PrepareRemoteServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
     }

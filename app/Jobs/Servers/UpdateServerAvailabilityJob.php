@@ -3,19 +3,18 @@
 namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Scripts\Root\VerifyServerAvailabilityScript;
 use Illuminate\Support\Facades\DB;
 use DateTimeInterface;
 use Throwable;
 
-class UpdateServerAvailabilityJob extends AbstractJob
+class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
-    /** Determine the time at which the job should timeout. */
+    // Override the normal job parameters to speed up the process.
+    public int $timeout = 60; // 1 min
+    public int $backoff = 10; // 10 sec
     public function retryUntil(): DateTimeInterface
     {
         return now()->addMinutes(5);
@@ -25,9 +24,7 @@ class UpdateServerAvailabilityJob extends AbstractJob
 
     public function __construct(Server $server)
     {
-        $this->setQueue('servers');
-        $this->timeout = 60; // 1 min
-        $this->backoff = 10; // 10 sec
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
     }
@@ -38,11 +35,7 @@ class UpdateServerAvailabilityJob extends AbstractJob
     public function handle(VerifyServerAvailabilityScript $verifyServerAvailability): void
     {
         DB::transaction(function () use ($verifyServerAvailability) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->lockServer();
 
             // We will remove the availability status of the server before starting the checking process
             // in case it wasn't done immediately, so we could show the progress to user.
@@ -77,15 +70,7 @@ class UpdateServerAvailabilityJob extends AbstractJob
      */
     public function failed(Throwable $exception): void
     {
-        DB::transaction(function () {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
-
-            $server->available = false;
-            $server->save();
-        }, 5);
+        $this->server->available = false;
+        $this->server->save();
     }
 }

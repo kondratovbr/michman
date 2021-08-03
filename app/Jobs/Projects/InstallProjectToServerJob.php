@@ -2,8 +2,7 @@
 
 namespace App\Jobs\Projects;
 
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\Root\ConfigureGunicornScript;
@@ -15,17 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with test.
 
-class InstallProjectToServerJob extends AbstractJob
+class InstallProjectToServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Project $project;
     protected Server $server;
     protected bool $installDependencies;
 
     public function __construct(Project $project, Server $server, bool $installDependencies)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->project = $project->withoutRelations();
         $this->server = $server->withoutRelations();

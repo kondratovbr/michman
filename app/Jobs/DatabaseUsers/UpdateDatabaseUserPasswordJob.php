@@ -2,23 +2,21 @@
 
 namespace App\Jobs\DatabaseUsers;
 
-use App\Jobs\AbstractJob;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Jobs\Traits\HandlesDatabases;
-use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-class UpdateDatabaseUserPasswordJob extends AbstractJob
+class UpdateDatabaseUserPasswordJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers,
-        HandlesDatabases;
+    use HandlesDatabases;
 
     protected DatabaseUser $databaseUser;
 
     public function __construct(DatabaseUser $databaseUser)
     {
-        $this->setQueue('servers');
+        parent::__construct($databaseUser->server);
 
         $this->databaseUser = $databaseUser;
 

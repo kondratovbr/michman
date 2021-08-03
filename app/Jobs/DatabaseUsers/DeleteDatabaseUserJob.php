@@ -2,22 +2,20 @@
 
 namespace App\Jobs\DatabaseUsers;
 
-use App\Jobs\AbstractJob;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Jobs\Traits\HandlesDatabases;
-use App\Jobs\Traits\InteractsWithRemoteServers;
 use App\Models\DatabaseUser;
 use Illuminate\Support\Facades\DB;
 
-class DeleteDatabaseUserJob extends AbstractJob
+class DeleteDatabaseUserJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers,
-        HandlesDatabases;
+    use HandlesDatabases;
 
     protected DatabaseUser $databaseUser;
 
     public function __construct(DatabaseUser $databaseUser)
     {
-        $this->setQueue('servers');
+        parent::__construct($databaseUser->server);
 
         $this->databaseUser = $databaseUser->withoutRelations();
 

@@ -2,8 +2,7 @@
 
 namespace App\Jobs\UserSshKeys;
 
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Models\UserSshKey;
 use App\Scripts\Root\AddSshKeyToUserScript;
@@ -16,15 +15,13 @@ use Illuminate\Support\Facades\DB;
  *       we created on the server, i.e. for all project users.
  */
 
-class UpdateWorkerSshKeysOnServerJob extends AbstractJob
+class UpdateWorkerSshKeysOnServerJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Server $server;
 
     public function __construct(Server $server)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
     }
@@ -40,11 +37,7 @@ class UpdateWorkerSshKeysOnServerJob extends AbstractJob
             $disableSshAccessForUser,
             $addSshKeyToUser,
         ) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->lockServer();
 
             $ssh = $server->sftp();
 

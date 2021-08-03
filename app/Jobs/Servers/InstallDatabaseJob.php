@@ -2,8 +2,7 @@
 
 namespace App\Jobs\Servers;
 
-use App\Jobs\AbstractJob;
-use App\Jobs\Traits\InteractsWithRemoteServers;
+use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Support\Arr;
 use App\Support\Str;
@@ -11,16 +10,14 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-class InstallDatabaseJob extends AbstractJob
+class InstallDatabaseJob extends AbstractRemoteServerJob
 {
-    use InteractsWithRemoteServers;
-
     protected Server $server;
     protected string|null $database;
 
     public function __construct(Server $server, string|null $database)
     {
-        $this->setQueue('servers');
+        parent::__construct($server);
 
         $this->server = $server->withoutRelations();
         $this->database = $database;
