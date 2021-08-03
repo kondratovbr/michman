@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('websockets:clean')->daily();
+        $schedule->command('queue:prune-batches --hours=48')->daily();
     }
 
     /**
