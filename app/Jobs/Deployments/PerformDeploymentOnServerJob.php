@@ -5,6 +5,8 @@ namespace App\Jobs\Deployments;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Deployment;
 use App\Models\Server;
+use App\Scripts\User\PullDeploymentCommitScript;
+use App\Scripts\User\RunDeploymentScriptScript;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 
@@ -26,15 +28,28 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
-        DB::transaction(function () {
+    public function handle(
+        PullDeploymentCommitScript $pullCommit,
+        RunDeploymentScriptScript $runDeploymentScript,
+    ): void {
+        DB::transaction(function () use (
+            $pullCommit, $runDeploymentScript,
+        ) {
             $server = $this->lockServer();
-
             /** @var Deployment $deployment */
-            $deployment = Deployment::query()->lockForUpdate()->findOrFail($this->deployment->getKey());
+            $deployment = Deployment::query()
+                ->with('project')
+                ->lockForUpdate()
+                ->findOrFail($this->deployment->getKey());
+            $project = $deployment->project;
+
+            $userSsh = $server->sftp($project->serverUsername);
 
             // TODO: CRITICAL! CONTINUE!
+
+            $pullCommit->execute($server, $deployment, $userSsh);
+
+            $runDeploymentScript->execute($server, $deployment, $userSsh);
 
             //
         }, 5);
