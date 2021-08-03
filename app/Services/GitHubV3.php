@@ -6,7 +6,6 @@ use App\Collections\SshKeyDataCollection;
 use App\DataTransferObjects\SshKeyData;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use RuntimeException;
 
 // TODO: CRITICAL! Should I handle possible redirects here? Does Laravel do it automatically?
 
@@ -121,6 +120,16 @@ class GitHubV3 extends AbstractVcsProvider
     public function deleteSshKey(string $id): void
     {
         $this->delete("/user/keys/{$id}");
+    }
+
+    public function getLatestCommitHash(string|null $fullRepoName, string $branch, string $username = null, string $repo = null): string
+    {
+        $fullRepoName ??= "{$username}/{$branch}";
+
+        $response = $this->get("/repos/{$fullRepoName}/commits/{$branch}");
+        $data = $this->decodeJson($response->body());
+
+        return $data->sha;
     }
 
     /**

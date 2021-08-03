@@ -71,6 +71,11 @@ interface VcsProviderInterface
     public function getSshHostKey(): string;
 
     /**
+     * Get the SHA hash of the latest commit on the specified branch.
+     */
+    public function getLatestCommitHash(string|null $fullRepoName, string $branch, string $username = null, string $repo = null): string;
+
+    /**
      * Convert a short repo string, like "username/repo" to
      * a full SSH designation, like "git@github.com:username/repo.git".
      */
