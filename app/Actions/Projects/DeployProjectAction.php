@@ -1,0 +1,36 @@
+<?php declare(strict_types=1);
+
+namespace App\Actions\Projects;
+
+use App\Jobs\Deployments\PerformDeploymentOnServerJob;
+use App\Models\Deployment;
+use App\Models\Project;
+use App\Models\Server;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
+
+// TODO: CRITICAL! Cover with tests!
+
+class DeployProjectAction
+{
+    public function execute(Project $project): void
+    {
+        DB::transaction(function () use ($project) {
+            /** @var Project $project */
+            $project = Project::query()->lockForUpdate()->findOrFail($project->getKey());
+
+            /** @var Deployment $deployment */
+            $deployment = $project->deployments()->create([
+                'branch' => $project->branch,
+            ]);
+
+            $deployment->servers()->sync($project->servers);
+
+            // git rev-parse HEAD
+
+            Bus::batch($deployment->servers->map(
+                fn(Server $server) => new PerformDeploymentOnServerJob($deployment, $server)
+            ))->dispatch();
+        }, 5);
+    }
+}
