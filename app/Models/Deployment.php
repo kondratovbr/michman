@@ -14,8 +14,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property int $id
  * @property string $branch
- * @property string $commit
- * @property CarbonInterface $completedAt
+ * @property string|null $commit
+ * @property CarbonInterface|null $completedAt
+ * @property CarbonInterface $createdAt
+ * @property CarbonInterface $updatedAt
  *
  * @property-read Project $project
  * @property-read Collection $servers

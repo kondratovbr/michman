@@ -16,7 +16,7 @@ class CreateDeploymentsTable extends Migration
             $table->foreignId('project_id')->references('id')->on('projects');
 
             $table->string('branch');
-            $table->string('commit');
+            $table->string('commit')->nullable();
 
             $table->timestamp('completed_at')->nullable();
 

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -169,5 +170,13 @@ class Project extends AbstractModel
     public function vcsProvider(): BelongsTo
     {
         return $this->belongsTo(VcsProvider::class);
+    }
+
+    /**
+     * Get a relation to the deployments performed for this project, if any.
+     */
+    public function deployments(): HasMany
+    {
+        return $this->hasMany(Deployment::class);
     }
 }
