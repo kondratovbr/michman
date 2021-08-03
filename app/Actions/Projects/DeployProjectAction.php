@@ -2,11 +2,9 @@
 
 namespace App\Actions\Projects;
 
-use App\Jobs\Deployments\PerformDeploymentOnServerJob;
+use App\Jobs\Deployments\PerformDeploymentJob;
 use App\Models\Deployment;
 use App\Models\Project;
-use App\Models\Server;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -26,11 +24,7 @@ class DeployProjectAction
 
             $deployment->servers()->sync($project->servers);
 
-            // git rev-parse HEAD
-
-            Bus::batch($deployment->servers->map(
-                fn(Server $server) => new PerformDeploymentOnServerJob($deployment, $server)
-            ))->dispatch();
+            PerformDeploymentJob::dispatch($deployment);
         }, 5);
     }
 }
