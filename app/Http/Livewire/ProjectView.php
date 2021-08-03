@@ -12,7 +12,7 @@ class ProjectView extends AbstractSubpagesView
 
     public const VIEWS = [
         'deployment' => 'projects.deployment',
-        'history' => 'projects.history',
+        'queue' => 'projects.queue',
         //
     ];
 

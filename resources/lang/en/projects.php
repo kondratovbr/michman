@@ -114,4 +114,8 @@ return [
         'button' => 'History',
     ],
 
+    'queue' => [
+       'button' => 'Queue',
+    ],
+
 ];

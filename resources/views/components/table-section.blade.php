@@ -27,6 +27,9 @@
                 </tbody>
             </table>
         @endisset
+        @isset($actions)
+            <x-box.footer>{{ $actions }}</x-box.footer>
+        @endisset
     </x-box>
 
     @isset($modal)

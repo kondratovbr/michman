@@ -1,6 +1,6 @@
-<x-sub-page name="history">
+<x-sub-page name="queue">
 
-    Deployment History!
+    Queue workers!
 
     <x-section-separator/>
 

@@ -6,7 +6,11 @@
         <livewire:projects.install-repo-form :project="$project" />
     @else
 
-        <livewire:projects.deploy-project-form :project="$project" />
+        <livewire:deployments.deployments-index-table :project="$project" />
+
+        <x-section-separator/>
+
+        <div>Deployment Trigger URL</div>
 
         <x-section-separator/>
 
@@ -19,10 +23,6 @@
         <x-section-separator/>
 
         <div>Gunicorn Config</div>
-
-        <x-section-separator/>
-
-        <div>Deployment Trigger URL</div>
 
         <x-section-separator/>
 
