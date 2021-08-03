@@ -10,12 +10,6 @@ use phpseclib3\Net\SFTP;
 
 class ConfigureGunicornScript extends AbstractServerScript
 {
-    /*
-     * TODO: CRITICAL! CONTINUE. This kinda works but not really - to actually run the service Python should be able to load the environment,
-     *       which means .env should exist and the user should have had a chance to change it.
-     *       So, running the Gunicorn service should be a part of deployment, not repo installation. Repo should be finished at venv and requirements.txt.
-     */
-
     public function execute(Server $server, Project $project, SFTP $ssh = null): void
     {
         $this->init($server, $ssh);
