@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
 {
     use Batchable;
-    
+
     protected Deployment $deployment;
 
     public function __construct(Deployment $deployment, Server $server)
@@ -33,6 +33,8 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
 
             /** @var Deployment $deployment */
             $deployment = Deployment::query()->lockForUpdate()->findOrFail($this->deployment->getKey());
+
+            // TODO: CRITICAL! CONTINUE!
 
             //
         }, 5);
