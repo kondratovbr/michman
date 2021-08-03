@@ -2,8 +2,10 @@
 
 namespace App\Actions\Projects;
 
-use App\Jobs\Projects\UpdateProjectDeployScriptOnAllServersJob;
+use App\Jobs\Projects\UpdateProjectDeployScriptOnServerJob;
 use App\Models\Project;
+use App\Models\Server;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -19,7 +21,9 @@ class UpdateProjectDeployScriptAction
             $project->deployScript = $script;
             $project->save();
 
-            UpdateProjectDeployScriptOnAllServersJob::dispatch($project);
+            Bus::batch($project->servers->map(
+                fn(Server $server) => new UpdateProjectDeployScriptOnServerJob($server, $project)
+            ))->dispatch();
         }, 5);
     }
 }
