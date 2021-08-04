@@ -16,20 +16,24 @@ class PullDeploymentCommitScript extends AbstractServerScript
 
         $this->init($server, $ssh, $project->serverUsername);
 
+        $homedir = "/home/{$project->serverUsername}";
+        $sshKeyName = $project->useDeployKey ? $project->deploySshKey->name : 'id_ed25519';
+        $sshKeyFile = "{$homedir}/.ssh/{$sshKeyName}";
+
         $this->setTimeout(60 * 5);
         // Just in case the user was tinkering with the repo
-        $this->exec("git checkout --quiet --force {$deployment->branch}");
+        $this->exec("cd {$project->projectDir} && git checkout --quiet --force {$deployment->branch}");
         if ($this->failed())
             throw new RuntimeException("git checkout command has failed.");
 
         // Fetch and merge replace pull,
         // which is done to ensure the exact specific commit is being deployed.
 
-        $this->exec("git fetch --quiet --atomic --force --theirs origin {$deployment->branch}");
+        $this->exec("cd {$project->projectDir} && git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" fetch --quiet --force origin {$deployment->branch}");
         if ($this->failed())
             throw new RuntimeException("git fetch command has failed.");
 
-        $this->exec("git merge {$deployment->commit}");
+        $this->exec("cd {$project->projectDir} && git merge --quiet -X theirs {$deployment->commit}");
         if ($this->failed())
             throw new RuntimeException("git merge command has failed.");
     }
