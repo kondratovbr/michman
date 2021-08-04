@@ -21,9 +21,11 @@ class UpdateProjectEnvironmentAction
             $project->environment = $environment;
             $project->save();
 
-            Bus::batch($project->servers->map(
+            $jobs = $project->servers->map(
                 fn(Server $server) => new UpdateProjectEnvironmentOnServerJob($server, $project)
-            ))->dispatch();
+            );
+
+            Bus::batch($jobs)->onQueue($jobs->first()->queue)->dispatch();
         }, 5);
     }
 }
