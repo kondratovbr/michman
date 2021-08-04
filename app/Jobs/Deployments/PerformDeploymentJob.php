@@ -40,9 +40,11 @@ class PerformDeploymentJob extends AbstractJob
             $deployment->commit = $project->vcsProvider->api()->getLatestCommitHash($project->repo, $project->branch);
             $deployment->save();
 
-            Bus::batch($deployment->servers->map(
+            $jobs = $deployment->servers->map(
                 fn(Server $server) => new PerformDeploymentOnServerJob($deployment, $server)
-            ))->dispatch();
+            );
+
+            Bus::batch($jobs)->onQueue($jobs->first()->queue)->dispatch();
         }, 5);
     }
 }
