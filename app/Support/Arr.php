@@ -41,6 +41,31 @@ class Arr extends IlluminateArr
     }
 
     /**
+     * Map an array using its keys as well as values.
+     *
+     * Callback must receive a key as its first parameter and a value as a second one, i.e. like
+     *   function($key, $value) {...}
+     *
+     * Callback must return a single value.
+     *
+     * @param bool $keepKeys Keep original keys. Will be replace by the default integer keys otherwise.
+     */
+    public static function mapWithKeys(array $array, \Closure $callback, bool $keepKeys = false): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $element = $callback($key, $value);
+            if ($keepKeys)
+                $result[$key] = $element;
+            else
+                $result[] = $element;
+        }
+
+        return $result;
+    }
+
+    /**
      * Reduce the array to a single value using the callback and the initial value provided.
      *
      * Wrapper for the built-in array_reduce() function.
