@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Jobs\Middleware\WithoutOverlappingOnModel;
 use App\Models\Server;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use DateTimeInterface;
 
 abstract class AbstractRemoteServerJob extends AbstractJob
