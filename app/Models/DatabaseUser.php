@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * DatabaseUser Eloquent model
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @property-read Server $server
  * @property-read Collection $databases
+ * @property-read Project|null $project
  *
  * @method static DatabaseUserFactory factory(...$parameters)
  */
@@ -79,5 +81,13 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
     {
         return $this->belongsToMany(Database::class, 'database_database_user')
             ->withTimestamps();
+    }
+
+    /**
+     * Get a relation with the project that uses this database user, if any.
+     */
+    public function project(): HasOne
+    {
+        return $this->hasOne(Project::class);
     }
 }

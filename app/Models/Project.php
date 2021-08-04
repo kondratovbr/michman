@@ -39,11 +39,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string|null $projectName
  * @property-read string $deployScriptFilePath
  * @property-read string $envFilePath
+ * @property-read string $projectDir
  *
  * @property-read User $user
  * @property-read Collection $servers
  * @property-read DeploySshKey|null $deploySshKey
  * @property-read VcsProvider|null $vcsProvider
+ * @property-read Database|null $database
+ * @property-read DatabaseUser|null $databaseUser
  *
  * @method static ProjectFactory factory(...$parameters)
  */
@@ -131,6 +134,14 @@ class Project extends AbstractModel
     }
 
     /**
+     * Get the path to the directory where this project is cloned on a server.
+     */
+    public function getProjectDirAttribute(): string
+    {
+        return "/home/{$this->serverUsername}/{$this->domain}";
+    }
+
+    /**
      * Check if the project has a configured Git repository.
      */
     public function repoInstalled(): bool
@@ -178,5 +189,21 @@ class Project extends AbstractModel
     public function deployments(): HasMany
     {
         return $this->hasMany(Deployment::class);
+    }
+
+    /**
+     * Get a relation with the database that this project is using, if any.
+     */
+    public function database(): BelongsTo
+    {
+        return $this->belongsTo(Database::class);
+    }
+
+    /**
+     * Get a relation with the database user that this project is using, if any.
+     */
+    public function databaseUser(): BelongsTo
+    {
+        return $this->belongsTo(DatabaseUser::class);
     }
 }
