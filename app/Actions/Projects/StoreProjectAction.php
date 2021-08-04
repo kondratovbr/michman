@@ -19,6 +19,11 @@ use App\Models\User;
 
 // TODO: CRITICAL! Refactor my dumb "sync" actions - don't run those stupid "create" jobs that don't interact with any external services - just chain actions fot it! And don't forget to update tests.
 
+/*
+ * TODO: CRITICAL! CONTINUE. I should configure our placeholder page through Nginx somewhere here.
+ *       And then I should figure out how to remove it and set Nginx to the project during deployment.
+ */
+
 class StoreProjectAction
 {
     public function __construct(
