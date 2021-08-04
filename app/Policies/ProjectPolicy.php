@@ -27,4 +27,9 @@ class ProjectPolicy
     {
         return $user->is($project->user);
     }
+
+    public function deploy(User $user, Project $project): bool
+    {
+        return $user->is($project->user);
+    }
 }
