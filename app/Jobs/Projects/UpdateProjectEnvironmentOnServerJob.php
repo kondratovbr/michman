@@ -36,7 +36,7 @@ class UpdateProjectEnvironmentOnServerJob extends AbstractRemoteServerJob
         DB::transaction(function () use ($script) {
             $server = $this->lockServer();
 
-            if (! $server->projects->has($this->project->getKey())) {
+            if (! $server->projects->contains($this->project)) {
                 Log::warning('UpdateProjectEnvironmentOnServerJob: The project is no longer deployed on this server.');
                 return;
             }

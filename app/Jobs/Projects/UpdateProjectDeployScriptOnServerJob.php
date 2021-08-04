@@ -33,7 +33,7 @@ class UpdateProjectDeployScriptOnServerJob extends AbstractRemoteServerJob
         DB::transaction(function () use ($script) {
             $server = $this->lockServer();
 
-            if (! $server->projects->has($this->project->getKey())) {
+            if (! $server->projects->contains($this->project)) {
                 Log::warning('UpdateProjectDeployScriptOnServerJob: The project is no longer deployed on this server.');
                 return;
             }
