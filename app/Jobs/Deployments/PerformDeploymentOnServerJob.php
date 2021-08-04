@@ -5,6 +5,7 @@ namespace App\Jobs\Deployments;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Deployment;
 use App\Models\Server;
+use App\Scripts\Root\RestartGunicornScript;
 use App\Scripts\User\PullDeploymentCommitScript;
 use App\Scripts\User\RunDeploymentScriptScript;
 use Illuminate\Bus\Batchable;
@@ -31,9 +32,10 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
     public function handle(
         PullDeploymentCommitScript $pullCommit,
         RunDeploymentScriptScript $runDeploymentScript,
+        RestartGunicornScript $restartGunicornScript,
     ): void {
         DB::transaction(function () use (
-            $pullCommit, $runDeploymentScript,
+            $pullCommit, $runDeploymentScript, $restartGunicornScript
         ) {
             $server = $this->lockServer();
             /** @var Deployment $deployment */
@@ -50,6 +52,8 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
             $pullCommit->execute($server, $deployment, $userSsh);
 
             $runDeploymentScript->execute($server, $deployment, $userSsh);
+
+            $restartGunicornScript->execute($server, $project);
 
             //
         }, 5);
