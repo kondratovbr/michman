@@ -21,9 +21,11 @@ class UpdateProjectDeployScriptAction
             $project->deployScript = $script;
             $project->save();
 
-            Bus::batch($project->servers->map(
+            $jobs = $project->servers->map(
                 fn(Server $server) => new UpdateProjectDeployScriptOnServerJob($server, $project)
-            ))->dispatch();
+            );
+
+            Bus::batch($jobs)->onQueue($jobs->first()->queue)->dispatch();
         }, 5);
     }
 }
