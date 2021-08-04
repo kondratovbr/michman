@@ -19,7 +19,7 @@
             <x-tr>
                 <x-td></x-td>
                 <x-td>{{ $deployment->createdAt }}</x-td>
-                <x-td>{{ $deployment->branch }}</x-td>
+                <x-td><x-code>{{ $deployment->branch }}</x-code></x-td>
                 <x-td>{{ $deployment->commit }}</x-td>
                 <x-td>{{ is_null($deployment->completedAt) ? '—' : $deployment->completedAt->sub($deployment->createdAt) }}</x-td>
                 <x-td>Status</x-td>
@@ -37,7 +37,9 @@
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
             <div class="text-sm">Deploying the <x-code>{{ $project->branch }}</x-code> branch</div>
-            <x-buttons.primary>Deploy Now</x-buttons.primary>
+            <x-buttons.primary
+                wire:click.prevent="deploy"
+            >Deploy Now</x-buttons.primary>
         </div>
     </x-slot>
 
