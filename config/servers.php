@@ -82,24 +82,32 @@ return [
     'databases' => [
         'mysql-8_0' => [
             'scripts_namespace' => 'App\Scripts\Root\Mysql8_0',
+            'django_url_prefix' => 'mysql',
         ],
         'maria-10_5' => [
             'scripts_namespace' => null,
+            'django_url_prefix' => 'mysql',
         ],
         'postgres-13' => [
             'scripts_namespace' => null,
+            'django_url_prefix' => 'postgres',
         ],
         'postgres-12' => [
             'scripts_namespace' => null,
+            'django_url_prefix' => 'postgres',
         ],
     ],
 
     'caches' => [
         'redis' => [
             'scripts_namespace' => 'App\Scripts\Root\Redis',
+            'default_port' => '6379',
+            'django_url_prefix' => 'redis',
         ],
         'memcached' => [
             'scripts_namespace' => null,
+            'default_port' => '11211',
+            'django_url_prefix' => 'memcache',
         ],
     ],
 
