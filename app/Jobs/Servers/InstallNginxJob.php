@@ -5,27 +5,23 @@ namespace App\Jobs\Servers;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Scripts\Root\InstallNginxScript;
+use App\Scripts\Root\RestartNginxScript;
 use App\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class InstallNginxJob extends AbstractRemoteServerJob
 {
-    protected Server $server;
-
-    public function __construct(Server $server)
-    {
-        parent::__construct($server);
-
-        $this->server = $server->withoutRelations();
-    }
-
     /**
      * Execute the job.
      */
-    public function handle(InstallNginxScript $installNginx): void
-    {
-        DB::transaction(function () use ($installNginx) {
+    public function handle(
+        InstallNginxScript $installNginx,
+        RestartNginxScript $restartNginx,
+    ): void {
+        DB::transaction(function () use (
+            $installNginx, $restartNginx
+        ) {
             /** @var Server $server */
             $server = Server::query()
                 ->whereKey($this->server->getKey())
@@ -37,7 +33,11 @@ class InstallNginxJob extends AbstractRemoteServerJob
                 return;
             }
 
-            $installNginx->execute($server);
+            $ssh = $server->sftp();
+
+            $installNginx->execute($server, $ssh);
+
+            $restartNginx->execute($server, $ssh);
         }, 5);
     }
 }
