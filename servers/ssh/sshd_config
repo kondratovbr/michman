@@ -3,7 +3,7 @@
 # Commented lines with default values are kept for reference.
 #
 # NOTE: Please, do not change anything here unless you really know what you're doing.
-#       Changes may compromise the security of the server!
+#       Changes may compromise the security of the server or lock you and Michman out of the server!
 #
 
 # This is the sshd server system-wide configuration file.  See
