@@ -20,15 +20,6 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
         return now()->addMinutes(5);
     }
 
-    protected Server $server;
-
-    public function __construct(Server $server)
-    {
-        parent::__construct($server);
-
-        $this->server = $server->withoutRelations();
-    }
-
     /**
      * Execute the job.
      */

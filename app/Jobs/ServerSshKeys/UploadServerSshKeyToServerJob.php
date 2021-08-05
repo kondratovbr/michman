@@ -9,14 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class UploadServerSshKeyToServerJob extends AbstractRemoteServerJob
 {
-    protected Server $server;
     protected string $username;
 
     public function __construct(Server $server, string $username)
     {
         parent::__construct($server);
 
-        $this->server = $server->withoutRelations();
         $this->username = $username;
     }
 

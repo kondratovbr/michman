@@ -11,14 +11,12 @@ use RuntimeException;
 
 class InstallCacheJob extends AbstractRemoteServerJob
 {
-    protected Server $server;
     protected string $cache;
 
     public function __construct(Server $server, string $cache)
     {
         parent::__construct($server);
 
-        $this->server = $server->withoutRelations();
         $this->cache = $cache;
     }
 

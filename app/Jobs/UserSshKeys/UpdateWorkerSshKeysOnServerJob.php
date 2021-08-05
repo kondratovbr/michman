@@ -17,15 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateWorkerSshKeysOnServerJob extends AbstractRemoteServerJob
 {
-    protected Server $server;
-
-    public function __construct(Server $server)
-    {
-        parent::__construct($server);
-
-        $this->server = $server->withoutRelations();
-    }
-
     /**
      * Execute the job.
      */

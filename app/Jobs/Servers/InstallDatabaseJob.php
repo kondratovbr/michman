@@ -12,14 +12,12 @@ use RuntimeException;
 
 class InstallDatabaseJob extends AbstractRemoteServerJob
 {
-    protected Server $server;
     protected string|null $database;
 
     public function __construct(Server $server, string|null $database)
     {
         parent::__construct($server);
 
-        $this->server = $server->withoutRelations();
         $this->database = $database;
     }
 

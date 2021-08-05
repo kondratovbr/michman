@@ -13,15 +13,6 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
     // Override the normal backoff time to speed up the server creation process for users.
     public int $backoff = 10; // 10 sec
 
-    protected Server $server;
-
-    public function __construct(Server $server)
-    {
-        parent::__construct($server);
-
-        $this->server = $server->withoutRelations();
-    }
-
     /**
      * Execute the job.
      */
