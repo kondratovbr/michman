@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Make this placeholder page nicer and better for SEO. Maybe add some content and some links to out main page and blog.--}}
+{{--TODO: CRITICAL! Make this placeholder page nicer. Maybe add some content and some links to out main page and blog.--}}
 
 <!doctype html>
 <html lang="en">
@@ -8,22 +8,17 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="referrer" content="always">
 
+        <meta name="robots" content="noindex">
+
 {{--        TODO: CRITICAL! Don't forget to update fonts. Maybe just use OS ones, as usual.--}}
-        {{-- Fonts --}}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-        {{-- Styles --}}
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-
-        {{-- Page-specific --}}
-        <title>Michman Placeholder Page</title>
-        <link rel="canonical" href="{{ $pageUrl }}">
-        <meta name="description" content="This is a project managed by Michman - no hassle Python and Django deployment tool.">
-{{--        TODO: CRITICAL! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
-    <body class="font-sans antialiased w-screen overflow-x-hidden text-gray-100 bg-navy-100">
+    <body class="font-sans antialiased w-screen overflow-x-hidden text-gray-100 bg-gray-900">
 
-        Oy! Michman reporting!
+        <div class="w-full h-screen flex items-center justify-center">
+            <p class="text-6xl">Oy! Michman reporting!</p>
+        </div>
 
     </body>
 </html>
