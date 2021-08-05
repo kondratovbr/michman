@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $deployScriptFilePath
  * @property-read string $envFilePath
  * @property-read string $projectDir
+ * @property-read string $michmanDir
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -139,6 +140,14 @@ class Project extends AbstractModel
     public function getProjectDirAttribute(): string
     {
         return "/home/{$this->serverUsername}/{$this->domain}";
+    }
+
+    /**
+     * Get the path to the directory where we store important files we add to a server.
+     */
+    public function getMichmanDirAttribute(): string
+    {
+        return "/home/{$this->serverUsername}/.michman";
     }
 
     /**
