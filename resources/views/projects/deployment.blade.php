@@ -38,9 +38,7 @@
 
         <x-section-separator/>
 
-        <div>Uninstall Repository</div>
-
-        <x-section-separator/>
+        <livewire:projects.uninstall-repo-form :project="$project" />
 
     @endif
 
