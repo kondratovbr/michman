@@ -4,7 +4,6 @@ namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
 use App\Jobs\AbstractRemoteServerJob;
-use App\Models\Server;
 use App\Scripts\Root\VerifyServerAvailabilityScript;
 use Illuminate\Support\Facades\DB;
 use DateTimeInterface;
