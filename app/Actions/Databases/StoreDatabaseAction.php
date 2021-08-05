@@ -36,6 +36,7 @@ class StoreDatabaseAction
         if ($sync) {
             CreateDatabaseOnServerJob::dispatchSync($database);
             DB::commit();
+            $database->refresh();
             return $database;
         }
 
