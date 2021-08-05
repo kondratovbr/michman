@@ -2,15 +2,10 @@
 
 namespace App\Jobs\Servers;
 
-use App\Actions\Databases\StoreDatabaseAction;
 use App\Actions\Firewall\StoreFirewallRuleAction;
-use App\DataTransferObjects\DatabaseData;
 use App\DataTransferObjects\FirewallRuleData;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
-use App\Jobs\Databases\CreateDatabaseJob;
-use App\Jobs\Servers\InstallDatabaseJob;
-use App\Jobs\FirewallRules\CreateFirewallRuleJob;
 use App\Jobs\Pythons\CreatePythonJob;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
@@ -37,31 +32,30 @@ class ConfigureAppServerJob extends AbstractJob
     /**
      * Execute the job.
      */
-    public function handle(
-        StoreFirewallRuleAction $storeFirewallRule,
-        StoreDatabaseAction $storeDatabase,
-    ): void {
-        DB::transaction(function () use (
-            $storeFirewallRule,
-            $storeDatabase,
-        ) {
+    public function handle(StoreFirewallRuleAction $storeFirewallRule): void {
+        DB::transaction(function () use ($storeFirewallRule) {
             /** @var Server $server */
             $server = Server::query()
                 ->whereKey($this->server->getKey())
                 ->lockForUpdate()
                 ->firstOrFail();
 
+            $storeFirewallRule->execute(new FirewallRuleData(
+                name: 'HTTP',
+                port: '80',
+            ), $server);
+            $storeFirewallRule->execute(new FirewallRuleData(
+                name: 'HTTPS',
+                port: '443',
+            ), $server);
+
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
                 new InstallCacheJob($server, $this->data->cache),
                 new CreatePythonJob($server, $this->data->pythonVersion),
                 new InstallNginxJob($server),
-                new CreateFirewallRuleJob($server, 'HTTP', '80'),
-                new CreateFirewallRuleJob($server, 'HTTPS', '443'),
 
-                // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
-
-                //
+                // TODO: CRITICAL! Don't forget the rest of the stuff I maybe should do here!
 
             ])->dispatch();
 

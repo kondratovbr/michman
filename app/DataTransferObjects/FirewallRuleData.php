@@ -2,7 +2,6 @@
 
 namespace App\DataTransferObjects;
 
-use App\Models\Server;
 use Spatie\DataTransferObject\DataTransferObject;
 
 class FirewallRuleData extends DataTransferObject

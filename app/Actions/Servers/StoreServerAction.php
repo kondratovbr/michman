@@ -2,11 +2,10 @@
 
 namespace App\Actions\Servers;
 
+use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
-use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
 use App\Jobs\ServerSshKeys\CreateServerSshKeyJob;
-use App\Jobs\WorkerSshKeys\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
@@ -25,6 +24,10 @@ use RuntimeException;
 
 class StoreServerAction
 {
+    public function __construct(
+        protected CreateWorkerSshKeyAction $createWorkerSshKey,
+    ) {}
+
     public function execute(NewServerData $data, User $user): Server
     {
         return DB::transaction(function () use ($data, $user) {
@@ -35,8 +38,9 @@ class StoreServerAction
             /** @var Server $server */
             $server = $data->provider->servers()->create($attributes);
 
+            $this->createWorkerSshKey->execute($server);
+
             $jobs = [
-                new CreateWorkerSshKeyForServerJob($server),
                 new AddWorkerSshKeyToServerProviderJob($server),
                 new RequestNewServerFromProviderJob($server, $data),
                 new GetServerPublicIpJob($server),
@@ -47,7 +51,7 @@ class StoreServerAction
                 new CreateServerSshKeyJob($server),
                 new UploadServerSshKeyToServerJob($server, (string) config('servers.worker_user')),
 
-                // TODO: CRITICAL! Don't forget the rest of the stuff I should do here!
+                // TODO: CRITICAL! Don't forget the rest of the stuff I maybe should do here!
 
             ];
             

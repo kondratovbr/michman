@@ -3,12 +3,12 @@
 namespace Tests\Feature;
 
 use App\Actions\Servers\StoreServerAction;
+use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\ConfigureAppServerJob;
 use App\Jobs\ServerSshKeys\CreateServerSshKeyJob;
-use App\Jobs\WorkerSshKeys\CreateWorkerSshKeyForServerJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
@@ -17,6 +17,7 @@ use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
+use App\Models\Server;
 use App\Models\VcsProvider;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Bus;
@@ -35,6 +36,8 @@ class StoreServerActionTest extends AbstractFeatureTest
         VcsProvider::factory([
             'provider' => 'gitlab',
         ])->for($user)->create();
+
+        $spy = $this->spy(CreateWorkerSshKeyAction::class);
 
         /** @var StoreServerAction $action */
         $action = App::make(StoreServerAction::class);
@@ -55,6 +58,10 @@ class StoreServerActionTest extends AbstractFeatureTest
         Bus::fake();
 
         $server = $action->execute($data, $user);
+
+        $spy->shouldHaveReceived('execute')
+            ->withArgs(fn(Server $serverArg) => $serverArg->is($server))
+            ->once();
 
         $this->assertNotNull($server);
         $this->assertEquals($provider->id, $server->provider->id);
@@ -77,7 +84,6 @@ class StoreServerActionTest extends AbstractFeatureTest
         ]);
 
         Bus::assertChained([
-            CreateWorkerSshKeyForServerJob::class,
             AddWorkerSshKeyToServerProviderJob::class,
             RequestNewServerFromProviderJob::class,
             GetServerPublicIpJob::class,
