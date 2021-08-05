@@ -20,8 +20,8 @@ use App\Models\User;
 // TODO: CRITICAL! Refactor my dumb "sync" actions - don't run those stupid "create" jobs that don't interact with any external services - just chain actions fot it! And don't forget to update tests.
 
 /*
- * TODO: CRITICAL! CONTINUE. I should configure our placeholder page through Nginx somewhere here.
- *       And then I should figure out how to remove it and set Nginx to the project during deployment.
+ * TODO: IMPORTANT! I should also create a "default"/"placeholder" project after the server has been set up, like Forge does,
+ *       just to demonstrate the project setup and so the user can check that the server is accessible and works alright.
  */
 
 class StoreProjectAction
