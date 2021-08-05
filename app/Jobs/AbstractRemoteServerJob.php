@@ -36,6 +36,12 @@ abstract class AbstractRemoteServerJob extends AbstractJob
      */
     public function middleware(): array
     {
+        /*
+         * TODO: CRITICAL! CONTINUE. The jobs fail when a sync job is run inside another job that uses the same model,
+         *       which breaks some of my jobs.
+         *       Fix!
+         */
+
         return [
             (new WithoutOverlappingOnModel($this->server))
                 // If another job already works with the same server - retry this one 1 minute later.
