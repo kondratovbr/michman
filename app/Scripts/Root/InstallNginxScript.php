@@ -78,27 +78,6 @@ class InstallNginxScript extends AbstractServerScript
             $this->sendString("{$nginxDir}/{$file}", ConfigView::render("nginx.{$view}"));
         }
 
-        //
-
         // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server. See how Forge does it.
-
-        // Restart Nginx to load new config.
-        $this->exec('systemctl restart nginx');
-
-        if ($this->getExitStatus() !== 0)
-            throw new RuntimeException('systemctl command to restart Nginx failed.');
-
-        // Wait a bit for Nginx to be started by systemd.
-        $this->setTimeout(60);
-        $this->exec('sleep 30');
-
-        // Verify that Nginx has started.
-        $output = $this->exec('systemctl status nginx');
-        if (
-            ! Str::contains(Str::lower($output), 'active (running)')
-            || $this->getExitStatus() !== 0
-        ) {
-            throw new RuntimeException('Nginx failed to start.');
-        }
     }
 }
