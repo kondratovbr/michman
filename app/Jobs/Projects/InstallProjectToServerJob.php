@@ -6,10 +6,12 @@ use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\Root\ConfigureGunicornScript;
+use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use App\Scripts\User\UpdateProjectDeployScriptOnServerScript;
 use App\Scripts\User\UpdateProjectEnvironmentOnServerScript;
+use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with test.
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 class InstallProjectToServerJob extends AbstractRemoteServerJob
 {
     protected Project $project;
-    protected Server $server;
     protected bool $installDependencies;
 
     public function __construct(Project $project, Server $server, bool $installDependencies)
@@ -25,7 +26,6 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         parent::__construct($server);
 
         $this->project = $project->withoutRelations();
-        $this->server = $server->withoutRelations();
         $this->installDependencies = $installDependencies;
     }
 
@@ -38,9 +38,12 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         ConfigureGunicornScript $configureGunicorn,
         UpdateProjectEnvironmentOnServerScript $updateEnv,
         UpdateProjectDeployScriptOnServerScript $updateDeployScript,
+        UploadPlaceholderPageScript $uploadPlaceholder,
+        RestartNginxScript $restartNginx,
     ): void {
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $configureGunicorn, $updateEnv, $updateDeployScript
+            $cloneRepo, $createVenv, $configureGunicorn, $updateEnv, $updateDeployScript,
+            $uploadPlaceholder, $restartNginx,
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -48,6 +51,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $server = $project->servers()->lockForUpdate()->findOrFail($this->server->getKey());
 
             $userSsh = $server->sftp($project->serverUsername);
+            $rootSsh = $server->sftp();
 
             $cloneRepo->execute($server, $project, $userSsh);
 
@@ -63,7 +67,11 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
 
             $updateDeployScript->execute($server, $project, $userSsh);
 
-            $configureGunicorn->execute($server, $project);
+            $configureGunicorn->execute($server, $project, $rootSsh);
+
+            $uploadPlaceholder->execute($server, $project, $userSsh);
+
+            $restartNginx->execute($server, $rootSsh);
 
         }, 5);
     }
