@@ -15,6 +15,10 @@ class EnablePlaceholderSiteScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
+        // TODO: CRITICAL! Use mkdir here to create those two nginx config directories if they don't exist for some reason.
+        //       Check their default permissions to set the right ones.
+        //       Use this technique to improve robustness for other config uploading scripts, nginx first of all.
+
         $available = "/etc/nginx/sites-available";
         $enabled = "/etc/nginx/sites-enabled";
         $file = "{$project->projectName}_placeholder.conf";
