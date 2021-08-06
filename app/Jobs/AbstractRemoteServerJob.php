@@ -24,11 +24,17 @@ abstract class AbstractRemoteServerJob extends AbstractJob
         return now()->addMinutes(60);
     }
 
-    public function __construct(Server $server)
+    /**
+     * @return $this
+     */
+    public function __construct(Server $server, bool $sync = false)
     {
         $this->setQueue('servers');
+        $this->sync($sync);
 
         $this->server = $server->withoutRelations();
+
+        return $this;
     }
 
     /**
@@ -36,11 +42,8 @@ abstract class AbstractRemoteServerJob extends AbstractJob
      */
     public function middleware(): array
     {
-        /*
-         * TODO: CRITICAL! CONTINUE. The jobs fail when a sync job is run inside another job that uses the same model,
-         *       which breaks some of my jobs.
-         *       Fix!
-         */
+        if ($this->sync)
+            return [];
 
         return [
             (new WithoutOverlappingOnModel($this->server))

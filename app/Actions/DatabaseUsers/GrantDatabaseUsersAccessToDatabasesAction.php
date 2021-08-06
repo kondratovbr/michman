@@ -38,7 +38,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
             $this->attachModels($databaseUsers, $databases);
 
             if ($sync) {
-                GrantDatabaseUsersAccessToDatabasesJob::dispatchSync($databaseUsers, $databases);
+                GrantDatabaseUsersAccessToDatabasesJob::dispatchSync($databaseUsers, $databases, true);
                 return null;
             }
 

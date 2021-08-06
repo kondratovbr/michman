@@ -19,7 +19,7 @@ class StorePythonAction
         $python = $server->pythons()->create($attributes);
 
         if ($sync) {
-            InstallPythonJob::dispatchSync($python);
+            InstallPythonJob::dispatchSync($python, true);
             $python->refresh();
         } else {
             InstallPythonJob::dispatch($python);

@@ -17,6 +17,22 @@ class AbstractJob implements ShouldQueue
         Queueable,
         SerializesModels;
 
+    protected bool $sync = false;
+
+    /**
+     * Mark this job instance as being executed synchronously.
+     *
+     * This is used to execute the job synchronously inside
+     * another job when they shouldn't normally overlap.
+     *
+     * @return $this
+     */
+    public function sync(bool|null $sync = true): static
+    {
+        $this->sync = $sync ?? false;
+        return $this;
+    }
+
     /**
      * Set a queue for this job.
      */

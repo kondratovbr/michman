@@ -8,6 +8,10 @@ use App\Models\FirewallRule;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
 
+/*
+ * TODO: CRITICAL! Make sure a user cannot create duplicate rules.
+ */
+
 class StoreFirewallRuleAction
 {
     /**
@@ -16,6 +20,7 @@ class StoreFirewallRuleAction
     public function execute(FirewallRuleData $data, Server $server, bool $sync = false): FirewallRule
     {
         return DB::transaction(function () use($data, $server, $sync) {
+
             /** @var Server $server */
             $server = Server::query()
                 ->lockForUpdate()
@@ -27,10 +32,12 @@ class StoreFirewallRuleAction
 
             $rule = $server->firewallRules()->create($attributes);
 
-            if ($sync)
-                AddFirewallRuleToServerJob::dispatchSync($rule);
-            else
+            if ($sync) {
+                AddFirewallRuleToServerJob::dispatchSync($rule, true);
+                $rule->refresh();
+            } else {
                 AddFirewallRuleToServerJob::dispatch($rule);
+            }
 
             return $rule;
         }, 5);

@@ -14,9 +14,9 @@ class InstallPythonJob extends AbstractRemoteServerJob
 {
     protected Python $python;
 
-    public function __construct(Python $python)
+    public function __construct(Python $python, bool $sync = false)
     {
-        parent::__construct($python->server);
+        parent::__construct($python->server)->sync($sync);
 
         $this->python = $python->withoutRelations();
     }

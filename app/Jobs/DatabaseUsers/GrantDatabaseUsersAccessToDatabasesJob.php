@@ -18,9 +18,9 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractRemoteServerJob
     protected Collection $databaseUsers;
     protected Collection $databases;
 
-    public function __construct(Collection $databaseUsers, Collection $databases)
+    public function __construct(Collection $databaseUsers, Collection $databases, bool $sync = false)
     {
-        parent::__construct($databaseUsers->first()->server);
+        parent::__construct($databaseUsers->first()->server)->sync($sync);
 
         $this->databaseUsers = $databaseUsers;
         $this->databases = $databases;
