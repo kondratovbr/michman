@@ -20,6 +20,8 @@ use phpseclib3\Net\SSH2;
  *
  * @property int $id
  * @property string $externalId
+ * @property string $region
+ * @property string $size
  * @property string $name
  * @property string $type
  * @property string|null $publicIp
@@ -59,6 +61,8 @@ class Server extends AbstractModel
         'name',
         'type',
         'external_id',
+        'region',
+        'size',
         'public_ip',
         'ssh_port',
         'ssh_host_key',

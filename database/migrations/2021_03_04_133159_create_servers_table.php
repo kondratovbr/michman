@@ -21,6 +21,8 @@ class CreateServersTable extends Migration
             $table->string('type');
             // ID of a server given by the server provider.
             $table->string('external_id')->nullable();
+            $table->string('region');
+            $table->string('size');
             // IP can be null before the server is actually created by a provider.
             $table->string('public_ip')->nullable();
             // The default SSH port will be used if it is null.
