@@ -33,8 +33,7 @@ class EnablePlaceholderSiteScript extends AbstractServerScript
             throw new RuntimeException('Command to upload Nginx placeholder config has failed.');
         }
 
-        $this->exec("ln -sf {$available}/{$file} {$enabled}/{$file}");
-        if ($this->failed())
+        if ($this->exec("ln -sf {$available}/{$file} {$enabled}/{$file}") === false)
             throw new RuntimeException('Failed to create a symlink to Nginx placeholder config.');
     }
 }
