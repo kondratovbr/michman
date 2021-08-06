@@ -18,6 +18,8 @@ class ServerFactory extends Factory
     public function definition(): array
     {
         return [
+            'region' => 'nyc1',
+            'size' => 's-1vcpu-1gb',
             'name' => generateRandomName(),
             // TODO: Seed other types as well.
             'type' => 'app',
