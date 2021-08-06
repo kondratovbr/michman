@@ -38,12 +38,12 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         ConfigureGunicornScript $configureGunicorn,
         UpdateProjectEnvironmentOnServerScript $updateEnv,
         UpdateProjectDeployScriptOnServerScript $updateDeployScript,
-        UploadPlaceholderPageScript $uploadPlaceholder,
+        UploadPlaceholderPageScript $uploadPlaceholderPage,
         RestartNginxScript $restartNginx,
     ): void {
         DB::transaction(function () use (
             $cloneRepo, $createVenv, $configureGunicorn, $updateEnv, $updateDeployScript,
-            $uploadPlaceholder, $restartNginx,
+            $uploadPlaceholderPage, $restartNginx,
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -69,7 +69,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
 
             $configureGunicorn->execute($server, $project, $rootSsh);
 
-            $uploadPlaceholder->execute($server, $project, $userSsh);
+            $uploadPlaceholderPage->execute($server, $project, $userSsh);
 
             $restartNginx->execute($server, $rootSsh);
 
