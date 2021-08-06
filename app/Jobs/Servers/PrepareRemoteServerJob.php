@@ -35,15 +35,8 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
         RebootServerScript $rebootServer,
     ): void {
         DB::transaction(function () use (
-            $upgradePackages,
-            $installBasePackages,
-            $configureUnattendedUpgrades,
-            $initializeFirewall,
-            $enableFirewall,
-            $createSudoUser,
-            $configureSshServer,
-            $rebootServer,
-            $storeFirewallRule,
+            $upgradePackages, $installBasePackages, $configureUnattendedUpgrades, $initializeFirewall,
+            $enableFirewall, $createSudoUser, $configureSshServer, $rebootServer, $storeFirewallRule,
         ) {
             /** @var Server $server */
             $server = Server::query()
