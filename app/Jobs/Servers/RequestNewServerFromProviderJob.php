@@ -7,6 +7,7 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithServerProviders;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RequestNewServerFromProviderJob extends AbstractJob
 {
@@ -38,8 +39,10 @@ class RequestNewServerFromProviderJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            if (isset($server->externalId))
-                throw new \RuntimeException('The server already has an external_id set.');
+            if (isset($server->externalId)) {
+                Log::warning('RequestNewServerFromProviderJob: The server already has an external_id set. Server ID: ' . $server->getKey());
+                return;
+            }
 
             $api = $server->provider->api();
 
