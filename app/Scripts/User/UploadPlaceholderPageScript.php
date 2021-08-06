@@ -15,6 +15,10 @@ class UploadPlaceholderPageScript extends AbstractServerScript
     {
         $this->init($server, $ssh, $project->serverUsername);
 
+        // Create a directory for the placeholder page if it doesn't exist.
+        if ($this->exec("mkdir -p {$project->michmanDir}/public") === false)
+            throw new RuntimeException('mkdir command has failed.');
+
         if (! $this->sendString(
             "{$project->michmanDir}/public/index.html",
             View::make('michman-placeholder')->render(),
