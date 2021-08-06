@@ -28,9 +28,10 @@ class StoreFirewallRuleAction
 
             $attributes = $data->toArray();
 
-            $attributes['status'] = FirewallRule::STATUS_ADDING;
-
-            $rule = $server->firewallRules()->create($attributes);
+            /** @var FirewallRule $rule */
+            $rule = $server->firewallRules()->firstOrNew($attributes);
+            $rule->status = FirewallRule::STATUS_ADDING;
+            $rule->save();
 
             if ($sync) {
                 AddFirewallRuleToServerJob::dispatchSync($rule, true);
