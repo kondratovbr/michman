@@ -5,7 +5,10 @@
     <x-slot name="title">{{ __('projects.deployment.deploy-script.title') }}</x-slot>
 
     <x-slot name="form">
-        <x-field>
+
+        <x-message>{{ __('projects.deployment.deploy-script.explanation') }}</x-message>
+
+        <x-field class="mt-6">
             <x-editor
                 wire:model="script"
                 mode="sh"
