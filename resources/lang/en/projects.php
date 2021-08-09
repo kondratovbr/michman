@@ -107,6 +107,7 @@ return [
         ],
         'deploy-script' => [
             'title' => 'Deploy Script',
+            'explanation' => 'This script will be run after the project is pulled from its git repository. Gunicorn will be automatically reloaded after the script is finished.',
         ],
     ],
 
