@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# {{-- TODO: CRITICAL! Unfinished! --}}
 # Available environment variables:
 # MICHMAN_PROJECT_BRANCH - git branch configured for deployment
 # ...
@@ -13,7 +14,5 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 ./manage.py migrate
-./manage.py collectstatic
 
-# {{-- TODO: CRITICAL! Unfinished! --}}
-# {{-- TODO: CRITICAL! I need to restart Gunicorn service using systemd here. --}}
+./manage.py collectstatic
