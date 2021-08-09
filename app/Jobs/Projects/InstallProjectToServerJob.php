@@ -73,7 +73,6 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
 
             $uploadPlaceholderPage->execute($server, $project, $userSsh);
 
-            // TODO: CRITICAL! CONTINUE. Check that this script works and check that this whole thing works.
             $enablePlaceholderSite->execute($server, $project, $rootSsh);
 
             $restartNginx->execute($server, $rootSsh);
