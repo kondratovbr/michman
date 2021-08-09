@@ -104,7 +104,8 @@
                     </x-field>
 
                     @if($state['useDeployKey'])
-                        <x-message colors="info">
+{{--                        TODO: Colors alright? Maybe too much? Tweak around?--}}
+                        <x-message colors="warning">
                             <p class="max-w-prose">
                                 {{ __('projects.repo.configure.use-deploy-key.enabled-message',
                                 ['provider' => __("projects.repo.providers.{$provider->provider}")]) }}
