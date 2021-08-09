@@ -37,7 +37,8 @@ class PerformDeploymentJob extends AbstractJob
                 ->findOrFail($this->deployment->getKey());
             $project = $deployment->project;
 
-            $deployment->commit = $project->vcsProvider->api()->getLatestCommitHash($project->repo, $project->branch);
+            $deployment->commit = $project->vcsProvider->api()
+                ->getLatestCommitHash($project->repo, $project->branch);
             $deployment->save();
 
             $jobs = $deployment->servers->map(
