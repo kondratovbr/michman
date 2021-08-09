@@ -56,14 +56,18 @@ class StoreProjectAction
                 name: $data->db_name,
             ), $server);
 
+            $project->database()->associate($database);
+
             if (
                 $data->create_db_user
                 && $server->databaseUsers()->where('name', $data->db_user_name)->count() < 1
             ) {
-                $this->storeDatabaseUser->execute(new DatabaseUserData(
+                $databaseUser = $this->storeDatabaseUser->execute(new DatabaseUserData(
                     name: $data->db_user_name,
                     password: $data->db_user_password,
                 ), $server, collection([$database]));
+
+                $project->databaseUser()->associate($databaseUser);
             }
         }
 
