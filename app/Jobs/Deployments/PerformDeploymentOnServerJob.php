@@ -47,15 +47,18 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
 
             $userSsh = $server->sftp($project->serverUsername);
 
-            // TODO: CRITICAL! CONTINUE!
+
 
             $pullCommit->execute($server, $deployment, $userSsh);
+
+            // TODO: CRITICAL! CONTINUE! Try again with the new .env files. If works - retry the whole process to make sure the default .env is correct as well. Then - figure out how to fail the deployment if the user's script is broken and how to show (and store) deployment logs.
 
             $runDeploymentScript->execute($server, $deployment, $userSsh);
 
             $restartGunicornScript->execute($server, $project);
 
             //
+
         }, 5);
     }
 }
