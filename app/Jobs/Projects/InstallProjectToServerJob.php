@@ -12,6 +12,7 @@ use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use App\Scripts\User\UpdateProjectDeployScriptOnServerScript;
 use App\Scripts\User\UpdateProjectEnvironmentOnServerScript;
+use App\Scripts\User\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
 
@@ -39,12 +40,13 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         ConfigureGunicornScript $configureGunicorn,
         UpdateProjectEnvironmentOnServerScript $updateEnv,
         UpdateProjectDeployScriptOnServerScript $updateDeployScript,
+        UpdateProjectNginxConfigOnServerScript $updateNginxConfig,
         UploadPlaceholderPageScript $uploadPlaceholderPage,
         EnablePlaceholderSiteScript $enablePlaceholderSite,
         RestartNginxScript $restartNginx,
     ): void {
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $configureGunicorn, $updateEnv, $updateDeployScript,
+            $cloneRepo, $createVenv, $configureGunicorn, $updateEnv, $updateDeployScript, $updateNginxConfig,
             $uploadPlaceholderPage, $enablePlaceholderSite, $restartNginx,
         ) {
             /** @var Project $project */
@@ -68,6 +70,11 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $updateEnv->execute($server, $project, $userSsh);
 
             $updateDeployScript->execute($server, $project, $userSsh);
+
+            /*
+             * TODO: CRITICAL! CONTINUE. Test that Nginx config gets installed here and test the editing form for it and then implement enabling it during deployment and re-test everything.
+             */
+            $updateNginxConfig->execute($server, $project, $rootSsh);
 
             $configureGunicorn->execute($server, $project, $rootSsh);
 
