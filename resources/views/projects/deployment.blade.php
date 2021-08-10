@@ -26,6 +26,10 @@
 
         <x-section-separator/>
 
+        <livewire:projects.project-nginx-config-edit-form :project="$project" />
+
+        <x-section-separator/>
+
         <div>Maintenance Mode</div>
 
         <x-section-separator/>
