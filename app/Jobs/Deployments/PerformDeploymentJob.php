@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
 
+/*
+ * TODO: CRITICAL! Maybe move this logic to an action, so we can quickly retrieve
+ *       the latest project's commit hash in this exact moment and immediately
+ *       show the user some errors if the repo is unavailable.
+ */
+
 class PerformDeploymentJob extends AbstractJob
 {
     use InteractsWithVcsProviders;
