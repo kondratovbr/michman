@@ -21,9 +21,5 @@ class RestartGunicornScript extends AbstractServerScript
         $this->exec("systemctl restart {$project->projectName}.service");
         if ($this->failed())
             throw new RuntimeException("systemctl command to restart project's Gunicorn service has failed.");
-
-        // TODO: CRITICAL! Check if everything starts as intended.
-
-        //
     }
 }
