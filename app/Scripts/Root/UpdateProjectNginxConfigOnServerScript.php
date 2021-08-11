@@ -8,14 +8,15 @@ use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
 use RuntimeException;
 
-class RestartGunicornScript extends AbstractServerScript
+class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
 {
     public function execute(Server $server, Project $project, SFTP $ssh = null): void
     {
         $this->init($server, $ssh);
 
-        $this->exec("systemctl restart {$project->projectName}.service");
-        if ($this->failed())
-            throw new RuntimeException("systemctl command to restart project's Gunicorn service has failed.");
+        $configFile = "/etc/nginx/sites-available/{$project->projectName}.conf";
+
+        if (! $this->sendString($configFile, $project->nginxConfig))
+            throw new RuntimeException("Failed to send string to file: {$configFile}");
     }
 }

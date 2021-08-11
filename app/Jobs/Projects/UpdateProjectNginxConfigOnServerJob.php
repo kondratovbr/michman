@@ -5,7 +5,7 @@ namespace App\Jobs\Projects;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
-use App\Scripts\User\UpdateProjectNginxConfigOnServerScript;
+use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

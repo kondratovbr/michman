@@ -12,7 +12,7 @@ use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use App\Scripts\User\UpdateProjectDeployScriptOnServerScript;
 use App\Scripts\User\UpdateProjectEnvironmentOnServerScript;
-use App\Scripts\User\UpdateProjectNginxConfigOnServerScript;
+use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
 
