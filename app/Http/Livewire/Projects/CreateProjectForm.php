@@ -42,7 +42,7 @@ class CreateProjectForm extends LivewireComponent
         'aliases' => '',
         'type' => 'django',
         'pythonVersion' => '3_9',
-        'allowSubDomains' => true,
+        'allowSubDomains' => false,
         'createDatabase' => true,
         'dbName' => '',
         'createDbUser' => true,
@@ -154,8 +154,8 @@ class CreateProjectForm extends LivewireComponent
             create_database: $validated['createDatabase'] ?? false,
             db_name: $validated['dbName'] ?? null,
             create_db_user: $validated['createDbUser'] ?? false,
-            db_user_name: $validated['dbUserName'],
-            db_user_password: $validated['dbUserPassword'],
+            db_user_name: $validated['dbUserName'] ?? null,
+            db_user_password: $validated['dbUserPassword'] ?? null,
         ), Auth::user(), $this->server);
 
         $this->reset('state');
