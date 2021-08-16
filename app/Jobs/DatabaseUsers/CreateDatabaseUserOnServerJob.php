@@ -45,10 +45,11 @@ class CreateDatabaseUserOnServerJob extends AbstractRemoteServerJob
                 $databaseUser->password,
             );
 
-            // We don't need to store the password anymore,
-            // so just delete it for a bit of added security.
-            $databaseUser->password = null;
-            $databaseUser->save();
+            /*
+             * TODO: IMPORTANT! I can't delete DB user's password here - I use it to create a project's default environment.
+             *       Maybe I can delete it somewhere later for added security?
+             *       Like, after creating that default .env? Can it be used again?
+             */
 
             $databaseUser->decrementTasks();
         }, 5);
