@@ -54,8 +54,6 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
 
             $pullCommit->execute($server, $deployment, $userSsh);
 
-            // TODO: CRITICAL! CONTINUE. Figure out why my project has null in "root" column in the DB and implement that part - use that property in Nginx config to set up static files.
-
             // TODO: CRITICAL! CONTINUE! Try again with the new .env files. If works - retry the whole process to make sure the default .env is correct as well. Then - figure out actual Nginx config and its uploading. Then - figure out how to fail the deployment if the user's script is broken and how to show (and store) deployment logs.
 
             $runDeploymentScript->execute($server, $deployment, $userSsh);
