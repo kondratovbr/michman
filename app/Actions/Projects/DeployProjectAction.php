@@ -2,29 +2,43 @@
 
 namespace App\Actions\Projects;
 
-use App\Jobs\Deployments\PerformDeploymentJob;
+use App\Jobs\Deployments\PerformDeploymentOnServerJob;
 use App\Models\Deployment;
 use App\Models\Project;
+use App\Models\Server;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
+
+// TODO: CRITICAL! Figure out how to fail gracefully if we can't get the commit hash and how to communicate this to the user.
 
 // TODO: CRITICAL! Cover with tests!
 
 class DeployProjectAction
 {
-    public function execute(Project $project): void
+    // TODO: CRITICAL! CONTINUE. Test this and then go figure out how to gracefully fail a deployment and how to provide a feedback. Implement the notification system.
+    
+    public function execute(Project $project): Deployment
     {
-        DB::transaction(function () use ($project) {
+        return DB::transaction(function () use ($project): Deployment {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($project->getKey());
 
             /** @var Deployment $deployment */
             $deployment = $project->deployments()->create([
                 'branch' => $project->branch,
+                'commit' => $project->vcsProvider->api()
+                    ->getLatestCommitHash($project->repo, $project->branch),
             ]);
 
             $deployment->servers()->sync($project->servers);
 
-            PerformDeploymentJob::dispatch($deployment);
+            $jobs = $deployment->servers->map(
+                fn(Server $server) => new PerformDeploymentOnServerJob($deployment, $server)
+            );
+
+            Bus::batch($jobs)->onQueue($jobs->first()->queue)->dispatch();
+
+            return $deployment;
         }, 5);
     }
 }
