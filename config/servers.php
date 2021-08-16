@@ -83,18 +83,22 @@ return [
         'mysql-8_0' => [
             'scripts_namespace' => 'App\Scripts\Root\Mysql8_0',
             'django_url_prefix' => 'mysql',
+            'default_port' => '3306',
         ],
         'maria-10_5' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'mysql',
+            'default_port' => '3306',
         ],
         'postgres-13' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'postgres',
+            'default_port' => '5432',
         ],
         'postgres-12' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'postgres',
+            'default_port' => '5432',
         ],
     ],
 
