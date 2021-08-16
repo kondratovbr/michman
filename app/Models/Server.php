@@ -49,6 +49,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $firewallRules
  * @property-read Collection $projects
  * @property-read Collection $deployments
+ * @property-read DeploymentServerPivot|null $deploymentPivot
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -300,6 +301,7 @@ class Server extends AbstractModel
     public function deployments(): BelongsToMany
     {
         return $this->belongsToMany(Deployment::class, 'deployment_server')
+            ->as('deploymentPivot')
             ->using(DeploymentServerPivot::class)
             ->withTimestamps();
     }

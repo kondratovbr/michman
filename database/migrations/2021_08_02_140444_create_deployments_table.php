@@ -13,14 +13,11 @@ class CreateDeploymentsTable extends Migration
     {
         Schema::create('deployments', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('project_id')->references('id')->on('projects');
 
             $table->string('branch');
             $table->string('commit')->nullable();
-
-            $table->timestamp('started_at')->nullable();
-            $table->timestamp('completed_at')->nullable();
-            $table->boolean('successful')->nullable();
 
             $table->timestamps();
         });

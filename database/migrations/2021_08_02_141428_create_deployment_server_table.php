@@ -17,6 +17,10 @@ class CreateDeploymentServerTable extends Migration
             $table->foreignId('deployment_id')->references('id')->on('deployments');
             $table->foreignId('server_id')->references('id')->on('servers');
 
+            $table->timestamp('finished_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->boolean('successful')->nullable();
+
             $table->timestamps();
         });
     }
