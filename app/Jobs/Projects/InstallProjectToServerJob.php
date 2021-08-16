@@ -71,9 +71,6 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
 
             $updateDeployScript->execute($server, $project, $userSsh);
 
-            /*
-             * TODO: CRITICAL! CONTINUE. Test that Nginx config gets installed here and test the editing form for it and then implement enabling it during deployment and re-test everything.
-             */
             $updateNginxConfig->execute($server, $project, $rootSsh);
 
             $configureGunicorn->execute($server, $project, $rootSsh);
