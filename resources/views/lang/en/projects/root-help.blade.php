@@ -4,8 +4,8 @@
         For Django it is usually:
     </p>
     <p>
-        <x-code>/static</x-code>
+        <x-code>static</x-code>
         <span>or</span>
-        <x-code>/project_name/static</x-code>
+        <x-code>project_name/static</x-code>
     </p>
 </div>

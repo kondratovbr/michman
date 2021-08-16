@@ -38,7 +38,7 @@ class InstallRepoForm extends LivewireComponent
         'repo' => '',
         'branch' => 'main',
         'package' => '',
-        'root' => '/static',
+        'root' => 'static',
         'installDependencies' => true,
         'useDeployKey' => null,
         'customPackage' => false,
