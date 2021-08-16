@@ -9,14 +9,18 @@ use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Figure out how to fail gracefully if we can't get the commit hash and how to communicate this to the user.
+// TODO: CRITICAL! Figure out how to fail gracefully fail here if we can't get the commit hash and how to communicate this to the user.
 
 // TODO: CRITICAL! Cover with tests!
 
 class DeployProjectAction
 {
-    // TODO: CRITICAL! CONTINUE. Test this and then go figure out how to gracefully fail a deployment and how to provide a feedback. Implement the notification system.
-    
+    /*
+     * TODO: CRITICAL! CONTINUE. Implement deployment "started_at" and "finished_at" things and then see how statuses are showed on the front-end.
+     *       Then go figure out how to gracefully fail a deployment and how to provide a feedback.
+     *       Implement the notification system.
+     */
+
     public function execute(Project $project): Deployment
     {
         return DB::transaction(function () use ($project): Deployment {
