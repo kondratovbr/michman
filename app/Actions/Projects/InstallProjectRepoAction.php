@@ -74,6 +74,7 @@ class InstallProjectRepoAction
             $envData['databaseUrlPrefix'] = (string) config("servers.databases.{$server->installedDatabase}.django_url_prefix");
             // TODO: CRITICAL! This only works for "app" server type. Handle other types as well.
             $envData['databaseHost'] = '127.0.0.1';
+            $envData['databasePort'] = (string) config("servers.databases.{$server->installedDatabase}.default_port");
             if (isset($project->database)) {
                 $envData['databaseName'] = $project->database->name;
             }
@@ -81,12 +82,17 @@ class InstallProjectRepoAction
                 $envData['databaseUser'] = $project->databaseUser->name;
                 $envData['databasePassword'] = $project->databaseUser->password;
             }
+            if (isset($project->database) && isset($project->databaseUser)) {
+                $envData['databaseUrl'] = "{$envData['databaseUrlPrefix']}://{$project->databaseUser->name}:{$project->databaseUser->password}@{$envData['databaseHost']}:{$envData['databasePort']}/{$project->database->name}";
+                $envData['databaseName'] = $project->database->name;
+            }
         }
 
         if (! empty($server->installedCache)) {
             $envData['cacheUrlPrefix'] = (string) config("servers.caches.{$server->installedCache}.django_url_prefix");
             $envData['cacheHost'] = '127.0.0.1';
             $envData['cachePort'] = (string) config("servers.caches.{$server->installedCache}.default_port");
+            $envData['cacheUrl'] = "{$envData['cacheUrlPrefix']}://{$envData['cacheHost']}:{$envData['cachePort']}";
         }
 
         return $envData;
