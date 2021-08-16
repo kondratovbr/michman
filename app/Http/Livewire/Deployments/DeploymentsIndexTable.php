@@ -15,6 +15,7 @@ use Livewire\Component as LivewireComponent;
  *       Should figure out how it's done.
  *       Probably by installing some GitHub hook or something using their API,
  *       so that it makes some request to us when a commit is done to the deployment branch.
+ *       I've seen that GitHub can "notify" apps on its "events" happening.
  */
 
 class DeploymentsIndexTable extends LivewireComponent
@@ -28,8 +29,6 @@ class DeploymentsIndexTable extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('index', [Deployment::class, $this->project]);
-
-        //
     }
 
     /**
