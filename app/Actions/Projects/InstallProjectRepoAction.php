@@ -35,31 +35,7 @@ class InstallProjectRepoAction
             $project->vcsProvider()->associate($vcsProvider);
             $project->fill($data->toArray());
 
-            $envData = [
-                'project' => $project,
-                'secretKey' => Str::random(50),
-            ];
-
-            if (! empty($server->installedDatabase)) {
-                $envData['databaseUrlPrefix'] = (string) config("servers.databases.{$server->installedDatabase}.django_url_prefix");
-                // TODO: CRITICAL! This only works for "app" server type. Handle other types as well.
-                $envData['databaseHost'] = '127.0.0.1';
-                if (isset($project->database)) {
-                    $envData['databaseName'] = $project->database->name;
-                }
-                if (isset($project->databaseUser)) {
-                    $envData['databaseUser'] = $project->databaseUser->name;
-                    $envData['databasePassword'] = $project->databaseUser->password;
-                }
-            }
-
-            if (! empty($server->installedCache)) {
-                $envData['cacheUrlPrefix'] = (string) config("servers.caches.{$server->installedCache}.django_url_prefix");
-                $envData['cacheHost'] = '127.0.0.1';
-                $envData['cachePort'] = (string) config("servers.caches.{$server->installedCache}.default_port");
-            }
-
-            $project->environment = ConfigView::render('default_env_file', $envData);
+            $project->environment = ConfigView::render('default_env_file', $this->getEnvData($project, $server));
             $project->deployScript = ConfigView::render('default_deploy_script', ['project' => $project]);
             $project->gunicornConfig = ConfigView::render('gunicorn.default_config', ['project' => $project]);
             $project->nginxConfig = ConfigView::render('nginx.server', ['project' => $project]);
@@ -82,5 +58,37 @@ class InstallProjectRepoAction
 
             return $project;
         }, 5);
+    }
+
+    /**
+     * Create an array with the project's environment data that can be supplied to config templates.
+     */
+    protected function getEnvData(Project $project, Server $server): array
+    {
+        $envData = [
+            'project' => $project,
+            'secretKey' => Str::random(50),
+        ];
+
+        if (! empty($server->installedDatabase)) {
+            $envData['databaseUrlPrefix'] = (string) config("servers.databases.{$server->installedDatabase}.django_url_prefix");
+            // TODO: CRITICAL! This only works for "app" server type. Handle other types as well.
+            $envData['databaseHost'] = '127.0.0.1';
+            if (isset($project->database)) {
+                $envData['databaseName'] = $project->database->name;
+            }
+            if (isset($project->databaseUser)) {
+                $envData['databaseUser'] = $project->databaseUser->name;
+                $envData['databasePassword'] = $project->databaseUser->password;
+            }
+        }
+
+        if (! empty($server->installedCache)) {
+            $envData['cacheUrlPrefix'] = (string) config("servers.caches.{$server->installedCache}.django_url_prefix");
+            $envData['cacheHost'] = '127.0.0.1';
+            $envData['cachePort'] = (string) config("servers.caches.{$server->installedCache}.default_port");
+        }
+
+        return $envData;
     }
 }
