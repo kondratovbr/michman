@@ -71,6 +71,8 @@ class StoreProjectAction
             }
         }
 
+        $project->save();
+
         CreateUserOnServerJob::dispatch($server, $project->serverUsername);
 
         return $project;
