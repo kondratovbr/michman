@@ -20,7 +20,8 @@
                 <x-td></x-td>
                 <x-td>{{ $deployment->createdAt }}</x-td>
                 <x-td><x-code>{{ $deployment->branch }}</x-code></x-td>
-                <x-td>{{ $deployment->commit }}</x-td>
+{{--                TODO: IMPORTANT! Don't forget to make this a link to the VCS page with this commit, like Forge does.--}}
+                <x-td>{{ Str::substr($deployment->commit, 0, 8) }}</x-td>
                 <x-td>{{ is_null($deployment->completedAt) ? '—' : $deployment->completedAt->sub($deployment->createdAt) }}</x-td>
                 <x-td>Status</x-td>
                 <x-td></x-td>
