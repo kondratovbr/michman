@@ -144,6 +144,7 @@ class InstallRepoForm extends LivewireComponent
             $this->project,
             Auth::user()->vcsProviders()->findOrFail($validated['vcsProviderKey']),
             new ProjectRepoData(
+                root: $validated['root'],
                 repo: $validated['repo'],
                 branch: $validated['branch'],
                 package: $validated['package'],

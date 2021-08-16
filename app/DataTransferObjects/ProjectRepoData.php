@@ -6,6 +6,7 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class ProjectRepoData extends DataTransferObject
 {
+    public string $root;
     public string $repo;
     public string $branch;
     public string $package;
