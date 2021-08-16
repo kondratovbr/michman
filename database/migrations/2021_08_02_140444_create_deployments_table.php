@@ -18,7 +18,9 @@ class CreateDeploymentsTable extends Migration
             $table->string('branch');
             $table->string('commit')->nullable();
 
+            $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
+            $table->boolean('successful')->nullable();
 
             $table->timestamps();
         });
