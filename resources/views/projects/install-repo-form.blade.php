@@ -104,7 +104,7 @@
                     </x-field>
 
                     @if($state['useDeployKey'])
-{{--                        TODO: Colors alright? Maybe too much? Tweak around?--}}
+{{--                        TODO: IMPORTANT! Color is way too bright here. Should do something closer to Bulma's softer styles. Check out other uses and other colors as well. And don't forget about text contrast rating.--}}
                         <x-message colors="warning">
                             <p class="max-w-prose">
                                 {{ __('projects.repo.configure.use-deploy-key.enabled-message',
