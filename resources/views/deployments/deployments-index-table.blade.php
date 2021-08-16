@@ -1,15 +1,15 @@
 <x-table-section>
 
-    <x-slot name="title">Deployments</x-slot>
+    <x-slot name="title">{{ __('deployments.table.title') }}</x-slot>
 
     <x-slot name="header">
         <x-tr-header>
             <x-th></x-th>
-            <x-th>Started at</x-th>
-            <x-th>Branch</x-th>
-            <x-th>Commit</x-th>
-            <x-th>Duration</x-th>
-            <x-th>Status</x-th>
+            <x-th>{{ __('deployments.table.started-at') }}</x-th>
+            <x-th>{{ __('deployments.table.branch') }}</x-th>
+            <x-th>{{ __('deployments.table.commit') }}</x-th>
+            <x-th>{{ __('deployments.table.duration') }}</x-th>
+            <x-th>{{ __('deployments.table.status') }}</x-th>
             <x-th></x-th>
         </x-tr-header>
     </x-slot>
@@ -23,7 +23,7 @@
 {{--                TODO: IMPORTANT! Don't forget to make this a link to the VCS page with this commit, like Forge does.--}}
                 <x-td>{{ Str::substr($deployment->commit, 0, 8) }}</x-td>
                 <x-td>{{ is_null($deployment->completedAt) ? '—' : $deployment->completedAt->sub($deployment->createdAt) }}</x-td>
-                <x-td>Status</x-td>
+                <x-td><x-deployments.status-badge :deployment="$deployment" /></x-td>
                 <x-td></x-td>
             </x-tr>
         @endforeach
@@ -31,7 +31,7 @@
 
     @if($deployments->isEmpty())
         <x-slot name="empty">
-            <p class="max-w-prose">The project hasn't been deployed yet.</p>
+            <p class="max-w-prose">{{ __('deployments.table.empty') }}</p>
         </x-slot>
     @endif
 
@@ -40,7 +40,7 @@
             <div class="text-sm">Deploying the <x-code>{{ $project->branch }}</x-code> branch</div>
             <x-buttons.primary
                 wire:click.prevent="deploy"
-            >Deploy Now</x-buttons.primary>
+            >{{ __('deployments.deploy-button') }}</x-buttons.primary>
         </div>
     </x-slot>
 
