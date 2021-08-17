@@ -5,8 +5,8 @@ namespace App\Scripts\User;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class UpdateProjectEnvironmentOnServerScript extends AbstractServerScript
 {
@@ -17,11 +17,11 @@ class UpdateProjectEnvironmentOnServerScript extends AbstractServerScript
         $envFile = $project->envFilePath;
 
         if (! $this->sendString($envFile, $project->environment))
-            throw new RuntimeException("Failed to send string to file: {$envFile}");
+            throw new ServerScriptException("Failed to send string to file: {$envFile}");
 
         $this->exec("chmod 0600 {$envFile}");
 
         if ($this->failed())
-            throw new RuntimeException('chmod command failed.');
+            throw new ServerScriptException('chmod command failed.');
     }
 }

@@ -4,8 +4,8 @@ namespace App\Scripts\Root\Python3_8;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class PatchPythonScript extends AbstractServerScript
 {
@@ -24,7 +24,7 @@ class PatchPythonScript extends AbstractServerScript
 
         // Verify that Python works.
         if (trim($this->exec('python3.8 -c \'print("foobar")\'')) != 'foobar')
-            throw new RuntimeException('Python 3.8 installation failed - Python not accessible.');
+            throw new ServerScriptException('Python 3.8 installation failed - Python not accessible.');
 
         return trim(explode(
             ' ',

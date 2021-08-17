@@ -5,9 +5,9 @@ namespace App\Scripts\User;
 use App\Models\Deployment;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Arr;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class RunDeploymentScriptScript extends AbstractServerScript
 {
@@ -36,7 +36,7 @@ class RunDeploymentScriptScript extends AbstractServerScript
         );
 
         if ($this->failed())
-            throw new RuntimeException('Deployment script execution failed.');
+            throw new ServerScriptException('Deployment script execution failed.');
 
         //
     }

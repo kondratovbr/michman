@@ -6,6 +6,7 @@ use App\Facades\ConfigView;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
 
 class ConfigureGunicornScript extends AbstractServerScript
@@ -23,21 +24,21 @@ class ConfigureGunicornScript extends AbstractServerScript
             "/etc/systemd/system/{$projectName}.socket",
             ConfigView::render('gunicorn.socket', ['project' => $project]),
         )) {
-            throw new \RuntimeException("Failed to send string to file: /etc/systemd/system/{$projectName}.socket");
+            throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/{$projectName}.socket");
         }
 
         if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.service",
             ConfigView::render('gunicorn.service', ['project' => $project]),
         )) {
-            throw new \RuntimeException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
+            throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
         }
 
         if (! $this->sendString(
             $configFile,
             $project->gunicornConfig,
         )) {
-            throw new \RuntimeException("Failed to send string to file: {$configFile}");
+            throw new ServerScriptException("Failed to send string to file: {$configFile}");
         }
 
         $this->exec("chown {$username}:{$username} {$configFile}");

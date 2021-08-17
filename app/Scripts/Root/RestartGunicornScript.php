@@ -5,8 +5,8 @@ namespace App\Scripts\Root;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class RestartGunicornScript extends AbstractServerScript
 {
@@ -16,6 +16,6 @@ class RestartGunicornScript extends AbstractServerScript
 
         $this->exec("systemctl restart {$project->projectName}.service");
         if ($this->failed())
-            throw new RuntimeException("systemctl command to restart project's Gunicorn service has failed.");
+            throw new ServerScriptException("systemctl command to restart project's Gunicorn service has failed.");
     }
 }

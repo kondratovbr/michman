@@ -5,8 +5,8 @@ namespace App\Scripts\Root;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class EnableProjectNginxConfigScript extends AbstractServerScript
 {
@@ -20,9 +20,9 @@ class EnableProjectNginxConfigScript extends AbstractServerScript
         $placeholder = "{$project->projectName}_placeholder.conf";
 
         if ($this->exec("ln -sf {$available}/{$file} {$enabled}/{$file}") === false)
-            throw new RuntimeException('Failed to create a symlink to Nginx placeholder config.');
+            throw new ServerScriptException('Failed to create a symlink to Nginx placeholder config.');
 
         if ($this->exec("rm -rf {$enabled}/{$placeholder}"))
-            throw new RuntimeException('Failed to remove a symlink for the placeholder page Nginx config.');
+            throw new ServerScriptException('Failed to remove a symlink for the placeholder page Nginx config.');
     }
 }

@@ -6,10 +6,8 @@ use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithMysql;
-use App\Support\Str;
 use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class RevokeDatabaseUserAccessToDatabaseScript extends AbstractServerScript
 {
@@ -54,7 +52,7 @@ class RevokeDatabaseUserAccessToDatabaseScript extends AbstractServerScript
             'root',
             $server->databaseRootPassword,
         )) {
-            throw new RuntimeException('Privileges were not revoked.');
+            throw new ServerScriptException('Privileges were not revoked.');
         }
     }
 }

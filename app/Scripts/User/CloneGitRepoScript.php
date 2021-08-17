@@ -5,8 +5,8 @@ namespace App\Scripts\User;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class CloneGitRepoScript extends AbstractServerScript
 {
@@ -48,6 +48,6 @@ class CloneGitRepoScript extends AbstractServerScript
         $this->exec("git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}");
 
         if ($this->getExitStatus() !== 0)
-            throw new RuntimeException('Cloning the project\'s git repo failed.');
+            throw new ServerScriptException('Cloning the project\'s git repo failed.');
     }
 }

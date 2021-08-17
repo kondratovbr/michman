@@ -4,9 +4,9 @@ namespace App\Scripts\Root\Redis;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class InstallCacheScript extends AbstractServerScript
 {
@@ -37,7 +37,7 @@ class InstallCacheScript extends AbstractServerScript
             ! Str::contains(Str::lower($output), 'active (running)')
             || $this->getExitStatus() !== 0
         ) {
-            throw new RuntimeException('Redis failed to start.');
+            throw new ServerScriptException('Redis failed to start.');
         }
     }
 }

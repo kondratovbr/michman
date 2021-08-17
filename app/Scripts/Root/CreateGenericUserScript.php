@@ -4,8 +4,8 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class CreateGenericUserScript extends AbstractServerScript
 {
@@ -20,7 +20,7 @@ class CreateGenericUserScript extends AbstractServerScript
         $this->exec("useradd --create-home --shell /bin/bash {$username}");
 
         if ($this->failed())
-            throw new RuntimeException('useradd has failed.');
+            throw new ServerScriptException('useradd has failed.');
 
         $this->exec("mkdir -p {$michmanDir} && chown {$username}:{$username} {$michmanDir} && chmod 0755 {$michmanDir}");
     }

@@ -4,9 +4,9 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class RestartNginxScript extends AbstractServerScript
 {
@@ -16,7 +16,7 @@ class RestartNginxScript extends AbstractServerScript
 
         $this->exec("systemctl restart nginx");
         if ($this->failed())
-            throw new RuntimeException('systemctl command to restart Nginx has failed.');
+            throw new ServerScriptException('systemctl command to restart Nginx has failed.');
 
         // Wait a bit for Nginx to be started by systemd.
         $this->setTimeout(60);
@@ -28,7 +28,7 @@ class RestartNginxScript extends AbstractServerScript
             ! Str::contains(Str::lower($output), 'active (running)')
             || $this->failed()
         ) {
-            throw new RuntimeException('Nginx failed to start.');
+            throw new ServerScriptException('Nginx failed to start.');
         }
     }
 }

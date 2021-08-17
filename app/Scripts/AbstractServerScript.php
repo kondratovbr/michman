@@ -8,6 +8,7 @@ use App\Support\Str;
 use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
+use RuntimeException;
 
 abstract class AbstractServerScript
 {
@@ -50,7 +51,7 @@ abstract class AbstractServerScript
     protected function initialize(): SFTP
     {
         if (! isset($this->server))
-            throw new \RuntimeException('Server model instance is not set. It is required to perform any actions over SSH.');
+            throw new RuntimeException('Server model instance is not set. It is required to perform any actions over SSH.');
 
         $this->ssh ??= $this->ssh() ?? $this->server->sftp();
 

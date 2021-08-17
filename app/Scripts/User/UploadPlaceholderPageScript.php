@@ -5,9 +5,9 @@ namespace App\Scripts\User;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use Illuminate\Support\Facades\View;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class UploadPlaceholderPageScript extends AbstractServerScript
 {
@@ -17,13 +17,13 @@ class UploadPlaceholderPageScript extends AbstractServerScript
 
         // Create a directory for the placeholder page if it doesn't exist.
         if ($this->exec("mkdir -p {$project->michmanDir}/public") === false)
-            throw new RuntimeException('mkdir command has failed.');
+            throw new ServerScriptException('mkdir command has failed.');
 
         if (! $this->sendString(
             "{$project->michmanDir}/public/index.html",
             View::make('michman-placeholder')->render(),
         )) {
-            throw new RuntimeException('Command to upload placeholder page has failed.');
+            throw new ServerScriptException('Command to upload placeholder page has failed.');
         }
     }
 }

@@ -5,8 +5,8 @@ namespace App\Scripts\Root;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
 {
@@ -17,6 +17,6 @@ class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
         $configFile = "/etc/nginx/sites-available/{$project->projectName}.conf";
 
         if (! $this->sendString($configFile, $project->nginxConfig))
-            throw new RuntimeException("Failed to send string to file: {$configFile}");
+            throw new ServerScriptException("Failed to send string to file: {$configFile}");
     }
 }
