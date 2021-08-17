@@ -1,8 +1,8 @@
-@props(['status', 'python'])
-
 @php
     use App\Models\Python;
 @endphp
+
+@props(['status', 'python'])
 
 <x-badge
     colors="{{ match ($status ?? $python->status) {

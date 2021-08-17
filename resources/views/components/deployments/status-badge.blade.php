@@ -1,3 +1,7 @@
+@php
+    use App\Models\Deployment;
+@endphp
+
 @props(['status', 'deployment'])
 
 <x-badge colors="{{
