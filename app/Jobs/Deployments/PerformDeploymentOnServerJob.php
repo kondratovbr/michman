@@ -71,6 +71,7 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
             $rootSsh = $server->sftp();
 
             // TODO: CRITICAL! CONTINUE! Figure out how to fail the deployment if the user's script is broken and how to show (and store) deployment logs.
+            //       Try a failing deployment script and see how it goes. Make sure the script that are used here are especially robust and check everything, since they depend on the project.
             try {
                 $pullCommit->execute($server, $deployment, $userSsh);
 
