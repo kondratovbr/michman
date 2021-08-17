@@ -26,8 +26,7 @@ class PullDeploymentCommitScript extends AbstractServerScript
         if ($this->failed())
             throw new ServerScriptException("git checkout command has failed.");
 
-        // Fetch and merge replace pull,
-        // which is done to ensure the exact specific commit is being deployed.
+        // Fetch and merge replace pull, which is done to ensure the exact specific commit is being deployed.
 
         $this->exec("cd {$project->projectDir} && git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" fetch --quiet --force origin {$deployment->branch}");
         if ($this->failed())

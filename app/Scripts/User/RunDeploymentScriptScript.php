@@ -19,8 +19,6 @@ class RunDeploymentScriptScript extends AbstractServerScript
 
         $this->init($server, $ssh, $project->serverUsername);
 
-        // TODO: CRITICAL! CONTINUE.
-
         // TODO: CRITICAL! Add some more variables here for the user's convenience and list them in docs.
         // Environment variables that will be available for the deploy script.
         $michmanVars = [
@@ -37,7 +35,5 @@ class RunDeploymentScriptScript extends AbstractServerScript
 
         if ($this->failed())
             throw new ServerScriptException('Deployment script execution failed.');
-
-        //
     }
 }
