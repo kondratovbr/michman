@@ -24,7 +24,18 @@
                 <x-td>{{ Str::substr($deployment->commit, 0, 8) }}</x-td>
                 <x-td>{{ $deployment->finished ? $deployment->duration->forHumans() : '—' }}</x-td>
                 <x-td><x-deployments.status-badge :deployment="$deployment" /></x-td>
-                <x-td></x-td>
+                <x-td>
+                    <x-ellipsis-dropdown :disabled="! $deployment->finished">
+                        <x-dropdown.menu align="right">
+                            <x-dropdown.button
+                                class="text-sm"
+                                wire:click="showOutput('{{ $deployment->getKey() }}')"
+                            >
+                                View Output
+                            </x-dropdown.button>
+                        </x-dropdown.menu>
+                    </x-ellipsis-dropdown>
+                </x-td>
             </x-tr>
         @endforeach
     </x-slot>

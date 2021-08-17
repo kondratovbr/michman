@@ -9,9 +9,12 @@ use App\Events\Deployments\DeploymentUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Deployment;
 use App\Models\Project;
+use App\Models\ServerLog;
+use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 /*
@@ -30,6 +33,11 @@ class DeploymentsIndexTable extends LivewireComponent
     public Project $project;
 
     public Collection $deployments;
+
+    /** @var bool Indicates if a confirmation modal should currently be opened. */
+    public bool $modalOpen = false;
+    /** @var Collection|null Logs to show in the logs view modal. */
+    public Collection|null $logs = null;
 
     /** @var string[] */
     protected $listeners = [
@@ -66,6 +74,45 @@ class DeploymentsIndexTable extends LivewireComponent
         $this->authorize('deploy', $this->project);
 
         $deployAction->execute($this->project);
+    }
+
+    /**
+     * Open a modal with a deployment output log.
+     */
+    public function showOutput(string $deploymentKey, string $serverKey): void
+    {
+        /*
+         * TODO: CRITICAL! CONTINUE. I started a bit wrong - in the dropdown I should show a button for every server the deployment was performed on and show output for every server. So, change the dropdown and implement this method and a corresponding modal.
+         */
+
+        $deploymentKey = Validator::make(
+            [
+                'deployment_key' => $deploymentKey,
+                'server_key' => $serverKey,
+            ],
+            [
+                'deployment_key' => Rules::string(1, 16)
+                    ->in($this->deployments->modelKeys())
+                    ->required(),
+                'server_key' => Rules::string(1, 16)
+                    ->in($this->deployments->modelKeys())
+                    ->required(),
+            ],
+        )->validate()['deployment_key'];
+
+        $deployment = $this->project->deployments()->findOrFail($deploymentKey);
+
+        $this->authorize('view', $deployment);
+
+        // $server = $deployment->
+
+        $this->logs = ServerLog::query()
+            ->where('server_id', $server->getKey())
+            ->whereBetween('created_at', [$pivot->startedAt, $pivot->finishedAt])
+            ->oldest()
+            ->get();
+
+        $this->modalOpen = true;
     }
 
     public function render(): View

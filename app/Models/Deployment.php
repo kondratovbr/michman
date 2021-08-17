@@ -34,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read CarbonInterface|null $finishedAt
  * @property-read CarbonInterval|null $duration
  *
+ * @property-read User $user
  * @property-read Project $project
  * @property-read Collection $servers
  * @property-read DeploymentServerPivot|null $serverDeployment
@@ -70,6 +71,19 @@ class Deployment extends AbstractModel
         'created' => DeploymentCreatedEvent::class,
         'updated' => DeploymentUpdatedEvent::class,
     ];
+
+    /**
+     * Get the user who owns the project that is being deployed by this deployment.
+     */
+    public function getUserAttribute(): User
+    {
+        /*
+         * TODO: IMPORTANT! I need to re-do the Deployment in such a way that it can be started by a different user
+         *       and, obviously, ensure that this user is allowed to do so,
+         *       since a project may be managed by a team.
+         */
+        return $this->project->user;
+    }
 
     /**
      * Check if this deployment has been started.
