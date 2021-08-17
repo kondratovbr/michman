@@ -5,6 +5,10 @@ namespace App\Models;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 
+/*
+ * TODO: CRITICAL! I should really cover models with tests as well. I have lots of data access logic in them.
+ */
+
 /**
  * Pivot model for Deployment to Server relation
  *
@@ -22,20 +26,32 @@ use Carbon\CarbonInterval;
  */
 class DeploymentServerPivot extends AbstractPivot
 {
+    /**
+     * Additional attribute names that this pivot model has.
+     * These attributes will be retrieved for the pivot each time.
+     *
+     * @var array
+     */
+    public static array $pivotAttributes = [
+        'started_at',
+        'finished_at',
+        'successful',
+    ];
+
     /** @var string[] The attributes that aren't mass assignable. */
     protected $guarded = [];
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        'started_at' => 'timestamp',
-        'finished_at' => 'timestamp',
+        'started_at' => 'datetime',
+        'finished_at' => 'datetime',
         'successful' => 'bool',
     ];
 
     /**
      * Check if the deployment on the server has started.
      */
-    public function getStartedAttributes(): bool
+    public function getStartedAttribute(): bool
     {
         return isset($this->startedAt);
     }

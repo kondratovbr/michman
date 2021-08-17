@@ -49,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read VcsProvider|null $vcsProvider
  * @property-read Database|null $database
  * @property-read DatabaseUser|null $databaseUser
+ * @property-read Collection $deployments
  *
  * @method static ProjectFactory factory(...$parameters)
  */

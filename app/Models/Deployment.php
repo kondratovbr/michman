@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Database\Factories\DeploymentFactory;
@@ -27,11 +28,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read bool|null $successful
  * @property-read bool|null $failed
  * @property-read string $status
- * @property-read CarbonInterface|null $duration
+ * @property-read CarbonInterface|null $startedAt
+ * @property-read CarbonInterface|null $finishedAt
+ * @property-read CarbonInterval|null $duration
  *
  * @property-read Project $project
  * @property-read Collection $servers
- * @property-read DeploymentServerPivot|null $serverPivot
+ * @property-read DeploymentServerPivot|null $serverDeployment
  *
  * @method static DeploymentFactory factory(...$parameters)
  */
@@ -71,7 +74,7 @@ class Deployment extends AbstractModel
     public function getStartedAttribute(): bool
     {
         return $this->servers->reduce(
-            fn(bool $started, Server $server) => $started ? true : $server->deploymentPivot->started,
+            fn(bool $started, Server $server) => $started ? true : $server->serverDeployment->started,
             false
         );
     }
@@ -82,7 +85,7 @@ class Deployment extends AbstractModel
     public function getFinishedAttribute(): bool
     {
         return $this->servers->reduce(
-            fn(bool $finished, Server $server) => $finished ? $server->deploymentPivot->finished : $finished,
+            fn(bool $finished, Server $server) => $finished ? $server->serverDeployment->finished : $finished,
             true
         );
     }
@@ -94,10 +97,10 @@ class Deployment extends AbstractModel
     {
         /** @var Server $server */
         foreach ($this->servers as $server) {
-            if (! $server->deploymentPivot->finished)
+            if (! $server->serverDeployment->finished)
                 return null;
 
-            if ($server->deploymentPivot->failed)
+            if ($server->serverDeployment->failed)
                 return false;
         }
 
@@ -130,25 +133,31 @@ class Deployment extends AbstractModel
     }
 
     /**
+     * Get a timestamp when this deployment was started on any server.
+     */
+    public function getStartedAtAttribute(): CarbonInterface|null
+    {
+        return $this->servers->pluck('serverDeployment')->min('started_at');
+    }
+
+    /**
+     * Get a timestamp when this deployment was finished on the last server it happened on.
+     */
+    public function getFinishedAtAttribute(): CarbonInterface|null
+    {
+        return $this->servers->pluck('serverDeployment')->max('finished_at');
+    }
+
+    /**
      * Calculate the duration of this deployment as the longest time any of
      * the server spent working on it.
      */
     public function getDurationAttribute(): CarbonInterval|null
     {
-        $max = CarbonInterval::seconds(0);
+        if (! $this->finished)
+            return null;
 
-        /** @var Server $server */
-        foreach ($this->servers as $server) {
-            $pivot = $server->deploymentPivot;
-
-            if (! $pivot->finished)
-                return null;
-
-            if ($max->lessThan($pivot->duration))
-                $max = $pivot->duration;
-        }
-
-        return $max;
+        return $this->finishedAt->diffAsCarbonInterval($this->startedAt);
     }
 
     /**
@@ -165,8 +174,9 @@ class Deployment extends AbstractModel
     public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'deployment_server')
-            ->as('serverPivot')
+            ->as('serverDeployment')
             ->using(DeploymentServerPivot::class)
+            ->withPivot(DeploymentServerPivot::$pivotAttributes)
             ->withTimestamps();
     }
 }
