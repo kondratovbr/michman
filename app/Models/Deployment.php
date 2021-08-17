@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Events\Deployments\DeploymentCreatedEvent;
+use App\Events\Deployments\DeploymentUpdatedEvent;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
@@ -65,7 +67,8 @@ class Deployment extends AbstractModel
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
-        //
+        'created' => DeploymentCreatedEvent::class,
+        'updated' => DeploymentUpdatedEvent::class,
     ];
 
     /**

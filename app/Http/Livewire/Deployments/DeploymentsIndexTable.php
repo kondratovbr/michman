@@ -3,6 +3,10 @@
 namespace App\Http\Livewire\Deployments;
 
 use App\Actions\Projects\DeployProjectAction;
+use App\Broadcasting\ProjectChannel;
+use App\Events\Deployments\DeploymentCreatedEvent;
+use App\Events\Deployments\DeploymentUpdatedEvent;
+use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Deployment;
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
@@ -20,11 +24,34 @@ use Livewire\Component as LivewireComponent;
 
 class DeploymentsIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests;
+    use AuthorizesRequests,
+        ListensForEchoes;
 
     public Project $project;
 
     public Collection $deployments;
+
+    /** @var string[] */
+    protected $listeners = [
+        //
+    ];
+
+    protected function configureEchoListeners(): void
+    {
+        /*
+         * TODO: CRITICAL! Check if this works.
+         *       Deployment process only updates pivots, check if timestamps on Deployment and Server
+         *       models get updated and if these events get triggered.
+         */
+        $this->echoPrivate(
+            ProjectChannel::name($this->project),
+            [
+                DeploymentCreatedEvent::class,
+                DeploymentUpdatedEvent::class,
+            ],
+            '$refresh',
+        );
+    }
 
     public function mount(): void
     {
