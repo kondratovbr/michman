@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
 abstract class AbstractNotification extends Notification implements ShouldQueue
 {
@@ -25,8 +26,10 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     {
         $via = ['database'];
 
-        if ($this->mail)
-            $via[] = 'mail';
+        if ($this->mail) {
+            Log::error('AbstractNotification: The notification is marked to be mailed, but the mailing is not implemented at all yet.');
+            // $via[] = 'mail';
+        }
 
         // TODO: CRITICAL! Test if this system even works. Try to catch these notifications in Livewire.
         if ($this->broadcast)
