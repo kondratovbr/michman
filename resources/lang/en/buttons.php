@@ -12,5 +12,6 @@ return [
     'install' => 'Install',
     'update' => 'Update',
     'reload' => 'Reload',
+    'close' => 'Close',
 
 ];

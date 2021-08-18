@@ -27,17 +27,36 @@
                 <x-td>
                     <x-ellipsis-dropdown :disabled="! $deployment->finished">
                         <x-dropdown.menu align="right">
-                            <x-dropdown.button
-                                class="text-sm"
-                                wire:click="showOutput('{{ $deployment->getKey() }}')"
-                            >
-                                View Output
-                            </x-dropdown.button>
+                            @if($deployment->servers->count() == 1)
+                                <x-dropdown.button
+                                    class="text-sm"
+                                    wire:click="showLog('{{ $deployment->getKey() }}', '{{ $deployment->servers->first()->getKey() }}')"
+                                >
+                                    {{ __('deployments.view-output') }}
+                                </x-dropdown.button>
+                            @else
+                                <x-dropdown.title>
+                                    {{ __('deployments.view-output-from-server') }}
+                                </x-dropdown.title>
+{{--                                TODO: IMPORTANT! For some reason the buttons here aren't stretched to the width of the dropdown. They are in other dropdowns. Fix it.--}}
+                                @foreach($deployment->servers as $server)
+                                    <x-dropdown.button
+                                        class="text-sm"
+                                        wire:click="showLog('{{ $deployment->getKey() }}', '{{ $server->getKey() }}')"
+                                    >
+                                        {{ $server->name }}
+                                    </x-dropdown.button>
+                                @endforeach
+                            @endif
                         </x-dropdown.menu>
                     </x-ellipsis-dropdown>
                 </x-td>
             </x-tr>
         @endforeach
+    </x-slot>
+
+    <x-slot name="modal">
+        @include('deployments._log-modal')
     </x-slot>
 
     @if($deployments->isEmpty())

@@ -23,4 +23,7 @@ return [
         Deployment::STATUS_FAILED => 'Failed',
     ],
 
+    'view-output' => 'View Log',
+    'view-output-from-server' => 'View Log From Server',
+
 ];

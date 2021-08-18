@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool|null $success
  * @property CarbonInterface $createdAt
  *
+ * @property-read bool $renderable
+ *
  * @property-read Server $server
  *
  * @method static ServerLogFactory factory(...$parameters)
@@ -39,20 +41,19 @@ class ServerLog extends AbstractModel
     const CREATED_AT = 'created_at';
     const UPDATED_AT = null;
 
-    /** @var string[] The attributes that are mass assignable. */
-    protected $fillable = [
-        'type',
-        'command',
-        'exit_code',
-        'content',
-        'local_file',
-        'remote_file',
-        'success',
-        'created_at',
-    ];
+    /** @var string[] The attributes that aren't mass assignable. */
+    protected $guarded = [];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
+
+    /**
+     * Check if this log is of type that can be shown to a user as an output log.
+     */
+    public function getRenderableAttribute(): bool
+    {
+        return ! empty($this->command) || ! empty($this->content);
+    }
 
     /**
      * Get a relation to the server that owns this log.

@@ -9,6 +9,7 @@ use App\Events\Deployments\DeploymentUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Deployment;
 use App\Models\Project;
+use App\Models\Server;
 use App\Models\ServerLog;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
@@ -79,32 +80,30 @@ class DeploymentsIndexTable extends LivewireComponent
     /**
      * Open a modal with a deployment output log.
      */
-    public function showOutput(string $deploymentKey, string $serverKey): void
+    public function showLog(string $deploymentKey, string $serverKey): void
     {
-        /*
-         * TODO: CRITICAL! CONTINUE. I started a bit wrong - in the dropdown I should show a button for every server the deployment was performed on and show output for every server. So, change the dropdown and implement this method and a corresponding modal.
-         */
-
         $deploymentKey = Validator::make(
-            [
-                'deployment_key' => $deploymentKey,
-                'server_key' => $serverKey,
-            ],
-            [
-                'deployment_key' => Rules::string(1, 16)
-                    ->in($this->deployments->modelKeys())
-                    ->required(),
-                'server_key' => Rules::string(1, 16)
-                    ->in($this->deployments->modelKeys())
-                    ->required(),
-            ],
+            ['deployment_key' => $deploymentKey,],
+            ['deployment_key' => Rules::string(1, 16)
+                ->in($this->deployments->modelKeys())
+                ->required()],
         )->validate()['deployment_key'];
 
+        /** @var Deployment $deployment */
         $deployment = $this->project->deployments()->findOrFail($deploymentKey);
 
         $this->authorize('view', $deployment);
 
-        // $server = $deployment->
+        $serverKey = Validator::make(
+            ['server_key' => $serverKey,],
+            ['server_key' => Rules::string(1, 16)
+                ->in($deployment->servers->modelKeys())
+                ->required()],
+        )->validate()['server_key'];
+
+        /** @var Server $server */
+        $server = $deployment->servers()->findOrFail($serverKey);
+        $pivot = $server->serverDeployment;
 
         $this->logs = ServerLog::query()
             ->where('server_id', $server->getKey())
@@ -113,6 +112,11 @@ class DeploymentsIndexTable extends LivewireComponent
             ->get();
 
         $this->modalOpen = true;
+    }
+
+    public function closeModal(): void
+    {
+        //
     }
 
     public function render(): View
