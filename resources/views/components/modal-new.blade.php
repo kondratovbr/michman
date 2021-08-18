@@ -1,5 +1,4 @@
 {{--TODO: IMPORTANT! Unfinished. Responsiveness, mobile. Test on touch - both tablet and mobile.--}}
-{{--TODO: Can I make this generic modal to be one single element with various modal boxes inside? I will have to decouple the normal components from the modal parts of it though.--}}
 
 {{-- Container for a modal --}}
 <div
@@ -42,6 +41,8 @@
     {{-- Close modal on ESC button and similar actions --}}
     x-on:close.stop="show = false"
     x-on:keydown.escape.window="show = false"
+{{--    This allows to throw an event from somewhere inside the modal to close it. Useful for "X"/"Close"/"Cancel" buttons.--}}
+    x-on:close-modal="show = false"
 >
     {{-- Opaque background container - needed for proper transitions. --}}
     {{-- Separated from the modal box itself to be able to have different transitions on them. --}}
@@ -81,9 +82,10 @@
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
         <div
+{{--            TODO: Maybe I can replace this whole piece of JS with Alpine's "x-trap" plugin. See: https://alpinejs.dev/plugins/trap--}}
             {{-- This component contains functions that handle focus changes (Tab button),
             so that when modal is shown focus is kept inside the modal. --}}
-{{--                TODO: CRITICAL! CONTINUE. Front-end error: "focusableDialog is not defined". The modal doesn't work. Multiple modals on one page get confused.--}}
+{{--                TODO: CRITICAL! Front-end error: "focusableDialog is not defined". The modal doesn't work. Multiple modals on one page get confused. Test all the modals - I think I had already fixed it.--}}
             x-data="focusableDialog()"
 {{--            x-init="init()"--}}
             {{-- These directives overrides focus-changing buttons (tab, shift+tab)
