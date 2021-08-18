@@ -1,3 +1,5 @@
+{{--TODO: IMPORTANT! Figure out how to limit the vertical size of this log and add some scrolling. Also, this modal needs an "X" button in the corner, like Forge does. Just in case.--}}
+
 <x-modals.dialog wireModel="modalOpen" modalId="viewDeploymentLogModal">
 
     <x-slot name="header">

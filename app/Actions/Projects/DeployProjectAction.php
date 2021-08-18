@@ -15,12 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class DeployProjectAction
 {
-    /*
-     * TODO: CRITICAL! CONTINUE. Implement deployment "started_at" and "finished_at" things and then see how statuses are showed on the front-end.
-     *       Then go figure out how to gracefully fail a deployment and how to provide a feedback.
-     *       Implement the notification system.
-     */
-
     public function execute(Project $project): Deployment
     {
         return DB::transaction(function () use ($project): Deployment {
