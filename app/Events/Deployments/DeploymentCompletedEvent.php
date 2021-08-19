@@ -4,7 +4,7 @@ namespace App\Events\Deployments;
 
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class DeploymentUpdatedEvent extends AbstractDeploymentEvent implements ShouldBroadcast
+class DeploymentCompletedEvent extends AbstractDeploymentEvent implements ShouldBroadcast
 {
     //
 }

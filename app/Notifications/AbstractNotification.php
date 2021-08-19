@@ -12,6 +12,11 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * https://laravel.com/docs/8.x/notifications#queued-notifications-and-database-transactions
+     */
+    public $afterCommit = true;
+
     /** @var bool Indicates if this notification should be sent via email. */
     protected bool $mail = false;
     /** @var bool Indicates if this notification should be broadcasted. */

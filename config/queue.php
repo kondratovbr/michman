@@ -43,7 +43,7 @@ return [
             // Default queue to dispatch jobs
             'queue' => 'default',
             // Job timeout - job will be released back onto the queue
-            // if doesn't finished after this amount of seconds.
+            // if isn't finished after this amount of seconds.
             'retry_after' => 60 * 60, // 1 hour
             // Store jobs in DB after an active transaction is committed,
             // Laravel will handle transaction failures when they happen.
@@ -83,10 +83,10 @@ return [
      */
 
     'queues' => [
-        'default', // For quick-running jobs that don't interact with external services or servers.
-        'providers', // For jobs that interact with third-party APIs of server providers and VCS providers.
-        'servers', // For jobs that interact with managed servers over SSH.
-        'listeners', // For handling queued event listeners.
+        'default',      // For quick-running jobs that don't interact with external services or servers.
+        'providers',    // For jobs that interact with third-party APIs of server providers and VCS providers.
+        'servers',      // For jobs that interact with managed servers over SSH.
+        'listeners',    // For handling queued event listeners.
         'broadcasting', // For broadcasting events.
     ],
 

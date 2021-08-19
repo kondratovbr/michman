@@ -15,6 +15,8 @@ abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroad
 
     public function __construct(Project $project)
     {
+        parent::__construct();
+
         $this->projectKey = $project->getKey();
     }
 

@@ -5,6 +5,7 @@
     <x-slot name="header">
         <x-tr-header>
             <x-th></x-th>
+{{--            TODO: Change this column to "ago" format when it was just recently.--}}
             <x-th>{{ __('deployments.table.started-at') }}</x-th>
             <x-th>{{ __('deployments.table.branch') }}</x-th>
             <x-th>{{ __('deployments.table.commit') }}</x-th>

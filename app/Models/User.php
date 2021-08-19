@@ -10,6 +10,7 @@ use BaconQrCode\Renderer\Color\Rgb;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,7 +47,7 @@ use App\Facades\QrCode;
  *
  * @method static UserFactory factory(...$parameters)
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens,
         HasFactory,
@@ -158,6 +159,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function usesPassword(): bool
     {
         return ! empty($this->password);
+    }
+
+    /**
+     * Get this user's preferred locale,
+     * which will be used to localize notifications and emails.
+     */
+    public function preferredLocale(): string
+    {
+        // TODO: Implement preferredLocale() method.
+        return 'en';
     }
 
     /**

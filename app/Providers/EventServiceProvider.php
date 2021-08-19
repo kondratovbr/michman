@@ -2,17 +2,30 @@
 
 namespace App\Providers;
 
+use App\Events\Deployments\DeploymentCompletedEvent;
+use App\Events\Deployments\DeploymentFailedEvent;
+use App\Listeners\HandleFinishedDeploymentListener;
+use App\Listeners\SendFailedDeploymentNotificationListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
-    /** @var string[][] The event listener mappings for the application. */
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var string[][]
+     */
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        DeploymentCompletedEvent::class => [
+            HandleFinishedDeploymentListener::class,
+        ],
+        DeploymentFailedEvent::class => [
+            SendFailedDeploymentNotificationListener::class,
         ],
     ];
 

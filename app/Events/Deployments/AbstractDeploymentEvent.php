@@ -15,4 +15,15 @@ abstract class AbstractDeploymentEvent extends AbstractProjectEvent
 
         $this->deploymentKey = $deployment->getKey();
     }
+
+    /**
+     * Retrieve the deployment from the database if it still exists.
+     */
+    public function deployment(): Deployment
+    {
+        /** @var Deployment $deployment */
+        $deployment = Deployment::query()->findOrFail($this->deploymentKey);
+
+        return $deployment;
+    }
 }
