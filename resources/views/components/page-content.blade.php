@@ -5,9 +5,16 @@
         {{ $menu }}
     </div>
 
-    {{-- Main Page Content --}}
-    <main class="md:col-span-9">
-        {{ $slot }}
-    </main>
+    <div class="md:col-span-9">
+        {{-- Notifications --}}
+        @isset($notifications)
+            {{ $notifications }}
+        @endisset
+
+        {{-- Main Page Content --}}
+        <main>
+            {{ $slot }}
+        </main>
+    </div>
 
 </div>

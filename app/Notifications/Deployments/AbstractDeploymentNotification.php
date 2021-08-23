@@ -10,7 +10,9 @@ abstract class AbstractDeploymentNotification extends AbstractNotification
 {
     public function __construct(
         protected Deployment $deployment,
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     public function toArray(User $notifiable): array
     {
@@ -18,4 +20,14 @@ abstract class AbstractDeploymentNotification extends AbstractNotification
             'deploymentKey' => $this->deployment->getKey(),
         ];
     }
+
+    public static function message(array $data = []): string
+    {
+        /** @var Deployment|null $deployment */
+        $deployment = Deployment::query()->find($data['deploymentKey']);
+
+        return static::getMessage($deployment);
+    }
+
+    abstract protected static function getMessage(Deployment|null $deployment): string;
 }

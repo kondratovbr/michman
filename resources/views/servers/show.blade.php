@@ -12,6 +12,10 @@
         @include('servers._menu')
     </x-slot>
 
+    <x-slot name="notifications">
+        <livewire:notifications/>
+    </x-slot>
+
     <x-sub-page wire:key="{{ $this->show }}" name="{{ $this->show }}">
         @include($this->page)
     </x-sub-page>

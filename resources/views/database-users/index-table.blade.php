@@ -17,7 +17,7 @@
         @foreach($databaseUsers as $databaseUser)
             <x-tr>
                 <x-td>{{ $databaseUser->name }}</x-td>
-                <x-td class="flex justify-end items-center min-h-14">
+                <x-td>
 {{--                    @if($databaseUser->isDeleting())--}}
 {{--                        <x-buttons.edit disabled />--}}
 {{--                        <x-buttons.trash--}}
@@ -27,18 +27,20 @@
 {{--                        />--}}
 {{--                    @endif--}}
 {{--                    @if($databaseUser->isCreating() || $databaseUser->isUpdating())--}}
-                    @if($databaseUser->tasks > 0)
-                        <div class="mr-4.5">
-                            <x-spinner/>
-                        </div>
-                    @else
-                        <x-buttons.edit wire:click="openModal('{{ $databaseUser->getKey() }}')" />
-                        <x-buttons.trash
-                            class="ml-2"
-                            wire:click="delete('{{ $databaseUser->getKey() }}')"
-                            wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
-                        />
-                    @endif
+                    <div class="flex justify-end items-center">
+                        @if($databaseUser->tasks > 0)
+                            <div class="mr-4.5">
+                                <x-spinner/>
+                            </div>
+                        @else
+                            <x-buttons.edit wire:click="openModal('{{ $databaseUser->getKey() }}')" />
+                            <x-buttons.trash
+                                class="ml-2"
+                                wire:click="delete('{{ $databaseUser->getKey() }}')"
+                                wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
+                            />
+                        @endif
+                    </div>
                 </x-td>
             </x-tr>
         @endforeach

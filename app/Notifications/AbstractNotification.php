@@ -54,6 +54,16 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     }
 
     /**
+     * Get the message to show in the UI.
+     */
+    public static function message(array $data = []): string
+    {
+        $type = get_called_class();
+
+        return __("notifications.messages.{$type}");
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * Used for database storage and for broadcasting.
