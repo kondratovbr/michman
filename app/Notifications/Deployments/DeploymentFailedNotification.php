@@ -3,13 +3,39 @@
 namespace App\Notifications\Deployments;
 
 use App\Models\Server;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Notifications\Messages\MailMessage;
 use RuntimeException;
 
 class DeploymentFailedNotification extends AbstractDeploymentNotification
 {
     protected bool $broadcast = true;
-    
+    protected bool $mail = true;
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(User $notifiable): MailMessage
+    {
+        /*
+         * TODO: CRITICAL! Obviously I should customize the message template. Make it dark in the brand colors, etc.
+         *
+         * TODO: CRITICAL! I should, of course, use localized strings here as well. And test that localization works. Note: User model should have the method to retrieve the user's locale. I've already added a placeholder for it. See details: https://laravel.com/docs/8.x/notifications#user-preferred-locales
+         */
+        return (new MailMessage)
+            ->error()
+            ->greeting('Oy! Michman reporting.')
+            ->line("Something went wrong when performing a deployment of your project {$this->deployment->project->projectName}.")
+            ->action(
+                'View Deployments',
+                route('projects.show', [$this->deployment->project, 'deployment'])
+            );
+    }
+
+    /**
+     * Get the notification message to show in the UI.
+     */
     public static function message(array $data = []): string
     {
         $deployment = static::deployment($data);
@@ -21,7 +47,7 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification
     }
 
     /**
-     * Get the name of the view that should be used to display the details of this notification.
+     * Get the view to display this notification in the UI.
      */
     public static function view(array $data = []): View
     {
