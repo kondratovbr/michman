@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+// TODO: Later I will need to somehow distinguish manual deployments from automatic ones.
+
 /**
  * Deployment Eloquent model
  *
