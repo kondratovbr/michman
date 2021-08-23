@@ -1,3 +1,5 @@
+{{--TODO: IMPORTANT! This block needs a redesign - it should look different in comparison to normal blocks.--}}
+
 <div class="{{ $notifications->isEmpty() ?: 'mb-8' }}">
     @unless($notifications->isEmpty())
         <x-table-section>
