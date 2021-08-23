@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 
@@ -12,15 +13,16 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * https://laravel.com/docs/8.x/notifications#queued-notifications-and-database-transactions
-     */
-    public $afterCommit = true;
-
     /** @var bool Indicates if this notification should be sent via email. */
     protected bool $mail = false;
     /** @var bool Indicates if this notification should be broadcasted. */
     protected bool $broadcast = false;
+
+    public function __construct()
+    {
+        // https://laravel.com/docs/8.x/notifications#queued-notifications-and-database-transactions
+        $this->afterCommit = true;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -36,7 +38,6 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
             // $via[] = 'mail';
         }
 
-        // TODO: CRITICAL! Test if this system even works. Try to catch these notifications in Livewire.
         if ($this->broadcast)
             $via[] = 'broadcast';
 
@@ -44,10 +45,18 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     }
 
     /**
+     * Get the broadcastable representation of the notification.
+     */
+    public function toBroadcast(User $notifiable): BroadcastMessage
+    {
+        return (new BroadcastMessage($this->toArray($notifiable)))
+            ->onQueue((string) config('broadcasting.queue'));
+    }
+
+    /**
      * Get the array representation of the notification.
      *
-     * Used for database storage and for broadcasting
-     * if the method "toBroadcast" doesn't exist.
+     * Used for database storage and for broadcasting.
      */
     abstract public function toArray(User $notifiable): array;
 }

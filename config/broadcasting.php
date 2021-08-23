@@ -73,4 +73,10 @@ return [
 
     ],
 
+    /*
+     * Custom config values
+     */
+
+    'queue' => 'broadcasting',
+
 ];

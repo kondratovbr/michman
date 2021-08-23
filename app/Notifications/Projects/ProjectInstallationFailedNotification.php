@@ -4,5 +4,5 @@ namespace App\Notifications\Projects;
 
 class ProjectInstallationFailedNotification extends AbstractProjectNotification
 {
-    //
+    protected bool $broadcast = true;
 }
