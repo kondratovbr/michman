@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Eloquent\Collection;
 
 /*
  * TODO: CRITICAL! I should really cover models with tests as well. I have lots of data access logic in them.
@@ -14,6 +15,8 @@ use Carbon\CarbonInterval;
  *
  * Represents the deployment process performed on a specific server.
  *
+ * @property int $deploymentId
+ * @property int $serverId
  * @property CarbonInterface|null $startedAt
  * @property CarbonInterface|null $finishedAt
  * @property bool|null $successful
@@ -84,5 +87,17 @@ class DeploymentServerPivot extends AbstractPivot
             return null;
 
         return ! $this->successful;
+    }
+
+    /**
+     * Retrieve the logs of the deployment on the server.
+     */
+    public function logs(): Collection
+    {
+        return ServerLog::query()
+            ->where('server_id', $this->serverId)
+            ->whereBetween('created_at', [$this->startedAt, $this->finishedAt])
+            ->oldest()
+            ->get();
     }
 }

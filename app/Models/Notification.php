@@ -36,6 +36,6 @@ class Notification extends DatabaseNotification
      */
     public function detailsView(): View
     {
-        return view($this->type::view(), $this->data);
+        return $this->type::view($this->data);
     }
 }

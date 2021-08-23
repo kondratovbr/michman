@@ -21,13 +21,14 @@ abstract class AbstractDeploymentNotification extends AbstractNotification
         ];
     }
 
-    public static function message(array $data = []): string
+    /**
+     * Retrieve the deployment from the database.
+     */
+    protected static function deployment(array $data): Deployment|null
     {
         /** @var Deployment|null $deployment */
         $deployment = Deployment::query()->find($data['deploymentKey']);
 
-        return static::getMessage($deployment);
+        return $deployment;
     }
-
-    abstract protected static function getMessage(Deployment|null $deployment): string;
 }

@@ -1,4 +1,4 @@
-{{--TODO: IMPORTANT! This block needs a redesign - it should look different in comparison to normal blocks.--}}
+{{--TODO: IMPORTANT! This section needs a slight redesign - it should look different in comparison to normal sections.--}}
 
 <div class="{{ $notifications->isEmpty() ?: 'mb-8' }}">
     @unless($notifications->isEmpty())
@@ -15,6 +15,7 @@
             </x-slot>
 
             <x-slot name="body">
+{{--                TODO: Add "levels" to these notifications and change highlight colors accordingly.--}}
                 @foreach($notifications as $notification)
                     <x-tr>
 {{--                        TODO: Should make this to show diff only when the notification is recent. For older ones it would be more convenient to see the exact date and time.--}}

@@ -2,14 +2,17 @@
 
 namespace App\Notifications\Deployments;
 
-use App\Models\Deployment;
+use App\Models\Server;
+use Illuminate\Contracts\View\View;
+use RuntimeException;
 
 class DeploymentFailedNotification extends AbstractDeploymentNotification
 {
     protected bool $broadcast = true;
-
-    protected static function getMessage(?Deployment $deployment): string
+    
+    public static function message(array $data = []): string
     {
+        $deployment = static::deployment($data);
         $type = get_called_class();
 
         return __("notifications.messages.{$type}", [
@@ -20,8 +23,19 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification
     /**
      * Get the name of the view that should be used to display the details of this notification.
      */
-    public static function view(): string
+    public static function view(array $data = []): View
     {
-        return 'notifications.deployment-failed';
+        $deployment = static::deployment($data);
+
+        /** @var Server $server */
+        $server = $deployment->servers()->wherePivot('successful', false)->first();
+
+        if (is_null($server))
+            throw new RuntimeException('DeploymentFailedNotification exists but no server with a failed deployment found for the attached deployment.');
+
+        return view('notifications.deployment-failed', [
+            'server' => $server,
+            'logs' => $server->serverDeployment->logs(),
+        ]);
     }
 }

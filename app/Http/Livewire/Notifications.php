@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Facades\Auth;
 use App\Models\Notification;
+use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 class Notifications extends LivewireComponent
@@ -29,7 +31,7 @@ class Notifications extends LivewireComponent
      */
     public function details(string $id): void
     {
-        $this->notification = $this->notifications->firstWhere('id', $id);
+        $this->notification = $this->validatedNotification($id);
 
         $this->modalOpen = true;
     }
@@ -39,15 +41,27 @@ class Notifications extends LivewireComponent
      */
     public function trash(string $id): void
     {
-        //
+        $notification = $this->validatedNotification($id);
+
+        $notification->markAsRead();
+    }
+
+    protected function validatedNotification(string $id): Notification
+    {
+        $id = Validator::make(
+            ['id' => $id],
+            ['id' => Rules::uuid()
+                ->in($this->notifications->modelKeys())
+                ->required()],
+        )->validate()['id'];
+
+        return $this->notifications->firstWhere('id', $id);
     }
 
     public function render(): View
     {
         // TODO: Can I use caching here somehow so we don't reload this each time? And how to invalidate it then?
         $this->notifications = Auth::user()->unreadNotifications()->latest()->get();
-
-        ray($this->notifications);
 
         return view('livewire.notifications');
     }

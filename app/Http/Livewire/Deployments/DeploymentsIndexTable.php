@@ -104,13 +104,8 @@ class DeploymentsIndexTable extends LivewireComponent
         )->validate()['server_key'];
 
         $this->server = $deployment->servers()->findOrFail($serverKey);
-        $pivot = $this->server->serverDeployment;
 
-        $this->logs = ServerLog::query()
-            ->where('server_id', $this->server->getKey())
-            ->whereBetween('created_at', [$pivot->startedAt, $pivot->finishedAt])
-            ->oldest()
-            ->get();
+        $this->logs = $this->server->serverDeployment->logs();
 
         $this->modalOpen = true;
     }
