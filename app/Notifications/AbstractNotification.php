@@ -50,7 +50,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     public function toBroadcast(User $notifiable): BroadcastMessage
     {
         return (new BroadcastMessage($this->toArray($notifiable)))
-            ->onQueue((string) config('broadcasting.queue'));
+            ->onQueue('broadcasting');
     }
 
     /**
