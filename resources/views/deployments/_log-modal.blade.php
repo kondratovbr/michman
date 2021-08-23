@@ -3,7 +3,10 @@
 <x-modals.dialog wireModel="modalOpen" modalId="viewDeploymentLogModal">
 
     <x-slot name="header">
-        <h3>Deployment Log From XXX server</h3>
+        <h3>
+            {{ __('deployments.log-modal-title') }}
+            <strong>{{ $server->name }}</strong>
+        </h3>
     </x-slot>
 
     <x-slot name="content">

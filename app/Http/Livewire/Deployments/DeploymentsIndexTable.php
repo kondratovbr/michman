@@ -35,10 +35,12 @@ class DeploymentsIndexTable extends LivewireComponent
 
     public Collection $deployments;
 
-    /** @var bool Indicates if a confirmation modal should currently be opened. */
+    /** Indicates if a confirmation modal should currently be opened. */
     public bool $modalOpen = false;
-    /** @var Collection|null Logs to show in the logs view modal. */
+    /** Logs to show in the logs view modal. */
     public Collection|null $logs = null;
+    /** The server that the logs that are currently shown are taken from. */
+    public Server $server;
 
     /** @var string[] */
     protected $listeners = [
@@ -101,22 +103,16 @@ class DeploymentsIndexTable extends LivewireComponent
                 ->required()],
         )->validate()['server_key'];
 
-        /** @var Server $server */
-        $server = $deployment->servers()->findOrFail($serverKey);
-        $pivot = $server->serverDeployment;
+        $this->server = $deployment->servers()->findOrFail($serverKey);
+        $pivot = $this->server->serverDeployment;
 
         $this->logs = ServerLog::query()
-            ->where('server_id', $server->getKey())
+            ->where('server_id', $this->server->getKey())
             ->whereBetween('created_at', [$pivot->startedAt, $pivot->finishedAt])
             ->oldest()
             ->get();
 
         $this->modalOpen = true;
-    }
-
-    public function closeModal(): void
-    {
-        //
     }
 
     public function render(): View

@@ -56,9 +56,11 @@
         @endforeach
     </x-slot>
 
-    <x-slot name="modal">
-        @include('deployments._log-modal')
-    </x-slot>
+    @if($modalOpen)
+        <x-slot name="modal">
+            @include('deployments._log-modal')
+        </x-slot>
+    @endif
 
     @if($deployments->isEmpty())
         <x-slot name="empty">

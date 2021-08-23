@@ -25,5 +25,6 @@ return [
 
     'view-output' => 'View Log',
     'view-output-from-server' => 'View Log From Server',
+    'log-modal-title' => 'Deployment Log From',
 
 ];
