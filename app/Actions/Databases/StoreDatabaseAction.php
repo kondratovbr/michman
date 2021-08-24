@@ -4,7 +4,6 @@ namespace App\Actions\Databases;
 
 use App\Actions\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesAction;
 use App\DataTransferObjects\DatabaseData;
-use App\Jobs\AbstractJob;
 use App\Jobs\Databases\CreateDatabaseOnServerJob;
 use App\Models\Database;
 use App\Models\Server;

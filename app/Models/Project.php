@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\ForceBooleanCast;
 use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
 use App\Events\Projects\ProjectUpdatedEvent;
