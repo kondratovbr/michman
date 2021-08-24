@@ -156,7 +156,7 @@ class CreateProjectForm extends LivewireComponent
             create_db_user: $validated['createDbUser'] ?? false,
             db_user_name: $validated['dbUserName'] ?? null,
             db_user_password: $validated['dbUserPassword'] ?? null,
-        ), Auth::user(), $this->server);
+        ), $this->server);
 
         $this->reset('state');
 

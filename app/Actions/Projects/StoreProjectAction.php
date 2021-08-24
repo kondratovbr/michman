@@ -13,11 +13,6 @@ use App\DataTransferObjects\PythonData;
 use App\Jobs\Servers\CreateUserOnServerJob;
 use App\Models\Project;
 use App\Models\Server;
-use App\Models\User;
-
-// TODO: CRITICAL! Cover with tests.
-
-// TODO: CRITICAL! Refactor my dumb "sync" actions - don't run those stupid "create" jobs that don't interact with any external services - just chain actions fot it! And don't forget to update tests.
 
 /*
  * TODO: IMPORTANT! I should also create a "default"/"placeholder" project after the server has been set up, like Forge does,
@@ -33,8 +28,10 @@ class StoreProjectAction
         protected StoreDatabaseUserAction $storeDatabaseUser,
     ) {}
 
-    public function execute(NewProjectData $data, User $user, Server $server): Project
+    public function execute(NewProjectData $data, Server $server): Project
     {
+        $user = $server->user;
+
         /** @var Project $project */
         $project = $user->projects()->create($data->toArray());
 
