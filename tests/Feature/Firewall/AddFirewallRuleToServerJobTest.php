@@ -8,7 +8,6 @@ use App\Models\Server;
 use App\Scripts\Root\AddFirewallRuleScript;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
-use Mockery;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
