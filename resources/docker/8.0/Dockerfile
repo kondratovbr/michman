@@ -49,6 +49,7 @@ RUN if [ "${XDEBUG}" = 'true' ]; then \
     echo "xdebug.client_port=${XDEBUG_PORT}" >> $XDEBUG_CONFIG \
     && echo "xdebug.mode=develop,debug" >> $XDEBUG_CONFIG \
     && echo "xdebug.start_with_request=yes" >> $XDEBUG_CONFIG \
+    && echo "xdebug.log_level=0" >> $XDEBUG_CONFIG \
     && echo "xdebug.client_host=host.docker.internal" >> $XDEBUG_CONFIG ;\
 fi;
 
