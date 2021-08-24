@@ -18,7 +18,6 @@ use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
 use App\Models\Server;
 use App\Models\VcsProvider;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Bus;
 use Tests\AbstractFeatureTest;
 
@@ -39,7 +38,7 @@ class StoreServerActionTest extends AbstractFeatureTest
         $spy = $this->spy(CreateWorkerSshKeyAction::class);
 
         /** @var StoreServerAction $action */
-        $action = App::make(StoreServerAction::class);
+        $action = $this->app->make(StoreServerAction::class);
 
         $data = new NewServerData(
             provider: $provider,
