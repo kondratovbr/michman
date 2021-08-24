@@ -7,8 +7,6 @@ use App\Models\FirewallRule;
 use App\Scripts\Root\DeleteFirewallRuleScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class DeleteFirewallRuleJob extends AbstractRemoteServerJob
 {
     protected FirewallRule $rule;
