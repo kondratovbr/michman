@@ -66,7 +66,7 @@ class DeploymentPolicyTest extends AbstractFeatureTest
         $this->assertFalse($result);
     }
 
-    public function test_successful_deploy_action()
+    public function test_successful_create_action()
     {
         /** @var Project $project */
         $project = Project::factory()->withUserAndServers()->create();
@@ -74,12 +74,12 @@ class DeploymentPolicyTest extends AbstractFeatureTest
         /** @var DeploymentPolicy $policy */
         $policy = $this->app->make(DeploymentPolicy::class);
 
-        $result = $policy->deploy($project->user, $project);
+        $result = $policy->create($project->user, $project);
 
         $this->assertTrue($result);
     }
 
-    public function test_deploy_action_with_project_owned_by_different_user()
+    public function test_create_action_with_project_owned_by_different_user()
     {
         /** @var Project $project */
         $project = Project::factory()->withUserAndServers()->create();
@@ -89,7 +89,7 @@ class DeploymentPolicyTest extends AbstractFeatureTest
         /** @var DeploymentPolicy $policy */
         $policy = $this->app->make(DeploymentPolicy::class);
 
-        $result = $policy->deploy($user, $project);
+        $result = $policy->create($user, $project);
 
         $this->assertFalse($result);
     }
