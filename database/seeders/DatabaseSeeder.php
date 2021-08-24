@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ProviderSeeder::class,
             ServerSeeder::class,
+            ServerSshKeySeeder::class,
             WorkerSshKeySeeder::class,
             VcsProviderSeeder::class,
             FirewallRuleSeeder::class,
@@ -24,8 +25,10 @@ class DatabaseSeeder extends Seeder
             // TODO: Don't forget to implement these following seeders:
             PythonSeeder::class,
             UserSshKeySeeder::class,
-            ServerSshKeySeeder::class,
+
+            ProjectSeeder::class,
             DeploySshKeySeeder::class,
+            
             DeploymentSeeder::class,
         ]);
     }
