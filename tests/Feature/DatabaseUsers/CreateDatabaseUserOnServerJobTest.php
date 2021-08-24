@@ -52,7 +52,7 @@ class CreateDatabaseUserOnServerJobTest extends AbstractFeatureTest
 
         $databaseUser->refresh();
 
-        $this->assertNull($databaseUser->password);
+        $this->assertEquals('password', $databaseUser->password);
 
         $this->assertEquals(0, $databaseUser->tasks);
         $this->assertFalse($databaseUser->hasTasks());
