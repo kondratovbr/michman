@@ -3,7 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Deployment;
+use App\Models\Project;
+use App\Models\Server;
 use App\Support\Str;
+use Closure;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DeploymentFactory extends Factory
@@ -19,7 +23,41 @@ class DeploymentFactory extends Factory
         return [
             'branch' => 'master',
             'commit' => Str::random(8),
-            'completed_at' => $this->faker->dateTimeBetween(now()->subDays(7), now()),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Deployment $deployment) {
+            $deployment->servers()->sync($deployment->project->servers);
+            /** @var Server $server */
+            foreach ($deployment->servers as $server) {
+                $server->serverDeployment->forceFill([
+                    'started_at' => now(),
+                    'finished_at' => now(),
+                    'successful' => true,
+                ])->save();
+            }
+        });
+    }
+
+    public function forRandomProjectFrom(Collection $projects): static
+    {
+        $projects = $projects->shuffle();
+
+        return $this->afterMaking(fn(Deployment $deployment) =>
+            $this->associateWithProject($deployment, $projects->pop())
+        );
+    }
+
+    public function withProject(): static
+    {
+        return $this->for(Project::factory()->withUserAndServers());
+    }
+
+    public function associateWithProject(Deployment $deployment, Project $project): void
+    {
+        $deployment->project()->associate($project);
+        $deployment->servers()->sync($project->servers);
     }
 }
