@@ -6,8 +6,6 @@ use App\Jobs\FirewallRules\DeleteFirewallRuleJob;
 use App\Models\FirewallRule;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class DeleteFirewallRuleAction
 {
     public function execute(FirewallRule $rule): void
