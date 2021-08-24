@@ -44,11 +44,6 @@ class DeployProjectAction
                     DeploymentCompletedEvent::dispatch($deployment);
                 })
                 ->catch(function (Batch $batch) use ($deployment) {
-                    /*
-                     * TODO: CRITICAL! CONTINUE. Check the notifications get triggered and get stored in the DB.
-                     *       Cover the email part with some placeholders, verify that it works and then figure out how to show completely different
-                     *       stuff (different Blade templates somehow) based on the notification type on the front-end and implement the front-end part.
-                     */
                     DeploymentFailedEvent::dispatch($deployment);
                 })
                 ->dispatch();
