@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Actions\Servers\StoreServerAction;
 use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
 use App\DataTransferObjects\NewServerData;
-use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\ConfigureAppServerJob;
 use App\Jobs\ServerSshKeys\CreateServerSshKeyJob;
@@ -93,8 +92,6 @@ class StoreServerActionTest extends AbstractFeatureTest
             UpdateWorkerSshKeysOnServerJob::class,
             CreateServerSshKeyJob::class,
             UploadServerSshKeyToServerJob::class,
-            AddServerSshKeyToVcsJob::class,
-            AddServerSshKeyToVcsJob::class,
             ConfigureAppServerJob::class,
         ]);
     }

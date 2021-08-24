@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Check and update tests!
-
 class StoreServerAction
 {
     public function __construct(
@@ -50,9 +48,6 @@ class StoreServerAction
                 new UpdateWorkerSshKeysOnServerJob($server),
                 new CreateServerSshKeyJob($server),
                 new UploadServerSshKeyToServerJob($server, (string) config('servers.worker_user')),
-
-                // TODO: CRITICAL! Don't forget the rest of the stuff I maybe should do here!
-
             ];
             
             $configurationJobClass = (string) config('servers.types.' . $server->type . '.configuration_job_class');
