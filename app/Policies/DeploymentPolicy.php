@@ -16,13 +16,13 @@ class DeploymentPolicy
         return $user->is($project->user);
     }
 
+    public function create(User $user, Project $project): bool
+    {
+        return $user->is($project->user);
+    }
+
     public function view(User $user, Deployment $deployment): bool
     {
         return $user->is($deployment->user);
-    }
-
-    public function deploy(User $user, Project $project): bool
-    {
-        return $user->is($project->user);
     }
 }

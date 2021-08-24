@@ -7,8 +7,6 @@ use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-// TODO: CRITICAL! Cover with tests.
-
 class ProjectPolicy
 {
     use HandlesAuthorization;
@@ -24,11 +22,6 @@ class ProjectPolicy
     }
 
     public function update(User $user, Project $project): bool
-    {
-        return $user->is($project->user);
-    }
-
-    public function deploy(User $user, Project $project): bool
     {
         return $user->is($project->user);
     }

@@ -74,7 +74,7 @@ class DeploymentsIndexTable extends LivewireComponent
      */
     public function deploy(DeployProjectAction $deployAction): void
     {
-        $this->authorize('deploy', $this->project);
+        $this->authorize('create', [Deployment::class, $this->project]);
 
         $deployAction->execute($this->project);
     }
