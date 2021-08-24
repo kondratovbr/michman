@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Database;
+use App\Models\DatabaseUser;
 use App\Models\Provider;
 use App\Models\Server;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,9 +31,22 @@ class DatabaseFactory extends Factory
      */
     public function withServer(): static
     {
-        return $this->state([
-            'server_id' => Server::factory()->withProvider(),
-        ]);
+        return $this->for(Server::factory()->withProvider());
+    }
+
+    /**
+     * Also create database users for this database on the same server.
+     */
+    public function withDatabaseUsers(int $count = 1): static
+    {
+        return $this->afterCreating(function (Database $database) use ($count) {
+            $database->databaseUsers()->sync(
+                DatabaseUser::factory()
+                    ->for($database->server)
+                    ->count($count)
+                    ->create()
+            );
+        });
     }
 
     /**

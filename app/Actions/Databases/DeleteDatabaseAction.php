@@ -8,8 +8,6 @@ use App\Models\Database;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class DeleteDatabaseAction
 {
     public function __construct(
