@@ -16,5 +16,4 @@ class NewProjectData extends DataTransferObject
     public bool $create_db_user = false;
     public string|null $db_user_name = null;
     public string|null $db_user_password = null;
-    public bool $use_deploy_key = true;
 }

@@ -28,7 +28,7 @@ class CreateProjectsTable extends Migration
             $table->string('branch')->nullable();
             $table->string('package')->nullable();
             $table->string('root')->nullable();
-            $table->boolean('use_deploy_key');
+            $table->boolean('use_deploy_key')->nullable();
             $table->string('requirements_file')->nullable();
 
             $table->text('environment')->nullable();

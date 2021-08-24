@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $repo
  * @property string|null $branch
  * @property string|null $package
- * @property bool $useDeployKey
+ * @property bool|null $useDeployKey
  * @property string|null $requirementsFile
  * @property string|null $environment
  * @property string|null $deployScript
@@ -83,7 +83,7 @@ class Project extends AbstractModel
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'aliases' => 'array',
-        'use_deploy_key' => ForceBooleanCast::class,
+        'use_deploy_key' => 'bool',
         'environment' => 'encrypted',
     ];
 
