@@ -6,6 +6,8 @@ use App\Models\DeploySshKey;
 use App\Models\Project;
 use phpseclib3\Crypt\EC;
 
+// TODO: CRITICAL! Cover with tests.
+
 class CreateDeploySshKeyAction
 {
     public function execute(Project $project): DeploySshKey
