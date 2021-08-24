@@ -257,36 +257,6 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
             ->assertHasErrors(['state.database']);
     }
 
-    public function test_server_without_db_name_cannot_be_created()
-    {
-        /** @var Provider $provider */
-        $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
-
-        $state = [
-            'provider_id' => $provider->id,
-            'name' => Str::random(),
-            'region' => 'nyc_1',
-            'size' => 'size_1',
-            'type' => 'app',
-            'python_version' => '3_9',
-            'database' => 'mysql-8_0',
-            'db_name' => null,
-            'cache' => 'redis',
-            'add_ssh_key_to_vcs' => true,
-        ];
-
-        $this->actingAs($user);
-
-        Livewire::test(DigitalOceanForm::class)
-            ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
-            ->set('availableRegions', ['nyc_1' => 'New York 1', 'nyc_2' => 'New York 2'])
-            ->set('availableSizes', ['size_1' => 'Size 1', 'size_2' => 'Size 2'])
-            ->set('state', $state)
-            ->call('store', Mockery::mock(StoreServerAction::class))
-            ->assertHasErrors(['state.db_name']);
-    }
-
     public function test_server_with_invalid_cache_cannot_be_created()
     {
         /** @var Provider $provider */
