@@ -7,8 +7,6 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-// TODO: CRITICAL! Cover with tests!
-
 class DeploymentPolicy
 {
     use HandlesAuthorization;
