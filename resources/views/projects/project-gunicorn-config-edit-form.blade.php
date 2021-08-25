@@ -3,7 +3,7 @@
 
 <x-form-section submit="store">
 
-    <x-slot name="title">{{ __('projects.deployment.gunicorn-config.title') }}</x-slot>
+    <x-slot name="title">{{ __('projects.config.gunicorn-config.title') }}</x-slot>
 
     <x-slot name="form">
         <x-field class="mt-6">

@@ -9,6 +9,11 @@
             {{ __('projects.deployment.button') }}
         </x-menu.item>
 
+        <x-menu.item show="config">
+            <x-slot name="icon"><i class="fas fa-cogs"></i></x-slot>
+            {{ __('projects.config.button') }}
+        </x-menu.item>
+
         <x-menu.item show="queue">
 {{--            TODO: CRITICAL! Placeholder icon. The actual one - "fas fa-user-hard-hat".--}}
             <x-slot name="icon"><i class="fas fa-square"></i></x-slot>

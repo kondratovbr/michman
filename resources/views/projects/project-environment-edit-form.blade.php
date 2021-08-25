@@ -2,7 +2,7 @@
 
 <x-form-section submit="store">
 
-    <x-slot name="title">{{ __('projects.deployment.env.title') }}</x-slot>
+    <x-slot name="title">{{ __('projects.config.env.title') }}</x-slot>
 
     <x-slot name="form">
 

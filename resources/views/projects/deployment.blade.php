@@ -14,22 +14,6 @@
 
         <x-section-separator/>
 
-        <livewire:projects.project-environment-edit-form :project="$project" />
-
-        <x-section-separator/>
-
-        <livewire:projects.project-deploy-script-edit-form :project="$project" />
-
-        <x-section-separator/>
-
-        <livewire:projects.project-gunicorn-config-edit-form :project="$project" />
-
-        <x-section-separator/>
-
-        <livewire:projects.project-nginx-config-edit-form :project="$project" />
-
-        <x-section-separator/>
-
         <div>Maintenance Mode</div>
 
         <x-section-separator/>

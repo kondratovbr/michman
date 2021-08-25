@@ -2,11 +2,11 @@
 
 <x-form-section submit="store">
 
-    <x-slot name="title">{{ __('projects.deployment.deploy-script.title') }}</x-slot>
+    <x-slot name="title">{{ __('projects.config.deploy-script.title') }}</x-slot>
 
     <x-slot name="form">
 
-        <x-message>{{ __('projects.deployment.deploy-script.explanation') }}</x-message>
+        <x-message>{{ __('projects.config.deploy-script.explanation') }}</x-message>
 
         <x-field class="mt-6">
             <x-editor
