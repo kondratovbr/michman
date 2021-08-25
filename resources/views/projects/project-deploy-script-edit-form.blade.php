@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Add some explanation and a link to docs (with more detailed explanation).--}}
+{{--TODO: CRITICAL! Add some more explanation or a link to docs (with more detailed explanation).--}}
 
 <x-form-section submit="store">
 
