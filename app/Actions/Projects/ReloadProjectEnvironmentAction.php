@@ -14,9 +14,9 @@ class ReloadProjectEnvironmentAction
         protected UpdateProjectEnvironmentAction $updateAction,
     ) {}
 
-    public function execute(Project $project): string
+    public function execute(Project $project): string|null
     {
-        return DB::transaction(function () use ($project):string {
+        return DB::transaction(function () use ($project):string|null {
             /** @var Project $project */
             $project = $project->newQuery()
                 ->with(['servers' => function (Relation $query) {
@@ -26,7 +26,7 @@ class ReloadProjectEnvironmentAction
                 ->findOrFail($project->getKey());
 
             if ($project->servers->count() == 0)
-                return '';
+                return null;
 
             $environment = $this->retrieveScript->execute($project->servers->first(), $project);
 
