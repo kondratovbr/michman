@@ -52,6 +52,9 @@ RUN if [ "${XDEBUG}" = 'true' ]; then \
     && echo "xdebug.log_level=0" >> $XDEBUG_CONFIG \
     && echo "xdebug.client_host=host.docker.internal" >> $XDEBUG_CONFIG ;\
 fi;
+RUN if [ "${XDEBUG}" = 'false' ]; then \
+    echo "xdebug.mode=off" >> $XDEBUG_CONFIG ;\
+fi;
 
 RUN echo "max_execution_time = 600" >> /etc/php/8.0/cli/php.ini
 
