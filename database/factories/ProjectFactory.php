@@ -67,7 +67,10 @@ class ProjectFactory extends Factory
             'branch' => 'master',
             'package' => 'the_app',
             'use_deploy_key' => false,
-            // TODO: Also need to generate initial config files here.
+            'environment' => 'Environment variables go here!',
+            'deploy_script' => 'Deploy script goes here!',
+            'gunicorn_config' => 'Gunicorn config goes here!',
+            'nginx_config' => 'Nginx config goes here!',
         ]);
     }
 

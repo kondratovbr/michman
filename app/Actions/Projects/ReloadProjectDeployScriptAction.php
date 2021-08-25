@@ -7,8 +7,6 @@ use App\Scripts\User\RetrieveProjectDeployScriptFromServerScript;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class ReloadProjectDeployScriptAction
 {
     public function __construct(
