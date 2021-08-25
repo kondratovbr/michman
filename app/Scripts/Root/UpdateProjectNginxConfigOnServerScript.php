@@ -14,9 +14,7 @@ class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
-        $configFile = "/etc/nginx/sites-available/{$project->projectName}.conf";
-
-        if (! $this->sendString($configFile, $project->nginxConfig))
-            throw new ServerScriptException("Failed to send string to file: {$configFile}");
+        if (! $this->sendString($project->nginxConfigFilePath, $project->nginxConfig))
+            throw new ServerScriptException("Failed to send string to file: {$project->nginxConfigFilePath}");
     }
 }

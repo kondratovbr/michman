@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Projects;
 
+use App\Actions\Projects\ReloadProjectNginxConfigAction;
 use App\Actions\Projects\UpdateProjectNginxConfigAction;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
@@ -9,8 +10,6 @@ use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
-
-// TODO: CRITICAL! Totally forgot to implement the "reload" function.
 
 /*
  * TODO: CRITICAL! I also forgot to implement the Gunicorn config editing features at all!
@@ -63,6 +62,20 @@ class ProjectNginxConfigEditForm extends LivewireComponent
         $this->authorize('update', $this->project);
 
         $action->execute($this->project, $nginxConfig);
+
+        $this->resetState();
+    }
+
+    /**
+     * Synchronously load the existing Nginx config from a server (if it exists).
+     */
+    public function reload(ReloadProjectNginxConfigAction $action): void
+    {
+        $this->authorize('update', $this->project);
+
+        $action->execute($this->project);
+
+        $this->project->refresh();
 
         $this->resetState();
     }
