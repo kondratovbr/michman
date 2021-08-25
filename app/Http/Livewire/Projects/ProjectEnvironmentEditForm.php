@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Projects;
 
-use App\Actions\Projects\ReloadProjectEnvironmentAction;
+use App\Actions\Projects\RollbackProjectEnvironmentAction;
 use App\Actions\Projects\UpdateProjectEnvironmentAction;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
@@ -10,6 +10,8 @@ use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
+
+// TODO: CRITICAL! Test if all of this works. I have some complex queries going on with finished/successful deployments and such.
 
 /*
  * TODO: CRITICAL! I need to change the logic of these config editing forms slightly - don't update actual files on servers immediately. Upload the updated files only during the next deployment, or else it would be very easy to break something and hard to track it.
@@ -21,6 +23,9 @@ use Livewire\Component as LivewireComponent;
  *     NOTE: Currently I don't even restart the corresponding services when updating the configs,
  *           which is just stupid - they may restart automatically, so I can't rely on it.
  */
+// TODO: CRITICAL! Obviously - don't forget to change the deployment logic accordingly.
+
+// TODO: CRITICAL! CONTINUE. OK, I've updated this form, now do the other three. Then - update the deployment logic and test it out. And don't forget tests.
 
 class ProjectEnvironmentEditForm extends LivewireComponent
 {
@@ -30,6 +35,19 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     public Project $project;
 
     public string $environment = '';
+
+    /**
+     * Check if the currently saved project environment is not the same as the last deployed one.
+     */
+    public function getModifiedProperty(): bool
+    {
+        $deployment = $this->project->getCurrentDeployment();
+
+        if (is_null($deployment))
+            return false;
+
+        return $deployment->environment !== $this->project->environment;
+    }
 
     protected function prepareForValidation($attributes): array
     {
@@ -52,6 +70,8 @@ class ProjectEnvironmentEditForm extends LivewireComponent
         $this->authorize('update', $this->project);
 
         $this->resetState();
+
+        ray($this->modified);
     }
 
     protected function resetState(): void
@@ -79,15 +99,13 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     }
 
     /**
-     * Synchronously load the existing environment from a server (if it exists).
+     * Replace the current project's environment with the last deployed one.
      */
-    public function reload(ReloadProjectEnvironmentAction $action): void
+    public function rollback(RollbackProjectEnvironmentAction $action): void
     {
         $this->authorize('update', $this->project);
 
         $action->execute($this->project);
-
-        $this->project->refresh();
 
         $this->resetState();
     }

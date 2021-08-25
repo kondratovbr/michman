@@ -17,11 +17,16 @@
     </x-slot>
 
     <x-slot name="actions">
+{{--        TODO: CRITICAL! Make these buttons spaced out (the rollback button is pretty dangerous), i.e. "justify-between". But for this I'll have to remove positioning in form-section and update every place I use it.--}}
         <div class="flex items-center space-x-3">
+            @if($this->modified)
+                <x-badge>Modified</x-badge>
+            @endif
             <x-buttons.secondary
-                wire:click.prevent="reload"
+                wire:click.prevent="rollback"
                 wire:loading.attr="disabled"
-            >{{ __('buttons.reload') }}</x-buttons.secondary>
+                :disabled="! $this->modified"
+            >{{ __('buttons.rollback') }}</x-buttons.secondary>
             <x-buttons.primary
                 wire:click.prevent="update"
                 wire:loading.attr="disabled"

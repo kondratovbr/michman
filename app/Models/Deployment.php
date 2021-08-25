@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Events\Deployments\DeploymentCreatedEvent;
 use App\Events\Deployments\DeploymentUpdatedEvent;
-use App\Support\Arr;
+use App\QueryBuilders\DeploymentQueryBuilder;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Database\Factories\DeploymentFactory;
@@ -24,6 +24,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $branch
  * @property string|null $commit
+ * @property string|null $environment
+ * @property string|null $deployScript
+ * @property string|null $gunicornConfig
+ * @property string|null $nginxConfig
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -41,6 +45,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read Collection $servers
  * @property-read DeploymentServerPivot|null $serverDeployment
  *
+ * @method static DeploymentQueryBuilder query()
  * @method static DeploymentFactory factory(...$parameters)
  */
 class Deployment extends AbstractModel
@@ -56,6 +61,10 @@ class Deployment extends AbstractModel
     protected $fillable = [
         'branch',
         'commit',
+        'environment',
+        'deploy_script',
+        'gunicorn_config',
+        'nginx_config',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -197,5 +206,10 @@ class Deployment extends AbstractModel
             ->using(DeploymentServerPivot::class)
             ->withPivot(DeploymentServerPivot::$pivotAttributes)
             ->withTimestamps();
+    }
+
+    public function newEloquentBuilder($query): DeploymentQueryBuilder
+    {
+        return new DeploymentQueryBuilder($query);
     }
 }

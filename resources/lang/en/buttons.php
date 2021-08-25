@@ -13,5 +13,6 @@ return [
     'update' => 'Update',
     'reload' => 'Reload',
     'close' => 'Close',
+    'rollback' => 'Rollback',
 
 ];

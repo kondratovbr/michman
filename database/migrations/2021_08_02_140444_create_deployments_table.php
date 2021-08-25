@@ -19,6 +19,11 @@ class CreateDeploymentsTable extends Migration
             $table->string('branch');
             $table->string('commit')->nullable();
 
+            $table->text('environment')->nullable();
+            $table->text('deploy_script')->nullable();
+            $table->text('gunicorn_config')->nullable();
+            $table->text('nginx_config')->nullable();
+
             $table->timestamps();
         });
     }

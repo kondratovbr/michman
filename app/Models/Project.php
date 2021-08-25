@@ -43,6 +43,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $gunicornConfigFilePath
  * @property-read string $projectDir
  * @property-read string $michmanDir
+ * @property-read bool $deployed
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -171,11 +172,29 @@ class Project extends AbstractModel
     }
 
     /**
+     * Check if this project is currently deployed.
+     */
+    public function getDeployedProperty(): bool
+    {
+        // TODO: CRITICAL! Update this when "undeploy" feature is implemented,
+        //       because it will be incorrect.
+        return ! is_null($this->getCurrentDeployment());
+    }
+
+    /**
      * Check if the project has a configured Git repository.
      */
     public function repoInstalled(): bool
     {
         return isset($this->vcsProvider) && ! empty($this->repo);
+    }
+
+    /**
+     * Get the latest successful deployment of this project.
+     */
+    public function getCurrentDeployment(): Deployment|null
+    {
+        return $this->deployments()->successful()->latest()->first();
     }
 
     /**
