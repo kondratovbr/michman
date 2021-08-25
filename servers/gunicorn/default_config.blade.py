@@ -4,5 +4,5 @@
 workers = 3
 
 # A worker process will be reloaded after handling this many requests.
-# This provides basic protection from memory leaks.
+# Provides basic protection from memory leaks.
 max_requests = 100
