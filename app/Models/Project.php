@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $deployScriptFilePath
  * @property-read string $envFilePath
  * @property-read string $nginxConfigFilePath
+ * @property-read string $gunicornConfigFilePath
  * @property-read string $projectDir
  * @property-read string $michmanDir
  *
@@ -143,6 +144,14 @@ class Project extends AbstractModel
     public function getNginxConfigFilePathAttribute(): string
     {
         return "/etc/nginx/sites-available/{$this->projectName}.conf";
+    }
+
+    /**
+     * Get the path to the Gunicorn config file on a server.
+     */
+    public function getGunicornConfigFilePathAttribute(): string
+    {
+        return "{$this->michmanDir}/{$this->projectName}_gunicorn_config.py";
     }
 
     /**

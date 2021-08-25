@@ -22,7 +22,7 @@
 
         <x-section-separator/>
 
-        <div>Gunicorn Config</div>
+        <livewire:projects.project-gunicorn-config-edit-form :project="$project" />
 
         <x-section-separator/>
 

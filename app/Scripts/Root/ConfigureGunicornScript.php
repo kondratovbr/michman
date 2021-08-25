@@ -17,8 +17,7 @@ class ConfigureGunicornScript extends AbstractServerScript
 
         $username = $project->serverUsername;
         $projectName = $project->projectName;
-        $michmanDir = "/home/{$username}/.michman";
-        $configFile = "{$michmanDir}/{$projectName}_gunicorn_config.py";
+        $configFile = $project->gunicornConfigFilePath;
 
         if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.socket",
