@@ -11,6 +11,17 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+/*
+ * TODO: CRITICAL! I need to change the logic of these config editing forms slightly - don't update actual files on servers immediately. Upload the updated files only during the next deployment, or else it would be very easy to break something and hard to track it.
+ *     This would mean that I have to make the logic of these forms more complicated:
+ *         - Notify the user that the file won't be updated immediately.
+ *         - Notify the user if servers currently have a different version of the config.
+ *         - Allow the user to rollback the changes back to the currently deployed version.
+ *         - ...
+ *     NOTE: Currently I don't even restart the corresponding services when updating the configs,
+ *           which is just stupid - they may restart automatically, so I can't rely on it.
+ */
+
 class ProjectEnvironmentEditForm extends LivewireComponent
 {
     use AuthorizesRequests,
