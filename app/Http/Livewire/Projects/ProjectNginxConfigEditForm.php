@@ -10,6 +10,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+// TODO: CRITICAL! Totally forgot to implement the "reload" function.
+
+/*
+ * TODO: CRITICAL! I also forgot to implement the Gunicorn config editing features at all!
+ */
+
 class ProjectNginxConfigEditForm extends LivewireComponent
 {
     use AuthorizesRequests,
