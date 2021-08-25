@@ -8,8 +8,6 @@ use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class UpdateProjectNginxConfigAction
 {
     public function execute(Project $project, string $nginxConfig): void
