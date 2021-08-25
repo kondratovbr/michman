@@ -36,6 +36,16 @@ class PythonFactory extends Factory
     }
 
     /**
+     * Set the status of this python to "updating".
+     */
+    public function updating(): static
+    {
+        return $this->state([
+            'status' => Python::STATUS_UPDATING,
+        ]);
+    }
+
+    /**
      * Also create a server for this python.
      *
      * @return $this
