@@ -11,8 +11,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests!
-
 class ProjectDeployScriptEditForm extends LivewireComponent
 {
     use AuthorizesRequests,
