@@ -7,8 +7,6 @@ use App\Scripts\User\RetrieveProjectEnvironmentFromServerScript;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class ReloadProjectEnvironmentAction
 {
     public function __construct(
