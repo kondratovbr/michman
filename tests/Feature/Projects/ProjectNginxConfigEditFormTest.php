@@ -78,7 +78,8 @@ class ProjectNginxConfigEditFormTest extends AbstractFeatureTest
             $mock
                 ->shouldReceive('execute')
                 ->withArgs(fn(Project $projectArg) => $projectArg->is($project))
-                ->once();
+                ->once()
+                ->andReturn('This is the modified Nginx config!');
         });
 
         Livewire::actingAs($user)->test(ProjectNginxConfigEditForm::class, ['project' => $project])

@@ -78,7 +78,8 @@ class ProjectDeployScriptEditFormTest extends AbstractFeatureTest
             $mock
                 ->shouldReceive('execute')
                 ->withArgs(fn(Project $projectArg) => $projectArg->is($project))
-                ->once();
+                ->once()
+                ->andReturn('This is the modified deploy script!');
         });
 
         Livewire::actingAs($user)->test(ProjectDeployScriptEditForm::class, ['project' => $project])

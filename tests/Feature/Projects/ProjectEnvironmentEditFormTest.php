@@ -79,7 +79,8 @@ class ProjectEnvironmentEditFormTest extends AbstractFeatureTest
             $mock
                 ->shouldReceive('execute')
                 ->withArgs(fn(Project $projectArg) => $projectArg->is($project))
-                ->once();
+                ->once()
+                ->andReturn('This is the modified environment!');
         });
 
         Livewire::actingAs($user)->test(ProjectEnvironmentEditForm::class, ['project' => $project])
