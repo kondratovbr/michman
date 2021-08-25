@@ -10,8 +10,6 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-// TODO: CRITICAL! Cover with tests!
-
 class UpdateProjectEnvironmentOnServerJob extends AbstractRemoteServerJob
 {
     use Batchable;
