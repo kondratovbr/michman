@@ -8,7 +8,7 @@ use Laravel\Jetstream\Features;
 use Livewire\Livewire;
 use Tests\AbstractFeatureTest;
 
-class DeleteAccountTest extends AbstractFeatureTest
+class DeleteAccountFormTest extends AbstractFeatureTest
 {
     public function test_user_accounts_can_be_deleted()
     {
