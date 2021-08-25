@@ -35,6 +35,8 @@ class InstallPythonJobTest extends AbstractFeatureTest
 
         $job = new InstallPythonJob($python);
 
+        $this->assertEquals('servers', $job->queue);
+
         app()->call([$job, 'handle']);
 
         $this->assertDatabaseHas('pythons', [
