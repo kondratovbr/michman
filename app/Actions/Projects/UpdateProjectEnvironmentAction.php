@@ -8,8 +8,6 @@ use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class UpdateProjectEnvironmentAction
 {
     public function execute(Project $project, string $environment): void
