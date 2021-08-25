@@ -26,6 +26,16 @@ class PythonFactory extends Factory
     }
 
     /**
+     * Set the status of this python to "installing".
+     */
+    public function installing(): static
+    {
+        return $this->state([
+            'status' => Python::STATUS_INSTALLING,
+        ]);
+    }
+
+    /**
      * Also create a server for this python.
      *
      * @return $this

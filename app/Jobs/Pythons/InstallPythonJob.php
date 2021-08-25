@@ -8,8 +8,6 @@ use App\Models\Python;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests!
-
 class InstallPythonJob extends AbstractRemoteServerJob
 {
     protected Python $python;
