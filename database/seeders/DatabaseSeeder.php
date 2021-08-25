@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // TODO: CRITICAL! CONTINUE. Some of my latest updates to seeders/factories don't work and seeding fails.
+
         $this->call([
             UserSeeder::class,
             ProviderSeeder::class,
