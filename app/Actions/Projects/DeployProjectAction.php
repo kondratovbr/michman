@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Figure out how to fail gracefully here if we can't get the commit hash and how to communicate this to the user.
 
+// TODO: CRITICAL! Should I enable the placeholder back if the deployment fails? I mean, when a project has been deployed already, what to do if a new deployment fails?
+
 // TODO: An automatic rollback on failure feature would be nice to have.
 
 // TODO: CRITICAL! Cover with tests!
