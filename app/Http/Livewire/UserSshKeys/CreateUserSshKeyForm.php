@@ -27,8 +27,8 @@ class CreateUserSshKeyForm extends LivewireComponent
     public function rules(): array
     {
         return [
-            'name' => Rules::alphaNumDashString(1, 255)->required(),
-            'publicKey' => Rules::sshPublicKey()->required(),
+            'state.name' => Rules::alphaNumDashString(1, 255)->required(),
+            'state.publicKey' => Rules::sshPublicKey()->required(),
         ];
     }
 
@@ -42,7 +42,7 @@ class CreateUserSshKeyForm extends LivewireComponent
      */
     public function store(StoreUserSshKeyAction $action): void
     {
-        $validated = $this->validate();
+        $validated = $this->validate()['state'];
 
         $this->authorize('create', [UserSshKey::class, Auth::user()]);
 
