@@ -40,7 +40,7 @@ class InstallRepoForm extends LivewireComponent
         'package' => '',
         'root' => 'static',
         'installDependencies' => true,
-        'useDeployKey' => null,
+        'useDeployKey' => true,
         'customPackage' => false,
         'requirementsFile' => 'requirements.txt',
     ];
@@ -104,8 +104,6 @@ class InstallRepoForm extends LivewireComponent
     public function resetState(): void
     {
         $this->reset('state');
-
-        $this->state['useDeployKey'] = $this->project->useDeployKey;
 
         $this->state['vcsProviderKey'] = Auth::user()->vcsProviders->first()->getKey();
     }
