@@ -36,8 +36,8 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'public_key',
         'name',
+        'public_key',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
