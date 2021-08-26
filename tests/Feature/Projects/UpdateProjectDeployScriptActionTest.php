@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Projects;
 
-use App\Actions\Projects\ReloadProjectDeployScriptAction;
 use App\Actions\Projects\UpdateProjectDeployScriptAction;
 use App\Events\Projects\ProjectUpdatedEvent;
 use App\Jobs\Projects\UpdateProjectDeployScriptOnServerJob;

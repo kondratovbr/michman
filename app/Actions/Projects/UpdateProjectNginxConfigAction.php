@@ -2,11 +2,10 @@
 
 namespace App\Actions\Projects;
 
-use App\Jobs\Projects\UpdateProjectNginxConfigOnServerJob;
 use App\Models\Project;
-use App\Models\Server;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
+
+// TODO: CRITICAL! Cover with tests.
 
 class UpdateProjectNginxConfigAction
 {
@@ -18,12 +17,6 @@ class UpdateProjectNginxConfigAction
 
             $project->nginxConfig = $nginxConfig;
             $project->save();
-
-            $jobs = $project->servers->map(
-                fn(Server $server) => new UpdateProjectNginxConfigOnServerJob($server, $project)
-            );
-
-            Bus::batch($jobs)->onQueue($jobs->first()->queue)->dispatch();
         }, 5);
     }
 }

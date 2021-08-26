@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Projects;
 
-use App\Actions\Projects\ReloadProjectGunicornConfigAction;
+use App\Actions\Projects\RollbackProjectGunicornConfigAction;
 use App\Actions\Projects\UpdateProjectGunicornConfigAction;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
@@ -19,6 +19,19 @@ class ProjectGunicornConfigEditForm extends LivewireComponent
     public Project $project;
 
     public string $gunicornConfig;
+
+    /**
+     * Check if the currently saved project's Gunicorn config is not the same as the last deployed one.
+     */
+    public function getModifiedProperty(): bool
+    {
+        $deployment = $this->project->getCurrentDeployment();
+
+        if (is_null($deployment))
+            return false;
+
+        return $deployment->gunicornConfig !== $this->project->gunicornConfig;
+    }
 
     protected function prepareForValidation($attributes): array
     {
@@ -63,15 +76,13 @@ class ProjectGunicornConfigEditForm extends LivewireComponent
     }
 
     /**
-     * Synchronously load the existing Gunicorn config from a server (if it exists).
+     * Replace the current project's Gunicorn config with the last deployed one.
      */
-    public function reload(ReloadProjectGunicornConfigAction $action): void
+    public function rollback(RollbackProjectGunicornConfigAction $action): void
     {
         $this->authorize('update', $this->project);
 
         $action->execute($this->project);
-
-        $this->project->refresh();
 
         $this->resetState();
     }

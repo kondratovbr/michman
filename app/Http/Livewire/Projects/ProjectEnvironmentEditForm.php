@@ -37,7 +37,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
     public string $environment = '';
 
     /**
-     * Check if the currently saved project environment is not the same as the last deployed one.
+     * Check if the currently saved project's environment is not the same as the last deployed one.
      */
     public function getModifiedProperty(): bool
     {
@@ -70,8 +70,6 @@ class ProjectEnvironmentEditForm extends LivewireComponent
         $this->authorize('update', $this->project);
 
         $this->resetState();
-
-        ray($this->modified);
     }
 
     protected function resetState(): void

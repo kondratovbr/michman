@@ -2,10 +2,7 @@
 
 namespace App\Actions\Projects;
 
-use App\Jobs\Projects\UpdateGunicornConfigOnServerJob;
 use App\Models\Project;
-use App\Models\Server;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests.
@@ -20,12 +17,6 @@ class UpdateProjectGunicornConfigAction
 
             $project->gunicornConfig = $config;
             $project->save();
-
-            $jobs = $project->servers->map(
-                fn(Server $server) => new UpdateGunicornConfigOnServerJob($server, $project)
-            );
-
-            Bus::batch($jobs)->onQueue($jobs->first()->queue)->dispatch();
         }, 5);
     }
 }

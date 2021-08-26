@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Projects;
 
-use App\Actions\Projects\ReloadProjectDeployScriptAction;
+use App\Actions\Projects\RollbackProjectDeployScriptAction;
 use App\Actions\Projects\UpdateProjectDeployScriptAction;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
@@ -19,6 +19,19 @@ class ProjectDeployScriptEditForm extends LivewireComponent
     public Project $project;
 
     public string $script = '';
+
+    /**
+     * Check if the currently saved project deploy script is not the same as the last deployed one.
+     */
+    public function getModifiedProperty(): bool
+    {
+        $deployment = $this->project->getCurrentDeployment();
+
+        if (is_null($deployment))
+            return false;
+
+        return $deployment->deployScript !== $this->project->deployScript;
+    }
 
     protected function prepareForValidation($attributes): array
     {
@@ -63,15 +76,13 @@ class ProjectDeployScriptEditForm extends LivewireComponent
     }
 
     /**
-     * Synchronously load the existing deploy script from a server (if it exists).
+     * Replace the current project's deploy script with the last deployed one.
      */
-    public function reload(ReloadProjectDeployScriptAction $action): void
+    public function rollback(RollbackProjectDeployScriptAction $action): void
     {
         $this->authorize('update', $this->project);
 
         $action->execute($this->project);
-
-        $this->project->refresh();
 
         $this->resetState();
     }

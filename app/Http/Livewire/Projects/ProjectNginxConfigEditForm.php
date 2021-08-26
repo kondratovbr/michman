@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Projects;
 
-use App\Actions\Projects\ReloadProjectNginxConfigAction;
+use App\Actions\Projects\RollbackProjectNginxConfigAction;
 use App\Actions\Projects\UpdateProjectNginxConfigAction;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
@@ -10,10 +10,6 @@ use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
-
-/*
- * TODO: CRITICAL! I also forgot to implement the Gunicorn config editing features at all!
- */
 
 class ProjectNginxConfigEditForm extends LivewireComponent
 {
@@ -23,6 +19,19 @@ class ProjectNginxConfigEditForm extends LivewireComponent
     public Project $project;
 
     public string $nginxConfig = '';
+
+    /**
+     * Check if the currently saved project's Nginx config is not the same as the last deployed one.
+     */
+    public function getModifiedProperty(): bool
+    {
+        $deployment = $this->project->getCurrentDeployment();
+
+        if (is_null($deployment))
+            return false;
+
+        return $deployment->nginxConfig !== $this->project->nginxConfig;
+    }
 
     protected function prepareForValidation($attributes): array
     {
@@ -67,15 +76,13 @@ class ProjectNginxConfigEditForm extends LivewireComponent
     }
 
     /**
-     * Synchronously load the existing Nginx config from a server (if it exists).
+     * Replace the current project's Nginx config with the last deployed one.
      */
-    public function reload(ReloadProjectNginxConfigAction $action): void
+    public function rollback(RollbackProjectNginxConfigAction $action): void
     {
         $this->authorize('update', $this->project);
 
         $action->execute($this->project);
-
-        $this->project->refresh();
 
         $this->resetState();
     }
