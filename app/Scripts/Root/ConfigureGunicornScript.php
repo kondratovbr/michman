@@ -15,9 +15,7 @@ class ConfigureGunicornScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
-        $username = $project->serverUsername;
         $projectName = $project->projectName;
-        $configFile = $project->gunicornConfigFilePath;
 
         if (! $this->sendString(
             "/etc/systemd/system/{$projectName}.socket",
@@ -32,15 +30,6 @@ class ConfigureGunicornScript extends AbstractServerScript
         )) {
             throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
         }
-
-        if (! $this->sendString(
-            $configFile,
-            $project->gunicornConfig,
-        )) {
-            throw new ServerScriptException("Failed to send string to file: {$configFile}");
-        }
-
-        $this->exec("chown {$username}:{$username} {$configFile}");
 
         $this->exec("systemctl daemon-reload");
     }

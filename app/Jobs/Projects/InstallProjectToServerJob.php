@@ -10,9 +10,6 @@ use App\Scripts\Root\EnablePlaceholderSiteScript;
 use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
-use App\Scripts\User\UpdateProjectDeployScriptOnServerScript;
-use App\Scripts\User\UpdateProjectEnvironmentOnServerScript;
-use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
 
@@ -38,16 +35,17 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         CloneGitRepoScript $cloneRepo,
         CreateProjectVenvScript $createVenv,
         ConfigureGunicornScript $configureGunicorn,
-        UpdateProjectEnvironmentOnServerScript $updateEnv,
-        UpdateProjectDeployScriptOnServerScript $updateDeployScript,
-        UpdateProjectNginxConfigOnServerScript $updateNginxConfig,
         UploadPlaceholderPageScript $uploadPlaceholderPage,
         EnablePlaceholderSiteScript $enablePlaceholderSite,
         RestartNginxScript $restartNginx,
     ): void {
+
+        /*
+         * TODO: I can install the placeholder during project creation, before this step.
+         */
+
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $configureGunicorn, $updateEnv, $updateDeployScript, $updateNginxConfig,
-            $uploadPlaceholderPage, $enablePlaceholderSite, $restartNginx,
+            $cloneRepo, $createVenv, $configureGunicorn, $uploadPlaceholderPage, $enablePlaceholderSite, $restartNginx,
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -66,12 +64,6 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
              *       Should probably move the venv somewhere else.
              */
             $createVenv->execute($server, $project, $userSsh);
-
-            $updateEnv->execute($server, $project, $userSsh);
-
-            $updateDeployScript->execute($server, $project, $userSsh);
-
-            $updateNginxConfig->execute($server, $project, $rootSsh);
 
             $configureGunicorn->execute($server, $project, $rootSsh);
 
