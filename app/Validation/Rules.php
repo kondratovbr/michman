@@ -13,6 +13,7 @@ namespace App\Validation;
 
 use App\Rules\DomainRule;
 use App\Rules\GitRepoNameRule;
+use App\Rules\SshPublicKeyRule;
 use App\Rules\UnixAbsolutePathRule;
 use App\Rules\UnixRelativePathRule;
 
@@ -176,5 +177,14 @@ class Rules extends AbstractBaseRules
             'min:1',
             'max:255',
         ]))->addRule(new GitRepoNameRule);
+    }
+
+    static public function sshPublicKey(): static
+    {
+        return (new static([
+            'string',
+            'min:1',
+            'max:2048',
+        ]))->addRule(new SshPublicKeyRule);
     }
 }

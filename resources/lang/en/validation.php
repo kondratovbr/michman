@@ -139,6 +139,7 @@ return [
         'domain' => 'Enter a valid domain name (example.com). Use IDN (punycode) for non-latin names.',
         'path' => 'Enter a valid Unix path.',
         'repo' => 'Enter a valid Git repository name including a username, example: user/repo',
+        'ssh-public-key' => 'This doesn\'t look like a valid SSH public key.',
     ],
 
     /*

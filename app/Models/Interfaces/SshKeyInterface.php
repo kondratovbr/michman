@@ -13,6 +13,7 @@ use phpseclib3\Crypt\Common\PublicKey;
  *
  * @property-read string $publicKeyString
  * @property-read string|null $privateKeyString
+ * @property-read string $publicKeyFingerprint
  */
 interface SshKeyInterface
 {
@@ -27,4 +28,6 @@ interface SshKeyInterface
     public function getPublicKeyStringAttribute(): string;
 
     public function getPrivateKeyStringAttribute(): string|null;
+
+    public function getPublicKeyFingerprintAttribute(): string;
 }

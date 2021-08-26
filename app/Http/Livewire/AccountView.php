@@ -12,6 +12,7 @@ class AccountView extends AbstractSubpagesView
         'profile' => 'profile.show',
         'providers' => 'providers.show',
         'vcs' => 'vcs.show',
+        'ssh' => 'user-ssh-keys.show',
         //
     ];
 

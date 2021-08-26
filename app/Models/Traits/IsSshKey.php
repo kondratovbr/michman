@@ -89,6 +89,11 @@ trait IsSshKey
         return $this->getPrivateKeyString();
     }
 
+    public function getPublicKeyFingerprintAttribute(): string
+    {
+        return $this->publicKey->getFingerprint('md5');
+    }
+
     /**
      * Convert a key to an OpenSSH formatted string with a proper comment included.
      */

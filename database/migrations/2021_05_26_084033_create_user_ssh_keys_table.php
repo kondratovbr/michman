@@ -15,9 +15,8 @@ class CreateUserSshKeysTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
 
-            $table->string('username');
-            $table->text('public_key');
             $table->string('name');
+            $table->text('public_key');
 
             $table->timestamps();
         });

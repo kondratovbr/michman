@@ -72,6 +72,32 @@ return [
 
         'button' => 'SSH Keys',
 
+        'create' => [
+            'title' => 'Add an SSH key',
+            'description' => 'These keys will be automatically added to every new server you create.',
+        ],
+
+        'index' => [
+            'title' => 'Active Keys',
+        ],
+
+        'name' => [
+            'title' => 'Name',
+        ],
+
+        'public-key' => [
+            'title' => 'Public Key',
+        ],
+
+        'fingerprint' => [
+            'title' => 'Fingerprint',
+        ],
+
+        'empty' => 'You haven\'t added any SSH keys yet.',
+        'add-to-servers' => 'Add To All Servers',
+        'delete' => 'Delete Key',
+        'delete-and-remove' => 'Delete and Remove From All Servers',
+
     ],
 
     'providers' => [
