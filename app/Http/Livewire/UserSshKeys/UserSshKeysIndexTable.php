@@ -9,11 +9,17 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+// TODO: CRITICAL! CONTINUE. Implement adding these keys to new servers, implement adding them to existing servers and implement two removal options - just remove from Michman or remove from all servers as well.
+
 class UserSshKeysIndexTable extends LivewireComponent
 {
     use AuthorizesRequests;
 
     public Collection $keys;
+
+    protected $listeners = [
+        'user-ssh-key-stored' => '$refresh',
+    ];
 
     public function mount(): void
     {
