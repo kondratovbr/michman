@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 use App\Actions\Projects\StoreProjectAction;
 use App\DataTransferObjects\NewProjectData;
-use App\Facades\Auth;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Project;
 use App\Models\Server;
