@@ -5,11 +5,18 @@ namespace App\Actions\UserSshKeys;
 use App\DataTransferObjects\UserSshKeyData;
 use App\Models\User;
 use App\Models\UserSshKey;
+use phpseclib3\Crypt\PublicKeyLoader;
 
 class StoreUserSshKeyAction
 {
     public function execute(UserSshKeyData $data, User $user): UserSshKey
     {
-        return $user->userSshKeys()->create($data->toArray());
+        /** @var UserSshKey $key */
+        $key = $user->userSshKeys()->make($data->toArray());
+
+        $key->publicKey = PublicKeyLoader::loadPublicKey($data->publicKey);
+        $key->save();
+
+        return $key;
     }
 }
