@@ -12,7 +12,9 @@ use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Figure out how to fail gracefully fail here if we can't get the commit hash and how to communicate this to the user.
+// TODO: CRITICAL! Figure out how to fail gracefully here if we can't get the commit hash and how to communicate this to the user.
+
+// TODO: An automatic rollback on failure feature would be nice to have.
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -29,6 +31,10 @@ class DeployProjectAction
                 'branch' => $project->branch,
                 'commit' => $project->vcsProvider->api()
                     ->getLatestCommitHash($project->repo, $project->branch),
+                'environment' => $project->environment,
+                'deploy_script' => $project->deployScript,
+                'gunicorn_config' => $project->gunicornConfig,
+                'nginx_config' => $project->nginxConfig,
             ]);
 
             $deployment->servers()->sync($project->servers);

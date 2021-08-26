@@ -10,9 +10,9 @@ use phpseclib3\Net\SFTP;
 
 class UpdateProjectEnvironmentOnServerScript extends AbstractServerScript
 {
-    public function execute(Server $server, Project $project, SFTP $ssh = null): void
+    public function execute(Server $server, Project $project, SFTP $userSsh = null): void
     {
-        $this->init($server, $ssh, $project->serverUsername);
+        $this->init($server, $userSsh, $project->serverUsername);
 
         $envFile = $project->envFilePath;
 

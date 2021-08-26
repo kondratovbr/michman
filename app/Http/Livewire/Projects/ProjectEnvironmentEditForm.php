@@ -25,8 +25,6 @@ use Livewire\Component as LivewireComponent;
  */
 // TODO: CRITICAL! Obviously - don't forget to change the deployment logic accordingly.
 
-// TODO: CRITICAL! CONTINUE. OK, I've updated this form, now do the other three. Then - update the deployment logic and test it out. And don't forget tests.
-
 class ProjectEnvironmentEditForm extends LivewireComponent
 {
     use AuthorizesRequests,

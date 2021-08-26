@@ -10,14 +10,13 @@ use phpseclib3\Net\SFTP;
 
 class UpdateProjectGunicornConfigOnServerScript extends AbstractServerScript
 {
-    public function execute(Server $server, Project $project, SFTP $ssh = null): void
+    public function execute(Server $server, Project $project, SFTP $userSsh = null): void
     {
-        $this->init($server, $ssh, $project->serverUsername);
+        $this->init($server, $userSsh, $project->serverUsername);
 
         $configFile = $project->gunicornConfigFilePath;
 
-        if (! $this->sendString($configFile, $project->gunicornConfig)) {
+        if (! $this->sendString($configFile, $project->gunicornConfig))
             throw new ServerScriptException("Failed to send string to file: {$configFile}");
-        }
     }
 }

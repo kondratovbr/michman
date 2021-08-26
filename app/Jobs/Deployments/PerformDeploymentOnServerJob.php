@@ -10,8 +10,12 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\EnableProjectNginxConfigScript;
 use App\Scripts\Root\RestartGunicornScript;
 use App\Scripts\Root\RestartNginxScript;
+use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\User\PullDeploymentCommitScript;
 use App\Scripts\User\RunDeploymentScriptScript;
+use App\Scripts\User\UpdateProjectDeployScriptOnServerScript;
+use App\Scripts\User\UpdateProjectEnvironmentOnServerScript;
+use App\Scripts\User\UpdateProjectGunicornConfigOnServerScript;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -35,6 +39,10 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
      * Execute the job.
      */
     public function handle(
+        UpdateProjectEnvironmentOnServerScript $updateEnvironment,
+        UpdateProjectDeployScriptOnServerScript $updateDeployScript,
+        UpdateProjectGunicornConfigOnServerScript $updateGunicornConfig,
+        UpdateProjectNginxConfigOnServerScript $updateNginxConfig,
         PullDeploymentCommitScript $pullCommit,
         RunDeploymentScriptScript $runDeploymentScript,
         RestartGunicornScript $restartGunicorn,
@@ -51,6 +59,7 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
         $pivot->save();
 
         DB::transaction(function () use (
+            $updateEnvironment, $updateDeployScript, $updateGunicornConfig, $updateNginxConfig,
             $pullCommit, $runDeploymentScript, $restartGunicorn, $enableProjectNginxConfig, $restartNginx,
         ) {
             $server = $this->lockServer();
@@ -71,6 +80,14 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
             $rootSsh = $server->sftp();
 
             try {
+                $updateEnvironment->execute($server, $project, $userSsh);
+
+                $updateDeployScript->execute($server, $project, $userSsh);
+
+                $updateGunicornConfig->execute($server, $project, $userSsh);
+
+                $updateNginxConfig->execute($server, $project, $rootSsh);
+
                 $pullCommit->execute($server, $deployment, $userSsh);
 
                 $runDeploymentScript->execute($server, $deployment, $userSsh);
