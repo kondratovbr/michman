@@ -4,8 +4,6 @@ namespace App\Actions\Projects;
 
 use App\Models\Project;
 
-// TODO: CRITICAL! Cover with tests.
-
 class RollbackProjectDeployScriptAction
 {
     public function __construct(

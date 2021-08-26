@@ -5,8 +5,6 @@ namespace App\Actions\Projects;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class UpdateProjectGunicornConfigAction
 {
     public function execute(Project $project, string $config): void

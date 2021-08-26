@@ -5,8 +5,6 @@ namespace App\Actions\Projects;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class UpdateProjectNginxConfigAction
 {
     public function execute(Project $project, string $nginxConfig): void

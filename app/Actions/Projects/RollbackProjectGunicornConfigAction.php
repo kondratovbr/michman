@@ -4,8 +4,6 @@ namespace App\Actions\Projects;
 
 use App\Models\Project;
 
-// TODO: CRITICAL! Cover with tests.
-
 class RollbackProjectGunicornConfigAction
 {
     public function __construct(
