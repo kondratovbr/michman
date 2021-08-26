@@ -6,7 +6,6 @@ use App\Models\Deployment;
 use App\Models\Project;
 use App\Models\Server;
 use App\Support\Str;
-use Closure;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -46,18 +45,14 @@ class DeploymentFactory extends Factory
         $projects = $projects->shuffle();
 
         return $this->afterMaking(fn(Deployment $deployment) =>
-            $this->associateWithProject($deployment, $projects->pop())
+            $deployment->project()->associate($projects->random())
+        )->afterCreating(fn(Deployment $deployment) =>
+            $deployment->servers()->sync($deployment->project->servers)
         );
     }
 
     public function withProject(): static
     {
         return $this->for(Project::factory()->withUserAndServers());
-    }
-
-    public function associateWithProject(Deployment $deployment, Project $project): void
-    {
-        $deployment->project()->associate($project);
-        $deployment->servers()->sync($project->servers);
     }
 }

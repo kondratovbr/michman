@@ -23,14 +23,13 @@ class DatabaseSeeder extends Seeder
             FirewallRuleSeeder::class,
             DatabaseModelSeeder::class,
             DatabaseUserSeeder::class,
+            PythonSeeder::class,
 
             // TODO: Don't forget to implement these following seeders:
-            PythonSeeder::class,
             UserSshKeySeeder::class,
 
             ProjectSeeder::class,
             DeploySshKeySeeder::class,
-            
             DeploymentSeeder::class,
         ]);
     }

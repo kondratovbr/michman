@@ -35,7 +35,9 @@ class ProjectFactory extends Factory
         $users = $users->shuffle();
 
         return $this->afterMaking(fn(Project $project) =>
-            $this->associateUserAndServer($project, $users->pop())
+            $project->user()->associate($users->random())
+        )->afterCreating(fn(Project $project) =>
+            $project->servers()->attach($project->user->servers->random())
         );
     }
 
@@ -72,14 +74,5 @@ class ProjectFactory extends Factory
             'gunicorn_config' => 'Gunicorn config goes here!',
             'nginx_config' => 'Nginx config goes here!',
         ]);
-    }
-
-    /**
-     * Attach project to a user and to a random server of this user.
-     */
-    public function associateUserAndServer(Project $project, User $user)
-    {
-        $project->user()->associate($user);
-        $project->servers()->attach($user->servers()->inRandomOrder()->first());
     }
 }
