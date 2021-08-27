@@ -93,7 +93,7 @@ return [
     ],
 
     'pythons' => [
-        'button' => 'Pythons',
+        'button' => 'Python',
 
         'table' => [
             'title' => 'Python Versions',
