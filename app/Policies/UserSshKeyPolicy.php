@@ -22,9 +22,13 @@ class UserSshKeyPolicy
         return $user->is($subject);
     }
 
+    public function update(User $user, UserSshKey $key): bool
+    {
+        return $user->is($key->user);
+    }
+
     public function delete(User $user, UserSshKey $key): bool
     {
-        // TODO: CRITICAL! Don't forget to implement deletion and update this check.
-        return false;
+        return $user->is($key->user);
     }
 }

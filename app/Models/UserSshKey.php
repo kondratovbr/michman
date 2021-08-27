@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Events\UserSshKeys\UserSshKeyCreatedEvent;
+use App\Events\UserSshKeys\UserSshKeyDeletedEvent;
 use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Traits\IsSshKey;
 use Carbon\CarbonInterface;
@@ -43,6 +45,12 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
+    /** @var string[] The event map for the model. */
+    protected $dispatchesEvents = [
+        'created' => UserSshKeyCreatedEvent::class,
+        'deleted' => UserSshKeyDeletedEvent::class,
+    ];
+
     protected function hasPrivateKey(): bool
     {
         return false;
@@ -51,6 +59,14 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
     protected function getSshKeyComment(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Check if this key is added to all the servers it's owner has.
+     */
+    public function addedToAllServers(): bool
+    {
+        return $this->servers()->count() == $this->user->servers()->count();
     }
 
     /**
