@@ -35,7 +35,7 @@
             wire:click.prevent="store"
             wire:loading.attr="disabled"
         >
-            {{ __('projects.create.form.button') }}
+            {{ __('account.ssh.create.button') }}
         </x-buttons.primary>
     </x-slot>
 

@@ -75,6 +75,7 @@ return [
         'create' => [
             'title' => 'Add an SSH key',
             'description' => 'These keys will be automatically added to every new server you create.',
+            'button' => 'Add Key',
         ],
 
         'index' => [
