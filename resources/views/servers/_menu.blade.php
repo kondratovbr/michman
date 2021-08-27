@@ -25,11 +25,5 @@
             {{ __('servers.pythons.button') }}
         </x-menu.item>
 
-{{--        TODO: CRITICAL! Implement.--}}
-        <x-menu.item show="ssh">
-            <x-slot name="icon"><i class="fa fa-terminal"></i></x-slot>
-            {{ __('servers.ssh.button') }}
-        </x-menu.item>
-
     </ul>
 </aside>
