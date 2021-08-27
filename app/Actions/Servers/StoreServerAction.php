@@ -4,17 +4,19 @@ namespace App\Actions\Servers;
 
 use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
 use App\DataTransferObjects\NewServerData;
+use App\Jobs\UserSshKeys\UploadUserSshKeyToServerJob;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\ServerSshKeys\CreateServerSshKeyJob;
 use App\Jobs\Servers\GetServerPublicIpJob;
 use App\Jobs\Servers\PrepareRemoteServerJob;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
-use App\Jobs\UserSshKeys\UpdateWorkerSshKeysOnServerJob;
+use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerJob;
 use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Server;
 use App\Models\User;
+use App\Models\UserSshKey;
 use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +40,8 @@ class StoreServerAction
 
             $this->createWorkerSshKey->execute($server);
 
+            $server->userSshKeys()->sync($user->userSshKeys);
+
             $jobs = [
                 new AddWorkerSshKeyToServerProviderJob($server),
                 new RequestNewServerFromProviderJob($server, $data),
@@ -45,12 +49,18 @@ class StoreServerAction
                 new VerifyRemoteServerIsSuitableJob($server),
                 new PrepareRemoteServerJob($server),
                 new UpdateServerAvailabilityJob($server),
-                new UpdateWorkerSshKeysOnServerJob($server),
+                new AddWorkerSshKeyToServerJob($server),
                 new CreateServerSshKeyJob($server),
                 new UploadServerSshKeyToServerJob($server, (string) config('servers.worker_user')),
             ];
+
+            // TODO: CRITICAL! Test this and update tests.
+            /** @var UserSshKey $key */
+            foreach ($server->userSshKeys as $key) {
+                $jobs[] = new UploadUserSshKeyToServerJob($key, $server);
+            }
             
-            $configurationJobClass = (string) config('servers.types.' . $server->type . '.configuration_job_class');
+            $configurationJobClass = (string) config("servers.types.{$server->type}.configuration_job_class");
 
             if (empty($configurationJobClass))
                 throw new RuntimeException('Configuration job class for this server type is not configured.');

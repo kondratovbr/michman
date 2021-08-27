@@ -4,6 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
+use App\Models\UserSshKey;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\CreateGenericUserScript;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,16 @@ class CreateUserOnServerJob extends AbstractRemoteServerJob
                 $server->workerSshKey,
                 $ssh,
             );
+
+            /** @var UserSshKey $userSshKey */
+            foreach ($server->userSshKeys as $userSshKey) {
+                $addShhKey->execute(
+                    $server,
+                    $this->username,
+                    $userSshKey,
+                    $ssh,
+                );
+            }
         });
     }
 }
