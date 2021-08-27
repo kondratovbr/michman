@@ -64,7 +64,7 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
     /**
      * Get a relation with the server that owns this key.
      */
-    public function server(): BelongsToMany
+    public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'server_user_ssh_key')
             ->using(ServerUserSshKeyPivot::class)
