@@ -5,8 +5,6 @@ namespace App\Actions\UserSshKeys;
 use App\Models\UserSshKey;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class DeleteUserSshKeyAction
 {
     public function execute(UserSshKey $key): void

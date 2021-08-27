@@ -8,8 +8,6 @@ use App\Models\Server;
 use App\Models\UserSshKey;
 use Illuminate\Support\Facades\Bus;
 
-// TODO: CRITICAL! Cover with tests.
-
 class FullyDeleteUserSshKeyAction
 {
     public function execute(UserSshKey $key): void

@@ -6,8 +6,6 @@ use App\Actions\UserSshKeys\DeleteUserSshKeyAction;
 use App\Jobs\AbstractJob;
 use App\Models\UserSshKey;
 
-// TODO: CRITICAL! Cover with tests.
-
 class DeleteUserSshKeyJob extends AbstractJob
 {
     protected UserSshKey $key;

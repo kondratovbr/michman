@@ -9,8 +9,6 @@ use App\Models\UserSshKey;
 use App\Scripts\Root\DeleteSshKeyFromUserScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class DeleteUserSshKeyFromServerJob extends AbstractRemoteServerJob
 {
     protected UserSshKey $key;
@@ -24,11 +22,6 @@ class DeleteUserSshKeyFromServerJob extends AbstractRemoteServerJob
 
     public function handle(DeleteSshKeyFromUserScript $script): void
     {
-        if ($this->server->name != 'systematic-sailfish') {
-            ray('Fake server - ignoring.');
-            return;
-        }
-
         DB::transaction(function () use ($script) {
             $server = $this->lockServer();
             $key = $this->key->freshLockForUpdate();
