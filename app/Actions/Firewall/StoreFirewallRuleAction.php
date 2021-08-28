@@ -8,10 +8,6 @@ use App\Models\FirewallRule;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
 
-/*
- * TODO: CRITICAL! Make sure a user cannot create duplicate rules.
- */
-
 class StoreFirewallRuleAction
 {
     /**
