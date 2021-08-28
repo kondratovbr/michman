@@ -129,4 +129,8 @@ return [
        'button' => 'Queue',
     ],
 
+    'ssl' => [
+        'button' => 'SSL',
+    ],
+
 ];

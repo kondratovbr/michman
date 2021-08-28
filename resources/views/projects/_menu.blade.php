@@ -20,5 +20,10 @@
             {{ __('projects.queue.button') }}
         </x-menu.item>
 
+        <x-menu.item show="ssl">
+            <x-slot name="icon"><i class="fas fa-shield-alt"></i></x-slot>
+            {{ __('projects.ssl.button') }}
+        </x-menu.item>
+
     </ul>
 </aside>
