@@ -57,7 +57,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
             $storeFirewallRule->execute(new FirewallRuleData(
                 name: 'SSH',
                 port: '22',
-                canDelete: false,
+                can_delete: false,
             ), $server, true);
 
             $enableFirewall->execute($server, $ssh);
