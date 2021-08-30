@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
- * @property-read Server $server
+ * @property-read Project $project
  *
  * @method static CertificateFactory factory(...$parameters)
  */
@@ -44,8 +44,8 @@ class Certificate extends AbstractModel
     /**
      * Get a relation to the servers that has this certificate installed.
      */
-    public function server(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Server::class);
+        return $this->belongsTo(Project::class);
     }
 }
