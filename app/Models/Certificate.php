@@ -7,6 +7,21 @@ use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+// TODO: CRITICAL! CONTINUE. Build front-end for Let's Encrypt, update deployment logic (different Nginx config) and test everything.
+
+/*
+ * To receive a certificate:
+ * certbot certonly -n -m USER_EMAIL --agree-tos -d DOMAINS --cert-name CERT_NAME --webroot --webroot-path WEBROOT_PATH
+ *     -n - non-interactively
+ *     --webroot --webroot-path WEBROOT_PATH - put an ACME challenge files into this directory and attempt to request them from the outside
+ *
+ * To "expand" a certificate, i.e. to add more sub-domains:
+ * certbot certonly --expand -d example.com -d www.example.com -d shop.example.com
+ *
+ * TODO: Try to run this one non-interactively.
+ * certbot delete --cert-name CERT_NAME
+ */
+
 /**
  * Certificate Eloquent model
  *
