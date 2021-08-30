@@ -13,6 +13,7 @@ use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
 use App\Scripts\Root\CreateSudoUserScript;
 use App\Scripts\Root\InstallBasePackagesScript;
 use App\Scripts\Root\RebootServerScript;
+use App\Scripts\Root\UpdateSnapScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
     public function handle(
         StoreFirewallRuleAction $storeFirewallRule,
         UpgradePackagesScript $upgradePackages,
+        UpdateSnapScript $updateSnap,
         InstallBasePackagesScript $installBasePackages,
         ConfigureUnattendedUpgradesScript $configureUnattendedUpgrades,
         InitializeFirewallScript $initializeFirewall,
@@ -35,7 +37,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
         RebootServerScript $rebootServer,
     ): void {
         DB::transaction(function () use (
-            $upgradePackages, $installBasePackages, $configureUnattendedUpgrades, $initializeFirewall,
+            $upgradePackages, $updateSnap, $installBasePackages, $configureUnattendedUpgrades, $initializeFirewall,
             $enableFirewall, $createSudoUser, $configureSshServer, $rebootServer, $storeFirewallRule,
         ) {
             /** @var Server $server */
@@ -49,6 +51,8 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
             $upgradePackages->execute($server, $ssh);
 
             $installBasePackages->execute($server, $ssh);
+
+            $updateSnap->execute($server, $ssh);
 
             $configureUnattendedUpgrades->execute($server, $ssh);
 
