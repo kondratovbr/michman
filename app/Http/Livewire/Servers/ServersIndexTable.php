@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Servers;
 
 use App\Broadcasting\ServerChannel;
+use App\Broadcasting\UserChannel;
 use App\Events\Servers\ServerCreatedEvent;
 use App\Events\Servers\ServerDeletedEvent;
 use App\Events\Servers\ServerUpdatedEvent;
@@ -24,7 +25,7 @@ class ServersIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            ServerChannel::name($this->server),
+            UserChannel::name(Auth::user()),
             [
                 ServerCreatedEvent::class,
                 ServerUpdatedEvent::class,

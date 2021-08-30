@@ -2,7 +2,17 @@
 
 namespace App\Events\Servers;
 
-class ServerDeletedEvent extends AbstractServerEvent
+use App\Events\Users\AbstractUserEvent;
+use App\Models\Server;
+
+class ServerDeletedEvent extends AbstractUserEvent
 {
-    //
+    protected int $serverKey;
+
+    public function __construct(Server $server)
+    {
+        parent::__construct($server->user);
+
+        $this->serverKey = $server->getKey();
+    }
 }
