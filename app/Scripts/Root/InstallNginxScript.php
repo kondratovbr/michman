@@ -5,9 +5,7 @@ namespace App\Scripts\Root;
 use App\Facades\ConfigView;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Support\Str;
 use phpseclib3\Net\SFTP;
-use RuntimeException;
 
 class InstallNginxScript extends AbstractServerScript
 {
@@ -75,10 +73,11 @@ class InstallNginxScript extends AbstractServerScript
             'mime_types' => 'mime_types',
             'gzip.conf' => 'gzip',
             'ssl_params.conf' => 'ssl_params',
+            'ssl-dhparams.pem' => 'ssl-dhparams',
         ] as $file => $view) {
             $this->sendString("{$nginxDir}/{$file}", ConfigView::render("nginx.{$view}"));
         }
 
-        // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server. See how Forge does it.
+        // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server (I already have one when there is.), if that server is "app" or "web".
     }
 }
