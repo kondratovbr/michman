@@ -50,6 +50,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $projects
  * @property-read Collection $deployments
  * @property-read DeploymentServerPivot|null $serverDeployment
+ * @property-read Collection $certificates
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -305,5 +306,13 @@ class Server extends AbstractModel
             ->using(DeploymentServerPivot::class)
             ->withPivot(DeploymentServerPivot::$pivotAttributes)
             ->withTimestamps();
+    }
+
+    /**
+     * Get a relation with the certificates installed on this server.
+     */
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
     }
 }
