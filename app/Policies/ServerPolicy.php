@@ -10,6 +10,11 @@ class ServerPolicy
 {
     use HandlesAuthorization;
 
+    public function index(User $user, User $subject): bool
+    {
+        return $subject->is($user);
+    }
+
     public function create(User $user): bool
     {
         // For now - no limits. Later will add subscription plan based limits here.
