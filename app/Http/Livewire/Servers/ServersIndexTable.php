@@ -2,19 +2,50 @@
 
 namespace App\Http\Livewire\Servers;
 
+use App\Broadcasting\ServerChannel;
+use App\Events\Servers\ServerCreatedEvent;
+use App\Events\Servers\ServerDeletedEvent;
+use App\Events\Servers\ServerUpdatedEvent;
 use App\Facades\Auth;
+use App\Http\Livewire\Traits\ListensForEchoes;
+use App\Models\Server;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Component as LivewireComponent;
 
-class ServersIndexTable extends Component
+class ServersIndexTable extends LivewireComponent
 {
+    use AuthorizesRequests,
+        ListensForEchoes;
+
+    public Collection $servers;
+
+    protected function configureEchoListeners(): void
+    {
+        $this->echoPrivate(
+            ServerChannel::name($this->server),
+            [
+                ServerCreatedEvent::class,
+                ServerUpdatedEvent::class,
+                ServerDeletedEvent::class,
+            ],
+            '$refresh',
+        );
+    }
+
+    public function mount(): void
+    {
+        $this->authorize('index', [Server::class, Auth::user()]);
+    }
+
     /**
      * Render the component.
      */
     public function render(): View
     {
-        return view('servers.index-table', [
-            'servers' => Auth::user()->servers,
-        ]);
+        $this->servers = Auth::user()->servers()->oldest()->get();
+
+        return view('servers.index-table');
     }
 }
