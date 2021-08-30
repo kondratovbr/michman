@@ -74,6 +74,7 @@ class InstallNginxScript extends AbstractServerScript
             'fastcgi.conf' => 'fastcgi',
             'mime_types' => 'mime_types',
             'gzip.conf' => 'gzip',
+            'ssl_params.conf' => 'ssl_params',
         ] as $file => $view) {
             $this->sendString("{$nginxDir}/{$file}", ConfigView::render("nginx.{$view}"));
         }
