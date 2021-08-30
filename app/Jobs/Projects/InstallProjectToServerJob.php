@@ -39,11 +39,6 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         EnablePlaceholderSiteScript $enablePlaceholderSite,
         RestartNginxScript $restartNginx,
     ): void {
-
-        /*
-         * TODO: I can install the placeholder during project creation, before this step.
-         */
-
         DB::transaction(function () use (
             $cloneRepo, $createVenv, $configureGunicorn, $uploadPlaceholderPage, $enablePlaceholderSite, $restartNginx,
         ) {
