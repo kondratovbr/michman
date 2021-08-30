@@ -38,7 +38,7 @@ class InstallProjectRepoAction
             $project->environment = ConfigView::render('default_env_file', $this->getEnvData($project, $server));
             $project->deployScript = ConfigView::render('default_deploy_script', ['project' => $project]);
             $project->gunicornConfig = ConfigView::render('gunicorn.default_config', ['project' => $project]);
-            $project->nginxConfig = ConfigView::render('nginx.server', ['project' => $project]);
+            $project->nginxConfig = ConfigView::render('nginx.project', ['project' => $project]);
             $project->save();
 
             $jobs = [];

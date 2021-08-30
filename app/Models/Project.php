@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $deployScriptFilePath
  * @property-read string $envFilePath
  * @property-read string $nginxConfigFilePath
+ * @property-read string $userNginxConfigFilePath
  * @property-read string $gunicornConfigFilePath
  * @property-read string $projectDir
  * @property-read string $michmanDir
@@ -146,6 +147,14 @@ class Project extends AbstractModel
     public function getNginxConfigFilePathAttribute(): string
     {
         return "/etc/nginx/sites-available/{$this->projectName}.conf";
+    }
+
+    /**
+     * Get the path to the user-customizable part of the Nginx config on a server.
+     */
+    public function getUserNginxConfigFilePathAttribute(): string
+    {
+        return "{$this->michmanDir}/{$this->projectName}_nginx.conf";
     }
 
     /**
