@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
+/**
+ * TODO: CRITICAL! Don't forget that this thing should listen to notification created events.
+ *       Seems like Laravel broadcasts a single event for notifications. Better carefully read docs about it.
+ */
+
 class Notifications extends LivewireComponent
 {
     public Collection $notifications;
