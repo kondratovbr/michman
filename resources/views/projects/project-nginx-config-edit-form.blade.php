@@ -1,5 +1,5 @@
-{{--TODO: CRITICAL! Add some explanation and a link to docs (with more detailed explanation).--}}
-{{--TODO: There's a weird margin on the top of the box here. Should fix.--}}
+{{--TODO: CRITICAL! Add some explanation and a link to docs (with more detailed explanation). NOTE: I changed this config to be not a whole "server" block, but only a customizable part of it. Explain it in docs and maybe provide a full config in there as well.--}}
+{{--TODO: There's a weird margin on the top of the box here. Should get fixed with an explanation block..--}}
 
 <x-form-section submit="store">
 
