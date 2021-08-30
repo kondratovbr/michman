@@ -63,8 +63,10 @@ class CreateProjectForm extends LivewireComponent
     {
         $state = $attributes['state'];
 
-        if (is_string($state['domain'])) {
-            $state['domain'] = Str::lower($state['domain']);
+        foreach (['domain', 'dbUserName'] as $attr) {
+            if (is_string($state[$attr])) {
+                $state[$attr] = Str::lower($state[$attr]);
+            }
         }
 
         if (is_string($state['aliases'])) {
