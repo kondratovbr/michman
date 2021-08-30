@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\Servers\ServerCreatedEvent;
+use App\Events\Servers\ServerDeletedEvent;
+use App\Events\Servers\ServerUpdatedEvent;
 use App\Exceptions\SshAuthFailedException;
 use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
@@ -82,6 +85,13 @@ class Server extends AbstractModel
         'available' => 'boolean',
         'sudo_password' => 'encrypted',
         'database_root_password' => 'encrypted',
+    ];
+
+    /** @var string[] The event map for the model. */
+    protected $dispatchesEvents = [
+        'created' => ServerCreatedEvent::class,
+        'updated' => ServerUpdatedEvent::class,
+        'deleted' => ServerDeletedEvent::class,
     ];
 
     /**
