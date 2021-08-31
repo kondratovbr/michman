@@ -49,7 +49,7 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
 
     protected function resetState(): void
     {
-        $this->domains = "{$this->project->domain}, www.{$this->project->domain}";
+        $this->domains = "{$this->project->domain}";
     }
 
     /**

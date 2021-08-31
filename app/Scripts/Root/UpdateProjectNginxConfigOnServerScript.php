@@ -15,13 +15,12 @@ class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
-        /*
-         * TODO: CRITICAL! I should send a different config if the project has HTTPS configured.
-         */
-
         if (! $this->sendString(
             $project->nginxConfigFilePath,
-            ConfigView::render('nginx.server', ['project' => $project]))
+            ConfigView::render(
+                $project->hasSsl() ? 'nginx.server-ssl' : 'nginx.server',
+                ['project' => $project])
+            )
         ) {
             throw new ServerScriptException("Failed to send string to file: {$project->nginxConfigFilePath}");
         }

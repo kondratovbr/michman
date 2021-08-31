@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property CarbonInterface $updatedAt
  *
  * @property-read User $user
+ * @property-read string $name
  *
  * @property-read Project $project
  * @property-read Collection $servers
@@ -79,6 +80,14 @@ class Certificate extends AbstractModel
     public function getUserAttribute(): User
     {
         return $this->project->user;
+    }
+
+    /**
+     * Derive a name for this certificate from its domains.
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->domains[0];
     }
 
     /**
