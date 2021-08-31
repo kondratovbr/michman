@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\Certificates\CertificateCreatedEvent;
+use App\Events\Certificates\CertificateDeletedEvent;
+use App\Events\Certificates\CertificateUpdatedEvent;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,7 +56,9 @@ class Certificate extends AbstractModel
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
-        //
+        'created' => CertificateCreatedEvent::class,
+        'updated' => CertificateUpdatedEvent::class,
+        'deleted' => CertificateDeletedEvent::class,
     ];
 
     /**
