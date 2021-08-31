@@ -4,8 +4,9 @@ namespace App\Events\Servers;
 
 use App\Events\Users\AbstractUserEvent;
 use App\Models\Server;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class ServerCreatedEvent extends AbstractUserEvent
+class ServerCreatedEvent extends AbstractUserEvent implements ShouldBroadcast
 {
     protected int $serverKey;
 
