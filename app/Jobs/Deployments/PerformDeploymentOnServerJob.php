@@ -76,6 +76,10 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
             $pivot->startedAt = now();
             $pivot->save();
 
+            /*
+             * TODO: CRITICAL! This job takes some stupid amount of time to run right now. Check it.
+             */
+
             $userSsh = $server->sftp($project->serverUsername);
             $rootSsh = $server->sftp();
 

@@ -12,6 +12,16 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+/*
+ * TODO: CRITICAL! Need to make sure that duplicate certificates cannot be created. If a user tries to add certificates for subdomains - certbot will just force "expand" the existing one, so we should handle it here.
+ */
+
+/*
+ * TODO: IMPORTANT! Don't forget to explain somewhere in docs that the DNS should be configured by the user beforehand.
+ */
+
+// TODO: CRITICAL! Cover with tests.
+
 class CreateLetsEncryptCertificateForm extends LivewireComponent
 {
     use AuthorizesRequests;
