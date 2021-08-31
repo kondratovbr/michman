@@ -200,6 +200,14 @@ class Project extends AbstractModel
     }
 
     /**
+     * Check if the project has HTTPS configured.
+     */
+    public function hasSsl(): bool
+    {
+        return $this->certificates->count() > 0;
+    }
+
+    /**
      * Get the latest successful deployment of this project.
      */
     public function getCurrentDeployment(): Deployment|null
