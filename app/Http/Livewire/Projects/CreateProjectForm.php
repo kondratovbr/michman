@@ -71,10 +71,7 @@ class CreateProjectForm extends LivewireComponent
 
         if (is_string($state['aliases'])) {
             $state['aliases'] = Arr::map(
-                explode(
-                    ',',
-                    Str::lower($state['aliases'])
-                ),
+                explode(',', Str::lower($state['aliases'])),
                 fn(string $domain) => trim($domain)
             );
         }
