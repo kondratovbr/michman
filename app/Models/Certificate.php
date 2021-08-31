@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property string $type
+ * @property string[] $domains
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -44,6 +45,7 @@ class Certificate extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'type',
+        'domains',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -51,7 +53,7 @@ class Certificate extends AbstractModel
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        //
+        'domains' => 'array',
     ];
 
     /** @var string[] The event map for the model. */
