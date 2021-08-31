@@ -7,8 +7,10 @@ use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 // TODO: CRITICAL! CONTINUE. Build front-end for Let's Encrypt, update deployment logic (different Nginx config) and test everything.
 
@@ -34,7 +36,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read User $user
+ *
  * @property-read Project $project
+ * @property-read Collection $servers
+ * @property-read CertificateServerPivot|null $certificateInstallation
  *
  * @method static CertificateFactory factory(...$parameters)
  */
@@ -68,10 +74,30 @@ class Certificate extends AbstractModel
     ];
 
     /**
+     * Get the user who owns this certificate.
+     */
+    public function getUserAttribute(): User
+    {
+        return $this->project->user;
+    }
+
+    /**
      * Get a relation to the servers that has this certificate installed.
      */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * Get a relation with the servers this certificate is installed on.
+     */
+    public function servers(): BelongsToMany
+    {
+        return $this->belongsToMany(Server::class, 'certificate_server')
+            ->as(CertificateServerPivot::ACCESSOR)
+            ->using(CertificateServerPivot::class)
+            ->withPivot(CertificateServerPivot::$pivotAttributes)
+            ->withTimestamps();
     }
 }

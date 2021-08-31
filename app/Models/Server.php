@@ -53,6 +53,8 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $projects
  * @property-read Collection $deployments
  * @property-read DeploymentServerPivot|null $serverDeployment
+ * @property-read Collection $certificates
+ * @property-read CertificateServerPivot|null $certificateInstallation
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -302,6 +304,7 @@ class Server extends AbstractModel
     {
         return $this->belongsToMany(Project::class, 'project_server')
             ->using(ProjectServerPivot::class)
+            ->withPivot(ProjectServerPivot::$pivotAttributes)
             ->withTimestamps();
     }
 
@@ -311,9 +314,21 @@ class Server extends AbstractModel
     public function deployments(): BelongsToMany
     {
         return $this->belongsToMany(Deployment::class, 'deployment_server')
-            ->as('serverDeployment')
+            ->as(DeploymentServerPivot::ACCESSOR)
             ->using(DeploymentServerPivot::class)
             ->withPivot(DeploymentServerPivot::$pivotAttributes)
+            ->withTimestamps();
+    }
+
+    /**
+     * Get a relation with the SSL certificates installed on this server.
+     */
+    public function certificates(): BelongsToMany
+    {
+        return $this->belongsToMany(Certificate::class, 'certificate_server')
+            ->as(CertificateServerPivot::ACCESSOR)
+            ->using(CertificateServerPivot::class)
+            ->withPivot(CertificateServerPivot::$pivotAttributes)
             ->withTimestamps();
     }
 }
