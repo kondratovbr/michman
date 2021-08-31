@@ -14,11 +14,15 @@ class RestartGunicornScript extends AbstractServerScript
     {
         $this->init($server, $ssh);
 
-        $this->exec("systemctl restart {$project->projectName}.socket");
+        $this->exec("systemctl stop {$project->projectName}.socket");
         if ($this->failed())
-            throw new ServerScriptException("systemctl command to restart project's Gunicorn socket has failed.");
+            throw new ServerScriptException("systemctl command to stop project's Gunicorn socket has failed.");
 
-        $this->exec("systemctl restart {$project->projectName}.service");
+        $this->exec("systemctl stop {$project->projectName}.service");
+        if ($this->failed())
+            throw new ServerScriptException("systemctl command to stop project's Gunicorn service has failed.");
+
+        $this->exec("systemctl restart {$project->projectName}.socket");
         if ($this->failed())
             throw new ServerScriptException("systemctl command to restart project's Gunicorn service has failed.");
 
