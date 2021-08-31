@@ -29,11 +29,14 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class DeploymentServerPivot extends AbstractPivot
 {
+    /** @var string Custom pivot accessor name. */
+    public const ACCESSOR = 'serverDeployment';
+
     /**
      * Additional attribute names that this pivot model has.
      * These attributes will be retrieved for the pivot each time.
      *
-     * @var array
+     * @var string[]
      */
     public static array $pivotAttributes = [
         'started_at',

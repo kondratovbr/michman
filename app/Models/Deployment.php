@@ -202,7 +202,7 @@ class Deployment extends AbstractModel
     public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'deployment_server')
-            ->as('serverDeployment')
+            ->as(DeploymentServerPivot::ACCESSOR)
             ->using(DeploymentServerPivot::class)
             ->withPivot(DeploymentServerPivot::$pivotAttributes)
             ->withTimestamps();
