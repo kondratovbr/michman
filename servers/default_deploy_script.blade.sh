@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# {{-- TODO: CRITICAL! Unfinished! --}}
+# {{-- TODO: CRITICAL! Unfinished! The effing manage.py works interactively by default (at least "collectstatic"). Should fix. --}}
 # Available environment variables:
 # MICHMAN_PROJECT_BRANCH - git branch configured for deployment
 # ...
