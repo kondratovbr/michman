@@ -42,6 +42,10 @@ class Certificate extends AbstractModel
 {
     use HasFactory;
 
+    public const TYPE_LETS_ENCRYPT = 'lets-encrypt';
+
+    public const STATUS_INSTALLED = 'installed';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'type',
