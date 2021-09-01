@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -88,6 +89,14 @@ class Certificate extends AbstractModel
     public function getNameAttribute(): string
     {
         return $this->domains[0];
+    }
+
+    /**
+     * Check if this certificate is a subset of another certificate.
+     */
+    public function isSubsetOf(Certificate $certificate): bool
+    {
+        return empty(array_diff($this->domains, $certificate->domains));
     }
 
     /**
