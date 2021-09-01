@@ -20,7 +20,7 @@ class InstallLetsEncryptCertificateScript extends AbstractServerScript
         $this->setTimeout(60 * 30); // 30 min
 
         // TODO: CRITICAL! This may fail for numerous reasons. Should figure out how to inform the user.
-        $this->execPty("certbot certonly -n -m {$certificate->user->email} --agree-tos -d {$domains} --cert-name {$certificate->domains[0]} --webroot --webroot-path {$certificate->project->michmanDir}/public");
+        $this->execPty("certbot certonly -n --expand --allow-subset-of-names -m {$certificate->user->email} --agree-tos -d {$domains} --cert-name {$certificate->domains[0]} --webroot --webroot-path {$certificate->project->michmanDir}/public");
         $this->read();
 
         if ($this->failed()) {
