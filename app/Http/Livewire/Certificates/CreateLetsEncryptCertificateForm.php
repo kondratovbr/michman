@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Certificates;
 
 use App\Actions\Certificates\StoreLetsEncryptCertificateAction;
 use App\Models\Certificate;
-use App\Models\Project;
+use App\Models\Server;
 use App\Support\Arr;
 use App\Support\Str;
 use App\Validation\Rules;
@@ -12,7 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! I've done some changes so test the whole process again.
+// TODO: CRITICAL! I've done major changes so test the whole process again.
 
 // TODO: CRITICAL! Implement some progress display.
 
@@ -30,9 +30,9 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
 {
     use AuthorizesRequests;
 
-    public Project $project;
+    public Server $server;
 
-    public string $domains;
+    public string $domains = '';
 
     protected function prepareForValidation($attributes): array
     {
@@ -56,14 +56,7 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('create', [Certificate::class, $this->project]);
-
-        $this->resetState();
-    }
-
-    protected function resetState(): void
-    {
-        $this->domains = "{$this->project->domain}";
+        $this->authorize('create', [Certificate::class, $this->server]);
     }
 
     /**
@@ -73,13 +66,13 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
     {
         $domains = $this->validate()['domains'];
 
-        $this->authorize('create', [Certificate::class, $this->project]);
+        $this->authorize('create', [Certificate::class, $this->server]);
 
-        $action->execute($this->project, $domains);
+        $action->execute($this->server, $domains);
 
         $this->emit('certificate-stored');
 
-        $this->resetState();
+        $this->reset();
     }
 
     public function render(): View

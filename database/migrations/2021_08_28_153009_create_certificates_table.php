@@ -14,10 +14,11 @@ class CreateCertificatesTable extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('project_id')->references('id')->on('projects');
+            $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('type');
             $table->json('domains');
+            $table->string('status')->nullable();
 
             $table->timestamps();
         });

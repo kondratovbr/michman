@@ -14,7 +14,6 @@ class ProjectView extends AbstractSubpagesView
         'deployment' => 'projects.deployment',
         'config' => 'projects.config',
         'queue' => 'projects.queue',
-        'ssl' => 'projects.ssl',
         //
     ];
 

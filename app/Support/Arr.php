@@ -317,4 +317,15 @@ class Arr extends IlluminateArr
 
         return $array;
     }
+
+    /**
+     * Get the intersection of arrays,
+     * i.e. values that are present in both of them.
+     *
+     * Wrapper for the built-in array_intersect() function.
+     */
+    public static function intersect(array $first, array $second): array
+    {
+        return array_intersect($first, $second);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Project;
+use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -12,13 +12,13 @@ class CertificatePolicy
 {
     use HandlesAuthorization;
 
-    public function index(User $user, Project $project): bool
+    public function index(User $user, Server $server): bool
     {
-        return $user->is($project->user);
+        return $user->is($server->user);
     }
 
-    public function create(User $user, Project $project): bool
+    public function create(User $user, Server $server): bool
     {
-        return $user->is($project->user);
+        return $user->is($server->user);
     }
 }

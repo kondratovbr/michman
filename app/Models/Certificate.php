@@ -5,22 +5,12 @@ namespace App\Models;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
-use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-
-// TODO: CRITICAL! CONTINUE. Build front-end for Let's Encrypt, update deployment logic (different Nginx config) and test everything.
 
 /*
- * To receive a certificate:
- * certbot certonly -n -m USER_EMAIL --agree-tos -d DOMAINS --cert-name CERT_NAME --webroot --webroot-path WEBROOT_PATH
- *     -n - non-interactively
- *     --webroot --webroot-path WEBROOT_PATH - put an ACME challenge files into this directory and attempt to request them from the outside
- *
  * To "expand" a certificate, i.e. to add more sub-domains:
  * certbot certonly --expand -d example.com -d www.example.com -d shop.example.com
  *
@@ -34,15 +24,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property string $type
  * @property string[] $domains
+ * @property string|null $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
  * @property-read User $user
  * @property-read string $name
+ * @property-read string $directory
  *
- * @property-read Project $project
- * @property-read Collection $servers
- * @property-read CertificateServerPivot|null $certificateInstallation
+ * @property-read Server $server
  *
  * @method static CertificateFactory factory(...$parameters)
  */
@@ -52,12 +42,14 @@ class Certificate extends AbstractModel
 
     public const TYPE_LETS_ENCRYPT = 'lets-encrypt';
 
+    public const STATUS_INSTALLING = 'installing';
     public const STATUS_INSTALLED = 'installed';
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'type',
         'domains',
+        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -92,6 +84,14 @@ class Certificate extends AbstractModel
     }
 
     /**
+     * Get a directory where the files related to this certificate are stored on a server.
+     */
+    public function getDirectoryAttribute(): string
+    {
+        return "/etc/letsencrypt/live/{$this->name}";
+    }
+
+    /**
      * Check if this certificate is a subset of another certificate.
      */
     public function isSubsetOf(Certificate $certificate): bool
@@ -100,22 +100,18 @@ class Certificate extends AbstractModel
     }
 
     /**
-     * Get a relation to the servers that has this certificate installed.
+     * Check if this certificate is installed on a server.
      */
-    public function project(): BelongsTo
+    public function isInstalled(): bool
     {
-        return $this->belongsTo(Project::class);
+        return $this->status === static::STATUS_INSTALLED;
     }
 
     /**
-     * Get a relation with the servers this certificate is installed on.
+     * Get a relation to the server that has this certificate installed.
      */
-    public function servers(): BelongsToMany
+    public function server(): BelongsTo
     {
-        return $this->belongsToMany(Server::class, 'certificate_server')
-            ->as(CertificateServerPivot::ACCESSOR)
-            ->using(CertificateServerPivot::class)
-            ->withPivot(CertificateServerPivot::$pivotAttributes)
-            ->withTimestamps();
+        return $this->belongsTo(Server::class);
     }
 }

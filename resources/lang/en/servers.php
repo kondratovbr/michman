@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Certificate;
 use App\Models\Python;
 
 return [
@@ -188,4 +189,32 @@ return [
     'ssh' => [
         'button' => 'SSH Keys',
     ],
+
+    'ssl' => [
+        'button' => 'SSL',
+
+        'lets-encrypt' => [
+            'title' => 'Let\'s Encrypt',
+            'description' => 'Use a free service by Let\'s Encrypt to receive a free auto-renewable SSL certificate and configure HTTPS on this server.',
+            'explanation' => 'Let\'s Encrypt provides free SSL certificates that are recognized across all major browsers. This is the best way to add HTTPS support to your projects. You may separate multiple domains with commas.',
+            'button' => 'Request Certificate',
+
+            'domains' => [
+                'title' => 'Domains',
+            ],
+        ],
+
+        'index' => [
+            'title' => 'SSL Certificates',
+            'empty' => 'This server doesn\'t have any SSL certificates, HTTPS is disabled.'
+        ],
+
+        'type' => 'Type',
+        'domains' => 'Domains',
+
+        'types' => [
+            Certificate::TYPE_LETS_ENCRYPT => 'Let\'s Encrypt',
+        ],
+    ],
+
 ];

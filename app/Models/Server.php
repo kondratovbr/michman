@@ -6,6 +6,7 @@ use App\Events\Servers\ServerCreatedEvent;
 use App\Events\Servers\ServerDeletedEvent;
 use App\Events\Servers\ServerUpdatedEvent;
 use App\Exceptions\SshAuthFailedException;
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -54,7 +55,6 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $deployments
  * @property-read DeploymentServerPivot|null $serverDeployment
  * @property-read Collection $certificates
- * @property-read CertificateServerPivot|null $certificateInstallation
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -125,6 +125,26 @@ class Server extends AbstractModel
     public function canCreateDatabaseUser(): bool
     {
         return ! empty($this->installedDatabase);
+    }
+
+    /**
+     * Check if this server has an SSL certificate.
+     */
+    public function hasSsl(): bool
+    {
+        return $this->certificates()->count() > 0;
+    }
+
+    /**
+     * Filter the certificates installed on this server
+     * for the ones that should be used for a project provided based on their domains.
+     */
+    public function getCertificatesFor(Project $project): Collection
+    {
+        return $this->certificates->filter(fn(Certificate $cert) =>
+            Arr::hasValue($cert->domains, $project->domain)
+            || ! empty(Arr::intersect($cert->domains, $project->aliases))
+        );
     }
 
     /**
@@ -323,12 +343,8 @@ class Server extends AbstractModel
     /**
      * Get a relation with the SSL certificates installed on this server.
      */
-    public function certificates(): BelongsToMany
+    public function certificates(): HasMany
     {
-        return $this->belongsToMany(Certificate::class, 'certificate_server')
-            ->as(CertificateServerPivot::ACCESSOR)
-            ->using(CertificateServerPivot::class)
-            ->withPivot(CertificateServerPivot::$pivotAttributes)
-            ->withTimestamps();
+        return $this->hasMany(Certificate::class);
     }
 }

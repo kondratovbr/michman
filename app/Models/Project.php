@@ -53,7 +53,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read Database|null $database
  * @property-read DatabaseUser|null $databaseUser
  * @property-read Collection $deployments
- * @property-read Collection $certificates
  *
  * @method static ProjectFactory factory(...$parameters)
  */
@@ -198,15 +197,7 @@ class Project extends AbstractModel
     {
         return isset($this->vcsProvider) && ! empty($this->repo);
     }
-
-    /**
-     * Check if the project has HTTPS configured.
-     */
-    public function hasSsl(): bool
-    {
-        return $this->certificates->count() > 0;
-    }
-
+    
     /**
      * Get the latest successful deployment of this project.
      */
@@ -271,13 +262,5 @@ class Project extends AbstractModel
     public function databaseUser(): BelongsTo
     {
         return $this->belongsTo(DatabaseUser::class);
-    }
-
-    /**
-     * Get a relation with the certificates issued for this project.
-     */
-    public function certificates(): HasMany
-    {
-        return $this->hasMany(Certificate::class);
     }
 }

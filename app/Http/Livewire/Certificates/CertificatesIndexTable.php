@@ -2,13 +2,13 @@
 
 namespace App\Http\Livewire\Certificates;
 
-use App\Broadcasting\ProjectChannel;
+use App\Broadcasting\ServerChannel;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Certificate;
-use App\Models\Project;
+use App\Models\Server;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -16,12 +16,19 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests.
 
+/*
+ * TODO: CRITICAL! Don't forget to implement removal and copying,
+ *       i.e. it should be possible to copy a certificate from another server.
+ *       It should be automatically renewed only on the original server, of course.
+ *       So make sure there IS an original server for every existing certificate at all times.
+ */
+
 class CertificatesIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
         ListensForEchoes;
 
-    public Project $project;
+    public Server $server;
 
     public Collection $certificates;
 
@@ -33,7 +40,7 @@ class CertificatesIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            ProjectChannel::name($this->project),
+            ServerChannel::name($this->server),
             [
                 CertificateCreatedEvent::class,
                 CertificateUpdatedEvent::class,
@@ -45,12 +52,12 @@ class CertificatesIndexTable extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('index', [Certificate::class, $this->project]);
+        $this->authorize('index', [Certificate::class, $this->server]);
     }
 
     public function render(): View
     {
-        $this->certificates = $this->project->certificates()->oldest()->get();
+        $this->certificates = $this->server->certificates()->oldest()->get();
 
         return view('certificates.certificates-index-table');
     }
