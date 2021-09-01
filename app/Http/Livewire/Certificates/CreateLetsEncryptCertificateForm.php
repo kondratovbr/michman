@@ -12,6 +12,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+// TODO: CRITICAL! I've done some changes so test the whole process again.
+
 /*
  * TODO: CRITICAL! Need to make sure that duplicate certificates cannot be created. If a user tries to add certificates for subdomains - certbot will just force "expand" the existing one, so we should handle it here.
  */

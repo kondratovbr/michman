@@ -8,15 +8,12 @@ use App\Models\Server;
 use App\Scripts\Root\InstallLetsEncryptCertificateScript;
 use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
+use App\Scripts\Root\UploadPlaceholderPageNginxConfigScript;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /*
  * TODO: CRITICAL! Make sure a user cannot start SSL installation before installing a repo, otherwise this whole logic won't work.
- */
-
-/*
- * TODO: CRITICAL! I need to update a placeholder site config somewhere here as well - add HTTPS to it once the certificate is in place.
  */
 
 /*
@@ -40,10 +37,11 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
     public function handle(
         InstallLetsEncryptCertificateScript $installCertificate,
         UpdateProjectNginxConfigOnServerScript $updateNginxConfig,
+        UploadPlaceholderPageNginxConfigScript $uploadPlaceholderNginxConfig,
         RestartNginxScript $restartNginx,
     ): void {
         DB::transaction(function () use (
-            $installCertificate, $updateNginxConfig, $restartNginx,
+            $installCertificate, $updateNginxConfig, $uploadPlaceholderNginxConfig, $restartNginx,
         ) {
             $server = $this->server->freshLockForUpdate();
             $certificate = $this->certificate->freshLockForUpdate();
@@ -59,6 +57,8 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
             $installCertificate->execute($server, $certificate, $rootSsh);
 
             $updateNginxConfig->execute($server, $project, $rootSsh);
+
+            $uploadPlaceholderNginxConfig->execute($server, $project, $rootSsh);
 
             $restartNginx->execute($server, $rootSsh);
 

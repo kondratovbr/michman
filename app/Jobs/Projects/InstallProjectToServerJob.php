@@ -8,6 +8,7 @@ use App\Models\Server;
 use App\Scripts\Root\ConfigureGunicornScript;
 use App\Scripts\Root\EnablePlaceholderSiteScript;
 use App\Scripts\Root\RestartNginxScript;
+use App\Scripts\Root\UploadPlaceholderPageNginxConfigScript;
 use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
@@ -36,11 +37,13 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         CreateProjectVenvScript $createVenv,
         ConfigureGunicornScript $configureGunicorn,
         UploadPlaceholderPageScript $uploadPlaceholderPage,
+        UploadPlaceholderPageNginxConfigScript $uploadPlaceholderNginxConfig,
         EnablePlaceholderSiteScript $enablePlaceholderSite,
         RestartNginxScript $restartNginx,
     ): void {
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $configureGunicorn, $uploadPlaceholderPage, $enablePlaceholderSite, $restartNginx,
+            $cloneRepo, $createVenv, $configureGunicorn, $uploadPlaceholderPage, $uploadPlaceholderNginxConfig,
+            $enablePlaceholderSite, $restartNginx,
         ) {
             /** @var Project $project */
             $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
@@ -63,6 +66,8 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $configureGunicorn->execute($server, $project, $rootSsh);
 
             $uploadPlaceholderPage->execute($server, $project, $userSsh);
+
+            $uploadPlaceholderNginxConfig->execute($server, $project, $rootSsh);
 
             $enablePlaceholderSite->execute($server, $project, $rootSsh);
 

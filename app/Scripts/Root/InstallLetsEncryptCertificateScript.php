@@ -23,8 +23,6 @@ class InstallLetsEncryptCertificateScript extends AbstractServerScript
         $this->execPty("certbot certonly -n -m {$certificate->user->email} --agree-tos -d {$domains} --cert-name {$certificate->domains[0]} --webroot --webroot-path {$certificate->project->michmanDir}/public");
         $this->read();
 
-        // TODO: CRITICAL! CONTINUE. Test this again, should work now. Btw, once we get the certificate - copy it from the server and save somewhere. Let's Encrypt has a pretty strict rate limiting, I already got stuck because of that.
-
         if ($this->failed()) {
             $this->disablePty();
             throw new ServerScriptException('The certbot certificate request has failed.');

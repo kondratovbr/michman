@@ -18,7 +18,7 @@ class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
         if (! $this->sendString(
             $project->nginxConfigFilePath,
             ConfigView::render(
-                $project->hasSsl() ? 'nginx.server-ssl' : 'nginx.server',
+                $project->hasSsl() ? 'nginx.server_ssl' : 'nginx.server',
                 ['project' => $project])
             )
         ) {
