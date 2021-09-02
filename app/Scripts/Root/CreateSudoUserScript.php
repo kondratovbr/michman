@@ -24,5 +24,10 @@ class CreateSudoUserScript extends AbstractServerScript
 
         // Add the user to sudo group.
         $this->exec("usermod -aG sudo {$username}");
+
+        // Create the necessary directories upfront.
+        foreach (['public'] as $dir) {
+            $this->exec("mkdir -p /home/{$username}/{$dir} && chown -R {$username}:{$username} /home/{$username}/{$dir}");
+        }
     }
 }
