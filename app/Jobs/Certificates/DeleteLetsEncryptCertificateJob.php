@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Test and cover with tests.
 
-class DeleteCertificateJob extends AbstractRemoteServerJob
+class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
 {
     protected Certificate $certificate;
 
