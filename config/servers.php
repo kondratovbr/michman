@@ -115,6 +115,12 @@ return [
         ],
     ],
 
+    'workers' => [
+        'celery' => [
+            //
+        ],
+    ],
+
     'default_ssh_port' => 22,
     'worker_user' => Str::camel(env('APP_NAME', 'worker')),
 
