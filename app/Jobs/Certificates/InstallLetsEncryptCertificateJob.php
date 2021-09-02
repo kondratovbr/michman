@@ -47,6 +47,9 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
 
             $rootSsh = $server->sftp('root');
 
+            // We'll need Nginx to receive certificates, so let's ensure it is running.
+            $restartNginx->execute($server, $rootSsh);
+
             $installCertificate->execute($server, $certificate, $rootSsh);
 
             /** @var Project $project */
