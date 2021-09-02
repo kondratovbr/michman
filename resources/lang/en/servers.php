@@ -219,6 +219,7 @@ return [
         'statuses' => [
             Certificate::STATUS_INSTALLING => 'Installing',
             Certificate::STATUS_INSTALLED => 'Active',
+            Certificate::STATUS_DELETING => 'Deleting',
         ],
     ],
 
