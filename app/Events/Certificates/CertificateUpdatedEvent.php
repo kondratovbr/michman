@@ -2,7 +2,9 @@
 
 namespace App\Events\Certificates;
 
-class CertificateUpdatedEvent extends AbstractCertificateEvent
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class CertificateUpdatedEvent extends AbstractCertificateEvent implements ShouldBroadcast
 {
     //
 }
