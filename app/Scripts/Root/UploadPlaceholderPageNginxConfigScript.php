@@ -24,8 +24,8 @@ class UploadPlaceholderPageNginxConfigScript extends AbstractServerScript
             ConfigView::render(
                 $server->getCertificatesFor($project)->isEmpty() ? 'nginx.server_placeholder' : 'nginx.server_placeholder_ssl',
                 [
-                    'project' => $project,
                     'server' => $server,
+                    'project' => $project,
                 ]
             ),
         )) {
