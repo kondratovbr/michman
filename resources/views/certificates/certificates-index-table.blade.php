@@ -7,15 +7,33 @@
             <x-th>{{ __('servers.ssl.domains') }}</x-th>
             <x-th>{{ __('servers.ssl.type') }}</x-th>
             <x-th></x-th>
+            <x-th></x-th>
         </x-tr-header>
     </x-slot>
 
     <x-slot name="body">
-        @foreach($certificates as $certificate)
+        @foreach($certificates as $cert)
             <x-tr>
-                <x-td>{{ implode(', ', $certificate->domains) }}</x-td>
-                <x-td>{{ __("servers.ssl.types.{$certificate->type}") }}</x-td>
-                <x-td></x-td>
+                <x-td>{{ implode(', ', $cert->domains) }}</x-td>
+                <x-td>{{ __("servers.ssl.types.{$cert->type}") }}</x-td>
+                <x-td>
+{{--                    TODO: Should I center these badges? Here and in all other tables.--}}
+                    <x-certificates.status-badge :certificate="$cert" />
+                </x-td>
+                <x-td>
+                    <div class="flex justify-end items-center">
+                        @if($cert->isInstalled())
+                            <x-buttons.trash
+                                wire:click="delete('{{ $cert->getKey() }}')"
+                                wire:loading.attr="disabled"
+                            />
+                        @else
+                            <div class="mr-4.5">
+                                <x-spinner/>
+                            </div>
+                        @endif
+                    </div>
+                </x-td>
             </x-tr>
         @endforeach
     </x-slot>

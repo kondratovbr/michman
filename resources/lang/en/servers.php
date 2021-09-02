@@ -215,6 +215,11 @@ return [
         'types' => [
             Certificate::TYPE_LETS_ENCRYPT => 'Let\'s Encrypt',
         ],
+
+        'statuses' => [
+            Certificate::STATUS_INSTALLING => 'Installing',
+            Certificate::STATUS_INSTALLED => 'Active',
+        ],
     ],
 
 ];
