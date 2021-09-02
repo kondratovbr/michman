@@ -5,7 +5,11 @@ namespace App\Models;
 use App\Collections\EloquentCollection;
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
+use App\Validation\Rules;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use RuntimeException;
 
 /**
  * Customized base model class for Eloquent models
@@ -16,15 +20,40 @@ abstract class AbstractModel extends Model
         HasModelHelpers;
 
     /**
+     * Check that model key is inside the collection provided
+     * and that model still exists in the DB.
+     * Retrieve the model from the DB and return it.
+     */
+    public static function validated(string|int $key, Collection $models, bool $strictUuid = false): static
+    {
+        // TODO: Should verify that this method works, cover it with tests and refactor all my Livewire components that validate model keys.
+
+        if (! $models->every(fn($item) => $item instanceof static))
+            throw new RuntimeException('The provided Collection contains items that aren\'t of this model class (' . static::class . ')');
+
+        $key = Validator::make(
+            ['key' => (string) $key],
+            [
+                'key' => $strictUuid
+                    ? Rules::uuid()->in($models->modelKeys())->required()
+                    : Rules::string(1, 64)->in($models->modelKeys())->required()
+            ],
+        )->validate()['key'];
+
+        /** @var static $model */
+        $model = static::query()->findOrFail($key);
+
+        return $model;
+    }
+
+    /**
      * Retrieve a new instance of this model from the database and apply an UPDATE LOCK on it.
-     *
-     * @return static
      */
     public function freshLockForUpdate(): static
     {
-        // TODO: Do I even use this? And does it even work as it should?
-
-        return $this->newQuery()->lockForUpdate()->findOrFail($this->getKey());
+        /** @var static $model */
+        $model = $this->newQuery()->lockForUpdate()->findOrFail($this->getKey());
+        return $model;
     }
 
     /**
