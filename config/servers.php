@@ -8,6 +8,8 @@ use App\Support\Str;
  *       See all the nulls in here?
  */
 
+// TODO: CRITICAL! Need to add RabbitMQ option somewhere. Python Celery queue system recommends it, so people will probably want it.
+
 return [
 
     /*
@@ -117,6 +119,9 @@ return [
 
     'workers' => [
         'celery' => [
+            //
+        ],
+        'celerybeat' => [
             //
         ],
     ],
