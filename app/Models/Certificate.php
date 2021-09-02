@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,7 @@ class Certificate extends AbstractModel
 
     public const STATUS_INSTALLING = 'installing';
     public const STATUS_INSTALLED = 'installed';
+    public const STATUS_DELETING = 'deleting';
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -89,6 +91,15 @@ class Certificate extends AbstractModel
     public function getDirectoryAttribute(): string
     {
         return "/etc/letsencrypt/live/{$this->name}";
+    }
+
+    /**
+     * Check if this certificate has a domain from a project.
+     */
+    public function hasDomainOf(Project $project): bool
+    {
+        return Arr::hasValue($this->domains, $project->domain)
+            || ! empty(Arr::intersect($this->domains, $project->aliases));
     }
 
     /**
