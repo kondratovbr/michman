@@ -41,6 +41,7 @@ use phpseclib3\Net\SSH2;
  * @property CarbonInterface $createdAt
  *
  * @property-read User $user
+ * @property-read string $publicWorkerDir
  *
  * @property-read Provider $provider
  * @property-read WorkerSshKey $workerSshKey
@@ -109,6 +110,14 @@ class Server extends AbstractModel
     public function getUserAttribute(): User
     {
         return $this->provider->owner;
+    }
+
+    /**
+     * Get the path to a directory for public files on this servers.
+     */
+    public function getPublicWorkerDirAttribute(): string
+    {
+        return '/home/' . config('servers.worker_user') . '/public';
     }
 
     /**
