@@ -74,7 +74,7 @@ class Certificate extends AbstractModel
      */
     public function getUserAttribute(): User
     {
-        return $this->project->user;
+        return $this->server->user;
     }
 
     /**
