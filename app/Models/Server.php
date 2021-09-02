@@ -56,6 +56,7 @@ use phpseclib3\Net\SSH2;
  * @property-read Collection $deployments
  * @property-read DeploymentServerPivot|null $serverDeployment
  * @property-read Collection $certificates
+ * @property-read Collection $workers
  *
  * @method static ServerFactory factory(...$parameters)
  */
@@ -355,5 +356,13 @@ class Server extends AbstractModel
     public function certificates(): HasMany
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    /**
+     * Get a relation with the queue workers that run on this server.
+     */
+    public function workers(): HasMany
+    {
+        return $this->hasMany(Worker::class);
     }
 }
