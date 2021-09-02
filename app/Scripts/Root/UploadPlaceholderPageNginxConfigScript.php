@@ -15,16 +15,14 @@ class UploadPlaceholderPageNginxConfigScript extends AbstractServerScript
     {
         $this->init($server, $rootSsh);
 
-        // TODO: CRITICAL! Use mkdir here to create those two nginx config directories if they don't exist for some reason.
-        //       Check their default permissions to set the right ones.
-        //       Use this technique to improve robustness for other config uploading scripts, nginx first of all.
+        $this->exec("mkdir -p /etc/nginx/sites-available && mkdir -p /etc/nginx/sites-enabled");
 
         $file = "/etc/nginx/sites-available/{$project->projectName}_placeholder.conf";
 
         if (! $this->sendString(
             $file,
             ConfigView::render(
-                $project->hasSsl() ? 'nginx.server_placeholder_ssl' : 'nginx.server_placeholder',
+                $server->getCertificatesFor($project)->isEmpty() ? 'nginx.server_placeholder' : 'nginx.server_placeholder_ssl',
                 [
                     'project' => $project,
                     'server' => $server,

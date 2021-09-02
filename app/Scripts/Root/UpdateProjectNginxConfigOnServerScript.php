@@ -11,14 +11,16 @@ use phpseclib3\Net\SFTP;
 
 class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
 {
-    public function execute(Server $server, Project $project, SFTP $ssh = null): void
+    public function execute(Server $server, Project $project, SFTP $rootSsh = null): void
     {
-        $this->init($server, $ssh);
+        $this->init($server, $rootSsh);
+
+        $this->exec("mkdir -p /etc/nginx/sites-available && mkdir -p /etc/nginx/sites-enabled");
 
         if (! $this->sendString(
             $project->nginxConfigFilePath,
             ConfigView::render(
-                $project->hasSsl() ? 'nginx.server_ssl' : 'nginx.server',
+                $server->getCertificatesFor($project)->isEmpty() ? 'nginx.server' : 'nginx.server_ssl',
                 ['project' => $project])
             )
         ) {
