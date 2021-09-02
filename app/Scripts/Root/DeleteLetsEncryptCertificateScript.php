@@ -17,7 +17,7 @@ class DeleteLetsEncryptCertificateScript extends AbstractServerScript
         $this->init($server, $rootSsh);
 
         // TODO: CRITICAL! This may fail for numerous reasons. Should figure out how to inform the user.
-        $this->exec("certbot certonly -n delete --cert-name {$cert->name}");
+        $this->exec("certbot -n delete --cert-name {$cert->name}");
 
         if ($this->failed())
             throw new ServerScriptException("Certbot command to delete certificate \"{$cert->name}\" has failed.");
