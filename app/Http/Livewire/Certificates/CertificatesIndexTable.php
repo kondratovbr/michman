@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Certificates;
 
+use App\Actions\Certificates\DeleteCertificateAction;
 use App\Broadcasting\ServerChannel;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
@@ -53,6 +54,18 @@ class CertificatesIndexTable extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('index', [Certificate::class, $this->server]);
+    }
+
+    /**
+     * Delete a certificate.
+     */
+    public function delete(string $key, DeleteCertificateAction $action): void
+    {
+        $cert = Certificate::validated($key, $this->certificates);
+
+        $this->authorize('delete', $cert);
+
+        $action->execute($cert);
     }
 
     public function render(): View
