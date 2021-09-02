@@ -32,7 +32,7 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
 
     public Server $server;
 
-    public string $domains = '';
+    public string $domains;
 
     protected function prepareForValidation($attributes): array
     {
@@ -57,6 +57,13 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('create', [Certificate::class, $this->server]);
+
+        $this->resetState();
+    }
+
+    public function resetState(): void
+    {
+        $this->domains = '';
     }
 
     /**
@@ -72,7 +79,7 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
 
         $this->emit('certificate-stored');
 
-        $this->reset();
+        $this->resetState();
     }
 
     public function render(): View
