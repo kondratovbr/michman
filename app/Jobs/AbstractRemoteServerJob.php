@@ -61,8 +61,6 @@ abstract class AbstractRemoteServerJob extends AbstractJob
      */
     protected function lockServer(): Server
     {
-        $this->server = Server::query()->lockForUpdate()->findOrFail($this->server->getKey());
-
-        return $this->server;
+        return $this->server = $this->server->freshLockForUpdate();
     }
 }
