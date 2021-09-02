@@ -21,7 +21,10 @@ class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
             $project->nginxConfigFilePath,
             ConfigView::render(
                 $server->getCertificatesFor($project)->isEmpty() ? 'nginx.server' : 'nginx.server_ssl',
-                ['project' => $project])
+                [
+                    'server' => $server,
+                    'project' => $project,
+                ])
             )
         ) {
             throw new ServerScriptException("Failed to send string to file: {$project->nginxConfigFilePath}");
