@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# {{-- TODO: CRITICAL! Unfinished! The effing manage.py works interactively by default (at least "collectstatic"). Should fix. --}}
 # Available environment variables:
 # MICHMAN_PROJECT_BRANCH - git branch configured for deployment
 # ...
@@ -13,6 +12,6 @@ source venv/bin/activate
 
 pip install -r requirements.txt
 
-./manage.py migrate
+./manage.py migrate --noinput
 
-./manage.py collectstatic
+./manage.py collectstatic --noinput
