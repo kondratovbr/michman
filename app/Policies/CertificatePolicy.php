@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Certificate;
 use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -20,5 +21,10 @@ class CertificatePolicy
     public function create(User $user, Server $server): bool
     {
         return $user->is($server->user);
+    }
+
+    public function delete(User $user, Certificate $certificate): bool
+    {
+        return $user->is($certificate->user);
     }
 }
