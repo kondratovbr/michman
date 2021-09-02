@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             DeploySshKeySeeder::class,
             DeploymentSeeder::class,
             CertificateSeeder::class,
+            WorkerSeeder::class,
         ]);
     }
 }
