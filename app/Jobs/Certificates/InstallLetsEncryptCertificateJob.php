@@ -4,6 +4,7 @@ namespace App\Jobs\Certificates;
 
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Certificate;
+use App\Models\Project;
 use App\Scripts\Root\InstallLetsEncryptCertificateScript;
 use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
@@ -16,10 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 /*
  * TODO: CRITICAL! Make sure a certificate cannot be requested for a server of a type that shouldn't be accessible from the outside anyway. I.e. certificates are only for "app", "web" and "balancer" types of servers.
- */
-
-/*
- * TODO: CRITICAL! How to handle multiple certificates for a project? Probably have to make the "server-ssl" config quite a lot more complex to handle that situation. A single project may be served on multiple domains, so multiple certificates can exist. Try how Forge does it, btw. Luckily, I have a spare domain.
  */
 
 class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
@@ -47,15 +44,18 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
         ) {
             $server = $this->server->freshLockForUpdate();
             $certificate = $this->certificate->freshLockForUpdate();
-            $project = $certificate->project;
 
             $rootSsh = $server->sftp('root');
 
             $installCertificate->execute($server, $certificate, $rootSsh);
 
-            $updateNginxConfig->execute($server, $project, $rootSsh);
-
-            $uploadPlaceholderNginxConfig->execute($server, $project, $rootSsh);
+            /** @var Project $project */
+            foreach ($server->projects as $project) {
+                if ($certificate->hasDomainOf($project)) {
+                    $updateNginxConfig->execute($server, $project, $rootSsh);
+                    $uploadPlaceholderNginxConfig->execute($server, $project, $rootSsh);
+                }
+            }
 
             $restartNginx->execute($server, $rootSsh);
 
