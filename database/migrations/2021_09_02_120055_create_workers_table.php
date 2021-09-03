@@ -15,8 +15,12 @@ class CreateWorkersTable extends Migration
             $table->id();
 
             $table->foreignId('server_id')->references('id')->on('servers');
+            $table->foreignId('project_id')->references('id')->on('projects');
 
             $table->string('type');
+            $table->string('app')->nullable();
+            $table->integer('processes');
+            $table->json('queues');
             //
 
             $table->timestamps();

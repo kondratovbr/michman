@@ -53,6 +53,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read Database|null $database
  * @property-read DatabaseUser|null $databaseUser
  * @property-read Collection $deployments
+ * @property-read Collection $workers
  *
  * @method static ProjectFactory factory(...$parameters)
  */
@@ -262,5 +263,13 @@ class Project extends AbstractModel
     public function databaseUser(): BelongsTo
     {
         return $this->belongsTo(DatabaseUser::class);
+    }
+
+    /**
+     * Get a relation with the queue workers configured for this project.
+     */
+    public function workers(): HasMany
+    {
+        return $this->hasMany(Worker::class);
     }
 }
