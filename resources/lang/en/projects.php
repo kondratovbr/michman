@@ -123,12 +123,34 @@ return [
         ],
     ],
 
-    'history' => [
-        'button' => 'History',
-    ],
-
     'queue' => [
-       'button' => 'Queue',
+        'types' => [
+            'celery' => 'Celery',
+            'celerybeat' => 'Celery Beat',
+        ],
+
+        'button' => 'Queue',
+
+        'create' => [
+            'title' => 'New Queue Worker',
+            'button' => 'Create Worker',
+            'type' => [
+                'label' => 'Type',
+            ],
+            'server' => [
+                'label' => 'Server',
+                'help' => 'Choose a server to configure the new worker on.'
+            ],
+            'processes' => [
+                'label' => 'Number of processes',
+                'help' => 'Leave this field empty and we\'ll pick a reasonable number based on the number of cores on the server.',
+            ],
+        ],
+
+        'index' => [
+            'title' => 'Active Workers',
+            'empty' => 'No queue workers configured for this project.',
+        ],
     ],
 
 ];
