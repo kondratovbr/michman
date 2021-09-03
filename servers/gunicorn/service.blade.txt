@@ -1,6 +1,6 @@
 [Unit]
 Description=gunicorn daemon for {{ $project->projectName }} at {{ $project->domain }} project
-Requires={{ $project->projectName }}.sock
+Requires={{ $project->projectName }}.socket
 After=network.target
 
 [Service]
