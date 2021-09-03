@@ -19,4 +19,13 @@ return [
         ],
     ],
 
+    'workers' => [
+        'celery' => [
+            //
+        ],
+        'celerybeat' => [
+            //
+        ],
+    ],
+
 ];
