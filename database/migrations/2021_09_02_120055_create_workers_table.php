@@ -17,10 +17,14 @@ class CreateWorkersTable extends Migration
             $table->foreignId('server_id')->references('id')->on('servers');
             $table->foreignId('project_id')->references('id')->on('projects');
 
+            $table->string('status');
             $table->string('type');
             $table->string('app')->nullable();
-            $table->integer('processes');
-            $table->json('queues');
+            $table->integer('processes')->nullable();
+            $table->json('queues')->nullable();
+            $table->integer('stop_seconds')->nullable();
+            $table->integer('max_tasks_per_child')->nullable();
+            $table->bigInteger('max_memory_per_child')->nullable();
             //
 
             $table->timestamps();
