@@ -11,8 +11,6 @@ class CreateServersTable extends Migration
      */
     public function up()
     {
-        // TODO: IMPORTANT! Don't forget to add all new fields to tests.
-
         Schema::create('servers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('provider_id')->references('id')->on('providers');
