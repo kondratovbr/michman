@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Log;
 
 abstract class AbstractProvider
 {
@@ -39,7 +40,12 @@ abstract class AbstractProvider
      */
     protected function canUseCache(): bool
     {
-        return isset($this->identifier);
+        if (! isset($this->identifier)) {
+            Log::warning(static::class . ': This instance is unable to cache data, because it doesn\'t have a cache identifier set for some reason.');
+            return false;
+        }
+
+        return true;
     }
 
     /**
