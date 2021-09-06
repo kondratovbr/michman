@@ -58,15 +58,19 @@ return [
      */
     'config-views-extensions' => [
         'blade' => 'blade',
+
         'blade.conf' => 'blade',
         'blade.txt' => 'blade',
         'blade.sh' => 'blade',
         'blade.py' => 'blade',
         'blade.env' => 'blade',
+        'blade.ini' => 'blade',
+
         'conf' => 'file',
         'txt' => 'file',
         'sh' => 'file',
         'py' => 'file',
         'env' => 'file',
+        'ini' => 'file',
     ],
 ];
