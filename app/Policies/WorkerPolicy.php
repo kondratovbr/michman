@@ -21,6 +21,11 @@ class WorkerPolicy
         return $user->is($project->user);
     }
 
+    public function restart(User $user, Worker $worker): bool
+    {
+        return $user->is($worker->user);
+    }
+
     public function delete(User $user, Worker $worker): bool
     {
         return $user->is($worker->user);
