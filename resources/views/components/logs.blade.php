@@ -1,5 +1,7 @@
 @props(['logs'])
 
+{{--TODO: IMPORTANT! Make the thing wider? So standard 80 characters would actually fit. --}}
+
 <div class="bg-code-bg rounded-md px-3-em py-2-em text-code-text font-mono">
     @foreach($logs ?? [] as $log)
         @if($log->renderable)
