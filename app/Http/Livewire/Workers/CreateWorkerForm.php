@@ -15,6 +15,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+/*
+ * TODO: CRITICAL! Need to make sure the app actually has Celery included. The user has to do this themselves since Celery requires at least some configuration. So, just don't allow to create workers if Celery isn't installed for this application. Or maybe offer to install it (later?)?
+ */
+
 /**
  * @property-read string[] $types
  * @property-read string[] $servers
