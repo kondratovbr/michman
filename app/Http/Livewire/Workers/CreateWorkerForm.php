@@ -92,7 +92,7 @@ class CreateWorkerForm extends LivewireComponent
         // TODO: CRITICAL! Account for the fact that workers can only be run on "app", "web" or "worker" servers.
         $this->state['serverId'] = $this->project->servers()->firstOrFail()->getKey();
 
-        $this->state['app'] = "{$this->project->package}.Celery";
+        $this->state['app'] = "{$this->project->package}.celery";
     }
 
     /**
