@@ -22,13 +22,7 @@ use Livewire\Component;
 
 // TODO: The API key may be read-only, so we should do some POST request at the creation (or afterwards, in the queue) to verify that we have write access. We can just mark the key as "read-only" or just "invalid" in the providers list if we encounter such issue.
 
-// TODO: Note - all server configuration tasks and even the creation itself should be done in the queue to avoid hogging the request - it may take some time. Don't forget to show something meaningful to the user in the meantime.
-
-// TODO: This form should probably be horizontal, like Forge does.
-
 // TODO: CRITICAL! Unfinished! Doesn't react after a server is created, nothing gets updated on the page.
-
-// TODO: CRITICAL! Check and update tests!
 
 // TODO: Hide the buttons in this form when the form isn't showing at all, i.e. before the provider was chosen.
 
