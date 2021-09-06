@@ -2,16 +2,16 @@
 
 namespace App\Events\Workers;
 
-use App\Events\Servers\AbstractServerEvent;
+use App\Events\Projects\AbstractProjectEvent;
 use App\Models\Worker;
 
-abstract class AbstractWorkerEvent extends AbstractServerEvent
+abstract class AbstractWorkerEvent extends AbstractProjectEvent
 {
     public int $workerKey;
 
     public function __construct(Worker $worker)
     {
-        parent::__construct($worker->server);
+        parent::__construct($worker->project);
 
         $this->workerKey = $worker->getKey();
     }
