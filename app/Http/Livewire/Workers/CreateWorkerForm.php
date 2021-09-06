@@ -2,17 +2,23 @@
 
 namespace App\Http\Livewire\Workers;
 
+use App\Actions\Workers\StoreWorkerAction;
+use App\DataTransferObjects\WorkerData;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\Worker;
 use App\Support\Arr;
+use App\Support\Str;
+use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! CONTINUE.
-
+/**
+ * @property-read string[] $types
+ * @property-read string[] $servers
+ */
 class CreateWorkerForm extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -23,7 +29,12 @@ class CreateWorkerForm extends LivewireComponent
     public array $state = [
         'type' => 'celery',
         'serverId' => null,
-        'processes' => 1,
+        'app' => null,
+        'processes' => null,
+        'queues' => null,
+        'stopSeconds' => 600,
+        'maxTasks' => null,
+        'maxMemory' => null,
     ];
 
     /** @var string[] */
@@ -34,6 +45,37 @@ class CreateWorkerForm extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         //
+    }
+
+    protected function prepareForValidation($attributes): array
+    {
+        $state = $attributes['state'];
+
+        if (is_string($state['queues'])) {
+            $state['queues'] = Arr::map(
+                explode(',', Str::lower($state['queues'])),
+                fn(string $domain) => trim($domain)
+            );
+        }
+
+        $attributes['state'] = $state;
+
+        return $attributes;
+    }
+
+    public function rules(): array
+    {
+        return Arr::mapAssoc([
+            'type' => Rules::string(1, 255)->in(Arr::keys($this->types))->required(),
+            'serverId' => Rules::integer()->in(Arr::keys($this->servers))->required(),
+            'app' => Rules::string(1, 255)->nullable(),
+            'processes' => Rules::integer(1)->nullable(),
+            'queues' => Rules::array()->nullable(),
+            'queues.*' => Rules::alphaNumDashString(1, 255),
+            'stopSeconds' => Rules::integer(0)->nullable(),
+            'maxTasks' => Rules::integer(1)->nullable(),
+            'maxMemory' => Rules::integer(1)->nullable(),
+        ], fn(string $name, $rules) => ["state.$name", $rules]);
     }
 
     public function mount(): void
@@ -49,6 +91,8 @@ class CreateWorkerForm extends LivewireComponent
 
         // TODO: CRITICAL! Account for the fact that workers can only be run on "app", "web" or "worker" servers.
         $this->state['serverId'] = $this->project->servers()->firstOrFail()->getKey();
+
+        $this->state['app'] = "{$this->project->package}.Celery";
     }
 
     /**
@@ -67,6 +111,30 @@ class CreateWorkerForm extends LivewireComponent
     public function getServersProperty(): array
     {
         return $this->project->servers->mapWithKeys(fn(Server $server) => [$server->getKey() => $server->name])->toArray();
+    }
+
+    /**
+     * Store a newly configured queue worker.
+     */
+    public function store(StoreWorkerAction $action): void
+    {
+        $validated = $this->validate()['state'];
+
+        $this->authorize('create', [Worker::class, $this->project]);
+
+        $action->execute(new WorkerData(
+            type: $validated['type'],
+            app: $validated['app'],
+            processes: $validated['processes'],
+            queues: $validated['queues'],
+            stop_seconds: $validated['stopSeconds'],
+            max_tasks_per_child: $validated['maxTasks'],
+            max_memory_per_child: $validated['maxMemory'] * 1024, // We're asking users for MiB for convenience, but Celery expects KiB.
+        ), $this->project, $this->project->servers()->findOrFail($validated['serverId']));
+
+        $this->resetState();
+
+        $this->emit('worker-stored');
     }
 
     public function render(): View

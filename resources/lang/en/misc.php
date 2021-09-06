@@ -7,5 +7,7 @@ return [
     'or' => 'or',
     'n/a' => 'N/A',
     'installed' => 'Installed',
+    'status' => 'Status',
+    'restart' => 'Restart',
 
 ];

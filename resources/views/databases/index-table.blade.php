@@ -31,7 +31,7 @@
                         </div>
                     @else
                         <x-buttons.trash
-                            wire:click="delete('{{ $database->getKey() }}')"
+                            wire:click.prevent="delete('{{ $database->getKey() }}')"
                             wire:key="delete-database-button-{{ $database->getKey() }}"
                         />
                     @endif

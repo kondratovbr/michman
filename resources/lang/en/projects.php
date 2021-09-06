@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Certificate;
+use App\Models\Worker;
 
 return [
 
@@ -141,15 +142,43 @@ return [
                 'label' => 'Server',
                 'help' => 'Choose a server to configure the new worker on.'
             ],
+            'app' => [
+                'label' => 'Celery App Module',
+                'help' => 'Custom Celery module. You can leave this empty if your Celery module is a Celery.py file inside your main app directory.',
+            ],
             'processes' => [
-                'label' => 'Number of processes',
-                'help' => 'Leave this field empty and we\'ll pick a reasonable number based on the number of cores on the server.',
+                'label' => 'Number of Child Processes',
+                'help' => 'Leave this field empty for a reasonable default - a process for every CPU core on the server.',
+                'table' => 'Processes',
+            ],
+            'queues' => [
+                'label' => 'Queues',
+                'help' => 'Comma-separated names of queues to run by this worker. If empty - defaults to "Celery".',
+            ],
+            'stop-seconds' => [
+                'label' => 'Stop Seconds',
+                'help' => 'When this worker needs to be stopped - wait for this number of seconds for any running tasks to complete before force stopping the worker. Increase if you have any long-running tasks.',
+            ],
+            'max-tasks' => [
+                'label' => 'Max Tasks Per Child',
+                'help' => 'Leave empty for no limit. A child process will be restarted after handling this many tasks. May be useful to combat memory leaks.',
+            ],
+            'max-memory' => [
+                'label' => 'Max Memory Per Child, MiB',
+                'help' => 'Leave empty for no limit. Another way to combat memory leaks - a child process will be restarted if it\'s allocated memory goes over this limit. If a single task causes a child process to exceed this limit, the task will be completed before restarting the process.'
             ],
         ],
 
         'index' => [
             'title' => 'Active Workers',
             'empty' => 'No queue workers configured for this project.',
+        ],
+
+        'statuses' => [
+            Worker::STATUS_STARTING => 'Starting',
+            Worker::STATUS_ACTIVE => 'Active',
+            Worker::STATUS_DELETING => 'Removing',
+            Worker::STATUS_FAILED => 'Failed',
         ],
     ],
 

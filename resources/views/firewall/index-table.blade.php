@@ -25,7 +25,7 @@
                 <x-td>{{ $rule->fromIp ?? __('servers.firewall.table.any') }}</x-td>
                 <x-td class="flex justify-end items-center min-h-14">
                     @if($rule->isAdded() && $rule->canDelete)
-                        <x-buttons.trash wire:click="delete('{{ $rule->getKey() }}')" />
+                        <x-buttons.trash wire:click.prevent="delete('{{ $rule->getKey() }}')" />
                     @endif
                     @if($rule->isDeleting())
                         <x-buttons.trash :loading="true" />

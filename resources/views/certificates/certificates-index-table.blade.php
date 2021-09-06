@@ -24,7 +24,7 @@
                     <div class="flex justify-end items-center">
                         @if($cert->isInstalled())
                             <x-buttons.trash
-                                wire:click="delete('{{ $cert->getKey() }}')"
+                                wire:click.prevent="delete('{{ $cert->getKey() }}')"
                                 wire:loading.attr="disabled"
                             />
                         @else

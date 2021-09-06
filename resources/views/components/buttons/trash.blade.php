@@ -1,9 +1,14 @@
-@props(['loading' => false])
+@props(['loading' => false, 'size' => null])
+
+{{--TODO: CRITICAL! I've changed the default size of this button - check how it looks on other pages. Check and update other icon-only buttons as well.--}}
 
 @php
     $classes = implode(' ', [
         'inline-flex items-center justify-center rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
-        'py-1.5 px-4',
+        match ($size ?? null) {
+            'small' => 'py-1 px-2 text-sm',
+            default => 'py-2.5 px-4',
+        },
         'bg-red-600 text-gray-100',
         'hover:bg-red-700',
         'active:bg-red-800',

@@ -33,9 +33,74 @@
             @endif
 
             <x-field class="max-w-sm">
-                <x-label></x-label>
+                <x-label>{{ __('projects.queue.create.app.label') }}</x-label>
+                <x-inputs.text
+                    name="state.app"
+                    wire:model="state.app"
+                />
+                <x-input-error for="state.app" />
+                <x-help>{{ __('projects.queue.create.app.help') }}</x-help>
+            </x-field>
 
-                <x-input-error for="state.processes" />
+            @if($state['type'] == 'celery')
+                <x-field class="max-w-sm">
+                    <x-label>{{ __('projects.queue.create.processes.label') }}</x-label>
+                    <x-inputs.number
+                        name="state.processes"
+                        wire:model="state.processes"
+                        min="1"
+                        step="1"
+                    />
+                    <x-input-error for="state.processes" />
+                    <x-help>{{ __('projects.queue.create.processes.help') }}</x-help>
+                </x-field>
+
+                <x-field class="max-w-sm">
+                    <x-label>{{ __('projects.queue.create.queues.label') }}</x-label>
+                    <x-inputs.text
+                        name="state.queues"
+                        wire:model="state.queues"
+                    />
+                    <x-input-error for="state.queues" />
+                    <x-help>{{ __('projects.queue.create.queues.help') }}</x-help>
+                </x-field>
+
+                <x-field class="max-w-sm">
+                    <x-label>{{ __('projects.queue.create.max-tasks.label') }}</x-label>
+                    <x-inputs.number
+                        name="state.maxTasks"
+                        wire:model="state.maxTasks"
+                        min="1"
+                        step="1"
+                    />
+                    <x-input-error for="state.maxTasks" />
+                    <x-help>{{ __('projects.queue.create.max-tasks.help') }}</x-help>
+                </x-field>
+
+                <x-field class="max-w-sm">
+                    <x-label>{{ __('projects.queue.create.max-memory.label') }}</x-label>
+                    <x-inputs.number
+                        name="state.maxMemory"
+                        wire:model="state.maxMemory"
+                        min="1"
+                        step="1"
+                    />
+                    <x-input-error for="state.maxMemory" />
+                    <x-help>{{ __('projects.queue.create.max-memory.help') }}</x-help>
+                </x-field>
+
+            @endif
+
+            <x-field class="max-w-sm">
+                <x-label>{{ __('projects.queue.create.stop-seconds.label') }}</x-label>
+                <x-inputs.number
+                    name="state.stopSeconds"
+                    wire:model="state.stopSeconds"
+                    min="1"
+                    step="1"
+                />
+                <x-input-error for="state.stopSeconds" />
+                <x-help>{{ __('projects.queue.create.stop-seconds.help') }}</x-help>
             </x-field>
 
         </div>

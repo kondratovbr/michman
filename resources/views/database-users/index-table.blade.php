@@ -36,7 +36,7 @@
                             <x-buttons.edit wire:click="openModal('{{ $databaseUser->getKey() }}')" />
                             <x-buttons.trash
                                 class="ml-2"
-                                wire:click="delete('{{ $databaseUser->getKey() }}')"
+                                wire:click.prevent="delete('{{ $databaseUser->getKey() }}')"
                                 wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"
                             />
                         @endif
