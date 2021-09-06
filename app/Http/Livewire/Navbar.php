@@ -6,6 +6,10 @@ use App\Facades\Auth;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
+/*
+ * TODO: CRITICAL! Make sure the navbar updates on server/project creation/deletion/update, etc. It does not right now.
+ */
+
 class Navbar extends Component
 {
     /** @var string[] */
