@@ -11,20 +11,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Test if all of this works. I have some complex queries going on with finished/successful deployments and such.
-
-/*
- * TODO: CRITICAL! I need to change the logic of these config editing forms slightly - don't update actual files on servers immediately. Upload the updated files only during the next deployment, or else it would be very easy to break something and hard to track it.
- *     This would mean that I have to make the logic of these forms more complicated:
- *         - Notify the user that the file won't be updated immediately.
- *         - Notify the user if servers currently have a different version of the config.
- *         - Allow the user to rollback the changes back to the currently deployed version.
- *         - ...
- *     NOTE: Currently I don't even restart the corresponding services when updating the configs,
- *           which is just stupid - they may restart automatically, so I can't rely on it.
- */
-// TODO: CRITICAL! Obviously - don't forget to change the deployment logic accordingly.
-
 class ProjectEnvironmentEditForm extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -80,11 +66,6 @@ class ProjectEnvironmentEditForm extends LivewireComponent
      */
     public function update(UpdateProjectEnvironmentAction $action): void
     {
-        /*
-         * TODO: CRITICAL! Go through all the rest of my Livewire forms - I'm pretty sure I've been stupid
-         *       and used the raw attributes instead of the validated ones on some occasions.
-         */
-
         $environment = $this->validate()['environment'] ?? null;
 
         $this->authorize('update', $this->project);

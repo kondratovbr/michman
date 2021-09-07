@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use RuntimeException;
 
+// TODO: CRITICAL! Cover with tests as well.
+
 /**
  * Customized base model class for Eloquent models
  */
@@ -26,8 +28,6 @@ abstract class AbstractModel extends Model
      */
     public static function validated(string|int $key, Collection $models, bool $strictUuid = false): static
     {
-        // TODO: Should verify that this method works, cover it with tests and refactor all my Livewire components that validate model keys.
-
         if (! $models->every(fn($item) => $item instanceof static))
             throw new RuntimeException('The provided Collection contains items that aren\'t of this model class (' . static::class . ')');
 

@@ -80,15 +80,7 @@ class PythonsIndexTable extends LivewireComponent
      */
     public function patch(PatchPythonAction $patchPython, string $pythonKey): void
     {
-        $pythonKey = Validator::make(
-            ['python_key' => $pythonKey],
-            ['python_key' => Rules::string(1, 16)
-                ->in($this->pythons->pluck('id')->toArray())
-                ->required()],
-        )->validate()['python_key'];
-
-        /** @var Python $python */
-        $python = $this->server->pythons()->findOrFail($pythonKey);
+        $python = Python::validated($pythonKey, $this->pythons);
 
         $this->authorize('update', $python);
 

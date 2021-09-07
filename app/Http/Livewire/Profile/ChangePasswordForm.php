@@ -14,11 +14,8 @@ class ChangePasswordForm extends Component
 {
     use AuthorizesRequests;
 
-    /** Currently typed user's current password. */
     public string $current_password = '';
-    /** Currently typed new password. */
     public string $password = '';
-    /** Currently typed new password confirmation. */
     public string $password_confirmation = '';
 
     /**
@@ -37,19 +34,17 @@ class ChangePasswordForm extends Component
      */
     public function updatePassword(UpdatesUserPasswords $updater): void
     {
-        $this->validate();
+        $validated = $this->validate();
 
         $this->authorize('changePassword', [Auth::user()]);
 
         $updater->update(Auth::user(), [
-            'current_password' => $this->current_password,
-            'password' => $this->password,
-            'password_confirmation' => $this->password_confirmation,
+            'current_password' => $validated['current_password'],
+            'password' => $validated['password'],
+            'password_confirmation' => $validated['password_confirmation'],
         ]);
 
-        $this->current_password = '';
-        $this->password = '';
-        $this->password_confirmation = '';
+        $this->reset();
 
         $this->emit('saved');
     }

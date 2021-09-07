@@ -17,7 +17,6 @@ use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 class DatabaseUsersIndexTable extends LivewireComponent
@@ -89,7 +88,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
      */
     public function delete(DeleteDatabaseUserAction $deleteAction, string $databaseUserKey): void
     {
-        $databaseUser = $this->getDatabaseUser($databaseUserKey);
+        $databaseUser = DatabaseUser::validated($databaseUserKey, $this->databaseUsers);
 
         $this->authorize('delete', $databaseUser);
 
@@ -101,7 +100,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
      */
     public function openModal(string $databaseUserKey): void
     {
-        $this->updatingUser = $this->getDatabaseUser($databaseUserKey);
+        $this->updatingUser = DatabaseUser::validated($databaseUserKey, $this->databaseUsers);
 
         $this->authorize('update', $this->updatingUser);
 
@@ -140,24 +139,6 @@ class DatabaseUsersIndexTable extends LivewireComponent
 
         $this->emit('database-user-stored');
         $this->emit('database-updated');
-    }
-
-    /**
-     * Validate the database user key and fetch the corresponding model.
-     */
-    protected function getDatabaseUser(string $key): DatabaseUser
-    {
-        $key = Validator::make(
-            ['database_user_key' => $key],
-            ['database_user_key' => Rules::string(1, 16)
-                ->in($this->databaseUsers->modelKeys())
-                ->required()],
-        )->validate()['database_user_key'];
-
-        /** @var DatabaseUser $databaseUser */
-        $databaseUser = $this->server->databaseUsers()->findOrFail($key);
-
-        return $databaseUser;
     }
 
     /**

@@ -124,19 +124,19 @@ class CreateWorkerForm extends LivewireComponent
      */
     public function store(StoreWorkerAction $action): void
     {
-        $validated = $this->validate()['state'];
+        $state = $this->validate()['state'];
 
         $this->authorize('create', [Worker::class, $this->project]);
 
         $action->execute(new WorkerData(
-            type: $validated['type'],
-            app: $validated['app'],
-            processes: $validated['processes'],
-            queues: $validated['queues'],
-            stop_seconds: $validated['stopSeconds'],
-            max_tasks_per_child: $validated['maxTasks'],
-            max_memory_per_child: $validated['maxMemory'] * 1024, // We're asking users for MiB for convenience, but Celery expects KiB.
-        ), $this->project, $this->project->servers()->findOrFail($validated['serverId']));
+            type: $state['type'],
+            app: $state['app'],
+            processes: $state['processes'],
+            queues: $state['queues'],
+            stop_seconds: $state['stopSeconds'],
+            max_tasks_per_child: $state['maxTasks'],
+            max_memory_per_child: $state['maxMemory'] * 1024, // We're asking users for MiB for convenience, but Celery expects KiB.
+        ), $this->project, $this->project->servers()->findOrFail($state['serverId']));
 
         $this->resetState();
 

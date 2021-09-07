@@ -60,15 +60,7 @@ class DatabasesIndexTable extends LivewireComponent
      */
     public function delete(DeleteDatabaseAction $action, string $databaseKey): void
     {
-        $databaseKey = Validator::make(
-            ['database_key' => $databaseKey],
-            ['database_key' => Rules::string(1, 16)
-                ->in($this->databases->modelKeys())
-                ->required()],
-        )->validate()['database_key'];
-
-        /** @var Database $database */
-        $database = $this->server->databases()->findOrFail($databaseKey);
+        $database = Database::validated($databaseKey, $this->databases);
 
         $this->authorize('delete', $database);
 

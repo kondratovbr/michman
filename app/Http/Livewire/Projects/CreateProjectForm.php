@@ -139,21 +139,21 @@ class CreateProjectForm extends LivewireComponent
      */
     public function store(StoreProjectAction $storeAction): void
     {
-        $validated = $this->validate()['state'];
+        $state = $this->validate()['state'];
 
         $this->authorize('create', [Project::class, $this->server]);
 
         $storeAction->execute(new NewProjectData(
-            domain: $validated['domain'],
-            aliases: $validated['aliases'] ?? [],
-            type: $validated['type'],
-            python_version: $validated['pythonVersion'] ?? null,
-            allow_sub_domains: $validated['allowSubDomains'],
-            create_database: $validated['createDatabase'] ?? false,
-            db_name: $validated['dbName'] ?? null,
-            create_db_user: $validated['createDbUser'] ?? false,
-            db_user_name: $validated['dbUserName'] ?? null,
-            db_user_password: $validated['dbUserPassword'] ?? null,
+            domain: $state['domain'],
+            aliases: $state['aliases'] ?? [],
+            type: $state['type'],
+            python_version: $state['pythonVersion'] ?? null,
+            allow_sub_domains: $state['allowSubDomains'],
+            create_database: $state['createDatabase'] ?? false,
+            db_name: $state['dbName'] ?? null,
+            create_db_user: $state['createDbUser'] ?? false,
+            db_user_name: $state['dbUserName'] ?? null,
+            db_user_password: $state['dbUserPassword'] ?? null,
         ), $this->server);
 
         $this->reset('state');

@@ -43,13 +43,13 @@ class CreateUserSshKeyForm extends LivewireComponent
      */
     public function store(StoreUserSshKeyAction $action): void
     {
-        $validated = $this->validate()['state'];
+        $state = $this->validate()['state'];
 
         $this->authorize('create', [UserSshKey::class, Auth::user()]);
 
         $action->execute(new UserSshKeyData(
-            name: $validated['name'],
-            publicKey: $validated['publicKey'],
+            name: $state['name'],
+            publicKey: $state['publicKey'],
         ), Auth::user());
 
         $this->reset();

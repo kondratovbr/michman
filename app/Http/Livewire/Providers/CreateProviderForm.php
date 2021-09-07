@@ -96,15 +96,15 @@ class CreateProviderForm extends Component
     {
         $this->authorize('create', Provider::class);
 
-        $this->validate();
+        $validated = $this->validate();
 
         $action->execute(new ProviderData(
             owner: Auth::user(),
-            provider: $this->provider,
-            token: $this->token,
-            key: $this->key,
-            secret: $this->secret,
-            name: $this->name,
+            provider: $validated['provider'],
+            token: $validated['token'],
+            key: $validated['key'],
+            secret: $validated['secret'],
+            name: $validated['name'],
         ));
 
         $this->reset();

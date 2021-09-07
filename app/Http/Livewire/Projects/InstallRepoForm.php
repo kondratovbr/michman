@@ -133,24 +133,24 @@ class InstallRepoForm extends LivewireComponent
     {
         // TODO: CRITICAL! I should command the outer Livewire "page" component to refresh after this action - it should display a completely different set of forms.
 
-        $validated = $this->validate()['state'];
+        $state = $this->validate()['state'];
 
         $this->authorize('update', $this->project);
         $this->authorize('update', $this->server);
 
         $installAction->execute(
             $this->project,
-            Auth::user()->vcsProviders()->findOrFail($validated['vcsProviderKey']),
+            Auth::user()->vcsProviders()->findOrFail($state['vcsProviderKey']),
             new ProjectRepoData(
-                root: $validated['root'],
-                repo: $validated['repo'],
-                branch: $validated['branch'],
-                package: $validated['package'],
-                use_deploy_key: $validated['useDeployKey'],
-                requirements_file: $validated['requirementsFile'],
+                root: $state['root'],
+                repo: $state['repo'],
+                branch: $state['branch'],
+                package: $state['package'],
+                use_deploy_key: $state['useDeployKey'],
+                requirements_file: $state['requirementsFile'],
             ),
             $this->server,
-            $validated['installDependencies'],
+            $state['installDependencies'],
         );
 
         $this->resetState();

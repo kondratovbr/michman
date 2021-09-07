@@ -301,17 +301,17 @@ class DigitalOceanForm extends Component
     {
         $this->authorize('create', Server::class);
 
-        $this->validate();
+        $state = $this->validate()['state'];
 
         $server = $action->execute(new NewServerData(
             provider: Auth::user()->providers()->findOrFail($this->state['provider_id']),
-            name: $this->state['name'],
-            region: $this->state['region'],
-            size: $this->state['size'],
-            type: $this->state['type'],
-            pythonVersion: $this->state['python_version'],
-            database: $this->state['database'],
-            cache: $this->state['cache'],
+            name: $state['name'],
+            region: $state['region'],
+            size: $state['size'],
+            type: $state['type'],
+            pythonVersion: $state['python_version'],
+            database: $state['database'],
+            cache: $state['cache'],
         ), Auth::user());
 
         // dd($server);

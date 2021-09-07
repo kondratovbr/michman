@@ -10,11 +10,9 @@ use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Deployment;
 use App\Models\Project;
 use App\Models\Server;
-use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 /*
@@ -83,26 +81,11 @@ class DeploymentsIndexTable extends LivewireComponent
      */
     public function showLog(string $deploymentKey, string $serverKey): void
     {
-        $deploymentKey = Validator::make(
-            ['deployment_key' => $deploymentKey,],
-            ['deployment_key' => Rules::string(1, 16)
-                ->in($this->deployments->modelKeys())
-                ->required()],
-        )->validate()['deployment_key'];
-
-        /** @var Deployment $deployment */
-        $deployment = $this->project->deployments()->findOrFail($deploymentKey);
+        $deployment = Deployment::validated($deploymentKey, $this->deployments);
 
         $this->authorize('view', $deployment);
 
-        $serverKey = Validator::make(
-            ['server_key' => $serverKey,],
-            ['server_key' => Rules::string(1, 16)
-                ->in($deployment->servers->modelKeys())
-                ->required()],
-        )->validate()['server_key'];
-
-        $this->server = $deployment->servers()->findOrFail($serverKey);
+        $this->server = Server::validated($serverKey, $deployment->servers);
 
         $this->logs = $this->server->serverDeployment->logs();
 

@@ -51,15 +51,7 @@ class FirewallIndexTable extends LivewireComponent
 
     public function delete(DeleteFirewallRuleAction $deleteFirewallRule, string $ruleKey): void
     {
-        $ruleKey = Validator::make(
-            ['rule_key' => $ruleKey],
-            ['rule_key' => Rules::string(1, 16)
-                ->in($this->firewallRules->pluck('id')->toArray())
-                ->required()],
-        )->validate()['rule_key'];
-
-        /** @var FirewallRule $rule */
-        $rule = $this->server->firewallRules()->findOrFail($ruleKey);
+        $rule = FirewallRule::validated($ruleKey, $this->server->firewallRules);
 
         $this->authorize('delete', $rule);
 
