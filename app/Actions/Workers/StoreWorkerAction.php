@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests.
 
-// TODO: CRITICAL! Don't forget to implement the job.
-
 class StoreWorkerAction
 {
     public function execute(WorkerData $data, Project $project, Server $server): Worker
@@ -21,10 +19,8 @@ class StoreWorkerAction
             /** @var Worker $worker */
             $worker = $project->workers()->make($data->toArray());
 
-            $worker->status = Worker::STATUS_STARTING;
-
             $worker->server()->associate($server);
-
+            $worker->status = Worker::STATUS_STARTING;
             $worker->save();
 
             StartWorkerJob::dispatch($worker);
