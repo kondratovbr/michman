@@ -4,6 +4,7 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
 
 class InstallBasePackagesScript extends AbstractServerScript
@@ -43,11 +44,14 @@ class InstallBasePackagesScript extends AbstractServerScript
                 'curl',
                 'gnupg',
                 'gzip',
-                'unattended-upgrades',
                 'supervisor',
+                'unattended-upgrades',
             ])
         );
         $this->read();
+
+        if ($this->failed())
+            throw new ServerScriptException('apt-get install command has failed.');
 
         $this->disablePty();
     }

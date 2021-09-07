@@ -4,6 +4,7 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
 
 class UpgradePackagesScript extends AbstractServerScript
@@ -18,8 +19,14 @@ class UpgradePackagesScript extends AbstractServerScript
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
         $this->read();
 
+        if ($this->failed())
+            throw new ServerScriptException('apt-get update has failed.');
+
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get upgrade --with-new-pkgs -y');
         $this->read();
+
+        if ($this->failed())
+            throw new ServerScriptException('apt-get upgrade has failed.');
 
         $this->disablePty();
     }
