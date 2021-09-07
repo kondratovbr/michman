@@ -9,7 +9,7 @@ use App\Scripts\Root\StartWorkerScript;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-// TODO: CRITICAL! Test this job and the script and cover with tests.
+// TODO: CRITICAL! Cover with tests.
 
 class StartWorkerJob extends AbstractRemoteServerJob
 {
