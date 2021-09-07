@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Workers;
 
+use App\Actions\Workers\DeleteWorkerAction;
 use App\Actions\Workers\RestartWorkerAction;
 use App\Broadcasting\ProjectChannel;
 use App\Events\Workers\WorkerCreatedEvent;
@@ -68,13 +69,13 @@ class WorkersIndexTable extends LivewireComponent
     /**
      * Stop and delete a queue worker.
      */
-    public function delete(string $workerKey): void
+    public function delete(string $workerKey, DeleteWorkerAction $action): void
     {
         $worker = Worker::validated($workerKey, $this->workers);
 
         $this->authorize('delete', $worker);
 
-        //
+        $action->execute($worker);
     }
 
     public function render(): View
