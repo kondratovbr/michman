@@ -18,9 +18,9 @@ class StartWorkerScript extends AbstractServerScript
     {
         $this->init($server, $rootSsh);
 
-        $this->exec("mkdir -p /etc/supervisor/conf.d");
+        $this->exec("mkdir -p /etc/supervisor/conf.d && mkdir -p /var/log/celery");
         if ($this->failed())
-            throw new ServerScriptException('Failed: mkdir -p /etc/supervisor/conf.d');
+            throw new ServerScriptException('Failed to create config and log directories.');
 
         if ($this->sendString($worker->configPath(), $worker->supervisorConfig()) === false)
             throw new ServerScriptException('Failed to send config file to this path: ' . $worker->configPath());
@@ -28,6 +28,10 @@ class StartWorkerScript extends AbstractServerScript
         $this->exec("supervisorctl reread");
         if ($this->failed())
             throw new ServerScriptException('supervisorctl reread command has failed.');
+
+        $this->exec("supervisorctl update {$worker->name}");
+        if ($this->failed())
+            throw new ServerScriptException('supervisorctl update command has failed.');
 
         // TODO: CRITICAL! Verify that the worker is started somehow and update the worker status if it has failed.
 
