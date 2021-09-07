@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             DeploymentSeeder::class,
             CertificateSeeder::class,
             WorkerSeeder::class,
+            DaemonSeeder::class,
         ]);
     }
 }
