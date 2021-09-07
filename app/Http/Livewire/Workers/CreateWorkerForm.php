@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Workers;
 use App\Actions\Workers\StoreWorkerAction;
 use App\DataTransferObjects\WorkerData;
 use App\Http\Livewire\Traits\ListensForEchoes;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\Worker;
@@ -26,6 +27,7 @@ use Livewire\Component as LivewireComponent;
 class CreateWorkerForm extends LivewireComponent
 {
     use AuthorizesRequests,
+        TrimsInputBeforeValidation,
         ListensForEchoes;
 
     public Project $project;
