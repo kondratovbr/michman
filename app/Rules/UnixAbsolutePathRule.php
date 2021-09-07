@@ -8,11 +8,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class UnixAbsolutePathRule implements Rule
 {
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Determine if the validation rule passes.
      */

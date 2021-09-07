@@ -15,6 +15,7 @@ use App\Rules\DomainRule;
 use App\Rules\GitRepoNameRule;
 use App\Rules\SshPublicKeyRule;
 use App\Rules\UnixAbsolutePathRule;
+use App\Rules\UnixAnyPathRule;
 use App\Rules\UnixRelativePathRule;
 
 /**
@@ -157,7 +158,7 @@ class Rules extends AbstractBaseRules
         return (new static([
             'string',
             'min:1',
-            'max:255',
+            'max:512',
         ]))->addRule(new UnixAbsolutePathRule);
     }
 
@@ -166,8 +167,17 @@ class Rules extends AbstractBaseRules
         return (new static([
             'string',
             'min:1',
-            'max:255',
+            'max:512',
         ]))->addRule(new UnixRelativePathRule);
+    }
+
+    static public function unixPath(): static
+    {
+        return (new static([
+            'string',
+            'min:1',
+            'max:512',
+        ]))->addRule(new UnixAnyPathRule);
     }
 
     static public function gitRepoName(): static

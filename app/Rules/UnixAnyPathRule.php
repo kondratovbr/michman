@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Rule;
 
 // TODO: CRITICAL! Cover with tests!
 
-class UnixRelativePathRule implements Rule
+class UnixAnyPathRule implements Rule
 {
     /**
      * Determine if the validation rule passes.
@@ -17,10 +17,7 @@ class UnixRelativePathRule implements Rule
         if (Str::length($value) == 0)
             return false;
 
-        if ($value[0] == '/')
-            return false;
-
-        $absolute = '/' . $value;
+        $absolute = $value[0] === '/' ? $value : ('/' . $value);
 
         return UnixAbsolutePathRule::isAbsolutePath($absolute);
     }
