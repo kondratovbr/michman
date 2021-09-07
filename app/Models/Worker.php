@@ -23,7 +23,7 @@ use RuntimeException;
  * @property string|null $app
  * @property int|null $processes
  * @property array|null $queues
- * @property int|null $stopSeconds
+ * @property int $stopSeconds
  * @property int|null $maxTasksPerChild
  * @property int|null $maxMemoryPerChild
  * @property CarbonInterface $createdAt
@@ -73,6 +73,14 @@ class Worker extends AbstractModel
         'updated' => WorkerUpdatedEvent::class,
         'deleted' => WorkerDeletedEvent::class,
     ];
+
+    /**
+     * Get a configured stopSeconds attribute or the default value.
+     */
+    public function getStopSecondsAttribute(): int
+    {
+        return $this->attributes['stop_seconds'] ?? 600;
+    }
 
     /**
      * Get the user who owns this worker.
@@ -172,7 +180,7 @@ class Worker extends AbstractModel
         }
 
         if ($this->type === 'celerybeat') {
-            return "{$this->project->projectDir}/venv/bin/celery --app={$app} beat --loglevel=INFO -n {$this->name}";
+            return "{$this->project->projectDir}/venv/bin/celery --app={$app} beat --loglevel=INFO";
         }
 
         throw new \RuntimeException(
