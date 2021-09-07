@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use App\Events\Daemons\DaemonCreatedEvent;
+use App\Events\Daemons\DaemonDeletedEvent;
+use App\Events\Daemons\DaemonUpdatedEvent;
 use Carbon\CarbonInterface;
+use Database\Factories\DaemonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Daemon Eloquent model
@@ -12,23 +17,36 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @property int $id
  * @property string $command
- * @property string $user
+ * @property string $username
  * @property string|null $directory
  * @property int $processes
- * @property int $start_seconds
- * @property CarbonInterface $c
+ * @property int $startSeconds
+ * @property string $status
+ * @property CarbonInterface $createdAt
+ * @property CarbonInterface $updatedAt
+ *
+ * @property-read User $user
+ *
+ * @property-read Server $server
+ *
+ * @method static DaemonFactory factory(...$parameters)
  */
 class Daemon extends AbstractModel
 {
     use HasFactory;
 
+    public const STATUS_STARTING = 'starting';
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_FAILED = 'failed';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'command',
-        'user',
+        'username',
         'directory',
         'processes',
         'start_seconds',
+        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -45,4 +63,17 @@ class Daemon extends AbstractModel
         'updated' => DaemonUpdatedEvent::class,
         'deleted' => DaemonDeletedEvent::class,
     ];
+
+    public function getUserAttribute(): User
+    {
+        return $this->server->user;
+    }
+
+    /**
+     * Get a relation with the server where this daemon is running.
+     */
+    public function server(): BelongsTo
+    {
+        return $this->belongsTo(Server::class);
+    }
 }
