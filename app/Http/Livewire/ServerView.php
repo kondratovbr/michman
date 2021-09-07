@@ -16,6 +16,7 @@ class ServerView extends AbstractSubpagesView
         'pythons' => 'pythons.index',
         'firewall' => 'firewall.index',
         'ssl' => 'servers.ssl',
+        'daemons' => 'daemons.index',
         //
     ];
 

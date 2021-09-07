@@ -223,4 +223,8 @@ return [
         ],
     ],
 
+    'daemons' => [
+        'button' => 'Daemons',
+    ],
+
 ];

@@ -30,5 +30,10 @@
             {{ __('servers.ssl.button') }}
         </x-menu.item>
 
+        <x-menu.item show="daemons">
+            <x-slot name="icon"><i class="fas fa-sync"></i></x-slot>
+            {{ __('servers.daemons.button') }}
+        </x-menu.item>
+
     </ul>
 </aside>
