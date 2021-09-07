@@ -41,6 +41,8 @@ class Daemon extends AbstractModel
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
-        //
+        'created' => DaemonCreatedEvent::class,
+        'updated' => DaemonUpdatedEvent::class,
+        'deleted' => DaemonDeletedEvent::class,
     ];
 }
