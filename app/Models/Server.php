@@ -365,4 +365,12 @@ class Server extends AbstractModel
     {
         return $this->hasMany(Worker::class);
     }
+
+    /**
+     * Get a relation with the daemons that run on this server.
+     */
+    public function daemons(): HasMany
+    {
+        return $this->hasMany(Daemon::class);
+    }
 }
