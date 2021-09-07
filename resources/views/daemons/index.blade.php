@@ -2,10 +2,10 @@
 
 <x-sub-page name="daemons">
 
-    Create!
+    <livewire:daemons.create-daemon-form :server="$server" />
 
     <x-section-separator/>
 
-    Index!
+    <livewire:daemons.daemons-index-table :server="$server" />
 
 </x-sub-page>

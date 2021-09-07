@@ -2,6 +2,7 @@
 
 use App\Models\Certificate;
 use App\Models\Python;
+use App\Models\Daemon;
 
 return [
 
@@ -225,6 +226,47 @@ return [
 
     'daemons' => [
         'button' => 'Daemons',
+
+        'create' => [
+            'title' => 'Create Daemon',
+            'description' => 'Configure Supervisor to ensure a process started by your command keep running.',
+            'button' => 'Create Daemon',
+        ],
+
+        'index' => [
+            'title'=> 'Active Daemons',
+            'empty' => 'No daemons configured on this server.'
+        ],
+
+        'command' => [
+            'label' => 'Command',
+            'help' => 'To run a Python script from a virtualenv - start with full path to the Python executable inside that venv.'
+        ],
+
+        'username' => [
+            'label' => 'User',
+        ],
+
+        'directory' => [
+            'label' => 'Directory',
+            'help' => 'Optional - will be run from the user\'s home directory by default.',
+        ],
+
+        'processes' => [
+            'label' => 'Processes',
+            'help' => 'Supervisor can start and maintain multiple instances of your program.',
+        ],
+
+        'start-seconds' => [
+            'label' => 'Start Seconds',
+            'help' => 'The number of seconds the program needs to stay running to consider the start successful.',
+        ],
+
+        'statuses' => [
+            Daemon::STATUS_STARTING => 'Starting',
+            Daemon::STATUS_ACTIVE => 'Active',
+            Daemon::STATUS_FAILED => 'Failed',
+        ],
     ],
 
 ];
