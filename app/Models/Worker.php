@@ -104,7 +104,7 @@ class Worker extends AbstractModel
      */
     public function getNameAttribute(): string
     {
-        return "worker-{$this->id}";
+        return "{$this->type}-{$this->id}";
     }
 
     public function isStarting(): bool
@@ -143,7 +143,15 @@ class Worker extends AbstractModel
      */
     public function configPath(): string
     {
-        return "/etc/supervisord/conf.d/{$this->name}";
+        return "/etc/supervisor/conf.d/{$this->name}.conf";
+    }
+
+    /**
+     * Get the path to a directory where this worker stores logs on a server.
+     */
+    public function logDirectory(): string
+    {
+        return "/var/log/celery";
     }
 
     /**
