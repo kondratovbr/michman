@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Daemons;
 
+use App\Actions\Daemons\StoreDaemonAction;
+use App\DataTransferObjects\DaemonData;
 use App\Http\Livewire\Traits\HasState;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Daemon;
@@ -17,6 +19,8 @@ use Livewire\Component as LivewireComponent;
  *       Supervisor is often used with a script.
  */
 
+// TODO: CRITICAL! Cover with tests!
+
 class CreateDaemonForm extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -30,8 +34,25 @@ class CreateDaemonForm extends LivewireComponent
         'username' => 'michman',
         'directory' => null,
         'processes' => 1,
-        'startSeconds' => 1,
+        'start_seconds' => 1,
     ];
+
+    protected function prepareState(array $state): array
+    {
+        /*
+         * Trim the '/' symbols from the end of the path since that's how we store paths to directories.
+         */
+
+        $dir = $state['directory'];
+
+        if (! is_string($dir))
+            return $state;
+
+        $prefix = $dir[0] === '/' ? '/' : '';
+        $dir = $prefix . trim($dir, '/');
+        $state['directory'] = $dir;
+        return $state;
+    }
 
     protected function stateRules(): array
     {
@@ -40,8 +61,13 @@ class CreateDaemonForm extends LivewireComponent
             'username' => Rules::alphaNumDashString(1, 255)->required(),
             'directory' => Rules::unixPath()->nullable(),
             'processes' => Rules::integer(1, 255)->required(),
-            'startSeconds' => Rules::integer(1)->required(),
+            'start_seconds' => Rules::integer(1)->required(),
         ];
+    }
+
+    protected function resetState(): void
+    {
+        $this->reset('state');
     }
 
     public function mount(): void
@@ -52,13 +78,17 @@ class CreateDaemonForm extends LivewireComponent
     /**
      * Store the newly configured daemon.
      */
-    public function store(): void
+    public function store(StoreDaemonAction $action): void
     {
-        $state = $this->validate();
+        $state = $this->validateState();
 
         $this->authorize('create', [Daemon::class, $this->server]);
 
-        //
+        $action->execute(new DaemonData($state), $this->server);
+
+        $this->resetState();
+
+        $this->emit('daemon-stored');
     }
 
     public function render(): View

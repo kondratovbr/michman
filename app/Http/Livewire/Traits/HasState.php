@@ -16,8 +16,21 @@ trait HasState
 {
     abstract protected function stateRules(): array;
 
+    abstract protected function prepareState(array $state): array;
+
     public function rules(): array
     {
         return Arr::mapAssoc($this->stateRules(), fn(string $name, $rules) => ["state.$name", $rules]);
+    }
+
+    protected function prepareForValidation($attributes): array
+    {
+        $attributes['state'] = $this->prepareState($attributes['state']);
+        return $attributes;
+    }
+
+    protected function validateState(): array
+    {
+        return $this->validate()['state'];
     }
 }

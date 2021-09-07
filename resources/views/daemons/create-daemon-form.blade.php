@@ -56,12 +56,12 @@
             <x-field class="max-w-sm">
                 <x-label>{{ __('servers.daemons.start-seconds.label') }}</x-label>
                 <x-inputs.number
-                    name="state.startSeconds"
-                    wire:model="state.startSeconds"
+                    name="state.start_seconds"
+                    wire:model="state.start_seconds"
                     min="1"
                     step="1"
                 />
-                <x-input-error for="state.startSeconds" />
+                <x-input-error for="state.start_seconds" />
                 <x-help>{{ __('servers.daemons.start-seconds.help') }}</x-help>
             </x-field>
 
