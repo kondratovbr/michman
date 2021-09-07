@@ -6,6 +6,7 @@ use App\Models\Server;
 use App\Models\Worker;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 /*
@@ -33,7 +34,13 @@ class StartWorkerScript extends AbstractServerScript
         if ($this->failed())
             throw new ServerScriptException('supervisorctl update command has failed.');
 
-        // TODO: CRITICAL! Verify that the worker is started somehow and update the worker status if it has failed.
+        // Wait for Celery to start or fail. Config is set to 10s start time.
+        $this->setTimeout(30);
+        $this->exec("sleep 10");
+
+        $output = $this->exec("supervisorctl status {$worker->name}");
+        if ($this->failed() || ! Str::contains('RUNNING', $output))
+            throw new ServerScriptException('Worker has failed to start.');
 
         return true;
     }
