@@ -34,12 +34,12 @@ class StartWorkerScript extends AbstractServerScript
         if ($this->failed())
             throw new ServerScriptException('supervisorctl update command has failed.');
 
-        // Wait for Celery to start or fail. Config is set to 10s start time.
+        // Wait for Celery to start or fail. Its Supervisor config is set to 10s start time.
         $this->setTimeout(30);
         $this->exec("sleep 10");
 
         $output = $this->exec("supervisorctl status {$worker->name}");
-        if ($this->failed() || ! Str::contains('RUNNING', $output))
+        if ($this->failed() || ! Str::contains($output, 'RUNNING'))
             throw new ServerScriptException('Worker has failed to start.');
 
         return true;
