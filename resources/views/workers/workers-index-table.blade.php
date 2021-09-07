@@ -22,7 +22,7 @@
                 <x-td>{{ $worker->server->name }}</x-td>
 {{--                TODO: CRITICAL! Make sure to support other types in here.--}}
                 <x-td>{{ implode(', ', $worker->queues ?? ['Celery']) }}</x-td>
-                <x-td>{{ $worker->processes ?? 'Default' }}</x-td>
+                <x-td>{{ $worker->processes ?? 'Auto' }}</x-td>
                 <x-td><x-workers.status-badge :worker="$worker" /></x-td>
 
                 <x-td>
