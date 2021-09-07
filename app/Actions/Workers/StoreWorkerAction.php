@@ -21,6 +21,8 @@ class StoreWorkerAction
             /** @var Worker $worker */
             $worker = $project->workers()->make($data->toArray());
 
+            $worker->status = Worker::STATUS_STARTING;
+
             $worker->server()->associate($server);
 
             $worker->save();
