@@ -17,10 +17,11 @@ class CreateDaemonsTable extends Migration
             $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('command');
-            $table->string('user');
+            $table->string('username');
             $table->string('directory')->nullable();
             $table->integer('processes');
             $table->integer('start_seconds');
+            $table->string('status');
 
             $table->timestamps();
         });
