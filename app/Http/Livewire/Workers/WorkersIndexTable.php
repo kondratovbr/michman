@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Workers;
 
+use App\Actions\Workers\RestartWorkerAction;
 use App\Broadcasting\ProjectChannel;
 use App\Events\Workers\WorkerCreatedEvent;
 use App\Events\Workers\WorkerDeletedEvent;
@@ -55,13 +56,13 @@ class WorkersIndexTable extends LivewireComponent
     /**
      * Restart a queue worker.
      */
-    public function restart(string $workerKey): void
+    public function restart(string $workerKey, RestartWorkerAction $action): void
     {
         $worker = Worker::validated($workerKey, $this->workers);
 
         $this->authorize('restart', $worker);
 
-        //
+        $action->execute($worker);
     }
 
     /**
