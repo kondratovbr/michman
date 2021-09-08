@@ -57,6 +57,16 @@ abstract class AbstractModel extends Model
     }
 
     /**
+     * Retrieve a new instance of this model from the database and apply a SHARED LOCK on it.
+     */
+    public function freshSharedLock(): static
+    {
+        /** @var static $model */
+        $model = $this->newQuery()->sharedLock()->findOrFail($this->getKey());
+        return $model;
+    }
+
+    /**
      * Create a new custom Eloquent Collection instance.
      */
     public function newCollection(array $models = []): EloquentCollection
