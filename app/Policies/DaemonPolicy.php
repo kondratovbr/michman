@@ -16,6 +16,16 @@ class DaemonPolicy
         return $user->is($server->user);
     }
 
+    public function index(User $user, Server $server): bool
+    {
+        return $user->is($server->user);
+    }
+
+    public function update(User $user, Daemon $daemon): bool
+    {
+        return $user->is($daemon->user);
+    }
+
     public function delete(User $user, Daemon $daemon): bool
     {
         return $user->is($daemon->user);
