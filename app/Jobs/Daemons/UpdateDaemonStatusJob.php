@@ -8,6 +8,8 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\UpdateDaemonStatusScript;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests!
+
 class UpdateDaemonStatusJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;
