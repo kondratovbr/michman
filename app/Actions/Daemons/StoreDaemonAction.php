@@ -3,6 +3,7 @@
 namespace App\Actions\Daemons;
 
 use App\DataTransferObjects\DaemonData;
+use App\Jobs\Daemons\StartDaemonJob;
 use App\Models\Daemon;
 use App\Models\Server;
 
@@ -19,10 +20,7 @@ class StoreDaemonAction
 
         $daemon->save();
 
-        // TODO: CRITICAL! CONTINUE. Implement the job and dispatch it here.
-        //       And then go and finally fix those effed up "state.name" validation messages.
-
-        //
+        StartDaemonJob::dispatch($daemon);
 
         return $daemon;
     }
