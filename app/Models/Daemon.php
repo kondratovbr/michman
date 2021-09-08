@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\Daemons\DaemonCreatedEvent;
 use App\Events\Daemons\DaemonDeletedEvent;
 use App\Events\Daemons\DaemonUpdatedEvent;
+use App\Facades\ConfigView;
 use Carbon\CarbonInterface;
 use Database\Factories\DaemonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $updatedAt
  *
  * @property-read User $user
+ * @property-read string $name
  *
  * @property-read Server $server
  *
@@ -67,6 +69,56 @@ class Daemon extends AbstractModel
     public function getUserAttribute(): User
     {
         return $this->server->user;
+    }
+
+    /**
+     * Derive the name for this daemon from its properties.
+     */
+    public function getNameAttribute(): string
+    {
+        return "daemon-{$this->id}";
+    }
+
+    public function isStarting(): bool
+    {
+        return $this->status === static::STATUS_STARTING;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === static::STATUS_ACTIVE;
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->status === static::STATUS_FAILED;
+    }
+
+    /**
+     * Get the path to the Supervisor config for this daemon on a server.
+     */
+    public function configPath(): string
+    {
+        return "/etc/supervisor/conf.d/{$this->name}.conf";
+    }
+
+    /**
+     * Get the path to the file where this daemon stores logs on a server.
+     */
+    public function logFilePath(): string
+    {
+        return "/var/log/michman/{$this->name}.log";
+    }
+
+    /**
+     * Create a supervisord config for this daemon.
+     */
+    public function supervisorConfig(): string
+    {
+        return ConfigView::render('supervisor.daemon', [
+            'daemon' => $this,
+            'server' => $this->server,
+        ]);
     }
 
     /**
