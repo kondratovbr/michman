@@ -135,7 +135,7 @@ class CreateWorkerForm extends LivewireComponent
             queues: $state['queues'],
             stop_seconds: $state['stopSeconds'],
             max_tasks_per_child: $state['maxTasks'],
-            max_memory_per_child: $state['maxMemory'] * 1024, // We're asking users for MiB for convenience, but Celery expects KiB.
+            max_memory_per_child: is_null($state['maxMemory']) ? null : ($state['maxMemory'] * 1024), // We're asking users for MiB for convenience, but Celery expects KiB.
         ), $this->project, $this->project->servers()->findOrFail($state['serverId']));
 
         $this->resetState();
