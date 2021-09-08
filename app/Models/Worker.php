@@ -131,7 +131,7 @@ class Worker extends AbstractModel
     }
 
     /**
-     * Create a supervisord config for this worker
+     * Create a supervisord config for this worker.
      */
     public function supervisorConfig(): string
     {
@@ -155,11 +155,11 @@ class Worker extends AbstractModel
     }
 
     /**
-     * Get the path to a directory where this worker stores logs on a server.
+     * Get the path to the file where this worker stores logs on a server.
      */
-    public function logDirectory(): string
+    public function logFilePath(): string
     {
-        return "/var/log/celery";
+        return "/var/log/celery/{$this->name}.log";
     }
 
     /**
