@@ -25,6 +25,17 @@ class UpdateDaemonStatusJob extends AbstractRemoteServerJob
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 
+            // The daemon in one of these statuses isn't even on the server (or will be deleted soon),
+            // i.e. there's no config for this daemon on the server,
+            // so there's nothing to check the status of at all.
+            if ($daemon->isStatus([
+                Daemon::STATUS_STOPPING,
+                Daemon::STATUS_STOPPED,
+                Daemon::STATUS_DELETING,
+            ])) {
+                return;
+            }
+
             try {
                 $daemon->status = $script->execute($server, $daemon);
             } catch (ServerScriptException) {

@@ -6,6 +6,7 @@ use App\Events\Daemons\DaemonCreatedEvent;
 use App\Events\Daemons\DaemonDeletedEvent;
 use App\Events\Daemons\DaemonUpdatedEvent;
 use App\Facades\ConfigView;
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\DaemonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,7 +40,10 @@ class Daemon extends AbstractModel
 
     public const STATUS_STARTING = 'starting';
     public const STATUS_ACTIVE = 'active';
+    public const STATUS_STOPPING = 'stopping';
+    public const STATUS_STOPPED = 'stopped';
     public const STATUS_FAILED = 'failed';
+    public const STATUS_DELETING = 'deleting';
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -79,6 +83,11 @@ class Daemon extends AbstractModel
         return "daemon-{$this->id}";
     }
 
+    public function isStatus(string|array $statuses): bool
+    {
+        return Arr::hasValue(Arr::wrap($statuses), $this->status);
+    }
+
     public function isStarting(): bool
     {
         return $this->status === static::STATUS_STARTING;
@@ -87,6 +96,11 @@ class Daemon extends AbstractModel
     public function isActive(): bool
     {
         return $this->status === static::STATUS_ACTIVE;
+    }
+
+    public function isStopped(): bool
+    {
+        return $this->status === static::STATUS_STOPPED;
     }
 
     public function isFailed(): bool

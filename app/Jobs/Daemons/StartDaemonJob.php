@@ -7,7 +7,6 @@ use App\Models\Daemon;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\StartDaemonScript;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class StartDaemonJob extends AbstractRemoteServerJob
 {
@@ -29,8 +28,11 @@ class StartDaemonJob extends AbstractRemoteServerJob
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 
-            if ($daemon->isActive()) {
-                Log::warning('StartDaemonJob: This daemon is already marked as active. Daemon ID: ' . $daemon->id);
+            if ($daemon->isStatus([
+                Daemon::STATUS_ACTIVE,
+                Daemon::STATUS_STOPPING,
+                Daemon::STATUS_DELETING,
+            ])) {
                 return;
             }
 
