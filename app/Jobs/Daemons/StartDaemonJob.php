@@ -8,6 +8,8 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\StartDaemonScript;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests!
+
 class StartDaemonJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;
@@ -28,11 +30,7 @@ class StartDaemonJob extends AbstractRemoteServerJob
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 
-            if ($daemon->isStatus([
-                Daemon::STATUS_ACTIVE,
-                Daemon::STATUS_STOPPING,
-                Daemon::STATUS_DELETING,
-            ])) {
+            if (! $daemon->isStatus(Daemon::STATUS_STARTING)) {
                 return;
             }
 
