@@ -93,3 +93,15 @@ if (! function_exists('trimRelativePath')) {
         return $path;
     }
 }
+
+if (! function_exists('getClassName')) {
+    function getClassName($classname): string|false|int
+    {
+        $pos = strrpos($classname, '\\');
+
+        if ($pos)
+            return substr($classname, $pos + 1);
+
+        return $pos;
+    }
+}

@@ -21,7 +21,7 @@ class CreateDaemonsTable extends Migration
             $table->string('directory')->nullable();
             $table->integer('processes');
             $table->integer('start_seconds');
-            $table->string('status');
+            $table->string('state');
 
             $table->timestamps();
         });

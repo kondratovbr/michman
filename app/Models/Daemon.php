@@ -7,11 +7,12 @@ use App\Events\Daemons\DaemonDeletedEvent;
 use App\Events\Daemons\DaemonUpdatedEvent;
 use App\Facades\ConfigView;
 use App\Models\Traits\HasStatus;
-use App\Support\Arr;
+use App\States\Daemons\DaemonState;
 use Carbon\CarbonInterface;
 use Database\Factories\DaemonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\ModelStates\HasStates;
 
 /**
  * Daemon Eloquent model
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $directory
  * @property int $processes
  * @property int $startSeconds
+ * @property DaemonState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -36,24 +38,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Daemon extends AbstractModel
 {
-    use HasFactory,
-        HasStatus;
-
-    public const STATUS_STARTING = 'starting';
-    public const STATUS_ACTIVE = 'active';
-    public const STATUS_STOPPING = 'stopping';
-    public const STATUS_STOPPED = 'stopped';
-    public const STATUS_FAILED = 'failed';
-    public const STATUS_DELETING = 'deleting';
+    use HasFactory;
+    use HasStates;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'status',
         'command',
         'username',
         'directory',
         'processes',
         'start_seconds',
+        'state',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -61,7 +56,7 @@ class Daemon extends AbstractModel
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        //
+        'state' => DaemonState::class,
     ];
 
     /** @var string[] The event map for the model. */
@@ -82,26 +77,6 @@ class Daemon extends AbstractModel
     public function getNameAttribute(): string
     {
         return "daemon-{$this->id}";
-    }
-
-    public function isStarting(): bool
-    {
-        return $this->status === static::STATUS_STARTING;
-    }
-
-    public function isActive(): bool
-    {
-        return $this->status === static::STATUS_ACTIVE;
-    }
-
-    public function isStopped(): bool
-    {
-        return $this->status === static::STATUS_STOPPED;
-    }
-
-    public function isFailed(): bool
-    {
-        return $this->status === static::STATUS_FAILED;
     }
 
     /**

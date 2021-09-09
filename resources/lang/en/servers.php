@@ -2,7 +2,13 @@
 
 use App\Models\Certificate;
 use App\Models\Python;
-use App\Models\Daemon;
+use App\States\Daemons\Active;
+use App\States\Daemons\Deleting;
+use App\States\Daemons\Failed;
+use App\States\Daemons\Restarting;
+use App\States\Daemons\Starting;
+use App\States\Daemons\Stopped;
+use App\States\Daemons\Stopping;
 
 return [
 
@@ -262,10 +268,14 @@ return [
             'help' => 'The number of seconds the program needs to stay running to consider the start successful.',
         ],
 
-        'statuses' => [
-            Daemon::STATUS_STARTING => 'Starting',
-            Daemon::STATUS_ACTIVE => 'Active',
-            Daemon::STATUS_FAILED => 'Failed',
+        'states' => [
+            Starting::class => 'Starting',
+            Active::class => 'Active',
+            Stopping::class => 'Stopping',
+            Stopped::class => 'Stopped',
+            Restarting::class => 'Restarting',
+            Failed::class => 'Failed',
+            Deleting::class => 'Deleting',
         ],
     ],
 

@@ -5,12 +5,17 @@ namespace App\Jobs\Daemons;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Daemon;
 use App\Scripts\Exceptions\ServerScriptException;
-use App\Scripts\Root\UpdateDaemonStatusScript;
+use App\Scripts\Root\UpdateDaemonStateScript;
+use App\States\Daemons\Deleting;
+use App\States\Daemons\Failed;
+use App\States\Daemons\Starting;
+use App\States\Daemons\Stopped;
+use App\States\Daemons\Stopping;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
 
-class UpdateDaemonStatusJob extends AbstractRemoteServerJob
+class UpdateDaemonStateJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;
 
@@ -21,34 +26,36 @@ class UpdateDaemonStatusJob extends AbstractRemoteServerJob
         $this->daemon = $daemon->withoutRelations();
     }
 
-    public function handle(UpdateDaemonStatusScript $script): void
+    public function handle(UpdateDaemonStateScript $script): void
     {
         DB::transaction(function () use($script) {
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 
-            // The daemon in one of these statuses isn't even on the server (or will be deleted soon),
-            // i.e. there's no config for this daemon on the server,
-            // so there's nothing to check the status of at all.
-            if ($daemon->isStatus([
-                Daemon::STATUS_STOPPING,
-                Daemon::STATUS_STOPPED,
-                Daemon::STATUS_DELETING,
+            /*
+             * The daemon in one of these states isn't even on the server (or will be deleted soon),
+             * i.e. there's no config for this daemon on the server,
+             * so there's nothing to check the status of at all.
+             */
+            if ($daemon->state->is([
+                Stopping::class,
+                Stopped::class,
+                Deleting::class,
             ])) {
                 return;
             }
 
             try {
-                $daemon->status = $script->execute($server, $daemon);
+                $daemon->state = $script->execute($server, $daemon);
             } catch (ServerScriptException) {
-                $daemon->status = Daemon::STATUS_FAILED;
+                $daemon->state = Failed::class;
             }
 
             $daemon->save();
 
             // If the daemon is still starting, i.e. hasn't failed or successfully started yet -
             // repeat this job a bit later.
-            if ($daemon->isStarting())
+            if ($daemon->state->is(Starting::class))
                 $this->release(30);
         }, 5);
     }

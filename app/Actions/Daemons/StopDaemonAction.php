@@ -4,6 +4,7 @@ namespace App\Actions\Daemons;
 
 use App\Jobs\Daemons\StopDaemonJob;
 use App\Models\Daemon;
+use App\States\Daemons\Stopping;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -14,17 +15,11 @@ class StopDaemonAction
     {
         DB::transaction(function () use ($daemon) {
             $daemon = $daemon->freshLockForUpdate();
-
-            if ($daemon->isStatus([
-                Daemon::STATUS_DELETING,
-                Daemon::STATUS_STOPPED,
-                Daemon::STATUS_FAILED,
-            ])) {
+            
+            if (! $daemon->state->canTransitionTo(Stopping::class))
                 return;
-            }
 
-            $daemon->status = Daemon::STATUS_STOPPING;
-            $daemon->save();
+            $daemon->state->transitionTo(Stopping::class);
 
             StopDaemonJob::dispatch($daemon);
         }, 5);

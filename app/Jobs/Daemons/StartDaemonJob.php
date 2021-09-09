@@ -6,6 +6,8 @@ use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Daemon;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\StartDaemonScript;
+use App\States\Daemons\Failed;
+use App\States\Daemons\Starting;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -24,25 +26,23 @@ class StartDaemonJob extends AbstractRemoteServerJob
     public function handle(StartDaemonScript $script): void
     {
         DB::transaction(function () use ($script) {
-            // TODO: CRITICAL! Change the rest of my server locking on jobs to shared locks
+            // TODO: CRITICAL! CONTINUE. Change the rest of my server locking on jobs to shared locks
             //       in cases where I don't actually update the server model,
             //       i.e. mostly where I'm just reading SSH parameters from it.
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 
-            if (! $daemon->isStatus(Daemon::STATUS_STARTING)) {
+            if (! $daemon->state->is(Starting::class))
                 return;
-            }
 
             try {
                 $script->execute($server, $daemon);
             } catch (ServerScriptException) {
-                $daemon->status = Daemon::STATUS_FAILED;
-                $daemon->save();
+                $daemon->state->transitionTo(Failed::class);
                 return;
             }
 
-            UpdateDaemonStatusJob::dispatch($daemon);
+            UpdateDaemonStateJob::dispatch($daemon);
         }, 5);
     }
 }

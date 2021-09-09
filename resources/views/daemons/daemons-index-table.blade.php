@@ -16,7 +16,7 @@
             <x-tr>
                 <x-td><x-code>{{ $daemon->command }}</x-code></x-td>
                 <x-td><x-code>{{ $daemon->directory }}</x-code></x-td>
-                <x-td><x-daemons.status-badge :daemon="$daemon" /></x-td>
+                <x-td><x-state-badge :state="$daemon->state" /></x-td>
                 <x-td>Menu!</x-td>
             </x-tr>
         @endforeach

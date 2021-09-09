@@ -5,6 +5,8 @@ namespace App\Jobs\Daemons;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Daemon;
 use App\Scripts\Root\StopDaemonScript;
+use App\States\Daemons\Stopped;
+use App\States\Daemons\Stopping;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -26,13 +28,12 @@ class StopDaemonJob extends AbstractRemoteServerJob
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 
-            if (! $daemon->isStatus(Daemon::STATUS_STOPPING))
+            if (! $daemon->state->is(Stopping::class))
                 return;
 
             $script->execute($server, $daemon);
 
-            $daemon->status = Daemon::STATUS_STOPPED;
-            $daemon->save();
+            $daemon->state->transitionTo(Stopped::class);
         }, 5);
     }
 }

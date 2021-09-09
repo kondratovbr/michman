@@ -6,6 +6,7 @@ use App\DataTransferObjects\DaemonData;
 use App\Jobs\Daemons\StartDaemonJob;
 use App\Models\Daemon;
 use App\Models\Server;
+use App\States\Daemons\Starting;
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -16,7 +17,7 @@ class StoreDaemonAction
         /** @var Daemon $daemon */
         $daemon = $server->daemons()->make($data->toArray());
 
-        $daemon->status = Daemon::STATUS_STARTING;
+        $daemon->state = Starting::class;
 
         $daemon->save();
 
