@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Daemons;
 
 use App\Actions\Daemons\StoreDaemonAction;
-use App\DataTransferObjects\DaemonData;
+use App\DataTransferObjects\DaemonDto;
 use App\Http\Livewire\Traits\HasState;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Daemon;
@@ -84,7 +84,7 @@ class CreateDaemonForm extends LivewireComponent
 
         $this->authorize('create', [Daemon::class, $this->server]);
 
-        $action->execute(new DaemonData($state), $this->server);
+        $action->execute(DaemonDto::fromArray($state), $this->server);
 
         $this->resetState();
 

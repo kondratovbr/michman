@@ -2,16 +2,9 @@
 
 namespace {{ namespace }};
 
-use Spatie\DataTransferObject\DataTransferObject;
-
-class {{ class }} extends DataTransferObject
+class {{ class }} extends AbstractDto
 {
-    static function fromRequest($request): self
-    {
-        $validated = $request->validated();
-
-        return new self([
-            //
-        ]);
-    }
+    public function __construct(
+        //
+    ) {}
 }

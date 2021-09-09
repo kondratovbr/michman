@@ -2,7 +2,7 @@
 
 namespace App\Actions\Daemons;
 
-use App\DataTransferObjects\DaemonData;
+use App\DataTransferObjects\DaemonDto;
 use App\Jobs\Daemons\StartDaemonJob;
 use App\Models\Daemon;
 use App\Models\Server;
@@ -12,7 +12,7 @@ use App\States\Daemons\Starting;
 
 class StoreDaemonAction
 {
-    public function execute(DaemonData $data, Server $server): Daemon
+    public function execute(DaemonDto $data, Server $server): Daemon
     {
         /** @var Daemon $daemon */
         $daemon = $server->daemons()->make($data->toArray());
