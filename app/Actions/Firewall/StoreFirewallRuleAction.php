@@ -16,16 +16,9 @@ class StoreFirewallRuleAction
     public function execute(FirewallRuleData $data, Server $server, bool $sync = false): FirewallRule
     {
         return DB::transaction(function () use($data, $server, $sync) {
-
-            /** @var Server $server */
-            $server = Server::query()
-                ->lockForUpdate()
-                ->findOrFail($server->getKey());
-
-            $attributes = $data->toArray();
-
             /** @var FirewallRule $rule */
-            $rule = $server->firewallRules()->firstOrNew($attributes);
+            $rule = $server->firewallRules()->firstOrNew($data->toArray());
+
             $rule->status = FirewallRule::STATUS_ADDING;
             $rule->save();
 
