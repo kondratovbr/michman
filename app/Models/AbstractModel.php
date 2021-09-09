@@ -49,20 +49,32 @@ abstract class AbstractModel extends Model
     /**
      * Retrieve a new instance of this model from the database and apply an UPDATE LOCK on it.
      */
-    public function freshLockForUpdate(): static
+    public function freshLockForUpdate(array $with = []): static
     {
+        $query = $this->newQuery();
+
+        if (! empty($with))
+            $query->with($with);
+
         /** @var static $model */
-        $model = $this->newQuery()->lockForUpdate()->findOrFail($this->getKey());
+        $model = $query->lockForUpdate()->findOrFail($this->getKey());
+
         return $model;
     }
 
     /**
      * Retrieve a new instance of this model from the database and apply a SHARED LOCK on it.
      */
-    public function freshSharedLock(): static
+    public function freshSharedLock(array $with = []): static
     {
+        $query = $this->newQuery();
+
+        if (! empty($with))
+            $query->with($with);
+
         /** @var static $model */
-        $model = $this->newQuery()->sharedLock()->findOrFail($this->getKey());
+        $model = $query->sharedLock()->findOrFail($this->getKey());
+
         return $model;
     }
 
