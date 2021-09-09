@@ -21,9 +21,6 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests!
 
-// TODO: CRITICAL! CONTINUE. Go and finally fix those effed up "state.name" validation messages.
-//       Then, refactor my scripts slightly and re-test. See to-do in StartWorkerScript.
-
 class CreateDaemonForm extends LivewireComponent
 {
     use AuthorizesRequests,

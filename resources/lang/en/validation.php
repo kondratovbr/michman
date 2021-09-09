@@ -153,6 +153,38 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'state' => [
+            'command' => 'Command',
+            'username' => 'User',
+            'directory' => 'Directory',
+            'processes' => 'Processes',
+            'start_seconds' => 'Start Seconds',
+            'domain' => 'Domain',
+            'aliases' => 'Aliases',
+            'type' => 'Type',
+            'pythonVersion' => 'Python Version',
+            'allowSubDomains' => 'Allow Sub-Domains',
+            'createDatabase' => 'Create Database',
+            'dbName' => 'Database Name',
+            'createDbUser' => 'Create User',
+            'dbUserName' => 'Database User Name',
+            'dbUserPassword' => 'Database User Password',
+            'provider_id' => 'Provider',
+            'name' => 'Name',
+            'region' => 'Region',
+            'size' => 'Size',
+            'python_version' => 'Python Version',
+            'database' => 'Database',
+            'cache' => 'Cache',
+            'publicKey' => 'Public Key',
+            'serverId' => 'Server',
+            'app' => 'App Module',
+            'queues' => 'Queues',
+            'stopSeconds' => 'Stop Seconds',
+            'maxTasks' => 'Max Tasks Per Child',
+            'maxMemory' => 'Max Memory Per Child',
+        ],
+    ],
 
 ];
