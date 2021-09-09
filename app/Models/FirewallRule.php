@@ -6,6 +6,7 @@ use App\Casts\ForceBooleanCast;
 use App\Events\Firewall\FirewallRuleCreatedEvent;
 use App\Events\Firewall\FirewallRuleDeletedEvent;
 use App\Events\Firewall\FirewallRuleUpdatedEvent;
+use App\Models\Traits\HasStatus;
 use Carbon\CarbonInterface;
 use Database\Factories\FirewallRuleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $port
  * @property string $fromIp
  * @property bool $canDelete
- * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -31,7 +31,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class FirewallRule extends AbstractModel
 {
-    use HasFactory;
+    use HasFactory,
+        HasStatus;
 
     public const STATUS_ADDED = 'added';
     public const STATUS_ADDING = 'adding';
@@ -39,11 +40,11 @@ class FirewallRule extends AbstractModel
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
+        'status',
         'name',
         'port',
         'from_ip',
         'can_delete',
-        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -60,14 +61,6 @@ class FirewallRule extends AbstractModel
         'updated' => FirewallRuleUpdatedEvent::class,
         'deleted' => FirewallRuleDeletedEvent::class,
     ];
-
-    /**
-     * Get the current status of this firewall rule.
-     */
-    public function getStatusAttribute(): string
-    {
-        return $this->attributes['status'] ?? static::STATUS_ADDING;
-    }
 
     /**
      * Get the owner of the server where this firewall rule belongs.

@@ -6,6 +6,7 @@ use App\Events\Workers\WorkerCreatedEvent;
 use App\Events\Workers\WorkerDeletedEvent;
 use App\Events\Workers\WorkerUpdatedEvent;
 use App\Facades\ConfigView;
+use App\Models\Traits\HasStatus;
 use Carbon\CarbonInterface;
 use Database\Factories\WorkerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,6 @@ use RuntimeException;
  * Represents a server queue worker.
  *
  * @property int $id
- * @property string $status
  * @property string $type
  * @property string|null $app
  * @property int|null $processes
@@ -40,7 +40,8 @@ use RuntimeException;
  */
 class Worker extends AbstractModel
 {
-    use HasFactory;
+    use HasFactory,
+        HasStatus;
 
     public const STATUS_STARTING = 'starting';
     public const STATUS_ACTIVE = 'active';

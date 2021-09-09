@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
+use App\Models\Traits\HasStatus;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
@@ -25,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $type
  * @property string[] $domains
- * @property string|null $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -39,7 +39,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Certificate extends AbstractModel
 {
-    use HasFactory;
+    use HasFactory,
+        HasStatus;
 
     public const TYPE_LETS_ENCRYPT = 'lets-encrypt';
 
@@ -49,9 +50,9 @@ class Certificate extends AbstractModel
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
+        'status',
         'type',
         'domains',
-        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */

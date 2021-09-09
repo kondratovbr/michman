@@ -6,6 +6,7 @@ use App\Events\Daemons\DaemonCreatedEvent;
 use App\Events\Daemons\DaemonDeletedEvent;
 use App\Events\Daemons\DaemonUpdatedEvent;
 use App\Facades\ConfigView;
+use App\Models\Traits\HasStatus;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\DaemonFactory;
@@ -23,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $directory
  * @property int $processes
  * @property int $startSeconds
- * @property string $status
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -36,7 +36,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Daemon extends AbstractModel
 {
-    use HasFactory;
+    use HasFactory,
+        HasStatus;
 
     public const STATUS_STARTING = 'starting';
     public const STATUS_ACTIVE = 'active';
@@ -47,12 +48,12 @@ class Daemon extends AbstractModel
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
+        'status',
         'command',
         'username',
         'directory',
         'processes',
         'start_seconds',
-        'status',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -81,11 +82,6 @@ class Daemon extends AbstractModel
     public function getNameAttribute(): string
     {
         return "daemon-{$this->id}";
-    }
-
-    public function isStatus(string|array $statuses): bool
-    {
-        return Arr::hasValue(Arr::wrap($statuses), $this->status);
     }
 
     public function isStarting(): bool
