@@ -78,5 +78,7 @@
 
         @livewireScripts
 
+        @include('cookie-consent::index')
+
     </body>
 </html>
