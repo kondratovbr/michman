@@ -6,7 +6,6 @@ use App\Events\Daemons\DaemonCreatedEvent;
 use App\Events\Daemons\DaemonDeletedEvent;
 use App\Events\Daemons\DaemonUpdatedEvent;
 use App\Facades\ConfigView;
-use App\Models\Traits\HasStatus;
 use App\States\Daemons\DaemonState;
 use Carbon\CarbonInterface;
 use Database\Factories\DaemonFactory;
