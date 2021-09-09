@@ -3,7 +3,7 @@
 namespace Tests\Feature\Firewall;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
-use App\DataTransferObjects\FirewallRuleData;
+use App\DataTransferObjects\FirewallRuleDto;
 use App\Http\Livewire\Firewall\FirewallCreateForm;
 use App\Models\FirewallRule;
 use App\Models\Server;
@@ -25,12 +25,12 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
         Livewire::test(FirewallCreateForm::class, ['server' => $server])
             ->set('name', 'WHOIS')
             ->set('port', '43')
-            ->set('fromIp', '127.0.0.1')
+            ->set('from_ip', '127.0.0.1')
             ->call('store', Mockery::mock(StoreFirewallRuleAction::class,
                 function (MockInterface $mock) use ($server) {
                     $mock->shouldReceive('execute')
                         ->withArgs(function (
-                            FirewallRuleData $dataArg,
+                            FirewallRuleDto $dataArg,
                             Server $serverArg,
                         ) use ($server) {
                             return $dataArg->name === 'WHOIS'
@@ -48,7 +48,7 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
             ->assertEmitted('firewall-rule-stored')
             ->assertSet('name', null)
             ->assertSet('port', null)
-            ->assertSet('fromIp', null);
+            ->assertSet('from_ip', null);
     }
 
     public function test_firewall_rule_with_empty_name_cannot_be_created()
@@ -62,7 +62,7 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
         Livewire::test(FirewallCreateForm::class, ['server' => $server])
             ->set('name', '')
             ->set('port', '43')
-            ->set('fromIp', '127.0.0.1')
+            ->set('from_ip', '127.0.0.1')
             ->call('store', Mockery::mock(StoreFirewallRuleAction::class,
                 function (MockInterface $mock) use ($server) {
                     $mock->shouldNotHaveBeenCalled();
@@ -82,7 +82,7 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
         Livewire::test(FirewallCreateForm::class, ['server' => $server])
             ->set('name', 'WHOIS')
             ->set('port', '')
-            ->set('fromIp', '127.0.0.1')
+            ->set('from_ip', '127.0.0.1')
             ->call('store', Mockery::mock(StoreFirewallRuleAction::class,
                 function (MockInterface $mock) use ($server) {
                     $mock->shouldNotHaveBeenCalled();
@@ -102,12 +102,12 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
         Livewire::test(FirewallCreateForm::class, ['server' => $server])
             ->set('name', 'WHOIS')
             ->set('port', '43')
-            ->set('fromIp', '')
+            ->set('from_ip', '')
             ->call('store', Mockery::mock(StoreFirewallRuleAction::class,
                 function (MockInterface $mock) use ($server) {
                     $mock->shouldReceive('execute')
                         ->withArgs(function (
-                            FirewallRuleData $dataArg,
+                            FirewallRuleDto $dataArg,
                             Server $serverArg,
                         ) use ($server) {
                             return $dataArg->name === 'WHOIS'
@@ -125,7 +125,7 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
             ->assertEmitted('firewall-rule-stored')
             ->assertSet('name', null)
             ->assertSet('port', null)
-            ->assertSet('fromIp', null);
+            ->assertSet('from_ip', null);
     }
 
     public function test_firewall_rule_with_range_of_ports_can_be_created()
@@ -139,12 +139,12 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
         Livewire::test(FirewallCreateForm::class, ['server' => $server])
             ->set('name', 'WHOIS')
             ->set('port', '43:45')
-            ->set('fromIp', '127.0.0.1')
+            ->set('from_ip', '127.0.0.1')
             ->call('store', Mockery::mock(StoreFirewallRuleAction::class,
                 function (MockInterface $mock) use ($server) {
                     $mock->shouldReceive('execute')
                         ->withArgs(function (
-                            FirewallRuleData $dataArg,
+                            FirewallRuleDto $dataArg,
                             Server $serverArg,
                         ) use ($server) {
                             return $dataArg->name === 'WHOIS'
@@ -162,6 +162,6 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
             ->assertEmitted('firewall-rule-stored')
             ->assertSet('name', null)
             ->assertSet('port', null)
-            ->assertSet('fromIp', null);
+            ->assertSet('from_ip', null);
     }
 }

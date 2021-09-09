@@ -2,7 +2,7 @@
 
 namespace App\Actions\Firewall;
 
-use App\DataTransferObjects\FirewallRuleData;
+use App\DataTransferObjects\FirewallRuleDto;
 use App\Jobs\FirewallRules\AddFirewallRuleToServerJob;
 use App\Models\FirewallRule;
 use App\Models\Server;
@@ -13,7 +13,7 @@ class StoreFirewallRuleAction
     /**
      * @param bool $sync Run the job synchronously.
      */
-    public function execute(FirewallRuleData $data, Server $server, bool $sync = false): FirewallRule
+    public function execute(FirewallRuleDto $data, Server $server, bool $sync = false): FirewallRule
     {
         return DB::transaction(function () use($data, $server, $sync) {
             /** @var FirewallRule $rule */

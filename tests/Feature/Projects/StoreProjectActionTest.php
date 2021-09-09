@@ -3,7 +3,7 @@
 namespace Tests\Feature\Projects;
 
 use App\Actions\Projects\StoreProjectAction;
-use App\DataTransferObjects\NewProjectData;
+use App\DataTransferObjects\NewProjectDto;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\Projects\ProjectCreatedEvent;
@@ -30,7 +30,7 @@ class StoreProjectActionTest extends AbstractFeatureTest
         Bus::fake();
         Event::fake();
 
-        $action->execute(new NewProjectData(
+        $action->execute(new NewProjectDto(
             domain: 'foo.com',
             aliases: ['bar.com', 'baz.com'],
             type: 'django',

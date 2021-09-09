@@ -3,7 +3,6 @@
 namespace Tests\Feature\Databases;
 
 use App\Actions\Databases\StoreDatabaseAction;
-use App\DataTransferObjects\DatabaseData;
 use App\Http\Livewire\Databases\CreateDatabaseForm;
 use App\Models\Database;
 use App\Models\DatabaseUser;
@@ -45,11 +44,11 @@ class CreateDatabaseTest extends AbstractFeatureTest
                 function (MockInterface $mock) use ($server, $databaseUsers) {
                     $mock->shouldReceive('execute')
                         ->withArgs(function (
-                            DatabaseData $databaseDataArg,
+                            string $nameArg,
                             Server $serverArg,
                             Collection $grantedUsersArg
                         ) use ($server, $databaseUsers) {
-                            return $databaseDataArg->name === 'foobar'
+                            return $nameArg === 'foobar'
                                 && $serverArg->is($server)
                                 && $grantedUsersArg->modelKeys() == $databaseUsers->modelKeys();
                         })

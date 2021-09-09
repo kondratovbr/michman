@@ -3,7 +3,7 @@
 namespace App\Jobs\Servers;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
-use App\DataTransferObjects\FirewallRuleData;
+use App\DataTransferObjects\FirewallRuleDto;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Scripts\Root\EnableFirewallScript;
@@ -63,7 +63,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
 
             $initializeFirewall->execute($server, $ssh);
 
-            $storeFirewallRule->execute(new FirewallRuleData(
+            $storeFirewallRule->execute(new FirewallRuleDto(
                 name: 'SSH',
                 port: '22',
                 can_delete: false,

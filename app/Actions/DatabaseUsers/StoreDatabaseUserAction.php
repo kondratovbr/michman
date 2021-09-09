@@ -2,7 +2,7 @@
 
 namespace App\Actions\DatabaseUsers;
 
-use App\DataTransferObjects\DatabaseUserData;
+use App\DataTransferObjects\DatabaseUserDto;
 use App\Jobs\DatabaseUsers\CreateDatabaseUserOnServerJob;
 use App\Models\DatabaseUser;
 use App\Models\Server;
@@ -16,7 +16,7 @@ class StoreDatabaseUserAction
         protected GrantDatabaseUsersAccessToDatabasesAction $grantAction,
     ) {}
 
-    public function execute(DatabaseUserData $data, Server $server, Collection $grantedDatabases = null): DatabaseUser
+    public function execute(DatabaseUserDto $data, Server $server, Collection $grantedDatabases = null): DatabaseUser
     {
         DB::beginTransaction();
 

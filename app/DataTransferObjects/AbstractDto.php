@@ -7,6 +7,8 @@ use App\Support\Arr;
 use ReflectionClass;
 use ReflectionProperty;
 
+// TODO: CRITICAL! Cover this with tests somehow. Check out how Spatie did it in their package.
+
 abstract class AbstractDto implements Arrayable
 {
     protected array $exceptKeys = [];
@@ -15,6 +17,17 @@ abstract class AbstractDto implements Arrayable
 
     public static function fromArray(array $data): static
     {
+        $class = new ReflectionClass(static::class);
+
+        $properties = Arr::filter(
+            $class->getProperties(ReflectionProperty::IS_PUBLIC),
+            fn(ReflectionProperty $property) => ! $property->isStatic(),
+        );
+
+        $names = Arr::map($properties, fn(ReflectionProperty $property) => $property->getName());
+
+        $data = Arr::filterAssoc($data, fn($key, $value) => Arr::hasValue($names, $key));
+
         return new static(...$data);
     }
 
@@ -51,20 +64,16 @@ abstract class AbstractDto implements Arrayable
 
     protected function all(): array
     {
-        $data = [];
-
         $class = new ReflectionClass(static::class);
 
-        $properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
+        $properties = Arr::filter(
+            $class->getProperties(ReflectionProperty::IS_PUBLIC),
+            fn(ReflectionProperty $property) => ! $property->isStatic(),
+        );
 
-        foreach ($properties as $property) {
-            if ($property->isStatic())
-                continue;
-
-            $data[$property->getName()] = $property->getValue($this);
-        }
-
-        return $data;
+        return Arr::mapAssoc($properties, fn(int $index, ReflectionProperty $property) =>
+            [$property->getName(), $property->getValue($this)]
+        );
     }
 
     protected function parseArray(array $array): array

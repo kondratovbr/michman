@@ -3,7 +3,6 @@
 namespace App\Actions\Databases;
 
 use App\Actions\DatabaseUsers\GrantDatabaseUsersAccessToDatabasesAction;
-use App\DataTransferObjects\DatabaseData;
 use App\Jobs\Databases\CreateDatabaseOnServerJob;
 use App\Models\Database;
 use App\Models\Server;
@@ -17,12 +16,12 @@ class StoreDatabaseAction
         protected GrantDatabaseUsersAccessToDatabasesAction $grantAction,
     ) {}
 
-    public function execute(DatabaseData $data, Server $server, Collection $grantedUsers = null, bool $sync = false): Database
+    public function execute(string $name, Server $server, Collection $grantedUsers = null, bool $sync = false): Database
     {
         DB::beginTransaction();
 
         /** @var Database $database */
-        $database = $server->databases()->create($data->toArray());
+        $database = $server->databases()->create(['name' => $name]);
 
         if (! is_null($grantedUsers) && $grantedUsers->isNotEmpty()) {
             $grantJob = $this->grantAction->execute(

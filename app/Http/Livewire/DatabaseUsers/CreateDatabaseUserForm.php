@@ -4,7 +4,7 @@ namespace App\Http\Livewire\DatabaseUsers;
 
 use App\Actions\DatabaseUsers\StoreDatabaseUserAction;
 use App\Broadcasting\ServerChannel;
-use App\DataTransferObjects\DatabaseUserData;
+use App\DataTransferObjects\DatabaseUserDto;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseDeletedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
@@ -85,10 +85,8 @@ class CreateDatabaseUserForm extends LivewireComponent
 
         $this->authorize('create', [DatabaseUser::class, $this->server]);
 
-        $storeDatabaseUser->execute(new DatabaseUserData(
-            name: $validated['name'],
-            password: $validated['password'],
-        ),
+        $storeDatabaseUser->execute(
+            DatabaseUserDto::fromArray($validated),
             $this->server,
             Database::query()->findMany($validated['grantedDatabases']),
         );

@@ -3,7 +3,7 @@
 namespace Tests\Feature\Firewall;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
-use App\DataTransferObjects\FirewallRuleData;
+use App\DataTransferObjects\FirewallRuleDto;
 use App\Jobs\FirewallRules\AddFirewallRuleToServerJob;
 use App\Models\FirewallRule;
 use App\Models\Server;
@@ -25,7 +25,7 @@ class StoreFirewallRuleActionTest extends AbstractFeatureTest
         Bus::fake();
         Event::fake();
 
-        $rule = $action->execute(new FirewallRuleData(
+        $rule = $action->execute(new FirewallRuleDto(
             name: 'WHOIS',
             port: '43',
             from_ip: '127.0.0.1',

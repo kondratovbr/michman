@@ -3,7 +3,7 @@
 namespace App\Jobs\Servers;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
-use App\DataTransferObjects\FirewallRuleData;
+use App\DataTransferObjects\FirewallRuleDto;
 use App\DataTransferObjects\NewServerData;
 use App\Jobs\AbstractJob;
 use App\Jobs\Pythons\CreatePythonJob;
@@ -40,11 +40,11 @@ class ConfigureAppServerJob extends AbstractJob
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $storeFirewallRule->execute(new FirewallRuleData(
+            $storeFirewallRule->execute(new FirewallRuleDto(
                 name: 'HTTP',
                 port: '80',
             ), $server);
-            $storeFirewallRule->execute(new FirewallRuleData(
+            $storeFirewallRule->execute(new FirewallRuleDto(
                 name: 'HTTPS',
                 port: '443',
             ), $server);

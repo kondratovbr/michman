@@ -3,7 +3,7 @@
 namespace Tests\Feature\DatabaseUsers;
 
 use App\Actions\DatabaseUsers\StoreDatabaseUserAction;
-use App\DataTransferObjects\DatabaseUserData;
+use App\DataTransferObjects\DatabaseUserDto;
 use App\Events\Databases\DatabaseUpdatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
@@ -13,8 +13,6 @@ use App\Models\Database;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
-use Mockery;
-use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
 class StoreDatabaseUserActionTest extends AbstractFeatureTest
@@ -38,7 +36,7 @@ class StoreDatabaseUserActionTest extends AbstractFeatureTest
         Event::fake();
 
         $databaseUser = $action->execute(
-            new DatabaseUserData(
+            new DatabaseUserDto(
                 name: 'foobar',
                 password: 'password',
             ),

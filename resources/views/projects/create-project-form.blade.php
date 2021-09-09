@@ -45,37 +45,37 @@
             <x-field class="max-w-sm">
                 <x-label>{{ __('projects.create.form.python-version.label') }}</x-label>
                 <x-select
-                    name="state.pythonVersion"
+                    name="state.python_version"
                     :options="$pythonVersions"
                     :default="true"
-                    wire:model="state.pythonVersion"
+                    wire:model="state.python_version"
                     wire:key="select-python-version"
                 />
-                <x-input-error for="state.pythonVersion" />
+                <x-input-error for="state.python_version" />
             </x-field>
 
             <x-field>
                 <x-checkbox-new
-                    name="state.allowSubDomains"
-                    wire:model="state.allowSubDomains"
+                    name="state.allow_sub_domains"
+                    wire:model="state.allow_sub_domains"
                 >
                     {{ __('projects.create.form.allow-sub-domains.label') }}
                 </x-checkbox-new>
-                <x-input-error for="state.allowSubDomains" />
+                <x-input-error for="state.allow_sub_domains" />
             </x-field>
 
             @if($server->canCreateDatabase())
 
-                <div x-data="{ createDatabase: @entangle('state.createDatabase') }">
+                <div x-data="{ createDatabase: @entangle('state.create_database') }">
 
                     <x-field>
                         <x-checkbox-new
-                            name="state.createDatabase"
+                            name="state.create_database"
                             x-model="createDatabase"
                         >
                             {{ __('projects.create.form.create-database.label') }}
                         </x-checkbox-new>
-                        <x-input-error for="state.createDatabase" />
+                        <x-input-error for="state.create_database" />
                     </x-field>
 
                     <div
@@ -87,22 +87,22 @@
                         <x-field class="max-w-sm">
                             <x-label>{{ __('projects.create.form.db-name.label') }}</x-label>
                             <x-inputs.text
-                                name="state.dbName"
-                                wire:model.defer="state.dbName"
+                                name="state.db_name"
+                                wire:model.defer="state.db_name"
                             />
-                            <x-input-error for="state.dbName" />
+                            <x-input-error for="state.db_name" />
                         </x-field>
 
-                        <div x-data="{ createDbUser: @entangle('state.createDbUser') }">
+                        <div x-data="{ createDbUser: @entangle('state.create_db_user') }">
 
                             <x-field>
                                 <x-checkbox-new
-                                    name="state.createDbUser"
+                                    name="state.create_db_user"
                                     x-model="createDbUser"
                                 >
                                     {{ __('projects.create.form.create-db-user.label') }}
                                 </x-checkbox-new>
-                                <x-input-error for="state.createDbUser" />
+                                <x-input-error for="state.create_db_user" />
                             </x-field>
 
                             <div class="mt-3 space-y-2">
@@ -113,10 +113,10 @@
                                 >
                                     <x-label>{{ __('projects.create.form.db-user-name.label') }}</x-label>
                                     <x-inputs.text
-                                        name="state.dbUserName"
-                                        wire:model.defer="state.dbUserName"
+                                        name="state.db_user_name"
+                                        wire:model.defer="state.db_user_name"
                                     />
-                                    <x-input-error for="state.dbUserName" />
+                                    <x-input-error for="state.db_user_name" />
                                 </x-field>
 
                                 <x-field
@@ -125,10 +125,10 @@
                                 >
                                     <x-label>{{ __('projects.create.form.db-user-password.label') }}</x-label>
                                     <x-inputs.text
-                                        name="state.dbUserPassword"
-                                        wire:model.defer="state.dbUserPassword"
+                                        name="state.db_user_password"
+                                        wire:model.defer="state.db_user_password"
                                     />
-                                    <x-input-error for="state.dbUserPassword" />
+                                    <x-input-error for="state.db_user_password" />
                                 </x-field>
 
                             </div>

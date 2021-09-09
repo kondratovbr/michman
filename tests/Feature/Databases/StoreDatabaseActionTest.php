@@ -3,7 +3,6 @@
 namespace Tests\Feature\Databases;
 
 use App\Actions\Databases\StoreDatabaseAction;
-use App\DataTransferObjects\DatabaseData;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseUpdatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
@@ -33,7 +32,7 @@ class StoreDatabaseActionTest extends AbstractFeatureTest
         Bus::fake();
         Event::fake();
 
-        $database = $action->execute(new DatabaseData(name: 'foobar'), $server, $databaseUsers);
+        $database = $action->execute('foobar', $server, $databaseUsers);
 
         $this->assertDatabaseHas('databases', [
             'id' => $database->id,

@@ -154,6 +154,8 @@ return [
     */
 
     'attributes' => [
+        'from_ip' => 'From Ip',
+
         'state' => [
             'command' => 'Command',
             'username' => 'User',
@@ -163,13 +165,12 @@ return [
             'domain' => 'Domain',
             'aliases' => 'Aliases',
             'type' => 'Type',
-            'pythonVersion' => 'Python Version',
-            'allowSubDomains' => 'Allow Sub-Domains',
-            'createDatabase' => 'Create Database',
-            'dbName' => 'Database Name',
-            'createDbUser' => 'Create User',
-            'dbUserName' => 'Database User Name',
-            'dbUserPassword' => 'Database User Password',
+            'allow_sub_domains' => 'Allow Sub-Domains',
+            'create_database' => 'Create Database',
+            'db_name' => 'Database Name',
+            'create_db_user' => 'Create User',
+            'db_user_name' => 'Database User Name',
+            'db_user_password' => 'Database User Password',
             'provider_id' => 'Provider',
             'name' => 'Name',
             'region' => 'Region',

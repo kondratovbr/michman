@@ -6,9 +6,8 @@ use App\Actions\Databases\StoreDatabaseAction;
 use App\Actions\DatabaseUsers\StoreDatabaseUserAction;
 use App\Actions\DeploySshKeys\CreateDeploySshKeyAction;
 use App\Actions\Pythons\StorePythonAction;
-use App\DataTransferObjects\DatabaseData;
-use App\DataTransferObjects\DatabaseUserData;
-use App\DataTransferObjects\NewProjectData;
+use App\DataTransferObjects\DatabaseUserDto;
+use App\DataTransferObjects\NewProjectDto;
 use App\DataTransferObjects\PythonData;
 use App\Jobs\Servers\CreateUserOnServerJob;
 use App\Models\Project;
@@ -28,7 +27,7 @@ class StoreProjectAction
         protected StoreDatabaseUserAction $storeDatabaseUser,
     ) {}
 
-    public function execute(NewProjectData $data, Server $server): Project
+    public function execute(NewProjectDto $data, Server $server): Project
     {
         $user = $server->user;
 
@@ -49,9 +48,7 @@ class StoreProjectAction
             $data->create_database
             && $server->databases()->where('name', $data->db_name)->count() < 1
         ) {
-            $database = $this->storeDatabase->execute(new DatabaseData(
-                name: $data->db_name,
-            ), $server);
+            $database = $this->storeDatabase->execute($data->db_name, $server);
 
             $project->database()->associate($database);
 
@@ -59,7 +56,7 @@ class StoreProjectAction
                 $data->create_db_user
                 && $server->databaseUsers()->where('name', $data->db_user_name)->count() < 1
             ) {
-                $databaseUser = $this->storeDatabaseUser->execute(new DatabaseUserData(
+                $databaseUser = $this->storeDatabaseUser->execute(new DatabaseUserDto(
                     name: $data->db_user_name,
                     password: $data->db_user_password,
                 ), $server, collection([$database]));

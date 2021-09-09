@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire\Projects;
 
+use App\DataTransferObjects\NewProjectDto;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 use App\Actions\Projects\StoreProjectAction;
-use App\DataTransferObjects\NewProjectData;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Project;
 use App\Models\Server;
@@ -40,13 +40,13 @@ class CreateProjectForm extends LivewireComponent
         'domain' => '',
         'aliases' => '',
         'type' => 'django',
-        'pythonVersion' => '3_9',
-        'allowSubDomains' => false,
-        'createDatabase' => true,
-        'dbName' => '',
-        'createDbUser' => true,
-        'dbUserName' => '',
-        'dbUserPassword' => '',
+        'python_version' => '3_9',
+        'allow_sub_domains' => false,
+        'create_database' => true,
+        'db_name' => '',
+        'create_db_user' => true,
+        'db_user_name' => '',
+        'db_user_password' => '',
     ];
 
     /** @var string[] */
@@ -63,7 +63,7 @@ class CreateProjectForm extends LivewireComponent
     {
         $state = $attributes['state'];
 
-        foreach (['domain', 'dbUserName'] as $attr) {
+        foreach (['domain', 'db_user_name'] as $attr) {
             if (is_string($state[$attr])) {
                 $state[$attr] = Str::lower($state[$attr]);
             }
@@ -95,24 +95,24 @@ class CreateProjectForm extends LivewireComponent
             'state.type' => Rules::string(1, 16)
                 ->in(Arr::keys(config('projects.types')))
                 ->required(),
-            'state.pythonVersion' => SupportedPythonVersionField::new()->required(),
-            'state.allowSubDomains' => Rules::boolean(),
+            'state.python_version' => SupportedPythonVersionField::new()->required(),
+            'state.allow_sub_domains' => Rules::boolean(),
         ];
 
         if (optional($this->server)->canCreateDatabase()) {
-            $rules['state.createDatabase'] = Rules::boolean();
-            $rules['state.dbName'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('state.createDatabase', true)
+            $rules['state.create_database'] = Rules::boolean();
+            $rules['state.db_name'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('state.create_database', true)
                 ->nullable();
         }
 
-        if (optional($this->server)->canCreateDatabaseUser() && $this->state['createDatabase']) {
-            $rules['state.createDbUser'] = Rules::boolean();
-            $rules['state.dbUserName'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('state.createDbUser', true)
+        if (optional($this->server)->canCreateDatabaseUser() && $this->state['create_database']) {
+            $rules['state.create_db_user'] = Rules::boolean();
+            $rules['state.db_user_name'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('state.create_db_user', true)
                 ->nullable();
-            $rules['state.dbUserPassword'] = Rules::alphaNumDashString(1, 255)
-                ->requiredIfAnotherFieldIs('state.createDbUser', true)
+            $rules['state.db_user_password'] = Rules::alphaNumDashString(1, 255)
+                ->requiredIfAnotherFieldIs('state.create_db_user', true)
                 ->nullable();
         }
 
@@ -143,18 +143,7 @@ class CreateProjectForm extends LivewireComponent
 
         $this->authorize('create', [Project::class, $this->server]);
 
-        $storeAction->execute(new NewProjectData(
-            domain: $state['domain'],
-            aliases: $state['aliases'] ?? [],
-            type: $state['type'],
-            python_version: $state['pythonVersion'] ?? null,
-            allow_sub_domains: $state['allowSubDomains'],
-            create_database: $state['createDatabase'] ?? false,
-            db_name: $state['dbName'] ?? null,
-            create_db_user: $state['createDbUser'] ?? false,
-            db_user_name: $state['dbUserName'] ?? null,
-            db_user_password: $state['dbUserPassword'] ?? null,
-        ), $this->server);
+        $storeAction->execute(NewProjectDto::fromArray($state), $this->server);
 
         $this->reset('state');
 

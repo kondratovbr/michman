@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Firewall;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
-use App\DataTransferObjects\FirewallRuleData;
-use App\Http\Livewire\Traits\TrimsInput;
+use App\DataTransferObjects\FirewallRuleDto;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\FirewallRule;
 use App\Models\Server;
 use App\Rules\PortRule;
@@ -16,7 +16,7 @@ use Livewire\Component as LivewireComponent;
 class FirewallCreateForm extends LivewireComponent
 {
     use AuthorizesRequests,
-        TrimsInput;
+        TrimsInputBeforeValidation;
 
     public Server $server;
 
@@ -29,16 +29,8 @@ class FirewallCreateForm extends LivewireComponent
         return [
             'name' => Rules::string(1, 255)->required(),
             'port' => Rules::string(1, 11)->addRule(new PortRule)->required(),
-            'fromIp' => Rules::ip()->nullable(),
+            'from_ip' => Rules::ip()->nullable(),
         ];
-    }
-
-    /**
-     * Initialize the component.
-     */
-    public function mount(): void
-    {
-        //
     }
 
     /**
@@ -50,16 +42,12 @@ class FirewallCreateForm extends LivewireComponent
 
         $this->authorize('create', [FirewallRule::class, $this->server]);
 
-        $storeFirewallRule->execute(new FirewallRuleData(
-            name: $validated['name'],
-            port: $validated['port'],
-            from_ip: $validated['fromIp'],
-        ), $this->server);
+        $storeFirewallRule->execute(FirewallRuleDto::fromArray($validated), $this->server);
 
         $this->reset(
             'name',
             'port',
-            'fromIp',
+            'from_ip',
         );
 
         // This event is used to show the success message.

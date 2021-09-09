@@ -46,10 +46,10 @@
             <x-field>
                 <x-label>{{ __('servers.firewall.form.from-ip.title') }}</x-label>
                 <x-inputs.text
-                    name="fromIp"
-                    wire:model.defer="fromIp"
+                    name="from_ip"
+                    wire:model.defer="from_ip"
                 />
-                <x-input-error for="fromIp" />
+                <x-input-error for="from_ip" />
                 <x-help>{{ __('servers.firewall.form.from-ip.help') }}</x-help>
             </x-field>
 
