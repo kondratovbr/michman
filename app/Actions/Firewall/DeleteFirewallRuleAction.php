@@ -11,11 +11,10 @@ class DeleteFirewallRuleAction
     public function execute(FirewallRule $rule): void
     {
         DB::transaction(function () use ($rule) {
-            /** @var FirewallRule $rule */
-            $rule = FirewallRule::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($rule->getKey());
+            $rule = $rule->freshLockForUpdate();
+
+            if ($rule->isStatus(FirewallRule::STATUS_DELETING))
+                return;
 
             $rule->status = FirewallRule::STATUS_DELETING;
             $rule->save();

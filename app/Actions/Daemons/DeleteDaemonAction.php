@@ -12,6 +12,11 @@ class DeleteDaemonAction
     public function execute(Daemon $daemon): void
     {
         DB::transaction(function () use ($daemon) {
+            $daemon = $daemon->freshLockForUpdate();
+
+            if ($daemon->isStatus(Daemon::STATUS_DELETING))
+                return;
+
             // TODO: CRITICAL! CONTINUE. Implement.
 
             //

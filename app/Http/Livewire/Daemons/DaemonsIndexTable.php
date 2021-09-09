@@ -95,10 +95,6 @@ class DaemonsIndexTable extends LivewireComponent
 
         $this->authorize('delete', [Daemon::class, $daemon]);
 
-        // TODO: CRITICAL! CONTINUE. In other places where I delete stuff I should also check that the stuff isn't already in the process of being deleted. Don't forget to add this case to the tests. Or maybe I should do those checks in the actions?
-        if ($daemon->isStatus(Daemon::STATUS_DELETING))
-            return;
-
         $action->execute($daemon);
     }
 

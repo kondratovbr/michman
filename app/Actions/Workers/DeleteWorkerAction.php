@@ -15,6 +15,9 @@ class DeleteWorkerAction
         DB::transaction(function () use ($worker) {
             $worker = $worker->freshLockForUpdate();
 
+            if ($worker->isStatus(Worker::STATUS_DELETING))
+                return;
+
             $worker->status = Worker::STATUS_DELETING;
             $worker->save();
 

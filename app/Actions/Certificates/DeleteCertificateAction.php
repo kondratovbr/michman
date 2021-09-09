@@ -14,6 +14,9 @@ class DeleteCertificateAction
         DB::transaction(function () use ($certificate) {
             $certificate = $certificate->freshLockForUpdate();
 
+            if ($certificate->isStatus(Certificate::STATUS_DELETING))
+                return;
+
             $certificate->status = Certificate::STATUS_DELETING;
             $certificate->save();
 
