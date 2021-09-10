@@ -78,8 +78,8 @@
                         <x-input-error for="state.create_database" />
                     </x-field>
 
-                    <div
-                        class="mt-2 bg-navy-500 rounded-md space-y-6 py-4 px-4"
+                    <x-optional-fields
+                        class="space-y-6"
                         x-show="createDatabase"
                         x-cloak
                     >
@@ -135,7 +135,7 @@
 
                         </div>
 
-                    </div>
+                    </x-optional-fields>
 
                 </div>
 
