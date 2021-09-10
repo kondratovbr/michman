@@ -31,7 +31,7 @@
                 <x-input-error for="state.username" />
             </x-field>
 
-            <x-field>
+            <x-field class="max-w-xl">
                 <x-label>{{ __('servers.daemons.directory.label') }}</x-label>
                 <x-inputs.text
                     name="state.directory"

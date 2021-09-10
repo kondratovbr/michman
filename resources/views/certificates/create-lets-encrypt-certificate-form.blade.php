@@ -7,7 +7,7 @@
     <x-slot name="form">
         <div class="space-y-6">
 
-            <x-message>{{ __('servers.ssl.lets-encrypt.explanation') }}</x-message>
+            <x-message class="max-w-prose">{{ __('servers.ssl.lets-encrypt.explanation') }}</x-message>
 
             <x-field class="max-w-sm">
                 <x-label>{{ __('servers.ssl.lets-encrypt.domains.title') }}</x-label>

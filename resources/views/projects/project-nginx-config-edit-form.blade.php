@@ -16,18 +16,18 @@
 
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
-            @if($this->modified)
-                <x-badge>Modified</x-badge>
-            @endif
+            <x-buttons.primary
+                wire:click.prevent="update"
+                wire:loading.attr="disabled"
+            >{{ __('buttons.save') }}</x-buttons.primary>
             <x-buttons.secondary
                 wire:click.prevent="rollback"
                 wire:loading.attr="disabled"
                 :disabled="! $this->modified"
             >{{ __('buttons.rollback') }}</x-buttons.secondary>
-            <x-buttons.primary
-                wire:click.prevent="update"
-                wire:loading.attr="disabled"
-            >{{ __('buttons.save') }}</x-buttons.primary>
+            @if($this->modified)
+                <x-badge>Modified</x-badge>
+            @endif
         </div>
     </x-slot>
 

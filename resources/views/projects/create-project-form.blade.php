@@ -19,7 +19,7 @@
                 <x-input-error for="state.domain" />
             </x-field>
 
-            <x-field>
+            <x-field class="max-w-xl">
                 <x-label>{{ __('projects.create.form.aliases.label') }}</x-label>
                 <x-inputs.text
                     name="state.aliases"

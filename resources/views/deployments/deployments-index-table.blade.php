@@ -76,10 +76,10 @@
 
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
-            <div class="text-sm">Deploying the <x-code>{{ $project->branch }}</x-code> branch</div>
             <x-buttons.primary
                 wire:click.prevent="deploy"
             >{{ __('deployments.deploy-button') }}</x-buttons.primary>
+            <div class="text-sm">Deploying the <x-code>{{ $project->branch }}</x-code> branch</div>
         </div>
     </x-slot>
 

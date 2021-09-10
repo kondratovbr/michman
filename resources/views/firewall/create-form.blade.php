@@ -5,24 +5,11 @@
     <x-slot name="form">
         <div class="space-y-6">
 
-            <x-message colors="info">
-                <div class="max-w-prose space-y-2">
-                    <p>
-                        By default the firewall on your server is configured to
-                        <strong>deny</strong> all incoming connections and
-                        <strong>allow</strong> all outgoing connection.
-                    </p>
-                    <p>
-                        Opening a port will <strong>allow</strong> all incoming connections to that port.
-                    </p>
-                    <p>
-                        If you don't provide a "From IP" address,
-                        the specified port will be open for connections from any IP address on the Internet.
-                    </p>
-                </div>
+            <x-message class="max-w-prose" colors="info">
+                <x-lang key="firewall.explanation"/>
             </x-message>
 
-            <x-field>
+            <x-field class="max-w-sm">
                 <x-label>{{ __('servers.firewall.form.name.title') }}</x-label>
                 <x-inputs.text
                     name="name"
@@ -32,7 +19,7 @@
                 <x-input-error for="name" />
             </x-field>
 
-            <x-field>
+            <x-field class="max-w-sm">
                 <x-label>{{ __('servers.firewall.form.port.title') }}</x-label>
                 <x-inputs.text
                     name="port"
@@ -43,7 +30,7 @@
                 <x-help>{{ __('servers.firewall.form.port.help') }}</x-help>
             </x-field>
 
-            <x-field>
+            <x-field class="max-w-sm">
                 <x-label>{{ __('servers.firewall.form.from-ip.title') }}</x-label>
                 <x-inputs.text
                     name="from_ip"

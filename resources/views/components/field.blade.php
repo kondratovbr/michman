@@ -1,3 +1,5 @@
 <fieldset {{ $attributes->class([
     'group',
-]) }}>{{ $slot }}</fieldset>
+]) }}>
+    <div>{{ $slot }}</div>
+</fieldset>

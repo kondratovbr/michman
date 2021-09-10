@@ -15,10 +15,9 @@
 {{--            TODO: I'm using this field at least twice - see "providers.create-form". DRY?--}}
 {{--            TODO: Add some loading animation here - loading an actual form may take some time due to external API calls. --}}
             <x-field>
-
                 <div
                     {{-- Negative bottom margin compensates for the bottom margin on the elements. --}}
-                    class="flex flex-wrap space-x-6-right space-y-6-bottom -mb-6"
+                    class="flex flex-wrap space-x-6-right space-y-6-bottom -mb-5"
                 >
                     @foreach(config('providers.list') as $providerName => $providerConfig)
                         <x-radio-card
@@ -35,6 +34,7 @@
                         </x-radio-card>
                     @endforeach
                 </div>
+                <x-input-error for="provider" />
             </x-field>
 
             {{-- Just in case something goes wrong and there's no component we don't want to just crash. --}}
@@ -50,8 +50,14 @@
 
     <x-slot name="actions">
         <x-buttons>
-            <x-buttons.secondary wire:click.prevent="cancel">{{ __('buttons.cancel') }}</x-buttons.secondary>
-            <x-buttons.primary wire:click.prevent="store">{{ __('servers.create.button') }}</x-buttons.primary>
+            <x-buttons.primary
+                wire:click.prevent="store"
+                wire:loading.attr="disabled"
+            >{{ __('servers.create.button') }}</x-buttons.primary>
+            <x-buttons.secondary
+                wire:click.prevent="cancel"
+                wire:loading.attr="disabled"
+            >{{ __('buttons.cancel') }}</x-buttons.secondary>
         </x-buttons>
     </x-slot>
 
