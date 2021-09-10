@@ -112,6 +112,6 @@ class CreateProviderForm extends Component
      */
     public function render(): View
     {
-        return view('providers.create-form');
+        return view('providers.create-provider-form');
     }
 }
