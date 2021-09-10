@@ -2,6 +2,7 @@
 
 namespace App\Actions\Daemons;
 
+use App\Jobs\Daemons\StartDaemonJob;
 use App\Models\Daemon;
 use App\States\Daemons\Starting;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,9 @@ class StartDaemonAction
             if (! $daemon->state->canTransitionTo(Starting::class))
                 return;
 
-            // TODO: CRITICAL! CONTINUE. Implement.
+            $daemon->state->transitionTo(Starting::class);
 
-            //
+            StartDaemonJob::dispatch($daemon);
         }, 5);
     }
 }

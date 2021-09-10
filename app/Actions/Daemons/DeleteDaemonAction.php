@@ -2,6 +2,7 @@
 
 namespace App\Actions\Daemons;
 
+use App\Jobs\Daemons\DeleteDaemonJob;
 use App\Models\Daemon;
 use App\States\Daemons\Deleting;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,9 @@ class DeleteDaemonAction
             if (! $daemon->state->canTransitionTo(Deleting::class))
                 return;
 
-            // TODO: CRITICAL! CONTINUE. Implement.
+            $daemon->state->transitionTo(Deleting::class);
 
-            //
+            DeleteDaemonJob::dispatch($daemon);
         }, 5);
     }
 }

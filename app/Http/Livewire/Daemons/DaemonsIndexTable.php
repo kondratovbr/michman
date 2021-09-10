@@ -6,6 +6,7 @@ use App\Actions\Daemons\DeleteDaemonAction;
 use App\Actions\Daemons\RestartDaemonAction;
 use App\Actions\Daemons\StartDaemonAction;
 use App\Actions\Daemons\StopDaemonAction;
+use App\Actions\Daemons\UpdateDaemonsStatusesAction;
 use App\Broadcasting\ServerChannel;
 use App\Events\Daemons\DaemonCreatedEvent;
 use App\Events\Daemons\DaemonDeletedEvent;
@@ -48,6 +49,16 @@ class DaemonsIndexTable extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('index', [Daemon::class, $this->server]);
+    }
+
+    /**
+     * Update the daemon's statuses.
+     */
+    public function updateStatuses(UpdateDaemonsStatusesAction $action): void
+    {
+        $this->authorize('index', [Daemon::class, $this->server]);
+
+        $action->execute($this->server);
     }
 
     /**

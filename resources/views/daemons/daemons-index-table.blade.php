@@ -2,6 +2,13 @@
 
     <x-slot name="title">{{ __('servers.daemons.index.title') }}</x-slot>
 
+    <x-slot name="description">
+        <x-buttons.primary
+            wire:click="updateStatuses"
+            wire:loading.attr="disabled"
+        >Update Statuses</x-buttons.primary>
+    </x-slot>
+
     <x-slot name="header">
         <x-tr-header>
             <x-th>{{ __('servers.daemons.command.label') }}</x-th>
@@ -17,7 +24,41 @@
                 <x-td><x-code>{{ $daemon->command }}</x-code></x-td>
                 <x-td><x-code>{{ $daemon->directory }}</x-code></x-td>
                 <x-td><x-state-badge :state="$daemon->state" /></x-td>
-                <x-td>Menu!</x-td>
+                <x-td>
+                    <x-ellipsis-dropdown>
+                        <x-dropdown.menu align="right">
+                            <x-dropdown.button
+                                class="text-sm"
+                                wire:click="start('{{ $daemon->getKey() }}')"
+                                wire:loading.attr="disabled"
+                            >
+                                {{ __('servers.daemons.index.start') }}
+                            </x-dropdown.button>
+                            <x-dropdown.button
+                                class="text-sm"
+                                wire:click="stop('{{ $daemon->getKey() }}')"
+                                wire:loading.attr="disabled"
+                            >
+                                {{ __('servers.daemons.index.stop') }}
+                            </x-dropdown.button>
+                            <x-dropdown.button
+                                class="text-sm"
+                                wire:click="restart('{{ $daemon->getKey() }}')"
+                                wire:loading.attr="disabled"
+                            >
+                                {{ __('servers.daemons.index.restart') }}
+                            </x-dropdown.button>
+                            <x-dropdown.separator/>
+                            <x-dropdown.button
+                                class="text-sm"
+                                wire:click="delete('{{ $daemon->getKey() }}')"
+                                wire:loading.attr="disabled"
+                            >
+                                {{ __('servers.daemons.index.delete') }}
+                            </x-dropdown.button>
+                        </x-dropdown.menu>
+                    </x-ellipsis-dropdown>
+                </x-td>
             </x-tr>
         @endforeach
     </x-slot>

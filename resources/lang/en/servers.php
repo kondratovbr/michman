@@ -241,7 +241,11 @@ return [
 
         'index' => [
             'title'=> 'Active Daemons',
-            'empty' => 'No daemons configured on this server.'
+            'empty' => 'No daemons configured on this server.',
+            'start' => 'Start Daemon',
+            'stop' => 'Stop Daemon',
+            'restart' => 'Restart Daemon',
+            'delete' => 'Delete Daemon',
         ],
 
         'command' => [

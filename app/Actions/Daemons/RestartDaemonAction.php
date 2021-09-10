@@ -2,6 +2,7 @@
 
 namespace App\Actions\Daemons;
 
+use App\Jobs\Daemons\RestartDaemonJob;
 use App\Models\Daemon;
 use App\States\Daemons\Restarting;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,9 @@ class RestartDaemonAction
             if (! $daemon->state->canTransitionTo(Restarting::class))
                 return;
 
-            // TODO: CRITICAL! CONTINUE. Implement.
+            $daemon->state->transitionTo(Restarting::class);
 
-            //
+            RestartDaemonJob::dispatch($daemon);
         }, 5);
     }
 }

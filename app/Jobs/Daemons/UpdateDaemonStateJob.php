@@ -11,12 +11,15 @@ use App\States\Daemons\Failed;
 use App\States\Daemons\Starting;
 use App\States\Daemons\Stopped;
 use App\States\Daemons\Stopping;
+use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
 
 class UpdateDaemonStateJob extends AbstractRemoteServerJob
 {
+    use Batchable;
+
     protected Daemon $daemon;
 
     public function __construct(Daemon $daemon)
