@@ -1,7 +1,5 @@
 @props(['loading' => false, 'size' => null])
 
-{{--TODO: CRITICAL! I've changed the default size of this button - check how it looks on other pages. Check and update other icon-only buttons as well.--}}
-
 @php
     $classes = implode(' ', [
         'inline-flex items-center justify-center rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
