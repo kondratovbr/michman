@@ -19,6 +19,12 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
+/*
+ * TODO: CRITICAL! CONTINUE. Implement the log viewer here. See Workers as well.
+ */
+
+// TODO: CRITICAL! Cover with tests!
+
 class DaemonsIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
