@@ -9,5 +9,6 @@ return [
     'installed' => 'Installed',
     'status' => 'Status',
     'restart' => 'Restart',
+    'em-dash' => '—',
 
 ];
