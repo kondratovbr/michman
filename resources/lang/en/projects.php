@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Certificate;
 use App\Models\Worker;
 
 return [
@@ -30,7 +29,7 @@ return [
             'button' => 'Create Project',
 
             'domain' => [
-                'label' => 'Domain Name',
+                'label' => 'Domain name',
             ],
             'aliases' => [
                 'label' => 'Aliases',
@@ -40,28 +39,28 @@ return [
                 'label' => 'Type',
             ],
             'root' => [
-                'label' => 'Web Root Directory',
+                'label' => 'Web root directory',
             ],
             'python-version' => [
-                'label' => 'Python Version',
+                'label' => 'Python version',
             ],
             'allow-sub-domains' => [
-                'label' => 'Allow Wildcard Sub-Domains',
+                'label' => 'Allow wildcard sub-domains',
             ],
             'create-database' => [
-                'label' => 'Create Database',
+                'label' => 'Create database',
             ],
             'db-name' => [
-                'label' => 'Database Name',
+                'label' => 'Database name',
             ],
             'create-db-user' => [
-                'label' => 'Create Database User',
+                'label' => 'Create database user',
             ],
             'db-user-name' => [
-                'label' => 'Database User Name',
+                'label' => 'Database user name',
             ],
             'db-user-password' => [
-                'label' => 'Database User Password',
+                'label' => 'Database user password',
             ],
         ],
     ],
@@ -80,17 +79,17 @@ return [
                 'label' => 'Branch',
             ],
             'package' => [
-                'label' => 'Python Package Name',
+                'label' => 'Python package name',
             ],
             'install-dependencies' => [
-                'label' => 'Install Dependencies',
+                'label' => 'Install dependencies',
             ],
             'requirements-file' => [
-                'label' => 'Requirements File',
+                'label' => 'Requirements file',
                 'help' => 'You may also put a path relative to the project\'s root if the file is inside some directory.',
             ],
             'use-deploy-key' => [
-                'label' => 'Use Deploy Key',
+                'label' => 'Use deploy key',
                 'enabled-message' => 'Make sure to add this Deploy Key to your :provider repository settings before proceeding, otherwise the server won\'t be able to clone the repository.',
                 'disabled-message' => 'The server\'s SSH key will be added to your :provider account and the server will have read access to all repositories that your GitHub account has access to.',
             ],
@@ -143,11 +142,11 @@ return [
                 'help' => 'Choose a server to configure the new worker on.'
             ],
             'app' => [
-                'label' => 'Celery App Module',
+                'label' => 'Celery app module',
                 'help' => 'Custom Celery module. You can leave this empty if your Celery module is a Celery.py file inside your main app directory.',
             ],
             'processes' => [
-                'label' => 'Number of Child Processes',
+                'label' => 'Number of child processes',
                 'help' => 'Leave this field empty for a reasonable default - a process for every CPU core on the server.',
                 'table' => 'Processes',
             ],
@@ -156,15 +155,15 @@ return [
                 'help' => 'Comma-separated names of queues to run by this worker. If empty - defaults to "Celery".',
             ],
             'stop-seconds' => [
-                'label' => 'Stop Seconds',
+                'label' => 'Stop seconds',
                 'help' => 'When this worker needs to be stopped - wait for this number of seconds for any running tasks to complete before force stopping the worker. Increase if you have any long-running tasks.',
             ],
             'max-tasks' => [
-                'label' => 'Max Tasks Per Child',
+                'label' => 'Max tasks per child',
                 'help' => 'Leave empty for no limit. A child process will be restarted after handling this many tasks. May be useful to combat memory leaks.',
             ],
             'max-memory' => [
-                'label' => 'Max Memory Per Child, MiB',
+                'label' => 'Max memory per child, MiB',
                 'help' => 'Leave empty for no limit. Another way to combat memory leaks - a child process will be restarted if it\'s allocated memory goes over this limit. If a single task causes a child process to exceed this limit, the task will be completed before restarting the process.'
             ],
         ],

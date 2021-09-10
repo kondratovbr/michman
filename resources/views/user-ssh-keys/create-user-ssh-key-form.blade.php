@@ -8,7 +8,7 @@
         <div class="space-y-6">
 
             <x-field class="max-w-sm">
-                <x-label>{{ __('account.ssh.name.title') }}</x-label>
+                <x-label>{{ __('account.ssh.name.label') }}</x-label>
                 <x-inputs.text
                     name="state.name"
                     wire:model.defer="state.name"
@@ -18,7 +18,7 @@
             </x-field>
 
             <x-field>
-                <x-label>Public Key</x-label>
+                <x-label>{{ __('account.ssh.public-key.label') }}</x-label>
                 <x-inputs.textarea
                     name="state.public_key"
                     wire:model.defer="state.public_key"

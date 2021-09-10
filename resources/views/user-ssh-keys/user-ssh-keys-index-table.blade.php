@@ -4,8 +4,8 @@
 
     <x-slot name="header">
         <x-tr-header>
-            <x-th>{{ __('account.ssh.name.title') }}</x-th>
-            <x-th>{{ __('account.ssh.fingerprint.title') }}</x-th>
+            <x-th>{{ __('account.ssh.name.label') }}</x-th>
+            <x-th>{{ __('account.ssh.fingerprint.label') }}</x-th>
             <x-th></x-th>
             <x-th></x-th>
         </x-tr-header>

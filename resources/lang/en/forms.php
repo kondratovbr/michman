@@ -11,15 +11,15 @@ return [
     ],
 
     'current-password' => [
-        'label' => 'Current Password',
+        'label' => 'Current password',
     ],
 
     'new-password' => [
-       'label' => 'New Password',
+       'label' => 'New password',
     ],
 
     'password_confirmation' => [
-        'label' => 'Confirm Password',
+        'label' => 'Confirm password',
     ],
 
     'tfa' => [

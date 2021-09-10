@@ -33,9 +33,9 @@ return [
         'region' => 'Region',
         'size' => 'Size',
         'type' => 'Type',
-        'python-version' => 'Python Version',
+        'python-version' => 'Python version',
         'database' => 'Database',
-        'db-name' => 'Database Name',
+        'db-name' => 'Database name',
         'cache' => 'Cache',
         'add-key-to-vcs' => 'Add server\'s SSH key to source control providers',
         'will-be-installed' => 'The following will be installed on the server:',
@@ -109,7 +109,7 @@ return [
             'version' => 'Version',
             'status' => 'Status',
             'cli' => 'CLI',
-            'patch-version' => 'Patch Version',
+            'patch-version' => 'Patch version',
             'patch-button' => 'Update Patch Version',
             'remove-button' => 'Uninstall Python :version',
         ],
@@ -181,8 +181,8 @@ return [
             'name' => 'Name',
             'password' => 'Password',
             'button' => 'Create',
-            'grant-access' => 'Grant Full Access To Databases',
-            'new-password' => 'New Password',
+            'grant-access' => 'Grant full access to databases',
+            'new-password' => 'New password',
             'edit-user' => 'Edit Database User (:name)',
         ],
 
@@ -268,7 +268,7 @@ return [
         ],
 
         'start-seconds' => [
-            'label' => 'Start Seconds',
+            'label' => 'Start seconds',
             'help' => 'The number of seconds the program needs to stay running to consider the start successful.',
         ],
 
