@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Servers;
 
 use App\Facades\Auth;
 use App\Support\Arr;
+use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -26,6 +27,13 @@ class CreateServerForm extends Component
         'digital_ocean_v2' => 'servers.digital-ocean-form',
     ];
 
+    public function rules(): array
+    {
+        return [
+            'provider' => Rules::string(1, 255)->in($this->availableProviders)->required(),
+        ];
+    }
+
     /**
      * Initialize the component.
      */
@@ -42,12 +50,18 @@ class CreateServerForm extends Component
         ));
     }
 
+    public function updated($field)
+    {
+        $this->validateOnly($field);
+    }
 
     /**
      * Trigger an underlying server creation form to store a new server.
      */
     public function store(): void
     {
+        $this->validate();
+
         $this->emitTo($this->formComponent, 'store-server-button-pressed');
     }
 
@@ -62,7 +76,7 @@ class CreateServerForm extends Component
     /**
      * Get the name of a server creation form component for a chosen provider.
      */
-    public function getFormComponentProperty(): ?string
+    public function getFormComponentProperty(): string|null
     {
         // User just loaded this component and haven't chosen a provider yet.
         if ($this->provider === '')
