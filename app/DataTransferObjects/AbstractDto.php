@@ -31,7 +31,7 @@ abstract class AbstractDto implements Arrayable
         return new static(...$data);
     }
 
-    public function toArray(): array
+    public function toArray(array $add = []): array
     {
         if (count($this->onlyKeys)) {
             $array = Arr::only($this->all(), $this->onlyKeys);
@@ -41,7 +41,7 @@ abstract class AbstractDto implements Arrayable
 
         $array = $this->parseArray($array);
 
-        return $array;
+        return Arr::merge($array, $add);
     }
 
     public function only(string ...$keys): static
