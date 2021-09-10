@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! CONTINUE. Figure out how to run (or how people usually run) queues in Django and implement the thing here.--}}
-
 <x-sub-page name="queue">
 
     <livewire:workers.create-worker-form :project="$project" />
