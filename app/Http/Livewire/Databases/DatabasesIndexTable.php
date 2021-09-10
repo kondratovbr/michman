@@ -10,11 +10,9 @@ use App\Events\Databases\DatabaseUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Database;
 use App\Models\Server;
-use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Add a confirmation window on database deletion and make sure a database that's in use by an active project cannot be deleted. See how Forge does it.
