@@ -1,8 +1,9 @@
 <div {{ $attributes->merge([
-    'class' => 'lg:grid lg:grid-cols-3 lg:gap-6 overflow-visible',
+    //'class' => 'lg:grid lg:grid-cols-3 lg:gap-6 overflow-visible',
 ]) }}>
 
-    <x-section-title class="lg:order-2 lg:col-span-1">
+{{--    <x-section-title class="lg:order-2 lg:col-span-1">--}}
+    <x-section-title class="">
         <x-slot name="title">{{ $title }}</x-slot>
         @isset($description)
             <x-slot name="description">{{ $description }}</x-slot>
@@ -10,7 +11,8 @@
     </x-section-title>
 
 {{--    TODO: IMPORTANT! The "overflow-x-auto" is a temporary crotch for tables that don't quite fit. Should do something about them.--}}
-    <x-box class="lg:order-1 lg:col-span-2 mt-5 lg:mt-0 overflow-x-auto">
+{{--    <x-box class="lg:order-1 lg:col-span-2 mt-5 lg:mt-0 overflow-x-auto">--}}
+    <x-box class="mt-5 overflow-x-auto">
         @isset($empty)
             <x-box.content>
                 {{ $empty }}
