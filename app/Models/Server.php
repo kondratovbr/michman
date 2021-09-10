@@ -57,6 +57,7 @@ use phpseclib3\Net\SSH2;
  * @property-read DeploymentServerPivot|null $serverDeployment
  * @property-read Collection $certificates
  * @property-read Collection $workers
+ * @property-read Collection $daemons
  *
  * @method static ServerFactory factory(...$parameters)
  */
