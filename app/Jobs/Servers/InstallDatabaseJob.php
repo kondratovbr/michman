@@ -30,11 +30,7 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
             return;
 
         DB::transaction(function () {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshLockForUpdate();
 
             if (! Arr::hasValue(config("servers.types.{$server->type}.install"), 'database')) {
                 $this->fail(new RuntimeException('This type of server should not have a database installed.'));

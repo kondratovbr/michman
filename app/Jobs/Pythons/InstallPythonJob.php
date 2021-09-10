@@ -25,11 +25,8 @@ class InstallPythonJob extends AbstractRemoteServerJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var Python $python */
-            $python = Python::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($this->python->getKey());
+            $python = $this->python->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
 
             if ($python->isInstalled())
                 return;
@@ -39,7 +36,7 @@ class InstallPythonJob extends AbstractRemoteServerJob
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this version of Python.');
 
-            $patchVersion = $scriptClass::run($python->server);
+            $patchVersion = $scriptClass::run($server);
 
             $python->status = Python::STATUS_INSTALLED;
             $python->patchVersion = $patchVersion;

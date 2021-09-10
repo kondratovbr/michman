@@ -25,14 +25,14 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
     public function handle(VerifyServerAvailabilityScript $verifyServerAvailability): void
     {
         DB::transaction(function () use ($verifyServerAvailability) {
-            $server = $this->lockServer();
+            $server = $this->server->freshLockForUpdate();
 
             // We will remove the availability status of the server before starting the checking process
             // in case it wasn't done immediately, so we could show the progress to user.
             if (! is_null($server->available)) {
                 $server->available = null;
                 $server->save();
-                // This allow us to run the job doing only one transaction.
+                // This allows us to run the job doing only one transaction.
                 $this->release();
                 return;
             }

@@ -33,11 +33,7 @@ class RequestNewServerFromProviderJob extends AbstractJob
 
             // TODO: IMPORTANT! Make sure to handle a situation when another server with the same name already exists on this provider.
 
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshLockForUpdate();
 
             if (isset($server->externalId)) {
                 Log::warning('RequestNewServerFromProviderJob: The server already has an external_id set. Server ID: ' . $server->getKey());

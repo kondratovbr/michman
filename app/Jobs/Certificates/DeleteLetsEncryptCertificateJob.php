@@ -33,7 +33,7 @@ class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
         DB::transaction(function () use (
             $deleteCertificate, $updateNginxConfig, $uploadPlaceholderNginxConfig, $restartNginx,
         ) {
-            $server = $this->lockServer();
+            $server = $this->server->freshSharedLock();
             $cert = $this->certificate->freshLockForUpdate();
 
             $rootSsh = $server->sftp('root');

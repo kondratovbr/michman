@@ -29,11 +29,7 @@ class GetServerPublicIpJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshLockForUpdate();
 
             $ip = $server->provider->api()->getServerPublicIp4($server->externalId);
 

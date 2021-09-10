@@ -31,10 +31,7 @@ class CreatePythonJob extends AbstractJob
     public function handle(StorePythonAction $storePython): void
     {
         DB::transaction(function () use ($storePython) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->lockForUpdate()
-                ->findOrFail($this->server->id);
+            $server = $this->server->freshSharedLock();
 
             $storePython->execute($this->version, $server, $this->sync);
         }, 5);

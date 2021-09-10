@@ -27,11 +27,7 @@ class CreateServerSshKeyJob extends AbstractJob
     public function handle(CreateServerSshKeyAction $action): void
     {
         DB::transaction(function () use ($action) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshSharedLock();
 
             $action->execute($server);
         }, 5);

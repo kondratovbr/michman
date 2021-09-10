@@ -25,7 +25,7 @@ class RestartWorkerJob extends AbstractRemoteServerJob
     public function handle(StopWorkerScript $stop, StartWorkerScript $start): void
     {
         DB::transaction(function () use ($stop, $start) {
-            $server = $this->server->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
             $worker = $this->worker->freshLockForUpdate();
 
             $ssh = $server->sftp();

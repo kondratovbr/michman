@@ -42,7 +42,7 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
         DB::transaction(function () use (
             $installCertificate, $updateNginxConfig, $uploadPlaceholderNginxConfig, $restartNginx,
         ) {
-            $server = $this->server->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
             $certificate = $this->certificate->freshLockForUpdate();
 
             $rootSsh = $server->sftp('root');

@@ -29,11 +29,8 @@ class UpdateDatabaseUserPasswordJob extends AbstractRemoteServerJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var DatabaseUser $databaseUser */
-            $databaseUser = DatabaseUser::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($this->databaseUser->getKey());
+            $databaseUser = $this->databaseUser->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
 
             if (empty($databaseUser->password ?? null)) {
                 $this->fail(new RuntimeException('Database user has no password stored in the DB.'));

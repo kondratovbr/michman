@@ -8,6 +8,7 @@ use App\Models\Server;
 use App\Models\UserSshKey;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class UploadUserSshKeyToServerJob extends AbstractRemoteServerJob
 {
@@ -23,11 +24,11 @@ class UploadUserSshKeyToServerJob extends AbstractRemoteServerJob
     public function handle(AddSshKeyToUserScript $script): void
     {
         DB::transaction(function () use ($script) {
-            $server = $this->lockServer();
+            $server = $this->server->freshSharedLock();
             $key = $this->key->freshLockForUpdate();
 
             if (! $server->userSshKeys->contains($key))
-                $this->fail(new \RuntimeException('This UserSshKey is not attached to this Server.'));
+                $this->fail(new RuntimeException('This UserSshKey is not attached to this Server.'));
 
             $ssh = $server->sftp();
 

@@ -24,18 +24,13 @@ class DeleteFirewallRuleJob extends AbstractRemoteServerJob
     public function handle(DeleteFirewallRuleScript $deleteFirewallRule): void
     {
         DB::transaction(function () use ($deleteFirewallRule) {
-            /** @var FirewallRule $rule */
-            $rule = FirewallRule::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($this->rule->getKey());
-
-            $server = $rule->server;
+            $rule = $this->rule->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
 
             $deleteFirewallRule->execute(
                 $server,
                 $rule->port,
-                $rule->port == $rule->server->sshPort,
+                $rule->port == $server->sshPort,
                 $rule->fromIp,
             );
 

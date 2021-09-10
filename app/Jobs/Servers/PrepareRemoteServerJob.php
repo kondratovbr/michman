@@ -5,7 +5,6 @@ namespace App\Jobs\Servers;
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleDto;
 use App\Jobs\AbstractRemoteServerJob;
-use App\Models\Server;
 use App\Scripts\Root\EnableFirewallScript;
 use App\Scripts\Root\InitializeFirewallScript;
 use App\Scripts\Root\ConfigureSshServerScript;
@@ -43,11 +42,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
             $initializeFirewall, $enableFirewall, $createSudoUser, $configureSshServer, $rebootServer,
             $storeFirewallRule,
         ) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshLockForUpdate();
 
             $ssh = $server->sftp('root');
 

@@ -25,10 +25,8 @@ class PatchPythonJob extends AbstractRemoteServerJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var Python $python */
-            $python = Python::query()
-                ->lockForUpdate()
-                ->findOrFail($this->python->getKey());
+            $python = $this->python->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
 
             if (! $python->isUpdating())
                 return;
@@ -38,7 +36,7 @@ class PatchPythonJob extends AbstractRemoteServerJob
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No patching script exists for this version of Python.');
 
-            $patchVersion = $scriptClass::run($python->server);
+            $patchVersion = $scriptClass::run($server);
 
             $python->status = Python::STATUS_INSTALLED;
             $python->patchVersion = $patchVersion;

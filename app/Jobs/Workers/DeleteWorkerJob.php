@@ -23,7 +23,7 @@ class DeleteWorkerJob extends AbstractRemoteServerJob
     public function handle(StopWorkerScript $script): void
     {
         DB::transaction(function () use ($script) {
-            $server = $this->server->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
             $worker = $this->worker->freshLockForUpdate();
 
             $script->execute($server, $worker);

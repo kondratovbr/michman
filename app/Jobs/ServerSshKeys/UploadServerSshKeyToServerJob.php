@@ -24,8 +24,7 @@ class UploadServerSshKeyToServerJob extends AbstractRemoteServerJob
     public function handle(UploadSshKeyToServerScript $uploadSshKey): void
     {
         DB::transaction(function () use ($uploadSshKey) {
-            /** @var Server $server */
-            $server = Server::query()->lockForUpdate()->findOrFail($this->server->getKey());
+            $server = $this->server->freshSharedLock();
 
             $uploadSshKey->execute(
                 $server,

@@ -24,7 +24,7 @@ class AddWorkerSshKeyToServerJob extends AbstractRemoteServerJob
      */
     public function handle(AddSshKeyToUserScript $script): void {
         DB::transaction(function () use ($script) {
-            $server = $this->lockServer();
+            $server = $this->server->freshLockForUpdate();
 
             $ssh = $server->sftp();
 

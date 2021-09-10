@@ -45,10 +45,8 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $cloneRepo, $createVenv, $configureGunicorn, $uploadPlaceholderPage, $uploadPlaceholderNginxConfig,
             $enablePlaceholderSite, $restartNginx,
         ) {
-            /** @var Project $project */
-            $project = Project::query()->lockForUpdate()->findOrFail($this->project->getKey());
-            /** @var Server $server */
-            $server = $project->servers()->lockForUpdate()->findOrFail($this->server->getKey());
+            $project = $this->project->freshLockForUpdate();
+            $server = $this->server->freshLockForUpdate();
 
             $userSsh = $server->sftp($project->serverUsername);
             $rootSsh = $server->sftp();

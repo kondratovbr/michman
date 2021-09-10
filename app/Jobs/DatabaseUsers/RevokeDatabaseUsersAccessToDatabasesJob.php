@@ -51,7 +51,7 @@ class RevokeDatabaseUsersAccessToDatabasesJob extends AbstractRemoteServerJob
 
             /** @var Server $server */
             $server = Server::query()
-                ->lockForUpdate()
+                ->sharedLock()
                 ->findOrFail($databases->first()->server->getKey());
 
             $ssh = $server->sftp();

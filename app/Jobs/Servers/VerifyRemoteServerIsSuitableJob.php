@@ -4,7 +4,6 @@ namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
 use App\Jobs\AbstractRemoteServerJob;
-use App\Models\Server;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
 use Illuminate\Support\Facades\DB;
 
@@ -19,11 +18,7 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
     public function handle(VerifyServerIsSuitableScript $verifyServerIsSuitable): void
     {
         DB::transaction(function () use ($verifyServerIsSuitable) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshLockForUpdate();
 
             try {
                 $ssh = $server->sftp('root');

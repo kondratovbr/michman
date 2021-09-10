@@ -26,9 +26,6 @@ class StartDaemonJob extends AbstractRemoteServerJob
     public function handle(StartDaemonScript $script): void
     {
         DB::transaction(function () use ($script) {
-            // TODO: CRITICAL! CONTINUE. Change the rest of my server locking on jobs to shared locks
-            //       in cases where I don't actually update the server model,
-            //       i.e. mostly where I'm just reading SSH parameters from it.
             $server = $this->server->freshSharedLock();
             $daemon = $this->daemon->freshLockForUpdate();
 

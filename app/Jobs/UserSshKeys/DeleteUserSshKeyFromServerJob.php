@@ -23,7 +23,7 @@ class DeleteUserSshKeyFromServerJob extends AbstractRemoteServerJob
     public function handle(DeleteSshKeyFromUserScript $script): void
     {
         DB::transaction(function () use ($script) {
-            $server = $this->lockServer();
+            $server = $this->server->freshSharedLock();
             $key = $this->key->freshLockForUpdate();
 
             $ssh = $server->sftp();

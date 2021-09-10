@@ -28,13 +28,8 @@ class CreateDatabaseUserOnServerJob extends AbstractRemoteServerJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var DatabaseUser $databaseUser */
-            $databaseUser = DatabaseUser::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($this->databaseUser->getKey());
-
-            $server = $databaseUser->server;
+            $databaseUser = $this->databaseUser->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
 
             $this->getDatabaseScript(
                 $server,

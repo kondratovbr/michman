@@ -28,8 +28,7 @@ class CreateUserOnServerJob extends AbstractRemoteServerJob
         AddSshKeyToUserScript $addShhKey,
     ): void {
         DB::transaction(function () use ($createUser, $addShhKey) {
-            /** @var Server $server */
-            $server = Server::query()->lockForUpdate()->findOrFail($this->server->getKey());
+            $server = $this->server->freshLockForUpdate();
 
             $ssh = $server->sftp();
 

@@ -28,13 +28,8 @@ class DeleteDatabaseJob extends AbstractRemoteServerJob
     public function handle(): void
     {
         DB::transaction(function () {
-            /** @var Database $database */
-            $database = Database::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($this->database->getKey());
-
-            $server = $database->server;
+            $database = $this->database->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
 
             $this->getDatabaseScript(
                 $server,

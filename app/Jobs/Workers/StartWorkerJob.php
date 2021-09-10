@@ -25,7 +25,7 @@ class StartWorkerJob extends AbstractRemoteServerJob
     public function handle(StartWorkerScript $script): void
     {
         DB::transaction(function () use ($script) {
-            $server = $this->server->freshLockForUpdate();
+            $server = $this->server->freshSharedLock();
             $worker = $this->worker->freshLockForUpdate();
 
             if ($worker->isActive()) {

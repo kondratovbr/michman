@@ -34,11 +34,7 @@ class ConfigureAppServerJob extends AbstractJob
      */
     public function handle(StoreFirewallRuleAction $storeFirewallRule): void {
         DB::transaction(function () use ($storeFirewallRule) {
-            /** @var Server $server */
-            $server = Server::query()
-                ->whereKey($this->server->getKey())
-                ->lockForUpdate()
-                ->firstOrFail();
+            $server = $this->server->freshLockForUpdate();
 
             $storeFirewallRule->execute(new FirewallRuleDto(
                 name: 'HTTP',
