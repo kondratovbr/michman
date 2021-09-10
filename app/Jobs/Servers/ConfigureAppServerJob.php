@@ -4,7 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleDto;
-use App\DataTransferObjects\NewServerData;
+use App\DataTransferObjects\NewServerDto;
 use App\Jobs\AbstractJob;
 use App\Jobs\Pythons\CreatePythonJob;
 use App\Jobs\Traits\IsInternal;
@@ -19,9 +19,9 @@ class ConfigureAppServerJob extends AbstractJob
     use IsInternal;
 
     protected Server $server;
-    protected NewServerData $data;
+    protected NewServerDto $data;
 
-    public function __construct(Server $server, NewServerData $data)
+    public function __construct(Server $server, NewServerDto $data)
     {
         $this->setQueue('default');
 
@@ -52,7 +52,7 @@ class ConfigureAppServerJob extends AbstractJob
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
                 new InstallCacheJob($server, $this->data->cache),
-                new CreatePythonJob($server, $this->data->pythonVersion),
+                new CreatePythonJob($server, $this->data->python_version),
                 new InstallNginxJob($server),
 
                 // TODO: CRITICAL! Don't forget the rest of the stuff I maybe should do here!

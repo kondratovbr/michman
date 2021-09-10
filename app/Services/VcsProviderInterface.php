@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\SshKeyDto;
 
 /*
  * TODO: CRITICAL! Figure out how to avoid hitting the rate limit with these things. Probably move the actual HTTP logic into a singleton for each service, so it can track calls during a request and also between them by using cache. Or maybe just use cache every time?
@@ -33,17 +33,17 @@ interface VcsProviderInterface
      *
      * @param string $id Provider's ID
      */
-    public function getSshKey(string $id): SshKeyData;
+    public function getSshKey(string $id): SshKeyDto;
 
     /**
      * Add a new SSH key to the provider.
      */
-    public function addSshKey(string $name, string $publicKey): SshKeyData;
+    public function addSshKey(string $name, string $publicKey): SshKeyDto;
 
     /**
      * Add a new SSH key to the provider, checking if it was added before.
      */
-    public function addSshKeySafely(string $name, string $publicKey): SshKeyData;
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyDto;
 
     /*
      * TODO: CRITICAL! Make sure I update the corresponding model after this each time I do it -
@@ -56,7 +56,7 @@ interface VcsProviderInterface
      *
      * @param string $id Provider's ID
      */
-    public function updateSshKey(SshKeyData $sshKey): SshKeyData;
+    public function updateSshKey(SshKeyDto $sshKey): SshKeyDto;
 
     /**
      * Delete a previously added SSH key by its ID on the provider's side.

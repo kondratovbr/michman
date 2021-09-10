@@ -2,7 +2,7 @@
 
 namespace App\Actions\Projects;
 
-use App\DataTransferObjects\ProjectRepoData;
+use App\DataTransferObjects\ProjectRepoDto;
 use App\Facades\ConfigView;
 use App\Jobs\DeploySshKeys\UploadDeploySshKeyToServerJob;
 use App\Jobs\Projects\InstallProjectToServerJob;
@@ -22,7 +22,7 @@ class InstallProjectRepoAction
     public function execute(
         Project $project,
         VcsProvider $vcsProvider,
-        ProjectRepoData $data,
+        ProjectRepoDto $data,
         Server $server,
         bool $installDependencies,
     ): Project {

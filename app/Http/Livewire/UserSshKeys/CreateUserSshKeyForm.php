@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\UserSshKeys;
 
 use App\Actions\UserSshKeys\StoreUserSshKeyAction;
-use App\DataTransferObjects\UserSshKeyData;
+use App\DataTransferObjects\UserSshKeyDto;
 use App\Facades\Auth;
 use App\Models\UserSshKey;
 use App\Validation\Rules;
@@ -21,7 +21,7 @@ class CreateUserSshKeyForm extends LivewireComponent
 
     public array $state = [
         'name' => '',
-        'publicKey' => '',
+        'public_key' => '',
     ];
 
     public function rules(): array
@@ -29,7 +29,7 @@ class CreateUserSshKeyForm extends LivewireComponent
         // TODO: CRITICAL! Attribute names in error messages here suck as well. Fix.
         return [
             'state.name' => Rules::string(1, 255)->required(),
-            'state.publicKey' => Rules::sshPublicKey()->required(),
+            'state.public_key' => Rules::sshPublicKey()->required(),
         ];
     }
 
@@ -47,10 +47,7 @@ class CreateUserSshKeyForm extends LivewireComponent
 
         $this->authorize('create', [UserSshKey::class, Auth::user()]);
 
-        $action->execute(new UserSshKeyData(
-            name: $state['name'],
-            publicKey: $state['publicKey'],
-        ), Auth::user());
+        $action->execute(UserSshKeyDto::fromArray($state), Auth::user());
 
         $this->reset();
 

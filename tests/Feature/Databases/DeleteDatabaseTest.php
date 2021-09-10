@@ -84,7 +84,7 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                 ),
                 (string) $database->id,
             )
-            ->assertHasErrors('database_key');
+            ->assertHasErrors('key');
     }
 
     public function test_database_with_empty_key_cannot_be_deleted()
@@ -117,6 +117,6 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                 ),
                 '',
             )
-            ->assertHasErrors('database_key');
+            ->assertHasErrors('key');
     }
 }

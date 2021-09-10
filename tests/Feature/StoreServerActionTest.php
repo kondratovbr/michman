@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Actions\Servers\StoreServerAction;
 use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
-use App\DataTransferObjects\NewServerData;
+use App\DataTransferObjects\NewServerDto;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\Servers\ConfigureAppServerJob;
 use App\Jobs\ServerSshKeys\CreateServerSshKeyJob;
@@ -40,22 +40,19 @@ class StoreServerActionTest extends AbstractFeatureTest
         /** @var StoreServerAction $action */
         $action = $this->app->make(StoreServerAction::class);
 
-        $data = new NewServerData(
-            provider: $provider,
+        $data = new NewServerDto(
             name: 'Server Name',
             region: 'region_1',
             size: 'size_1',
             type: 'app',
-            pythonVersion: '3_9',
+            python_version: '3_9',
             database: 'mysql-8_0',
-            dbName: 'app_db',
             cache: 'redis',
-            addSshKeyToVcs: true,
         );
 
         Bus::fake();
 
-        $server = $action->execute($data, $user);
+        $server = $action->execute($data, $provider);
 
         $spy->shouldHaveReceived('execute')
             ->withArgs(fn(Server $serverArg) => $serverArg->is($server))

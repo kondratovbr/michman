@@ -112,7 +112,7 @@ class StoreFirewallRuleTest extends AbstractFeatureTest
                         ) use ($server) {
                             return $dataArg->name === 'WHOIS'
                                 && $dataArg->port === '43'
-                                && $dataArg->from_ip === ''
+                                && $dataArg->from_ip === null
                                 && $dataArg->can_delete === true
                                 && $serverArg->is($server);
                         })

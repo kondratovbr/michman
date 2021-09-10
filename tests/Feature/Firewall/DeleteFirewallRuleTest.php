@@ -79,7 +79,7 @@ class DeleteFirewallRuleTest extends AbstractFeatureTest
                 ),
                 (string) $rule->getKey()
             )
-            ->assertHasErrors('rule_key');
+            ->assertHasErrors('key');
     }
 
     public function test_firewall_rule_with_empty_key_cannot_be_deleted()
@@ -109,6 +109,6 @@ class DeleteFirewallRuleTest extends AbstractFeatureTest
                 ),
                 ''
             )
-            ->assertHasErrors('rule_key');
+            ->assertHasErrors('key');
     }
 }

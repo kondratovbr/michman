@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\VcsProviders\StoreVcsProviderAction;
 use App\Actions\VcsProviders\UpdateVcsProviderAction;
-use App\DataTransferObjects\VcsProviderData;
+use App\DataTransferObjects\VcsProviderDto;
 use App\Exceptions\NotImplementedException;
 use App\Facades\Auth;
 use App\Models\VcsProvider;
@@ -12,6 +12,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
+
+// TODO: CRITICAL! Cover with tests!
 
 class VcsProviderController extends AbstractController
 {
@@ -58,7 +60,7 @@ class VcsProviderController extends AbstractController
 
                 $this->updateVcsProvider->execute(
                     $vcsProvider,
-                    VcsProviderData::fromOauth(
+                    VcsProviderDto::fromOauth(
                         $oauthUser,
                         $vcsProviderName,
                         Auth::user(),
@@ -70,7 +72,7 @@ class VcsProviderController extends AbstractController
 
             $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
 
-            $this->storeVcsProvider->execute(VcsProviderData::fromOauth(
+            $this->storeVcsProvider->execute(VcsProviderDto::fromOauth(
                 $oauthUser,
                 $vcsProviderName,
                 Auth::user()),

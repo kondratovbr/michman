@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Actions\Servers\StoreServerAction;
-use App\DataTransferObjects\NewServerData;
+use App\DataTransferObjects\NewServerDto;
 use App\Http\Livewire\Servers\DigitalOceanForm;
 use App\Models\Provider;
 use App\Models\Server;
@@ -32,22 +32,17 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
             'type' => 'app',
             'python_version' => '3_9',
             'database' => 'mysql-8_0',
-            'db_name' => 'app_db',
             'cache' => 'redis',
-            'add_ssh_key_to_vcs' => true,
         ];
 
-        $serverData = new NewServerData(
-            provider: $provider,
+        $serverData = new NewServerDto(
             name: $serverName,
             region: 'nyc_1',
             size: 'size_1',
             type: 'app',
-            pythonVersion: '3_9',
+            python_version: '3_9',
             database: 'mysql-8_0',
-            dbName: 'app_db',
             cache: 'redis',
-            addSshKeyToVcs: true,
         );
 
         $this->actingAs($user);
@@ -65,9 +60,21 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
             ->set('availableSizes', ['size_1' => 'Size 1', 'size_2' => 'Size 2'])
             ->set('state', $state)
             ->call('store', Mockery::mock(StoreServerAction::class,
-                function (MockInterface $mock) {
+                function (MockInterface $mock) use ($serverData, $provider) {
                     $mock->expects('execute')
-                        ->withAnyArgs()
+                        ->withArgs(function (
+                            NewServerDto $dataArg,
+                            Provider $providerArg,
+                        ) use ($serverData, $provider) {
+                            return $providerArg->is($provider)
+                                && $dataArg->name === $serverData->name
+                                && $dataArg->region === $serverData->region
+                                && $dataArg->size === $serverData->size
+                                && $dataArg->type === $serverData->type
+                                && $dataArg->python_version === $serverData->python_version
+                                && $dataArg->database === $serverData->database
+                                && $dataArg->cache === $serverData->cache;
+                        })
                         ->once()
                         ->andReturn(new Server);
                 }

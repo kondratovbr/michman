@@ -2,21 +2,19 @@
 
 namespace App\Actions\Pythons;
 
-use App\DataTransferObjects\PythonData;
 use App\Jobs\Pythons\InstallPythonJob;
 use App\Models\Python;
 use App\Models\Server;
 
 class StorePythonAction
 {
-    public function execute(PythonData $data, Server $server, bool $sync = false): Python
+    public function execute(string $version, Server $server, bool $sync = false): Python
     {
-        $attributes = $data->toArray();
-
-        $attributes['status'] = Python::STATUS_INSTALLING;
-
         /** @var Python $python */
-        $python = $server->pythons()->create($attributes);
+        $python = $server->pythons()->create([
+            'version' => $version,
+            'status' => Python::STATUS_INSTALLING,
+        ]);
 
         if ($sync) {
             InstallPythonJob::dispatchSync($python, true);

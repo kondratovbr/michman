@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\Actions\Projects\InstallProjectRepoAction;
 use App\Broadcasting\UserChannel;
-use App\DataTransferObjects\ProjectRepoData;
+use App\DataTransferObjects\ProjectRepoDto;
 use App\Events\VcsProviders\VcsProviderCreatedEvent;
 use App\Events\VcsProviders\VcsProviderDeletedEvent;
 use App\Events\VcsProviders\VcsProviderUpdatedEvent;
@@ -141,7 +141,7 @@ class InstallRepoForm extends LivewireComponent
         $installAction->execute(
             $this->project,
             Auth::user()->vcsProviders()->findOrFail($state['vcsProviderKey']),
-            new ProjectRepoData(
+            new ProjectRepoDto(
                 root: $state['root'],
                 repo: $state['repo'],
                 branch: $state['branch'],

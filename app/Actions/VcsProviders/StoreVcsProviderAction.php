@@ -2,12 +2,14 @@
 
 namespace App\Actions\VcsProviders;
 
-use App\DataTransferObjects\VcsProviderData;
+use App\DataTransferObjects\VcsProviderDto;
 use App\Models\VcsProvider;
+
+// TODO: CRITICAL! Cover with tests!
 
 class StoreVcsProviderAction
 {
-    public function execute(VcsProviderData $data): VcsProvider
+    public function execute(VcsProviderDto $data): VcsProvider
     {
         /*
          * TODO: CRITICAL! I should somehow handle a situation when the third-party account is already linked to some other Michman user.

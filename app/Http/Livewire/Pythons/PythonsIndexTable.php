@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Pythons;
 
 use App\Actions\Pythons\PatchPythonAction;
 use App\Actions\Pythons\StorePythonAction;
-use App\DataTransferObjects\PythonData;
 use App\Events\Pythons\PythonInstalledEvent;
 use App\Events\Pythons\PythonPatchedEvent;
 use App\Events\Pythons\PythonRemovedEvent;
@@ -70,9 +69,7 @@ class PythonsIndexTable extends LivewireComponent
 
         $this->authorize('create', [Python::class, $this->server, $version]);
 
-        $storePython->execute(new PythonData(
-            version: $version,
-        ), $this->server);
+        $storePython->execute($version, $this->server);
     }
 
     /**

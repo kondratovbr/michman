@@ -2,7 +2,7 @@
 
 namespace App\Actions\Workers;
 
-use App\DataTransferObjects\WorkerData;
+use App\DataTransferObjects\WorkerDto;
 use App\Jobs\Workers\StartWorkerJob;
 use App\Models\Project;
 use App\Models\Server;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class StoreWorkerAction
 {
-    public function execute(WorkerData $data, Project $project, Server $server): Worker
+    public function execute(WorkerDto $data, Project $project, Server $server): Worker
     {
         return DB::transaction(function () use ($data, $project, $server): Worker {
             /** @var Worker $worker */

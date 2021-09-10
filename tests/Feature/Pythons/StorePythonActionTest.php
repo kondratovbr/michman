@@ -3,7 +3,6 @@
 namespace Tests\Feature\Pythons;
 
 use App\Actions\Pythons\StorePythonAction;
-use App\DataTransferObjects\PythonData;
 use App\Jobs\Pythons\InstallPythonJob;
 use App\Models\Python;
 use App\Models\Server;
@@ -24,9 +23,7 @@ class StorePythonActionTest extends AbstractFeatureTest
         Bus::fake();
         Event::fake();
 
-        $python = $action->execute(new PythonData(
-            version: '3_9'
-        ), $server);
+        $python = $action->execute('3_9', $server);
 
         $this->assertDatabaseHas('pythons', [
             'id' => $python->id,

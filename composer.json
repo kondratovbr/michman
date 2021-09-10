@@ -36,7 +36,6 @@
         "phpseclib/phpseclib": "^3.0",
         "pusher/pusher-php-server": "^5.0",
         "simplesoftwareio/simple-qrcode": "~4",
-        "spatie/data-transfer-object": "^3.0",
         "spatie/laravel-cookie-consent": "^3.1",
         "spatie/laravel-model-states": "^2.1",
         "spatie/laravel-ray": "^1.24",

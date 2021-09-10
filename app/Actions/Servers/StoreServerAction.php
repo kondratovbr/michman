@@ -3,7 +3,7 @@
 namespace App\Actions\Servers;
 
 use App\Actions\WorkerSshKeys\CreateWorkerSshKeyAction;
-use App\DataTransferObjects\NewServerData;
+use App\DataTransferObjects\NewServerDto;
 use App\Jobs\UserSshKeys\UploadUserSshKeyToServerJob;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Jobs\ServerSshKeys\CreateServerSshKeyJob;
@@ -14,6 +14,7 @@ use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerJob;
 use App\Jobs\ServerSshKeys\UploadServerSshKeyToServerJob;
 use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
+use App\Models\Provider;
 use App\Models\Server;
 use App\Models\User;
 use App\Models\UserSshKey;
@@ -28,15 +29,17 @@ class StoreServerAction
         protected CreateWorkerSshKeyAction $createWorkerSshKey,
     ) {}
 
-    public function execute(NewServerData $data, User $user): Server
+    public function execute(NewServerDto $data, Provider $provider): Server
     {
-        return DB::transaction(function () use ($data, $user) {
+        return DB::transaction(function () use ($data, $provider) {
+            $user = $provider->owner;
+
             $attributes = $data->toArray();
             $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
             $attributes['sudo_password'] = Str::random(32);
 
             /** @var Server $server */
-            $server = $data->provider->servers()->create($attributes);
+            $server = $provider->servers()->create($attributes);
 
             $this->createWorkerSshKey->execute($server);
 

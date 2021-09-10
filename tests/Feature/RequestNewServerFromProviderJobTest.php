@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\DataTransferObjects\NewServerData;
-use App\DataTransferObjects\ServerData;
+use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\ServerDto;
 use App\Jobs\Servers\RequestNewServerFromProviderJob;
 use App\Models\Provider;
 use App\Models\Server;
@@ -22,17 +22,14 @@ class RequestNewServerFromProviderJobTest extends AbstractFeatureTest
             ->has(WorkerSshKey::factory()->withRandomExternalId(), 'workerSshKey')
             ->create();
 
-        $data = new NewServerData(
-            provider: $server->provider,
+        $data = new NewServerDto(
             name: $server->name,
             region: 'region_1',
             size: 'size_1',
             type: 'app',
-            pythonVersion: '3_9',
+            python_version: '3_9',
             database: 'mysql-8_0',
-            dbName: 'db_app',
             cache: 'redis',
-            addSshKeyToVcs: true,
         );
 
         $job = new RequestNewServerFromProviderJob($server, $data);
@@ -44,7 +41,7 @@ class RequestNewServerFromProviderJobTest extends AbstractFeatureTest
                 $mock->shouldReceive('createServer')
                     ->with($data, $server->workerSshKey->externalId)
                     ->once()
-                    ->andReturn(new ServerData(
+                    ->andReturn(new ServerDto(
                         id: '123',
                         name: $server->name,
                         publicIp4: null,

@@ -2,12 +2,11 @@
 
 namespace Tests\Integration;
 
-use App\DataTransferObjects\NewServerData;
-use App\DataTransferObjects\RegionData;
-use App\DataTransferObjects\SizeData;
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\RegionDto;
+use App\DataTransferObjects\SizeDto;
+use App\DataTransferObjects\SshKeyDto;
 use App\Models\Provider;
-use App\Models\User;
 use App\Services\ServerProviderInterface;
 use App\Support\Str;
 use Illuminate\Http\Client\Response;
@@ -161,8 +160,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->make();
 
-        $serverData = new NewServerData(
-            provider: $provider,
+        $serverData = new NewServerDto(
             name: 'new-server',
             region: 'nyc1',
             size: 'size-1',
@@ -206,11 +204,11 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
         $this->assertCount(3, $regions);
 
-        /** @var RegionData $region1 */
+        /** @var RegionDto $region1 */
         $region1 = $regions[0];
-        /** @var RegionData $region2 */
+        /** @var RegionDto $region2 */
         $region2 = $regions[1];
-        /** @var RegionData $region3 */
+        /** @var RegionDto $region3 */
         $region3 = $regions[2];
 
         $this->assertEquals('New York 1', $region1->name);
@@ -244,9 +242,9 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
         $this->assertCount(2, $sizes);
 
-        /** @var SizeData $size1 */
+        /** @var SizeDto $size1 */
         $size1 = $sizes[0];
-        /** @var SizeData $size2 */
+        /** @var SizeDto $size2 */
         $size2 = $sizes[1];
 
         $this->assertEquals('s-1vcpu-1gb', $size1->slug);
@@ -287,7 +285,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
         $this->assertCount(1, $regions);
 
-        /** @var RegionData $region1 */
+        /** @var RegionDto $region1 */
         $region1 = $regions->first();
 
         $this->assertEquals('Amsterdam 3', $region1->name);
@@ -315,7 +313,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
         $this->assertCount(1, $sizes);
 
-        /** @var SizeData $size1 */
+        /** @var SizeDto $size1 */
         $size1 = $sizes->first();
 
         $this->assertEquals('s-1vcpu-1gb', $size1->slug);
@@ -330,7 +328,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
     public function test_get_sizes_available_in_region_by_data()
     {
-        $region = new RegionData(
+        $region = new RegionDto(
             name: 'The Region',
             slug: 'nyc1',
             sizes: ['s-1vcpu-1gb', 's-32vcpu-192gb', 's-32vcpu-16gb'],
@@ -478,9 +476,9 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
 
         $this->assertCount(2, $keys);
 
-        /** @var SshKeyData $key1 */
+        /** @var SshKeyDto $key1 */
         $key1 = $keys[0];
-        /** @var SshKeyData $key2 */
+        /** @var SshKeyDto $key2 */
         $key2 = $keys[1];
 
         $this->assertEquals('111', $key1->id);

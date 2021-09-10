@@ -20,11 +20,11 @@
             <x-field>
                 <x-label>Public Key</x-label>
                 <x-inputs.textarea
-                    name="state.publicKey"
-                    wire:model.defer="state.publicKey"
+                    name="state.public_key"
+                    wire:model.defer="state.public_key"
                     placeholder="ssh-rsa ... {{ strtolower(user()->name) }}@laptop.local"
                 />
-                <x-input-error for="state.publicKey" />
+                <x-input-error for="state.public_key" />
             </x-field>
 
         </div>

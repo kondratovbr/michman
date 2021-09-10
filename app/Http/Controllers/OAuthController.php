@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\VcsProviders\StoreVcsProviderAction;
 use App\Actions\VcsProviders\UpdateVcsProviderAction;
-use App\DataTransferObjects\VcsProviderData;
+use App\DataTransferObjects\VcsProviderDto;
 use App\Facades\Auth;
 use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
 use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Contracts\User as OauthUser;
+
+// TODO: CRITICAL! Cover with tests!
 
 class OAuthController extends AbstractController
 {
@@ -69,7 +71,7 @@ class OAuthController extends AbstractController
         // If user previously registered via OAuth.
         $user = $this->findUserByOauthId($oauthProvider, $oauthUser);
 
-        // If user registered normally but tries to login viw OAuth with the same email.
+        // If user registered normally but tries to log in viw OAuth with the same email.
         if (is_null($user))
             $user = $this->findUserByEmail($oauthProvider, $oauthUser);
 
@@ -183,7 +185,7 @@ class OAuthController extends AbstractController
             if (is_null($vcsProviderName))
                 return;
 
-            $vcsProviderData = VcsProviderData::fromOauth(
+            $vcsProviderData = VcsProviderDto::fromOauth(
                 $oauthUser,
                 $vcsProviderName,
                 $user,
@@ -191,7 +193,7 @@ class OAuthController extends AbstractController
 
             $vcsProvider = $user->vcs($vcsProviderName, true);
 
-            // The user has no VcsProvider configured so we can create one immediately.
+            // The user has no VcsProvider configured, so we can create one immediately.
             if (is_null($vcsProvider)) {
                 $this->storeVcsProvider->execute($vcsProviderData);
                 return;

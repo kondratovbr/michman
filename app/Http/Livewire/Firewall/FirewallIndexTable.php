@@ -10,11 +10,9 @@ use App\Events\Firewall\FirewallRuleUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\FirewallRule;
 use App\Models\Server;
-use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
 class FirewallIndexTable extends LivewireComponent

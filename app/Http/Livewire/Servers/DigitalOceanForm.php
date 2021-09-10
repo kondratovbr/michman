@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Servers;
 
 use App\Actions\Servers\StoreServerAction;
-use App\DataTransferObjects\NewServerData;
-use App\DataTransferObjects\SizeData;
+use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\SizeDto;
 use App\Facades\Auth;
 use App\Models\Server;
 use App\Services\ServerProviderInterface;
@@ -243,7 +243,7 @@ class DigitalOceanForm extends Component
         $this->handleApiErrors(function () {
             $sizes = $this->api->getSizesAvailableInRegion($this->state['region']);
 
-            $this->availableSizes = $sizes->mapWithKeys(fn(SizeData $size) =>
+            $this->availableSizes = $sizes->mapWithKeys(fn(SizeDto $size) =>
             [$size->slug => $size->description == ''
                 ? trans_choice('account.providers.digital_ocean_v2.size-name',
                     $size->cpus,
@@ -303,16 +303,10 @@ class DigitalOceanForm extends Component
 
         $state = $this->validate()['state'];
 
-        $server = $action->execute(new NewServerData(
-            provider: Auth::user()->providers()->findOrFail($this->state['provider_id']),
-            name: $state['name'],
-            region: $state['region'],
-            size: $state['size'],
-            type: $state['type'],
-            pythonVersion: $state['python_version'],
-            database: $state['database'],
-            cache: $state['cache'],
-        ), Auth::user());
+        $server = $action->execute(
+            NewServerDto::fromArray($state),
+            Auth::user()->providers()->findOrFail($this->state['provider_id']),
+        );
 
         // dd($server);
 

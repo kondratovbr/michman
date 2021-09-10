@@ -2,21 +2,22 @@
 
 namespace App\DataTransferObjects;
 
-use App\Models\User;
-use Spatie\DataTransferObject\DataTransferObject;
-use Laravel\Socialite\Contracts\User as OAuthUser;
 use App\Exceptions\NotImplementedException;
+use App\Models\User;
+use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
 
-class VcsProviderData extends DataTransferObject
+class VcsProviderDto extends AbstractDto
 {
-    public User $user;
-    public string $provider;
-    public string $external_id;
-    public string $nickname;
-    public string|null $token;
-    public string|null $key;
-    public string|null $secret;
+    public function __construct(
+        public User $user,
+        public string $provider,
+        public string $external_id,
+        public string $nickname,
+        public string|null $token = null,
+        public string|null $key = null,
+        public string|null $secret = null,
+    ) {}
 
     public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName, User $user): static
     {

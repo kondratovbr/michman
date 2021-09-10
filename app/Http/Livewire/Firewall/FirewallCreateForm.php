@@ -22,7 +22,7 @@ class FirewallCreateForm extends LivewireComponent
 
     public string|null $name = null;
     public string|null $port = null;
-    public string|null $fromIp = null;
+    public string|null $from_ip = null;
 
     public function rules(): array
     {

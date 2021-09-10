@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\SshKeyDto;
 use App\Jobs\ServerSshKeys\AddServerSshKeyToVcsJob;
 use App\Models\ServerSshKey;
 use App\Models\User;
@@ -40,7 +40,7 @@ class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
                         SshKeyFormatter::format($key->getPublicKey()),
                     )
                     ->once()
-                    ->andReturn(new SshKeyData(
+                    ->andReturn(new SshKeyDto(
                         id: '100500',
                         fingerprint: Str::random(),
                         publicKey: SshKeyFormatter::format($key->getPublicKey()),

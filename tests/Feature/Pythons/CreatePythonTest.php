@@ -4,7 +4,6 @@ namespace Tests\Feature\Pythons;
 
 use App\Actions\Pythons\PatchPythonAction;
 use App\Actions\Pythons\StorePythonAction;
-use App\DataTransferObjects\PythonData;
 use App\Http\Livewire\Pythons\PythonsIndexTable;
 use App\Models\Python;
 use App\Models\Server;
@@ -47,8 +46,8 @@ class CreatePythonTest extends AbstractFeatureTest
                 Mockery::mock(StorePythonAction::class,
                     function (MockInterface $mock) use ($server) {
                         $mock->shouldReceive('execute')
-                            ->withArgs(function (PythonData $dataArg, Server $serverArg) use ($server) {
-                                return $dataArg->version === '3_9'
+                            ->withArgs(function (string $versionArg, Server $serverArg) use ($server) {
+                                return $versionArg === '3_9'
                                     && $serverArg->is($server);
                             })
                             ->once()

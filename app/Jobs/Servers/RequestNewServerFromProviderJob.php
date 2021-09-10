@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Servers;
 
-use App\DataTransferObjects\NewServerData;
+use App\DataTransferObjects\NewServerDto;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithServerProviders;
 use App\Models\Server;
@@ -14,9 +14,9 @@ class RequestNewServerFromProviderJob extends AbstractJob
     use InteractsWithServerProviders;
 
     protected Server $server;
-    protected NewServerData $serverData;
+    protected NewServerDto $serverData;
 
-    public function __construct(Server $server, NewServerData $serverData)
+    public function __construct(Server $server, NewServerDto $serverData)
     {
         $this->setQueue('providers');
 

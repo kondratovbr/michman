@@ -8,7 +8,6 @@ use App\Actions\DeploySshKeys\CreateDeploySshKeyAction;
 use App\Actions\Pythons\StorePythonAction;
 use App\DataTransferObjects\DatabaseUserDto;
 use App\DataTransferObjects\NewProjectDto;
-use App\DataTransferObjects\PythonData;
 use App\Jobs\Servers\CreateUserOnServerJob;
 use App\Models\Project;
 use App\Models\Server;
@@ -39,9 +38,7 @@ class StoreProjectAction
         $this->createDeploySshKey->execute($project);
 
         if ($server->pythons()->where('version', $data->python_version)->count() < 1) {
-            $this->storePython->execute(new PythonData(
-                version: $data->python_version,
-            ), $server);
+            $this->storePython->execute($data->python_version, $server);
         }
 
         if (

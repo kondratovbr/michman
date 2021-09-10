@@ -6,11 +6,11 @@ use App\Collections\RegionDataCollection;
 use App\Collections\ServerDataCollection;
 use App\Collections\SizeDataCollection;
 use App\Collections\SshKeyDataCollection;
-use App\DataTransferObjects\NewServerData;
-use App\DataTransferObjects\RegionData;
-use App\DataTransferObjects\ServerData;
-use App\DataTransferObjects\SizeData;
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\RegionDto;
+use App\DataTransferObjects\ServerDto;
+use App\DataTransferObjects\SizeDto;
+use App\DataTransferObjects\SshKeyDto;
 use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
@@ -64,7 +64,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
         /** @var object $region */
         foreach ($data->regions as $region) {
-            $collection->push(new RegionData(
+            $collection->push(new RegionDto(
                 name: $region->name,
                 slug: $region->slug,
                 sizes: $region->sizes,
@@ -84,7 +84,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
         /** @var object $size */
         foreach ($data->sizes as $size) {
-            $collection->push(new SizeData(
+            $collection->push(new SizeDto(
                 slug: $size->slug,
                 transfer: $size->transfer,
                 priceMonthly: $size->price_monthly,
@@ -99,7 +99,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $collection;
     }
 
-    public function getServer(string $serverId): ServerData
+    public function getServer(string $serverId): ServerDto
     {
         $response = $this->get('/droplets/' . $serverId);
         $data = $this->decodeJson($response->body());
@@ -129,7 +129,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->publicIpFromNetworks($data->droplet->networks->v4);
     }
 
-    public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData
+    public function createServer(NewServerDto $data, string $sshKeyIdentifier): ServerDto
     {
         if (empty($sshKeyIdentifier))
             throw new ExternalApiException('No SSH key identifier provided. SSH key is required to request a new server, it should be added to the server provider account beforehand.');
@@ -152,10 +152,10 @@ class DigitalOceanV2 extends AbstractServerProvider
     public function getAvailableRegions(): RegionDataCollection
     {
         $availableSizes = $this->getAllSizes()
-            ->filter(fn(SizeData $size) => $size->available)
+            ->filter(fn(SizeDto $size) => $size->available)
             ->pluck('slug');
 
-        return $this->getAllRegions()->filter(fn(RegionData $region) =>
+        return $this->getAllRegions()->filter(fn(RegionDto $region) =>
             $region->available
             && ! Arr::empty($region->sizes)
             && $availableSizes->intersect($region->sizes)->isNotEmpty()
@@ -165,24 +165,24 @@ class DigitalOceanV2 extends AbstractServerProvider
     public function getAvailableSizes(): SizeDataCollection
     {
         $availableRegions = $this->getAllRegions()
-            ->filter(fn(RegionData $region) => $region->available)
+            ->filter(fn(RegionDto $region) => $region->available)
             ->pluck('slug');
 
-        return $this->getAllSizes()->filter(fn(SizeData $size) =>
+        return $this->getAllSizes()->filter(fn(SizeDto $size) =>
             $size->available
             && ! Arr::empty($size->regions)
             && $availableRegions->intersect($size->regions)->isNotEmpty()
         );
     }
 
-    public function getSizesAvailableInRegion(RegionData|string $region): SizeDataCollection
+    public function getSizesAvailableInRegion(RegionDto|string $region): SizeDataCollection
     {
-        return $this->getAvailableSizes()->filter(fn(SizeData $size) =>
+        return $this->getAvailableSizes()->filter(fn(SizeDto $size) =>
             Arr::hasValue($size->regions, is_string($region) ? $region : $region->slug)
         );
     }
 
-    public function addSshKey(string $name, string $publicKey): SshKeyData
+    public function addSshKey(string $name, string $publicKey): SshKeyDto
     {
         $response = $this->post('/account/keys', [
             'name' => $name,
@@ -208,11 +208,11 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $collection;
     }
 
-    public function addSshKeySafely(string $name, string $publicKey): SshKeyData
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
     {
         $addedKeys = $this->getAllSshKeys();
 
-        /** @var SshKeyData $duplicatedAddedKey */
+        /** @var SshKeyDto $duplicatedAddedKey */
         $duplicatedAddedKey = $addedKeys->firstWhere('publicKey', $publicKey);
 
         if ($duplicatedAddedKey !== null) {
@@ -225,7 +225,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->addSshKey($name, $publicKey);
     }
 
-    public function getSshKey(string $identifier): SshKeyData
+    public function getSshKey(string $identifier): SshKeyDto
     {
         $response = $this->get('/account/keys/' . $identifier);
         $data = $this->decodeJson(($response->body()));
@@ -233,7 +233,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
-    public function updateSshKey(string $identifier, string $newName): SshKeyData
+    public function updateSshKey(string $identifier, string $newName): SshKeyDto
     {
         $response = $this->put('/account/keys/' . $identifier, [
             'name' => $newName,
@@ -246,10 +246,10 @@ class DigitalOceanV2 extends AbstractServerProvider
     /**
      * Convert SSH key object from response format to internal format.
      */
-    protected function sshKeyDataFromResponseData(object $data): SshKeyData
+    protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
-        return new SshKeyData(
-            id: $data->id,
+        return new SshKeyDto(
+            id: (string) $data->id,
             fingerprint: $data->fingerprint,
             publicKey: $data->public_key,
             name: $data->name,
@@ -259,10 +259,10 @@ class DigitalOceanV2 extends AbstractServerProvider
     /**
      * Convert server object from response format to internal format.
      */
-    protected function serverDataFromResponseData(object $data): ServerData
+    protected function serverDataFromResponseData(object $data): ServerDto
     {
-        return new ServerData(
-            id: $data->id,
+        return new ServerDto(
+            id: (string) $data->id,
             name: $data->name,
             publicIp4: $this->publicIpFromNetworks($data->networks->v4 ?? []),
         );

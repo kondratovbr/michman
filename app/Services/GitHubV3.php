@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\SshKeyDto;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -70,7 +70,7 @@ class GitHubV3 extends AbstractVcsProvider
         return $collection;
     }
 
-    public function getSshKey(string $id): SshKeyData
+    public function getSshKey(string $id): SshKeyDto
     {
         $response = $this->get("/user/keys/{$id}");
         $data = $this->decodeJson($response->body());
@@ -78,7 +78,7 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->sshKeyDataFromResponseData($data);
     }
 
-    public function addSshKey(string $name, string $publicKey): SshKeyData
+    public function addSshKey(string $name, string $publicKey): SshKeyDto
     {
         $response = $this->post('/user/keys', [
             'title' => $name,
@@ -89,18 +89,18 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->sshKeyDataFromResponseData($data);
     }
 
-    public function addSshKeySafely(string $name, string $publicKey): SshKeyData
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
     {
         $addedKeys = $this->getAllSshKeys();
 
-        /** @var SshKeyData $duplicatedAddedKey */
+        /** @var SshKeyDto $duplicatedAddedKey */
         $duplicatedAddedKey = $addedKeys->firstWhere('publicKey', $publicKey);
 
         if ($duplicatedAddedKey !== null) {
             if ($duplicatedAddedKey->name === $name)
                 return $duplicatedAddedKey;
 
-            return $this->updateSshKey(new SshKeyData(
+            return $this->updateSshKey(new SshKeyDto(
                 id: $duplicatedAddedKey->id,
                 publicKey: $publicKey,
                 name: $name,
@@ -110,7 +110,7 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->addSshKey($name, $publicKey);
     }
 
-    public function updateSshKey(SshKeyData $sshKey): SshKeyData
+    public function updateSshKey(SshKeyDto $sshKey): SshKeyDto
     {
         $this->deleteSshKey($sshKey->id);
 
@@ -135,9 +135,9 @@ class GitHubV3 extends AbstractVcsProvider
     /**
      * Convert SSH key object from response format to internal format.
      */
-    protected function sshKeyDataFromResponseData(object $data): SshKeyData
+    protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
-        return new SshKeyData(
+        return new SshKeyDto(
             id: $data->id,
             publicKey: $data->key,
             name: $data->title,

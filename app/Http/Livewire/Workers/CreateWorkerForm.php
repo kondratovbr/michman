@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Workers;
 
 use App\Actions\Workers\StoreWorkerAction;
-use App\DataTransferObjects\WorkerData;
+use App\DataTransferObjects\WorkerDto;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
@@ -38,9 +38,9 @@ class CreateWorkerForm extends LivewireComponent
         'app' => null,
         'processes' => null,
         'queues' => null,
-        'stopSeconds' => 600,
-        'maxTasks' => null,
-        'maxMemory' => null,
+        'stop_seconds' => 600,
+        'max_tasks_per_child' => null,
+        'max_memory_per_child' => null,
     ];
 
     /** @var string[] */
@@ -78,9 +78,9 @@ class CreateWorkerForm extends LivewireComponent
             'processes' => Rules::integer(1)->nullable(),
             'queues' => Rules::array()->nullable(),
             'queues.*' => Rules::alphaNumDashString(1, 255),
-            'stopSeconds' => Rules::integer(0)->nullable(),
-            'maxTasks' => Rules::integer(1)->nullable(),
-            'maxMemory' => Rules::integer(1)->nullable(),
+            'stop_seconds' => Rules::integer(0)->nullable(),
+            'max_tasks_per_child' => Rules::integer(1)->nullable(),
+            'max_memory_per_child' => Rules::integer(1)->nullable(),
         ], fn(string $name, $rules) => ["state.$name", $rules]);
     }
 
@@ -128,14 +128,14 @@ class CreateWorkerForm extends LivewireComponent
 
         $this->authorize('create', [Worker::class, $this->project]);
 
-        $action->execute(new WorkerData(
+        $action->execute(new WorkerDto(
             type: $state['type'],
             app: $state['app'],
             processes: $state['processes'],
             queues: $state['queues'],
-            stop_seconds: $state['stopSeconds'],
-            max_tasks_per_child: $state['maxTasks'],
-            max_memory_per_child: is_null($state['maxMemory']) ? null : ($state['maxMemory'] * 1024), // We're asking users for MiB for convenience, but Celery expects KiB.
+            stop_seconds: $state['stop_seconds'],
+            max_tasks_per_child: $state['max_tasks_per_child'],
+            max_memory_per_child: is_null($state['max_memory_per_child']) ? null : ($state['max_memory_per_child'] * 1024), // We're asking users for MiB for convenience, but Celery expects KiB.
         ), $this->project, $this->project->servers()->findOrFail($state['serverId']));
 
         $this->resetState();

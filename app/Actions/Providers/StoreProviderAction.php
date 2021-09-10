@@ -2,15 +2,16 @@
 
 namespace App\Actions\Providers;
 
-use App\DataTransferObjects\ProviderData;
+use App\DataTransferObjects\ProviderDto;
 use App\Models\Provider;
+use App\Models\User;
 
 class StoreProviderAction
 {
-    public function execute(ProviderData $data): Provider
+    public function execute(ProviderDto $data, User $user): Provider
     {
         /** @var Provider $provider */
-        $provider = $data->owner->providers()->create($data->toArray());
+        $provider = $user->providers()->create($data->toArray());
 
         return $provider;
     }

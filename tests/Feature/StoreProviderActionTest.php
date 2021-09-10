@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use App\Actions\Providers\StoreProviderAction;
-use App\DataTransferObjects\ProviderData;
+use App\DataTransferObjects\ProviderDto;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Crypt;
 use Tests\AbstractFeatureTest;
 
 class StoreProviderActionTest extends AbstractFeatureTest
@@ -16,8 +15,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
         /** @var User $user */
         $user = User::factory()->withPersonalTeam()->create();
 
-        $data = new ProviderData(
-            owner: $user,
+        $data = new ProviderDto(
             provider: 'digital_ocean_v2',
             token: 'foobar',
             key: null,
@@ -28,7 +26,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
         /** @var StoreProviderAction $action */
         $action = App::make(StoreProviderAction::class);
 
-        $provider = $action->execute($data);
+        $provider = $action->execute($data, $user);
 
         $this->assertNotNull($provider);
         $this->assertNotNull($provider->id);
@@ -58,8 +56,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
         /** @var User $user */
         $user = User::factory()->withPersonalTeam()->create();
 
-        $data = new ProviderData(
-            owner: $user,
+        $data = new ProviderDto(
             provider: 'aws',
             token: null,
             key: 'login',
@@ -70,7 +67,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
         /** @var StoreProviderAction $action */
         $action = App::make(StoreProviderAction::class);
 
-        $provider = $action->execute($data);
+        $provider = $action->execute($data, $user);
 
         $this->assertNotNull($provider);
         $this->assertNotNull($provider->id);

@@ -3,7 +3,6 @@
 namespace App\Jobs\Pythons;
 
 use App\Actions\Pythons\StorePythonAction;
-use App\DataTransferObjects\PythonData;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
@@ -37,9 +36,7 @@ class CreatePythonJob extends AbstractJob
                 ->lockForUpdate()
                 ->findOrFail($this->server->id);
 
-            $storePython->execute(new PythonData(
-                version: $this->version,
-            ), $server, $this->sync);
+            $storePython->execute($this->version, $server, $this->sync);
         }, 5);
     }
 }

@@ -68,24 +68,24 @@
                 <x-field class="max-w-sm">
                     <x-label>{{ __('projects.queue.create.max-tasks.label') }}</x-label>
                     <x-inputs.number
-                        name="state.maxTasks"
-                        wire:model="state.maxTasks"
+                        name="state.max_tasks_per_child"
+                        wire:model="state.max_tasks_per_child"
                         min="1"
                         step="1"
                     />
-                    <x-input-error for="state.maxTasks" />
+                    <x-input-error for="state.max_tasks_per_child" />
                     <x-help>{{ __('projects.queue.create.max-tasks.help') }}</x-help>
                 </x-field>
 
                 <x-field class="max-w-sm">
                     <x-label>{{ __('projects.queue.create.max-memory.label') }}</x-label>
                     <x-inputs.number
-                        name="state.maxMemory"
-                        wire:model="state.maxMemory"
+                        name="state.max_memory_per_child"
+                        wire:model="state.max_memory_per_child"
                         min="1"
                         step="1"
                     />
-                    <x-input-error for="state.maxMemory" />
+                    <x-input-error for="state.max_memory_per_child" />
                     <x-help>{{ __('projects.queue.create.max-memory.help') }}</x-help>
                 </x-field>
 
@@ -94,12 +94,12 @@
             <x-field class="max-w-sm">
                 <x-label>{{ __('projects.queue.create.stop-seconds.label') }}</x-label>
                 <x-inputs.number
-                    name="state.stopSeconds"
-                    wire:model="state.stopSeconds"
+                    name="state.stop_seconds"
+                    wire:model="state.stop_seconds"
                     min="1"
                     step="1"
                 />
-                <x-input-error for="state.stopSeconds" />
+                <x-input-error for="state.stop_seconds" />
                 <x-help>{{ __('projects.queue.create.stop-seconds.help') }}</x-help>
             </x-field>
 

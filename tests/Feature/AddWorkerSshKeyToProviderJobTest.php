@@ -2,14 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\SshKeyDto;
 use App\Jobs\WorkerSshKeys\AddWorkerSshKeyToServerProviderJob;
 use App\Models\WorkerSshKey;
 use App\Services\ServerProviderInterface;
 use App\Support\SshKeyFormatter;
 use App\Support\Str;
 use Mockery\MockInterface;
-use phpseclib3\Crypt\EC;
 use Tests\AbstractFeatureTest;
 
 class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
@@ -33,7 +32,7 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
                         SshKeyFormatter::format($key->getPublicKey()),
                     )
                     ->once()
-                    ->andReturn(new SshKeyData(
+                    ->andReturn(new SshKeyDto(
                         id: '100500',
                         fingerprint: Str::random(),
                         publicKey: SshKeyFormatter::format($key->getPublicKey()),

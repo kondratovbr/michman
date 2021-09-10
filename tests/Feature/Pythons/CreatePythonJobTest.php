@@ -3,7 +3,6 @@
 namespace Tests\Feature\Pythons;
 
 use App\Actions\Pythons\StorePythonAction;
-use App\DataTransferObjects\PythonData;
 use App\Jobs\Pythons\CreatePythonJob;
 use App\Models\Python;
 use App\Models\Server;
@@ -28,8 +27,8 @@ class CreatePythonJobTest extends AbstractFeatureTest
 
         $this->mock(StorePythonAction::class, function (MockInterface $mock) use ($server) {
             $mock->shouldReceive('execute')
-                ->withArgs(fn(PythonData $dataArg, Server $serverArg) =>
-                    $dataArg->version === '3_9'
+                ->withArgs(fn(string $versionArg, Server $serverArg) =>
+                    $versionArg === '3_9'
                     && $serverArg->is($server)
                 )
                 ->once()

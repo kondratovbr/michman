@@ -18,10 +18,10 @@ use App\Collections\RegionDataCollection;
 use App\Collections\ServerDataCollection;
 use App\Collections\SizeDataCollection;
 use App\Collections\SshKeyDataCollection;
-use App\DataTransferObjects\NewServerData;
-use App\DataTransferObjects\RegionData;
-use App\DataTransferObjects\ServerData;
-use App\DataTransferObjects\SshKeyData;
+use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\RegionDto;
+use App\DataTransferObjects\ServerDto;
+use App\DataTransferObjects\SshKeyDto;
 
 interface ServerProviderInterface
 {
@@ -33,7 +33,7 @@ interface ServerProviderInterface
     /**
      * Get server data by its ID.
      */
-    public function getServer(string $serverId): ServerData;
+    public function getServer(string $serverId): ServerDto;
 
     /**
      * Get a collection of all servers created on this account.
@@ -50,7 +50,7 @@ interface ServerProviderInterface
     /**
      * Provision a new server with this server provider.
      */
-    public function createServer(NewServerData $data, string $sshKeyIdentifier): ServerData;
+    public function createServer(NewServerDto $data, string $sshKeyIdentifier): ServerDto;
 
     /**
      * Get a collection of all regions supported by the API.
@@ -75,14 +75,14 @@ interface ServerProviderInterface
     /**
      * Get a collection of sizes available for this specific API credentials in a region provided.
      *
-     * @param RegionData|string RegionData object or a region slug.
+     * @param RegionDto|string $region RegionData object or a region slug.
      */
-    public function getSizesAvailableInRegion(RegionData|string $region): SizeDataCollection;
+    public function getSizesAvailableInRegion(RegionDto|string $region): SizeDataCollection;
 
     /**
      * Add a new SSH key to the provider.
      */
-    public function addSshKey(string $name, string $publicKey): SshKeyData;
+    public function addSshKey(string $name, string $publicKey): SshKeyDto;
 
     /**
      * Get a collection of SSH keys added to this account.
@@ -92,14 +92,14 @@ interface ServerProviderInterface
     /**
      * Add a new SSH key to the provider, checking if it was added before.
      */
-    public function addSshKeySafely(string $name, string $publicKey): SshKeyData;
+    public function addSshKeySafely(string $name, string $publicKey): SshKeyDto;
 
     /**
      * Get an SSH key data by its identifier - ID or fingerprint.
      *
      * @param string $identifier Provider's ID or fingerprint.
      */
-    public function getSshKey(string $identifier): SshKeyData;
+    public function getSshKey(string $identifier): SshKeyDto;
 
     /*
      * TODO: CRITICAL! Make sure I update the corresponding model after this each time I do it -
@@ -113,5 +113,5 @@ interface ServerProviderInterface
      *
      * @param string $identifier Provider's ID or fingerprint.
      */
-    public function updateSshKey(string $identifier, string $newName): SshKeyData;
+    public function updateSshKey(string $identifier, string $newName): SshKeyDto;
 }
