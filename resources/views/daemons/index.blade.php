@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! CONTINUE.--}}
-
 <x-sub-page name="daemons">
 
     <livewire:daemons.create-daemon-form :server="$server" />
