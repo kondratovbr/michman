@@ -37,6 +37,11 @@ class Provider extends AbstractModel
 {
     use HasFactory;
 
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_ERROR = 'error';
+    public const STATUS_READY = 'ready';
+    public const STATUS_ACTIVE = 'active';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'provider',
@@ -73,9 +78,9 @@ class Provider extends AbstractModel
             return $this->status;
 
         if (($this->serversCount ?? $this->servers()->count()) > 0)
-            return $this->status = 'active';
+            return $this->status = static::STATUS_ACTIVE;
 
-        return $this->status = 'ready';
+        return $this->status = static::STATUS_READY;
     }
 
     /**
