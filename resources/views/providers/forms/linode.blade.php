@@ -1,6 +1,6 @@
 <div class="space-y-4">
 
-    <x-field>
+    <x-field class="max-w-xl">
         <x-label>{{ __('account.providers.token.label-token') }}</x-label>
         <x-inputs.text
             name="token"
@@ -10,7 +10,7 @@
         <x-input-error for="token" />
     </x-field>
 
-    <x-field>
+    <x-field class="max-w-sm">
         <x-label>{{ __('account.providers.name.label') }}</x-label>
         <x-inputs.text
             name="name"

@@ -1,6 +1,6 @@
 <div class="space-y-4">
 
-    <x-field>
+    <x-field class="max-w-xl">
         <x-label>{{ __('account.providers.key.label') }}</x-label>
         <x-inputs.text
             name="key"
@@ -10,7 +10,7 @@
         <x-input-error for="key" />
     </x-field>
 
-    <x-field>
+    <x-field class="max-w-xl">
         <x-label>{{ __('account.providers.secret.label') }}</x-label>
         <x-inputs.text
             name="secret"
@@ -20,7 +20,7 @@
         <x-input-error for="secret" />
     </x-field>
 
-    <x-field>
+    <x-field class="max-w-sm">
         <x-label>{{ __('account.providers.name.label') }}</x-label>
         <x-inputs.text
             name="name"

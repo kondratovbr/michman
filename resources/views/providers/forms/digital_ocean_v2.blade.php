@@ -6,7 +6,7 @@
         <x-lang key="providers.digital-ocean-info" />
     </x-message>
 
-    <x-field>
+    <x-field class="max-w-xl">
         <x-label>{{ __('account.providers.token.label-pat') }}</x-label>
         <x-inputs.text
             name="token"
@@ -16,7 +16,7 @@
         <x-input-error for="token" />
     </x-field>
 
-    <x-field>
+    <x-field class="max-w-sm">
         <x-label>{{ __('account.providers.name.label') }}</x-label>
         <x-inputs.text
             name="name"
