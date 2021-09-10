@@ -34,6 +34,7 @@ class AddFirewallRuleToServerJob extends AbstractRemoteServerJob
                 $rule->server,
                 $rule->port,
                 // We're going to "limit" the SSH port using the UFW built-in config as an additional brute-force protection for SSH.
+                // TODO: CRITICAL! Should I not do this? Or should I account for this in my server jobs somehow instead? I.e. properly rate-limit them.
                 $rule->port == $rule->server->sshPort,
                 $rule->fromIp,
             );
