@@ -28,20 +28,22 @@
                             <i class="{{ config("providers.list.{$server->provider->provider}.icon") }}"></i>
                         </x-icon>
                         <div class="ml-2 flex flex-col">
-{{--                            TODO: If the name is too long - cut it with the dots at the end.--}}
                             <x-app-link href="{{ route('servers.show', [$server, 'projects']) }}">
                                 {{ $server->name }}
                             </x-app-link>
-{{--                            TODO: CRITICAL! Don't forget to implement! It should show some short info about the server, see how Forge does it. Maybe show the server's type somewhere in this table as well, would be nice.--}}
-                            <p class="text-sm">Foobar</p>
+                            <p class="text-sm">{{ $server->shortInfo() }}</p>
                         </div>
                     </div>
                 </x-td>
 {{--                TODO: Implement "Click to copy" here, like on Forge.--}}
-                <x-td>{{ $server->publicIp ?? __('misc.n/a') }}</x-td>
                 <x-td>
-                    <x-badge>{{ __("servers.types.{$server->type}.badge") }}</x-badge>
+                    @isset($server->publicIp)
+                        <x-clipboard>{{ $server->publicIp }}</x-clipboard>
+                    @else
+                        {{ __('misc.n/a') }}
+                    @endisset
                 </x-td>
+                <x-td><x-badge>{{ __("servers.types.{$server->type}.badge") }}</x-badge></x-td>
                 <x-td></x-td>
                 <x-td></x-td>
             </x-tr>

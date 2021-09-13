@@ -10,5 +10,7 @@ return [
     'status' => 'Status',
     'restart' => 'Restart',
     'em-dash' => '—',
+    'copy-clipboard' => 'Copy to clipboard',
+    'copied' => 'Copied',
 
 ];
