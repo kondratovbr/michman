@@ -21,8 +21,8 @@
     <x-slot name="body">
         @foreach($daemons as $daemon)
             <x-tr>
-                <x-td><x-code>{{ $daemon->command }}</x-code></x-td>
-                <x-td><x-code>{{ $daemon->directory }}</x-code></x-td>
+                <x-td><x-code-block :wrap="true">{{ $daemon->command }}</x-code-block></x-td>
+                <x-td><x-code-block :wrap="true">{{ $daemon->directory }}</x-code-block></x-td>
                 <x-td><x-state-badge :state="$daemon->state" /></x-td>
                 <x-td>
                     <x-ellipsis-dropdown>
