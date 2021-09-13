@@ -26,6 +26,7 @@
         "pusher-js": "^7.0.3",
         "tailwindcss": "^2.0.3",
         "tailwindcss-debug-screens": "^2.0.0",
-        "tailwindcss-padding-safe": "^1.0.5"
+        "tailwindcss-padding-safe": "^1.0.5",
+        "tippy.js": "^6.3.1"
     }
 }
