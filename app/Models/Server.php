@@ -147,6 +147,27 @@ class Server extends AbstractModel
     }
 
     /**
+     * Get a short info about this server to show in the UI.
+     */
+    public function shortInfo(): string
+    {
+        $info = [];
+
+        if (! $this->pythons->isEmpty()) {
+            $info[] = 'Python ' .
+                __('servers.pythons.versions.' . $this->pythons->firstWhereMax('version')->version);
+        }
+
+        if (! empty($this->installedDatabase))
+            $info[] = __("servers.databases.{$this->installedDatabase}");
+
+        if (! empty($this->installedCache))
+            $info[] = __("servers.caches.{$this->installedCache}");
+
+        return implode(', ', $info);
+    }
+
+    /**
      * Filter the certificates installed on this server
      * for the ones that should be used for a project provided based on their domains.
      */
