@@ -4,6 +4,7 @@ namespace App\Collections;
 
 use App\Models\Interfaces\HasTasksCounterInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class EloquentCollection extends Collection
@@ -32,5 +33,10 @@ class EloquentCollection extends Collection
                     $item->decrementTasks($amount);
             }
         }, 5);
+    }
+
+    public function firstWhereMax($key): mixed
+    {
+        return $this->firstWhere($key, $this->max($key));
     }
 }
