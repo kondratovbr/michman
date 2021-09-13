@@ -5,6 +5,9 @@
         @isset($description)
             <x-slot name="description">{{ $description }}</x-slot>
         @endisset
+        @isset($titleActions)
+            <x-slot name="titleActions">{{ $titleActions }}</x-slot>
+        @endisset
     </x-section-title>
 
 {{--    TODO: CRITICAL! The "overflow-x-auto" here was a temporary crotch for tables that don't quite fit. Check that all tables look OK on all screens.--}}

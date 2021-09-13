@@ -246,6 +246,7 @@ return [
             'stop' => 'Stop Daemon',
             'restart' => 'Restart Daemon',
             'delete' => 'Delete Daemon',
+            'update-statuses' => 'Update Statuses',
         ],
 
         'command' => [

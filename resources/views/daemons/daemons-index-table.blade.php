@@ -2,11 +2,11 @@
 
     <x-slot name="title">{{ __('servers.daemons.index.title') }}</x-slot>
 
-    <x-slot name="description">
-        <x-buttons.primary
+    <x-slot name="titleActions">
+        <x-buttons.secondary
             wire:click="updateStatuses"
             wire:loading.attr="disabled"
-        >Update Statuses</x-buttons.primary>
+        >{{ __('servers.daemons.index.update-statuses') }}</x-buttons.secondary>
     </x-slot>
 
     <x-slot name="header">
