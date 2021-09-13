@@ -45,7 +45,10 @@ class ServersIndexTable extends LivewireComponent
      */
     public function render(): View
     {
-        $this->servers = Auth::user()->servers()->oldest()->get();
+        $this->servers = Auth::user()->servers()
+            ->with('pythons')
+            ->oldest()
+            ->get();
 
         return view('servers.index-table');
     }
