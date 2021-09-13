@@ -7,6 +7,11 @@ window.Alpine = Alpine
 
 import tooltip from "./tooltip";
 Alpine.plugin(tooltip);
+
+Alpine.magic('clipboard', () => {
+    return subject => navigator.clipboard.writeText(subject);
+});
+
 import focusableDialog from './components/FocusableDialog';
 window.focusableDialog = focusableDialog;
 
