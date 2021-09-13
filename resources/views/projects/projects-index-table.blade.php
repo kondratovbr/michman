@@ -19,7 +19,7 @@
                 <x-td></x-td>
 {{--                TODO: Should somehow handle long domain names here.--}}
                 <x-td>
-                    <div class="ml-2 flex flex-col">
+                    <div class="flex flex-col">
                         <x-app-link href="{{ route('projects.show', [$project, 'deployment']) }}">
                             {{ $project->fullDomainName }}
                         </x-app-link>
