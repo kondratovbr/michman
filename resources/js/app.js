@@ -1,8 +1,12 @@
 require('./bootstrap');
 
+import 'tippy.js/dist/tippy.css';
+
 import Alpine from 'alpinejs'
 window.Alpine = Alpine
 
+import tooltip from "./tooltip";
+Alpine.plugin(tooltip);
 import focusableDialog from './components/FocusableDialog';
 window.focusableDialog = focusableDialog;
 
