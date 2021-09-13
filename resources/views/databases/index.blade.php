@@ -1,4 +1,4 @@
-<x-sub-page name="database">
+<x-sub-page name="databases">
 
 {{--    TODO: CRITICAL! Don't forget to display the database connection URL or similar, like Forge does. Maybe I could even make a button for users to automatically connect to it.--}}
 
