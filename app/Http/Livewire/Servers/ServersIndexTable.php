@@ -50,6 +50,6 @@ class ServersIndexTable extends LivewireComponent
             ->oldest()
             ->get();
 
-        return view('servers.index-table');
+        return view('servers.servers-index-table');
     }
 }
