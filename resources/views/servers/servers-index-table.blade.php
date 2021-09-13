@@ -19,7 +19,6 @@
     </x-slot>
 
     <x-slot name="body">
-        {{-- TODO: IMPORTANT! Check how it looks with longer names and everything. --}}
         @foreach($servers as $server)
             <x-tr>
                 <x-td>
@@ -35,7 +34,6 @@
                         </div>
                     </div>
                 </x-td>
-{{--                TODO: Implement "Click to copy" here, like on Forge.--}}
                 <x-td>
                     @isset($server->publicIp)
                         <x-clipboard>{{ $server->publicIp }}</x-clipboard>
