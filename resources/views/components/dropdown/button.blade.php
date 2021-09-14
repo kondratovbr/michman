@@ -3,7 +3,7 @@
 {{--TODO: Padding on md+ may be wrong, should check it.--}}
 <button
     {{ $attributes->class([
-        'group h-full flex flex-col items-stretch cursor-pointer select-none focus:outline-none',
+        'group h-full w-full flex flex-col items-stretch cursor-pointer select-none focus:outline-none',
         'px-3 md:px-2 py-1',
         'rounded-t-md bg-navy-300 border-b border-gray-600 md:border-b-0',
     ]) }}
