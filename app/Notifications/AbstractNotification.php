@@ -15,7 +15,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     /** @var bool Indicates if this notification should be sent via email. */
     protected bool $mail = false;
     /** @var bool Indicates if this notification should be broadcasted. */
-    protected bool $broadcast = false;
+    protected bool $broadcast = true;
 
     public function __construct()
     {

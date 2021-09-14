@@ -4,13 +4,13 @@ namespace App\Notifications\Deployments;
 
 use App\Models\Server;
 use App\Models\User;
+use App\Notifications\Interfaces\Viewable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\Messages\MailMessage;
 use RuntimeException;
 
-class DeploymentFailedNotification extends AbstractDeploymentNotification
+class DeploymentFailedNotification extends AbstractDeploymentNotification implements Viewable
 {
-    protected bool $broadcast = true;
     protected bool $mail = true;
 
     /**
@@ -47,7 +47,7 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification
     }
 
     /**
-     * Get the view to display this notification in the UI.
+     * Get the details view to display this notification in the UI.
      */
     public static function view(array $data = []): View
     {

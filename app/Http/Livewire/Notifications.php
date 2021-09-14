@@ -36,7 +36,12 @@ class Notifications extends LivewireComponent
      */
     public function details(string $id): void
     {
-        $this->notification = $this->validatedNotification($id);
+        $notification = $this->validatedNotification($id);
+
+        if (! $notification->viewable())
+            return;
+
+        $this->notification = $notification;
 
         $this->modalOpen = true;
     }

@@ -23,7 +23,9 @@
                         <x-td>{{ $notification->message }}</x-td>
                         <x-td>
                             <div class="flex justify-end items-center space-x-2">
-                                <x-buttons.see wire:click.prevent="details('{{ $notification->id }}')" />
+                                @if($notification->viewable())
+                                    <x-buttons.see wire:click.prevent="details('{{ $notification->id }}')" />
+                                @endif
                                 <x-buttons.trash wire:click.prevent="trash('{{ $notification->id }}')" />
                             </div>
                         </x-td>

@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
+use App\Notifications\Interfaces\Viewable;
 use Carbon\CarbonInterface;
+use RuntimeException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\DatabaseNotification;
@@ -36,6 +38,17 @@ class Notification extends DatabaseNotification
      */
     public function detailsView(): View
     {
+        if (! $this->viewable())
+            throw new RuntimeException('Tried to get a view of a non-viewable notification. Type: ' . $this->type);
+
         return $this->type::view($this->data);
+    }
+
+    /**
+     * Check if the underlying Notification has a detailed view in the UI.
+     */
+    public function viewable(): bool
+    {
+        return classImplements($this->type, Viewable::class);
     }
 }
