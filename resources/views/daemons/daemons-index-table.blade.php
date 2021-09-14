@@ -21,8 +21,14 @@
     <x-slot name="body">
         @foreach($daemons as $daemon)
             <x-tr>
-                <x-td><x-code-block :wrap="true">{{ $daemon->command }}</x-code-block></x-td>
-                <x-td><x-code-block :wrap="true">{{ $daemon->directory }}</x-code-block></x-td>
+                <x-td>
+                    <x-code-block class="inline-block md:hidden" :wrap="true">{{ $daemon->shortCommand }}</x-code-block>
+                    <x-code-block class="hidden md:inline-block" :wrap="true">{{ $daemon->command }}</x-code-block>
+                </x-td>
+                <x-td>
+                    <x-code-block class="inline-block md:hidden" :wrap="true">{{ $daemon->shortDirectory }}</x-code-block>
+                    <x-code-block class="hidden md:inline-block" :wrap="true">{{ $daemon->directory }}</x-code-block>
+                </x-td>
                 <x-td><x-state-badge :state="$daemon->state" /></x-td>
                 <x-td>
                     <x-ellipsis-dropdown>

@@ -7,6 +7,7 @@ use App\Events\Daemons\DaemonDeletedEvent;
 use App\Events\Daemons\DaemonUpdatedEvent;
 use App\Facades\ConfigView;
 use App\States\Daemons\DaemonState;
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\DaemonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +31,8 @@ use Spatie\ModelStates\HasStates;
  *
  * @property-read User $user
  * @property-read string $name
+ * @property-read string $shortCommand
+ * @property-read string $shortDirectory
  *
  * @property-read Server $server
  *
@@ -76,6 +79,18 @@ class Daemon extends AbstractModel
     public function getNameAttribute(): string
     {
         return "daemon-{$this->id}";
+    }
+
+    /** Get a shortened version of the command for the UI. */
+    public function getShortCommandAttribute(): string
+    {
+        return Arr::last(explode('/', explode(' ', $this->command)[0]));
+    }
+
+    /** Get a shortened version of the directory for the UI. */
+    public function getShortDirectoryAttribute(): string
+    {
+        return Arr::last(explode('/', $this->directory));
     }
 
     /**
