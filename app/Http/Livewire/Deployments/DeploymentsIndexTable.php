@@ -46,11 +46,6 @@ class DeploymentsIndexTable extends LivewireComponent
 
     protected function configureEchoListeners(): void
     {
-        /*
-         * TODO: CRITICAL! Check if this works.
-         *       Deployment process only updates pivots, check if timestamps on Deployment and Server
-         *       models get updated and if these events get triggered.
-         */
         $this->echoPrivate(
             ProjectChannel::name($this->project),
             [
