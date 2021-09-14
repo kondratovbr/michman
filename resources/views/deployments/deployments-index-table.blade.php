@@ -1,3 +1,5 @@
+{{--TODO: CRITICAL! CONTINUE. Fix the layout and data representation here (doesn't fit on smaller screens). Then go ahead and implement "Quick Deploy".--}}
+
 <x-table-section>
 
     <x-slot name="title">{{ __('deployments.table.title') }}</x-slot>
@@ -45,7 +47,6 @@
                                 <x-dropdown.title>
                                     {{ __('deployments.view-output-from-server') }}
                                 </x-dropdown.title>
-{{--                                TODO: IMPORTANT! For some reason the buttons here aren't stretched to the width of the dropdown. They are in other dropdowns. Fix it.--}}
                                 @foreach($deployment->servers as $server)
                                     <x-dropdown.button
                                         class="text-sm"
