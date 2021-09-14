@@ -7,8 +7,6 @@ use App\Support\Arr;
 use ReflectionClass;
 use ReflectionProperty;
 
-// TODO: CRITICAL! Cover this with tests somehow. Check out how Spatie did it in their package.
-
 abstract class AbstractDto implements Arrayable
 {
     protected array $exceptKeys = [];
