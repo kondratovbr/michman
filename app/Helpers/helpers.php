@@ -95,7 +95,10 @@ if (! function_exists('trimRelativePath')) {
 }
 
 if (! function_exists('getClassName')) {
-    function getClassName($classname): string|false|int
+    /**
+     * Get only the last part of the class name.
+     */
+    function getClassName(string $classname): string|false|int
     {
         $pos = strrpos($classname, '\\');
 
@@ -103,5 +106,17 @@ if (! function_exists('getClassName')) {
             return substr($classname, $pos + 1);
 
         return $pos;
+    }
+}
+
+if (! function_exists('classImplements')) {
+    /**
+     * Check that a given class implements a given interface.
+     */
+    function classImplements(string $class, string $interface): bool
+    {
+        $interfaces = class_implements($class);
+
+        return in_array($interface, $interfaces);
     }
 }
