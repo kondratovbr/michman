@@ -16,7 +16,6 @@ use App\Jobs\Servers\VerifyRemoteServerIsSuitableJob;
 use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
 use App\Models\Server;
-use App\Models\User;
 use App\Models\UserSshKey;
 use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
