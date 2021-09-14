@@ -1,6 +1,5 @@
 @props(['capitalize' => true, 'textClasses' => '', 'external' => false])
 
-{{--TODO: Padding on md+ may be wrong, should check it.--}}
 <button
     {{ $attributes->class([
         'group h-full w-full flex flex-col items-stretch cursor-pointer select-none focus:outline-none',
