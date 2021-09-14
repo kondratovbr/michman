@@ -40,7 +40,7 @@
                 <x-td :mobile="false"><x-code class="text-sm">{{ config("servers.python.{$version}.cli") }}</x-code></x-td>
                 @if(! is_null($python))
                     <x-td><x-pythons.status-badge :python="$python" /></x-td>
-                    <x-td class="min-w-14 flex justify-center items-center">
+                    <x-td class="min-w-14 flex justify-end items-center">
 {{--                        TODO: Maybe make a generally smaller version of this dropdown. The paddings are a bit too big and disproportionte to the text.--}}
                         <x-ellipsis-dropdown :disabled="$python->status !== 'installed'">
 
@@ -66,7 +66,7 @@
                     </x-td>
                 @else
                     <x-td>—</x-td>
-                    <x-td class="min-w-14 flex justify-center items-center">
+                    <x-td class="min-w-14 flex justify-end items-center">
                         <x-buttons.primary
                             size="small"
                             wire:click="install('{{ $version }}')"
