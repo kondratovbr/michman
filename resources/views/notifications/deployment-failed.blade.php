@@ -3,9 +3,7 @@
 
 <div class="space-y-2">
 
-    <h3>
-        <strong>{{ $server->name }}</strong>
-    </h3>
+    <h3><strong>{{ $server->name }}</strong></h3>
 
     <x-logs :logs="$logs" />
 
