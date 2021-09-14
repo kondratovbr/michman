@@ -60,6 +60,6 @@ class FirewallIndexTable extends LivewireComponent
     {
         $this->firewallRules = $this->server->firewallRules()->oldest()->get();
 
-        return view('firewall.index-table');
+        return view('firewall.firewall-index-table');
     }
 }
