@@ -4,8 +4,10 @@ namespace App\Jobs\WorkerSshKeys;
 
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
+use App\Notifications\Servers\FailedToAddSshKeyToServerNotification;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /*
  * TODO: IMPORTANT! I also need a job to update the worker key,
@@ -19,9 +21,6 @@ use Illuminate\Support\Facades\DB;
 
 class AddWorkerSshKeyToServerJob extends AbstractRemoteServerJob
 {
-    /**
-     * Execute the job.
-     */
     public function handle(AddSshKeyToUserScript $script): void {
         DB::transaction(function () use ($script) {
             $server = $this->server->freshLockForUpdate();
@@ -47,5 +46,10 @@ class AddWorkerSshKeyToServerJob extends AbstractRemoteServerJob
                 );
             }
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new FailedToAddSshKeyToServerNotification($this->server));
     }
 }

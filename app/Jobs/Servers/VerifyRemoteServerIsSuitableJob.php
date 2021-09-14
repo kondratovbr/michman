@@ -4,17 +4,16 @@ namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
 use App\Jobs\AbstractRemoteServerJob;
+use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 {
     // Override the normal backoff time to speed up the server creation process for users.
     public int $backoff = 10; // 10 sec
 
-    /**
-     * Execute the job.
-     */
     public function handle(VerifyServerIsSuitableScript $verifyServerIsSuitable): void
     {
         DB::transaction(function () use ($verifyServerIsSuitable) {
@@ -36,5 +35,10 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
             $server->suitable = $verifyServerIsSuitable->execute($server, $ssh);
             $server->save();
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new ServerIsNotSuitableNotification($this->server));
     }
 }

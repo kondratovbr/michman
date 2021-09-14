@@ -9,8 +9,10 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Pythons\CreatePythonJob;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
+use App\Notifications\Servers\FailedToConfigureServerNotification;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -29,9 +31,6 @@ class ConfigureAppServerJob extends AbstractJob
         $this->data = $data;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(StoreFirewallRuleAction $storeFirewallRule): void {
         DB::transaction(function () use ($storeFirewallRule) {
             $server = $this->server->freshLockForUpdate();
@@ -56,5 +55,10 @@ class ConfigureAppServerJob extends AbstractJob
             ])->dispatch();
 
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new FailedToConfigureServerNotification($this->server));
     }
 }

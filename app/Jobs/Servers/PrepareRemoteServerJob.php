@@ -5,6 +5,7 @@ namespace App\Jobs\Servers;
 use App\Actions\Firewall\StoreFirewallRuleAction;
 use App\DataTransferObjects\FirewallRuleDto;
 use App\Jobs\AbstractRemoteServerJob;
+use App\Notifications\Servers\FailedToPrepareServerNotification;
 use App\Scripts\Root\EnableFirewallScript;
 use App\Scripts\Root\InitializeFirewallScript;
 use App\Scripts\Root\ConfigureSshServerScript;
@@ -16,14 +17,12 @@ use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpdateSnapScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 // TODO: CRITICAL! Cover with tests!
 
 class PrepareRemoteServerJob extends AbstractRemoteServerJob
 {
-    /**
-     * Execute the job.
-     */
     public function handle(
         StoreFirewallRuleAction $storeFirewallRule,
         UpgradePackagesScript $upgradePackages,
@@ -78,5 +77,10 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
             $rebootServer->execute($server, $ssh);
 
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new FailedToPrepareServerNotification($this->server));
     }
 }

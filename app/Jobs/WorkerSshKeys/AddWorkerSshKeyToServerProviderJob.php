@@ -6,7 +6,9 @@ use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithServerProviders;
 use App\Models\Server;
 use App\Models\WorkerSshKey;
+use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 {
@@ -21,9 +23,6 @@ class AddWorkerSshKeyToServerProviderJob extends AbstractJob
         $this->server = $server->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function () {
@@ -41,5 +40,10 @@ class AddWorkerSshKeyToServerProviderJob extends AbstractJob
             $sshKey->externalId = $addedKey->id;
             $sshKey->save();
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new AddingSshKeyToProviderFailedNotification($this->server->provider));
     }
 }

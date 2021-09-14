@@ -6,8 +6,10 @@ use App\DataTransferObjects\NewServerDto;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithServerProviders;
 use App\Models\Server;
+use App\Notifications\Providers\RequestingNewServerFromProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class RequestNewServerFromProviderJob extends AbstractJob
 {
@@ -24,9 +26,6 @@ class RequestNewServerFromProviderJob extends AbstractJob
         $this->serverData = $serverData;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function () {
@@ -47,5 +46,10 @@ class RequestNewServerFromProviderJob extends AbstractJob
             $server->externalId = $createdServer->id;
             $server->save();
         });
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new RequestingNewServerFromProviderFailedNotification($this->server->provider));
     }
 }

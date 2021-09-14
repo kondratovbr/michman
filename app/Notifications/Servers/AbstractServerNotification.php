@@ -24,11 +24,21 @@ abstract class AbstractServerNotification extends AbstractNotification
     /**
      * Retrieve the server from the database.
      */
-    protected static function deployment(array $data): Server|null
+    protected static function server(array $data): Server|null
     {
         /** @var Server|null $server */
         $server = Server::query()->find($data['serverKey']);
 
         return $server;
+    }
+
+    /**
+     * Get the data for localized message strings for this notification.
+     */
+    protected static function dataForMessage(array $data = []): array
+    {
+        $server = static::server($data);
+
+        return ['server' => $server->name,];
     }
 }

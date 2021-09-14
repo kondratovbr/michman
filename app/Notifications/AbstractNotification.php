@@ -57,7 +57,15 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     {
         $type = get_called_class();
 
-        return __("notifications.messages.{$type}");
+        return __("notifications.messages.{$type}", static::dataForMessage($data));
+    }
+
+    /**
+     * Get the data for localized message strings for this notification.
+     */
+    protected static function dataForMessage(array $data = []): array
+    {
+        return [];
     }
 
     /**

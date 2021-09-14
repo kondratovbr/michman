@@ -4,6 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Exceptions\SshAuthFailedException;
 use App\Jobs\AbstractRemoteServerJob;
+use App\Notifications\Servers\ServerNotAvailableNotification;
 use App\Scripts\Root\VerifyServerAvailabilityScript;
 use Illuminate\Support\Facades\DB;
 use DateTimeInterface;
@@ -19,9 +20,6 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
         return now()->addMinutes(5);
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(VerifyServerAvailabilityScript $verifyServerAvailability): void
     {
         DB::transaction(function () use ($verifyServerAvailability) {
@@ -52,15 +50,25 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
 
             $server->available = $verifyServerAvailability->execute($server, $ssh);
             $server->save();
+
+            if (! $server->available)
+                $this->notify();
         }, 5);
     }
 
-    /**
-     * Handle a job failure.
-     */
     public function failed(Throwable $exception): void
     {
         $this->server->available = false;
         $this->server->save();
+
+        $this->notify();
+    }
+
+    /**
+     * Notify the user that the server is not available.
+     */
+    protected function notify(): void
+    {
+        $this->server->user->notify(new ServerNotAvailableNotification($this->server));
     }
 }
