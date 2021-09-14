@@ -1,4 +1,3 @@
-{{--TODO: CRITICAL! Values/links are placeholders. Don't forget to put the actual ones.--}}
 {{--TODO: Maybe make it narrower on bigger screens (xl and 2xl). Looks too separated from the main content.--}}
 {{--TODO: Figure out automatic active section highlight.--}}
 {{--TODO: IMPORTANT! This menu is supposed to be a part of a big Livewire component (Maybe only Alpine?), so the page doesn't reload when these sections are changed.--}}
