@@ -8,6 +8,6 @@
 
 return [
 
-    //
+    'michman_api' => env('FEATURE_MICHMAN_API', false),
 
 ];

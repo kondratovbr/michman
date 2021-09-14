@@ -31,12 +31,13 @@
             {{ __('account.vcs.button') }}
         </x-menu.item>
 
-{{--        TODO: CRITICAL! I guess hide this button until the API is actually implemented.--}}
-        <x-menu.item show="api">
-{{--            TODO: Maybe put a Michman logo or some other icon here.--}}
-            <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
-            {{ __('account.api.button') }}
-        </x-menu.item>
+        @if(config('features.michman_api'))
+            <x-menu.item show="api">
+    {{--            TODO: Maybe put a Michman logo or some other icon here.--}}
+                <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
+                {{ __('account.api.button') }}
+            </x-menu.item>
+        @endif
 
     </ul>
 </aside>
