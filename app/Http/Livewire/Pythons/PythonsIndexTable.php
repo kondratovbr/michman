@@ -102,6 +102,6 @@ class PythonsIndexTable extends LivewireComponent
         // TODO: Is there are caching opportunity here? So, no reloading these from the DB every time? See other similar Livewire tables as well.
         $this->pythons = $this->server->pythons()->get();
 
-        return view('pythons.index-table');
+        return view('pythons.pythons-index-table');
     }
 }
