@@ -15,10 +15,12 @@ class {{ class }}
         //
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
+    {
+        //
+    }
+
+    public function failed(Throwable $exception): void
     {
         //
     }
