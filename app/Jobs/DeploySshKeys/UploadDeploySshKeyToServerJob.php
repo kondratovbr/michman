@@ -5,8 +5,10 @@ namespace App\Jobs\DeploySshKeys;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
+use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Scripts\Root\UploadSshKeyToServerScript;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class UploadDeploySshKeyToServerJob extends AbstractRemoteServerJob
 {
@@ -19,9 +21,6 @@ class UploadDeploySshKeyToServerJob extends AbstractRemoteServerJob
         $this->project = $project->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(UploadSshKeyToServerScript $uploadSshKey): void
     {
         DB::transaction(function () use ($uploadSshKey) {
@@ -35,5 +34,10 @@ class UploadDeploySshKeyToServerJob extends AbstractRemoteServerJob
                 $project->deploySshKey->name,
             );
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new FailedToUploadServerSshKeyToServerNotification($this->server));
     }
 }

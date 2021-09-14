@@ -7,7 +7,9 @@ use App\Jobs\Traits\InteractsWithVcsProviders;
 use App\Models\Server;
 use App\Models\ServerSshKey;
 use App\Models\VcsProvider;
+use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class AddServerSshKeyToVcsJob extends AbstractJob
 {
@@ -24,9 +26,6 @@ class AddServerSshKeyToVcsJob extends AbstractJob
         $this->vcsProvider = $vcsProvider->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function () {
@@ -45,5 +44,10 @@ class AddServerSshKeyToVcsJob extends AbstractJob
                 $serverSshKey->getPublicKeyString(false)
             );
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->provider->user->notify(new AddingSshKeyToProviderFailedNotification($this->server->provider));
     }
 }

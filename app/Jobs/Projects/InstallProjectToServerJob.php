@@ -5,6 +5,7 @@ namespace App\Jobs\Projects;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
+use App\Notifications\Projects\ProjectInstallationFailedNotification;
 use App\Scripts\Root\ConfigureGunicornScript;
 use App\Scripts\Root\EnablePlaceholderSiteScript;
 use App\Scripts\Root\RestartNginxScript;
@@ -13,6 +14,7 @@ use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 // TODO: CRITICAL! Cover with test.
 
@@ -29,9 +31,6 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         $this->installDependencies = $installDependencies;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(
         CloneGitRepoScript $cloneRepo,
         CreateProjectVenvScript $createVenv,
@@ -72,5 +71,10 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $restartNginx->execute($server, $rootSsh);
 
         }, 5);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->project->user->notify(new ProjectInstallationFailedNotification($this->project));
     }
 }

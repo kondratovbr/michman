@@ -5,9 +5,11 @@ namespace App\Jobs\Servers;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Server;
 use App\Models\UserSshKey;
+use App\Notifications\Servers\FailedToCreateNewUserOnServerNotification;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\CreateGenericUserScript;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class CreateUserOnServerJob extends AbstractRemoteServerJob
 {
@@ -20,9 +22,6 @@ class CreateUserOnServerJob extends AbstractRemoteServerJob
         $this->username = $username;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(
         CreateGenericUserScript $createUser,
         AddSshKeyToUserScript $addShhKey,
@@ -55,5 +54,10 @@ class CreateUserOnServerJob extends AbstractRemoteServerJob
                 );
             }
         });
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        $this->server->user->notify(new FailedToCreateNewUserOnServerNotification($this->server));
     }
 }

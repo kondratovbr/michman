@@ -6,6 +6,7 @@ use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use App\Notifications\Providers\RequestingNewServerFromProviderFailedNotification;
 use App\Notifications\Servers\FailedToAddSshKeyToServerNotification;
 use App\Notifications\Servers\FailedToConfigureServerNotification;
+use App\Notifications\Servers\FailedToCreateNewUserOnServerNotification;
 use App\Notifications\Servers\FailedToPrepareServerNotification;
 use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
@@ -26,6 +27,7 @@ return [
 
         FailedToAddSshKeyToServerNotification::class => 'We were unable to add an SSH key to server :server.',
         FailedToConfigureServerNotification::class => 'We were unable to complete server configuration for server :server.',
+        FailedToCreateNewUserOnServerNotification::class => 'We were unable to create new user on server :server.',
         FailedToPrepareServerNotification::class => 'We were unable to prepare server :server.',
         FailedToUploadServerSshKeyToServerNotification::class => 'We were unable to upload a server SSH key to server :server.',
         ServerIsNotSuitableNotification::class => 'The server :server is not suitable for Michman operations.',

@@ -22,6 +22,16 @@ abstract class AbstractProjectNotification extends AbstractNotification
     }
 
     /**
+     * Get the data for localized message strings for this notification.
+     */
+    protected static function dataForMessage(array $data = []): array
+    {
+        return [
+            'project' => static::project($data)->projectName,
+        ];
+    }
+
+    /**
      * Retrieve the project from the database.
      */
     protected static function project(array $data): Project|null
