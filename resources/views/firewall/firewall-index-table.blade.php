@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! Unfinished?--}}
-
 <x-table-section>
 
     <x-slot name="title">{{ __('servers.firewall.table.title') }}</x-slot>
