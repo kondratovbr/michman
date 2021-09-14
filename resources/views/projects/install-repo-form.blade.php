@@ -110,8 +110,7 @@
                                 {{ __('projects.repo.configure.use-deploy-key.enabled-message',
                                 ['provider' => __("projects.repo.providers.{$provider->provider}")]) }}
                             </p>
-    {{--                            TODO: Make a "Copy" button to copy the key to clipboard quickly. --}}
-                            <x-code-block class="mt-3" :wrap="true">{{ $project->deploySshKey->publicKeyString }}</x-code-block>
+                            <x-copy-code-block class="mt-3" :wrap="true">{{ $project->deploySshKey->publicKeyString }}</x-copy-code-block>
                         </x-message>
                     @else
                         <x-message colors="info">

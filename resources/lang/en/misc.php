@@ -10,6 +10,7 @@ return [
     'status' => 'Status',
     'restart' => 'Restart',
     'em-dash' => '—',
+    'copy' => 'Copy',
     'copy-clipboard' => 'Copy to clipboard',
     'copied' => 'Copied',
 

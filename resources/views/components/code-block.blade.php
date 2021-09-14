@@ -1,5 +1,4 @@
 {{--TODO: Looks a bit meh. Any way to improve?--}}
-{{--TODO: CRITICAL! I've changed this thing a bit. Check that works in every place I use it.--}}
 
 @props(['wrap' => false])
 
