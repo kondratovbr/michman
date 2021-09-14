@@ -56,7 +56,6 @@ class StoreServerAction
                 new UploadServerSshKeyToServerJob($server, (string) config('servers.worker_user')),
             ];
 
-            // TODO: CRITICAL! Test this and update tests.
             /** @var UserSshKey $key */
             foreach ($server->userSshKeys as $key) {
                 $jobs[] = new UploadUserSshKeyToServerJob($key, $server);
