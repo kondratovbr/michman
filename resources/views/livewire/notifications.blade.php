@@ -1,6 +1,6 @@
 {{--TODO: IMPORTANT! This section needs a slight redesign - it should look different in comparison to normal sections.--}}
 
-<div class="{{ $notifications->isEmpty() ?: 'mb-8' }}">
+<div class="{{ $notifications->isEmpty() ? '' : 'mb-8' }}">
     @unless($notifications->isEmpty())
         <x-table-section>
 
