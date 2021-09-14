@@ -1,4 +1,4 @@
-{{--TODO: IMPORTANT! Unfinished. Responsiveness, mobile. Test on touch - both tablet and mobile.--}}
+{{--TODO: CRITICAL! Unfinished. Responsiveness, mobile. Test on touch - both tablet and mobile.--}}
 
 {{-- Container for a modal --}}
 <div
@@ -85,7 +85,6 @@
 {{--            TODO: Maybe I can replace this whole piece of JS with Alpine's "x-trap" plugin. See: https://alpinejs.dev/plugins/trap--}}
             {{-- This component contains functions that handle focus changes (Tab button),
             so that when modal is shown focus is kept inside the modal. --}}
-{{--                TODO: CRITICAL! Front-end error: "focusableDialog is not defined". The modal doesn't work. Multiple modals on one page get confused. Test all the modals - I think I had already fixed it.--}}
             x-data="focusableDialog()"
 {{--            x-init="init()"--}}
             {{-- These directives overrides focus-changing buttons (tab, shift+tab)
