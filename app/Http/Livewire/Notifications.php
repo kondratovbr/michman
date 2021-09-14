@@ -2,26 +2,35 @@
 
 namespace App\Http\Livewire;
 
+use App\Broadcasting\UserChannel;
 use App\Facades\Auth;
+use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Notification;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Notifications\Events\BroadcastNotificationCreated;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component as LivewireComponent;
 
-/**
- * TODO: CRITICAL! Don't forget that this thing should listen to notification created events.
- *       Seems like Laravel broadcasts a single event for notifications. Better carefully read docs about it.
- */
-
 class Notifications extends LivewireComponent
 {
+    use ListensForEchoes;
+
     public Collection $notifications;
 
     public bool $modalOpen = false;
     /** Currently viewed notification. */
     public Notification $notification;
+
+    protected function configureEchoListeners(): void
+    {
+        $this->echoPrivate(
+            UserChannel::name(Auth::user()),
+            BroadcastNotificationCreated::class,
+            '$refresh',
+        );
+    }
 
     /**
      * Get a notification-specific details view.
