@@ -17,8 +17,7 @@
     <x-slot name="header">
         <x-tr-header>
             <x-th>{{ __('servers.pythons.table.version') }}</x-th>
-            <x-th>{{ __('servers.pythons.table.cli') }}</x-th>
-            <x-th>{{ __('servers.pythons.table.patch-version') }}</x-th>
+            <x-th :mobile="false">{{ __('servers.pythons.table.cli') }}</x-th>
             <x-th>{{ __('servers.pythons.table.status') }}</x-th>
             <x-th></x-th>
         </x-tr-header>
@@ -34,10 +33,12 @@
             @endphp
 
             <x-tr>
-                <x-td>{{ spaceToNbsp('Python ' . __("servers.pythons.versions.{$version}")) }}</x-td>
-                <x-td><x-code class="text-sm">{{ config("servers.python.{$version}.cli") }}</x-code></x-td>
+                <x-td>{{ spaceToNbsp(
+                    'Python ' . __("servers.pythons.versions.{$version}") .
+                    (is_null($python) ? '' : " ({$python->patchVersion})")
+                ) }}</x-td>
+                <x-td :mobile="false"><x-code class="text-sm">{{ config("servers.python.{$version}.cli") }}</x-code></x-td>
                 @if(! is_null($python))
-                    <x-td>{{ $python->patchVersion }}</x-td>
                     <x-td><x-pythons.status-badge :python="$python" /></x-td>
                     <x-td class="min-w-14 flex justify-center items-center">
 {{--                        TODO: Maybe make a generally smaller version of this dropdown. The paddings are a bit too big and disproportionte to the text.--}}
@@ -64,7 +65,6 @@
                         </x-ellipsis-dropdown>
                     </x-td>
                 @else
-                    <x-td>—</x-td>
                     <x-td>—</x-td>
                     <x-td class="min-w-14 flex justify-center items-center">
                         <x-buttons.primary

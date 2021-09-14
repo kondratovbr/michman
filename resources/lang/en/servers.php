@@ -109,7 +109,6 @@ return [
             'version' => 'Version',
             'status' => 'Status',
             'cli' => 'CLI',
-            'patch-version' => 'Patch version',
             'patch-button' => 'Update Patch Version',
             'remove-button' => 'Uninstall Python :version',
         ],
