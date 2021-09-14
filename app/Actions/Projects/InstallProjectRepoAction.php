@@ -50,8 +50,6 @@ class InstallProjectRepoAction
                 $jobs[] = new AddServerSshKeyToVcsJob($server, $vcsProvider);
             }
 
-            // TODO: CRITICAL! Implement a notification system similar to the Forge's one to notify users about various mishaps with their servers and projects. Forge calls it "Server Alerts".
-
             $jobs[] = new InstallProjectToServerJob($project, $server, $installDependencies);
 
             Bus::chain($jobs)->dispatch();
