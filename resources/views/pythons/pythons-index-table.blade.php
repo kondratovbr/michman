@@ -41,7 +41,6 @@
                     <x-td><x-pythons.status-badge :python="$python" /></x-td>
                     <x-td class="min-w-14 flex justify-center items-center">
 {{--                        TODO: Maybe make a generally smaller version of this dropdown. The paddings are a bit too big and disproportionte to the text.--}}
-{{--                        TODO: CRITICAL! My ellipsis dropdown broke again - table cuts overflow. I think I had already fixed the same problem somewhere else - should go search for it.--}}
                         <x-ellipsis-dropdown :disabled="$python->status !== 'installed'">
 
                             <x-dropdown.menu align="right">
