@@ -80,7 +80,7 @@ class DeploymentsIndexTable extends LivewireComponent
 
         $this->authorize('view', $deployment);
 
-        $this->server = Server::validated($serverKey, $deployment->servers);
+        $this->server = $deployment->servers()->findOrFail($serverKey);
 
         $this->logs = $this->server->serverDeployment->logs();
 
