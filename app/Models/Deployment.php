@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read CarbonInterface|null $startedAt
  * @property-read CarbonInterface|null $finishedAt
  * @property-read CarbonInterval|null $duration
+ * @property-read string $createdAtFormatted
  *
  * @property-read User $user
  * @property-read Project $project
@@ -186,6 +187,14 @@ class Deployment extends AbstractModel
             return null;
 
         return $this->finishedAt->diffAsCarbonInterval($this->startedAt);
+    }
+
+    /** Get the $createdAt attribute nicely formatted for the UI. */
+    public function getCreatedAtFormattedAttribute(): string
+    {
+        return $this->createdAt->diffAsCarbonInterval(now())->lessThan(CarbonInterval::day())
+            ? $this->createdAt->diffForHumans()
+            : $this->createdAt->toDayDateTimeString();
     }
 
     /**

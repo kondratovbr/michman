@@ -8,10 +8,8 @@
         <x-tr-header>
             <x-th></x-th>
 {{--            TODO: Change this column to "ago" format when it was just recently.--}}
-            <x-th>{{ __('deployments.table.started-at') }}</x-th>
-            <x-th>{{ __('deployments.table.branch') }}</x-th>
             <x-th>{{ __('deployments.table.commit') }}</x-th>
-            <x-th>{{ __('deployments.table.duration') }}</x-th>
+            <x-th>{{ __('deployments.table.started-at') }}</x-th>
             <x-th>{{ __('deployments.table.status') }}</x-th>
             <x-th></x-th>
         </x-tr-header>
@@ -21,18 +19,22 @@
         @foreach($deployments as $deployment)
             <x-tr>
                 <x-td></x-td>
-                <x-td>{{ $deployment->createdAt }}</x-td>
-                <x-td><x-code>{{ $deployment->branch }}</x-code></x-td>
-{{--                TODO: IMPORTANT! Don't forget to make this a link to the VCS page with this commit, like Forge does.--}}
-                <x-td>{{ Str::substr($deployment->commit, 0, 8) }}</x-td>
                 <x-td>
-                    @if($deployment->finished)
-                        {{ $deployment->finished ? $deployment->duration->forHumans() : '—' }}
-                    @else
-                        <x-spinner/>
-                    @endif
+                    <div class="flex flex-col items-start">
+{{--                        TODO: CRITICAL! Don't forget to make this a link to the VCS page with this commit, like Forge does.--}}
+                        <x-app-link>{{ Str::substr($deployment->commit, 0, 8) }}</x-app-link>
+                        <x-code size="small">{{ $deployment->branch }}</x-code>
+                    </div>
                 </x-td>
-                <x-td><x-deployments.status-badge :deployment="$deployment" /></x-td>
+                <x-td>{{ $deployment->createdAtFormatted }}</x-td>
+                <x-td>
+                    <div class="flex flex-col items-start space-y-1">
+                        <x-deployments.status-badge :deployment="$deployment" />
+                        @if($deployment->finished)
+                            <span class="text-xs">{{ $deployment->duration->forHumans() }}</span>
+                        @endif
+                    </div>
+                </x-td>
                 <x-td>
                     <x-ellipsis-dropdown :disabled="! $deployment->finished">
                         <x-dropdown.menu align="right">

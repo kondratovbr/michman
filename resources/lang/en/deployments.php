@@ -12,7 +12,6 @@ return [
         'started-at' => 'Started At',
         'status' => 'Status',
         'commit' => 'Commit',
-        'branch' => 'Branch',
         'duration' => 'Duration',
     ],
 
