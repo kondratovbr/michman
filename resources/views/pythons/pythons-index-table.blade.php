@@ -17,7 +17,7 @@
     <x-slot name="header">
         <x-tr-header>
             <x-th>{{ __('servers.pythons.table.version') }}</x-th>
-            <x-th :mobile="false">{{ __('servers.pythons.table.cli') }}</x-th>
+            <x-th show="md">{{ __('servers.pythons.table.cli') }}</x-th>
             <x-th>{{ __('servers.pythons.table.status') }}</x-th>
             <x-th></x-th>
         </x-tr-header>
@@ -37,7 +37,7 @@
                     'Python ' . __("servers.pythons.versions.{$version}") .
                     (is_null($python) ? '' : " ({$python->patchVersion})")
                 ) }}</x-td>
-                <x-td :mobile="false"><x-code class="text-sm">{{ config("servers.python.{$version}.cli") }}</x-code></x-td>
+                <x-td show="md"><x-code class="text-sm">{{ config("servers.python.{$version}.cli") }}</x-code></x-td>
                 @if(! is_null($python))
                     <x-td><x-pythons.status-badge :python="$python" /></x-td>
                     <x-td class="min-w-14 flex justify-end items-center">

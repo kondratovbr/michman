@@ -1,9 +1,16 @@
-@props(['align' => 'left', 'mobile' => true])
+@props(['align' => 'left', 'show' => null])
 
 <th {{ $attributes->class([
+    'px-table-cell py-2 sm:py-3 lg:py-4',
+    'font-bold',
     // Rounding here should match the rounding in box.blade.php.
-    'py-4 px-6 font-bold sm:first:rounded-tl-lg sm:last:rounded-tr-lg',
-    ($mobile ?? true) ? '' : 'hidden md:table-cell',
+    'sm:first:rounded-tl-lg sm:last:rounded-tr-lg',
+    match ($show) {
+        'sm' => 'hidden sm:table-cell',
+        'md' => 'hidden md:table-cell',
+        'lg' => 'hidden lg:table-cell',
+        default => '',
+    },
 ]) }}>
     <div class="flex {{ $align === 'center' ? 'justify-center' : '' }} {{ $align === 'right' ? 'justify-end' : '' }}">
         {{ $slot }}
