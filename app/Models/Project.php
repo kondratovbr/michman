@@ -45,6 +45,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $projectDir
  * @property-read string $michmanDir
  * @property-read bool $deployed
+ * @property-read bool $webhookEnabled
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -54,6 +55,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read DatabaseUser|null $databaseUser
  * @property-read Collection $deployments
  * @property-read Collection $workers
+ * @property-read Webhook $webhook
  *
  * @method static ProjectFactory factory(...$parameters)
  */
@@ -191,6 +193,15 @@ class Project extends AbstractModel
         return ! is_null($this->getCurrentDeployment());
     }
 
+    /** Check if this project has webhook enabled. */
+    public function getWebhookEnabledProperty(): bool
+    {
+        if (! isset($this->webhook))
+            return false;
+
+        return $this->webhook->enabled();
+    }
+
     /**
      * Check if the project has a configured Git repository.
      */
@@ -271,5 +282,11 @@ class Project extends AbstractModel
     public function workers(): HasMany
     {
         return $this->hasMany(Worker::class);
+    }
+
+    /** Get a relation with the webhook that is triggered when this project has a new commit pushed in the repo. */
+    public function webhook(): HasOne
+    {
+        return $this->hasOne(Webhook::class);
     }
 }
