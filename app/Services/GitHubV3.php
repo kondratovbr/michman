@@ -48,6 +48,11 @@ class GitHubV3 extends AbstractVcsProvider
         return 'vcs.list.github_v3';
     }
 
+    public function commitUrl(string $repo, string $commit): string
+    {
+        return "https://github.com/{$repo}/commit/{$commit}";
+    }
+
     public function credentialsAreValid(): bool
     {
         $response = $this->get('/user');

@@ -18,6 +18,9 @@ use App\DataTransferObjects\SshKeyDto;
 
 interface VcsProviderInterface
 {
+    /** Get a URL to the page with the specified commit on the VCS site. */
+    public function commitUrl(string $repo, string $commit): string;
+
     /**
      * Check if provided credentials are valid by trying some auth-protected GET request.
      */
