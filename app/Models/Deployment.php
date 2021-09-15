@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read CarbonInterface|null $finishedAt
  * @property-read CarbonInterval|null $duration
  * @property-read string $createdAtFormatted
+ * @property-read string $commitUrl
  *
  * @property-read User $user
  * @property-read Project $project
@@ -194,7 +195,13 @@ class Deployment extends AbstractModel
     {
         return $this->createdAt->diffAsCarbonInterval(now())->lessThan(CarbonInterval::day())
             ? $this->createdAt->diffForHumans()
-            : $this->createdAt->toDayDateTimeString();
+            : $this->createdAt->isoFormat('MMM Do, H:mm');
+    }
+
+    /** Get a URL to the page with the deployed commit on the VCS site. */
+    public function getCommitUrlAttribute(): string
+    {
+        return $this->project->vcsProvider->api()->commitUrl($this->project->repo, $this->commit);
     }
 
     /**
