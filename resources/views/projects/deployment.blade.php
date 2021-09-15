@@ -10,7 +10,7 @@
 
         <x-section-separator/>
 
-        <div>Deployment Trigger URL</div>
+        <livewire:projects.quick-deploy-form :project="$project" />
 
         <x-section-separator/>
 

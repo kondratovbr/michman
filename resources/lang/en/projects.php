@@ -181,4 +181,10 @@ return [
         ],
     ],
 
+    'quick-deploy' => [
+        'title' => 'Quick Deploy',
+        'enable' => 'Enable Quick Deploy',
+        'disable' => 'Disable Quick Deploy',
+    ],
+
 ];
