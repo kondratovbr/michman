@@ -1,10 +1,9 @@
 {{--TODO: IMPORTANT! Check out other buttons for these TODOs as well, they're now completely separate components:--}}
 {{--TODO: Maybe extract buttons as a component.--}}
-{{--TODO: Add a loading spinner, like Bulma does.--}}
 {{--TODO: Maybe use cursor-wait option for when the loading spinner is showing.--}}
 {{--TODO: See how it looks when "disabled". Maybe needs an update. Check other buttons as well.--}}
 
-@props(['capitalize', 'link' => false, 'size' => null])
+@props(['capitalize', 'link' => false, 'size' => null, 'loading' => false])
 
 @php
     $classes = implode(' ', [
@@ -24,11 +23,24 @@
 @endphp
 
 @if($link)
-    <a {{ $attributes->merge(['class' => $classes])->except('type') }}>
+    <a {{ $attributes->merge([
+        'class' => $classes,
+        'disabled' => $loading,
+    ])->except('type') }}>
+        @if($loading)
+            <x-spinner class="-ml-1 mr-2"/>
+        @endif
         {{ $slot }}
     </a>
 @else
-    <button {{ $attributes->merge(['class' => $classes, 'type' => 'submit']) }}>
+    <button {{ $attributes->merge([
+        'class' => $classes,
+        'type' => 'submit',
+        'disabled' => $loading,
+    ]) }}>
+        @if($loading)
+            <x-spinner class="-ml-1 mr-2"/>
+        @endif
         {{ $slot }}
     </button>
 @endif

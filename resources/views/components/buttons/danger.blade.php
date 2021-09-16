@@ -1,4 +1,4 @@
-@props(['capitalize', 'link' => false, 'size' => null])
+@props(['capitalize', 'link' => false, 'size' => null, 'loading' => false])
 
 @php
     $classes = implode(' ', [
@@ -19,11 +19,24 @@
 @endphp
 
 @if($link)
-    <a {{ $attributes->merge(['class' => $classes])->except('type') }}>
+    <a {{ $attributes->merge([
+        'class' => $classes,
+        'disabled' => $loading,
+    ])->except('type') }}>
+        @if($loading)
+            <x-spinner class="-ml-1 mr-2"/>
+        @endif
         {{ $slot }}
     </a>
 @else
-    <button {{ $attributes->merge(['class' => $classes, 'type' => 'button']) }}>
+    <button {{ $attributes->merge([
+        'class' => $classes,
+        'type' => 'button',
+        'disabled' => $loading,
+    ]) }}>
+        @if($loading)
+            <x-spinner class="-ml-1 mr-2"/>
+        @endif
         {{ $slot }}
     </button>
 @endif
