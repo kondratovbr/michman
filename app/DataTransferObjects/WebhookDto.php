@@ -7,7 +7,7 @@ class WebhookDto extends AbstractDto
     public function __construct(
         /** @var string[] */
         public array $events,
-        public string|null $id = null,
-        public string|null $url = null,
+        public string $id,
+        public string $url,
     ) {}
 }
