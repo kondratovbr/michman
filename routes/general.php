@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 use App\Http\Controllers\ErrorController;
+use App\Http\Controllers\HookController;
 use App\Http\Controllers\OAuthController;
-use App\Support\Arr;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +22,10 @@ Route::redirect('/', '/servers')->name('home');
 // Unsuccessful OAuth attempts will redirect user to this route as a callback.
 Route::get('oauth/{oauthService}', [OAuthController::class, 'defaultCallback'])
     ->name('oauth.default-callback');
+
+//
+Route::post('hook/{webhookProvider}/push/{webhook}', [HookController::class, 'push'])
+    ->name('hook.push');
 
 /*
  * Error page views to be able to serve those pages directly without exception.
