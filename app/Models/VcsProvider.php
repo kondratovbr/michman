@@ -92,11 +92,11 @@ class VcsProvider extends AbstractModel
     /** Get the name of the webhook provider corresponding to this VCS provider. */
     public function getWebhookProviderAttribute(): string
     {
-        $providers = config('vcs.hook_providers');
-
-        return Arr::firstKey(Arr::where($providers,
-            fn(string $hookProvider, string $vcsProvider) => $vcsProvider === $this->provider
-        ));
+        return Arr::firstKey(
+            Arr::filterAssoc(config('vcs.hook_providers'),
+                fn(string $hookProvider, string $vcsProvider) => $vcsProvider === $this->provider
+            )
+        );
     }
 
     /**
