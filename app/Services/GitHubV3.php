@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
+use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\SshKeyDto;
+use App\DataTransferObjects\WebhookDto;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 
 // TODO: CRITICAL! Have I entirely forgot about pagination in responses?
 
+// TODO: CRITICAL! I should somehow handle possible API errors. First, try simulating some and see how Laravel behaves.
 /*
  * TODO: CRITICAL! I should also handle the "scope".
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
@@ -157,5 +160,37 @@ class GitHubV3 extends AbstractVcsProvider
     public static function getFullSshString(string $repo): string
     {
         return "git@github.com:{$repo}.git";
+    }
+
+    public function getRepoWebhooks(): WebhookDataCollection
+    {
+        //
+    }
+
+    public function getWebhook(): WebhookDto
+    {
+        //
+    }
+
+    public function addWebhookPush(string $repo, string $payloadUrl): WebhookDto
+    {
+        $response = $this->post("/repos/{$repo}/hooks", [
+            'config' => [
+                // TODO: CRITICAL! Don't forget to change this to the actual route.
+                // 'url' => $payloadUrl,
+                'url' => 'https://www.michtest.com/',
+                'content_type' => 'json',
+                'insecure_ssl' => false,
+                'events' => [
+                    'push',
+                ],
+            ],
+        ]);
+        $data = $this->decodeJson($response->body());
+
+        return new WebhookDto(
+            id: $data->id,
+            events: $data->events,
+        );
     }
 }
