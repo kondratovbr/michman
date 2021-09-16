@@ -6,6 +6,7 @@ use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
+use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,6 @@ use Illuminate\Support\Facades\Http;
 
 // TODO: CRITICAL! Have I entirely forgot about pagination in responses?
 
-// TODO: CRITICAL! I should somehow handle possible API errors. First, try simulating some and see how Laravel behaves.
 /*
  * TODO: CRITICAL! I should also handle the "scope".
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
@@ -188,9 +188,9 @@ class GitHubV3 extends AbstractVcsProvider
     {
         $response = $this->post("/repos/{$repo}/hooks", [
             'config' => [
+                'url' => $payloadUrl,
                 // TODO: CRITICAL! Don't forget to change this to the actual route.
-                // 'url' => $payloadUrl,
-                'url' => 'https://www.michtest.com/',
+                // 'url' => 'https://www.michtest.com/',
                 'content_type' => 'json',
                 'insecure_ssl' => false,
                 'events' => [
@@ -224,6 +224,21 @@ class GitHubV3 extends AbstractVcsProvider
         }
 
         return null;
+    }
+
+    public function deleteWebhook(string $repo, string $webhookExternalId): void
+    {
+        $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
+    }
+
+    public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void
+    {
+        $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
+
+        if (is_null($hook))
+            return;
+
+        $this->deleteWebhook($repo, $hook->id);
     }
 
     /** Convert webhook data from response format into the internal format. */
