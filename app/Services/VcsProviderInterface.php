@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\DataTransferObjects\SshKeyDto;
+use App\DataTransferObjects\WebhookDto;
 
 /*
  * TODO: CRITICAL! Figure out how to avoid hitting the rate limit with these things. Probably move the actual HTTP logic into a singleton for each service, so it can track calls during a request and also between them by using cache. Or maybe just use cache every time?
@@ -83,4 +84,9 @@ interface VcsProviderInterface
      * a full SSH designation, like "git@github.com:username/repo.git".
      */
     public static function getFullSshString(string $repo): string;
+
+    /**
+     * Create a "push" webhook for a given repo.
+     */
+    public function addWebhookPush(string $repo, string $payloadUrl): WebhookDto;
 }
