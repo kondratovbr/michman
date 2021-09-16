@@ -4,7 +4,7 @@ namespace App\Actions\Webhooks;
 
 use App\Jobs\Webhooks\EnableWebhookJob;
 use App\Models\Project;
-use App\Models\Webhook;
+use App\States\Webhooks\Enabling;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -21,7 +21,7 @@ class CreateProjectWebhookAction
 
             $hook = $project->webhook()->create([
                 'type' => 'push',
-                'status' => Webhook::STATUS_ENABLING,
+                'state' => Enabling::class,
             ]);
 
             EnableWebhookJob::dispatch($hook);
