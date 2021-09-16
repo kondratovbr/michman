@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Models\Webhook;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WebhookPolicy
@@ -13,5 +14,10 @@ class WebhookPolicy
     public function create(User $user, Project $project): bool
     {
         return $user->is($project->user);
+    }
+
+    public function delete(User $user, Webhook $hook): bool
+    {
+        return $user->is($hook->user);
     }
 }
