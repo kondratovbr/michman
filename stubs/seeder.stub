@@ -6,9 +6,6 @@ use Illuminate\Database\Seeder;
 
 class {{ class }} extends Seeder
 {
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         //
