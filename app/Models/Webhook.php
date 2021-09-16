@@ -28,6 +28,7 @@ use Spatie\ModelStates\HasStates;
  *
  * @property-read User $user
  * @property-read string $payloadUrl
+ * @property-read string $repo
  *
  * @property-read Project $project
  *
@@ -69,6 +70,12 @@ class Webhook extends AbstractModel
     public function getPayloadUrlAttribute(): string
     {
         return route('hook.push', [$this->project->vcsProvider->webhookProvider, $this]);
+    }
+
+    /** Get the full name (with username) of the repository with this webhook. */
+    public function getRepoAttribute(): string
+    {
+        return $this->project->repo;
     }
 
     public function isEnabling(): bool
