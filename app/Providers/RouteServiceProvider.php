@@ -137,5 +137,15 @@ class RouteServiceProvider extends ServiceProvider
                 fn(array $oauthProviderConfig) => ! empty($oauthProviderConfig['vcs_provider'])
             )))
         );
+
+        Route::pattern(
+            'webhookProvider',
+            implode('|', Arr::keys(
+                Arr::filter(
+                    config('vcs.hook_providers'),
+                    fn(string|null $vcsProvider) => ! empty($vcsProvider)
+                )
+            ))
+        );
     }
 }
