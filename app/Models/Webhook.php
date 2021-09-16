@@ -26,6 +26,7 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read User $user
  * @property-read string $payloadUrl
  *
  * @property-read Project $project
@@ -58,6 +59,11 @@ class Webhook extends AbstractModel
         'updated' => WebhookUpdatedEvent::class,
         'deleted' => WebhookDeletedEvent::class,
     ];
+
+    public function getUserAttribute(): User
+    {
+        return $this->project->user;
+    }
 
     /** Generate a URL that the external service should be sending payload to. */
     public function getPayloadUrlAttribute(): string

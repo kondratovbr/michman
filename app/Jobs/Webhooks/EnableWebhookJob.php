@@ -5,6 +5,7 @@ namespace App\Jobs\Webhooks;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithVcsProviders;
 use App\Models\Webhook;
+use App\Notifications\Webhooks\WebhookEnablingFailedNotification;
 use App\States\Webhooks\Enabled;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -51,5 +52,16 @@ class EnableWebhookJob extends AbstractJob
 
             $hook->save();
         }, 5);
+    }
+
+    public function failed(): void
+    {
+        DB::transaction(function () {
+            $hook = $this->hook->freshLockForUpdate();
+
+            $hook->user->notify(new WebhookEnablingFailedNotification($hook, $hook->project));
+
+            $hook->delete();
+        }, 10);
     }
 }

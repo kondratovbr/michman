@@ -11,6 +11,7 @@ use App\Notifications\Servers\FailedToPrepareServerNotification;
 use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Notifications\Servers\ServerNotAvailableNotification;
+use App\Notifications\Webhooks\WebhookEnablingFailedNotification;
 
 return [
 
@@ -32,6 +33,8 @@ return [
         FailedToUploadServerSshKeyToServerNotification::class => 'We were unable to upload a server SSH key to server :server.',
         ServerIsNotSuitableNotification::class => 'The server :server is not suitable for Michman operations.',
         ServerNotAvailableNotification::class => 'We were unable to connect to server :server.',
+
+        WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook for project :project',
     ],
 
 ];
