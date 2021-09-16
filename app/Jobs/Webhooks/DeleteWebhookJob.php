@@ -5,8 +5,11 @@ namespace App\Jobs\Webhooks;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithVcsProviders;
 use App\Models\Webhook;
+use App\Notifications\Projects\WebhookDeletingFailedNotification;
 use App\States\Webhooks\Deleting;
 use Illuminate\Support\Facades\DB;
+
+// TODO: CRITICAL! CONTINUE. Test.
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -34,10 +37,23 @@ class DeleteWebhookJob extends AbstractJob
             if (isset($hook->externalId)) {
                 $api = $hook->project->vcsProvider->api();
 
-                // TODO: CRITICAL! Implement!
-                
-                //
+                $api->deleteWebhookIfExistsPush($hook->repo, $hook->payloadUrl);
             }
+
+            $hook->delete();
+        }, 5);
+    }
+
+    public function failed(): void
+    {
+        /*
+         * Failure means we most likely don't have access to the repo anymore,
+         * so we just remove the hook model from the DB and notify the user.
+         */
+        DB::transaction(function () {
+            $hook = $this->hook->freshLockForUpdate();
+
+            $this->hook->user->notify(new WebhookDeletingFailedNotification($this->hook->project));
 
             $hook->delete();
         }, 5);
