@@ -1,19 +1,18 @@
 <?php declare(strict_types=1);
 
-namespace App\Actions\Projects;
+namespace App\Actions\Webhooks;
 
+use App\Jobs\Webhooks\EnableWebhookJob;
 use App\Models\Project;
 use App\Models\Webhook;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
 
-class EnableWebhookAction
+class CreateProjectWebhookAction
 {
     public function execute(Project $project): void
     {
-        // TODO: CRITICAL! CONTINUE. Implement.
-
         DB::transaction(function () use ($project) {
             $project = $project->freshSharedLock();
 
@@ -25,7 +24,7 @@ class EnableWebhookAction
                 'status' => Webhook::STATUS_ENABLING,
             ]);
 
-            //
+            EnableWebhookJob::dispatch($hook);
         }, 5);
     }
 }

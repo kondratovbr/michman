@@ -15,7 +15,7 @@ class CreateWebhooksTable extends Migration
             $table->foreignId('project_id')->references('id')->on('projects');
 
             $table->string('type');
-            $table->string('status');
+            $table->string('state');
             $table->string('external_id')->nullable();
 
             $table->timestamps();

@@ -5,12 +5,16 @@ namespace App\Models;
 use App\Events\Webhooks\WebhookCreatedEvent;
 use App\Events\Webhooks\WebhookDeletedEvent;
 use App\Events\Webhooks\WebhookUpdatedEvent;
-use App\Models\Traits\HasStatus;
 use App\Models\Traits\UsesUuid;
+use App\States\Webhooks\Deleting;
+use App\States\Webhooks\Enabled;
+use App\States\Webhooks\Enabling;
+use App\States\Webhooks\WebhookState;
 use Carbon\CarbonInterface;
 use Database\Factories\WebhookFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\ModelStates\HasStates;
 
 /**
  * Webhook Eloquent model
@@ -18,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $id
  * @property string $type
  * @property string|null $externalId
+ * @property WebhookState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -30,16 +35,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Webhook extends AbstractModel
 {
     use HasFactory;
-    use HasStatus;
     use UsesUuid;
-
-    public const STATUS_ENABLING = 'enabling';
-    public const STATUS_ENABLED = 'enabled';
-    public const STATUS_DISABLING = 'disabling';
+    use HasStates;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'status',
         'type',
         'external_id',
     ];
@@ -49,7 +49,7 @@ class Webhook extends AbstractModel
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        //
+        'state' => WebhookState::class,
     ];
 
     /** @var string[] The event map for the model. */
@@ -65,9 +65,19 @@ class Webhook extends AbstractModel
         return route('hook.push', [$this->project->vcsProvider->webhookProvider, $this]);
     }
 
+    public function enabling(): bool
+    {
+        return $this->state->is(Enabling::class);
+    }
+
     public function enabled(): bool
     {
-        return $this->isStatus(static::STATUS_ENABLED);
+        return $this->state->is(Enabled::class);
+    }
+
+    public function deleting(): bool
+    {
+        return $this->state->is(Deleting::class);
     }
 
     /** Get a relation with the project that this webhook is attached to. */
