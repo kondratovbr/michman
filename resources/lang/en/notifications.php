@@ -11,7 +11,7 @@ use App\Notifications\Servers\FailedToPrepareServerNotification;
 use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Notifications\Servers\ServerNotAvailableNotification;
-use App\Notifications\Webhooks\WebhookEnablingFailedNotification;
+use App\Notifications\Projects\WebhookEnablingFailedNotification;
 
 return [
 
