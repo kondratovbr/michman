@@ -5,8 +5,17 @@ namespace App\Jobs\Webhooks;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithVcsProviders;
 use App\Models\Webhook;
+use App\States\Webhooks\Enabled;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
+
+// TODO: CRITICAL! Test.
+
+// TODO: CRITICAL! Cover with tests!
+
+/*
+ * TODO: CRITICAL! I should cleanup webhook model if this process fails and notify the user.
+ */
 
 class EnableWebhookJob extends AbstractJob
 {
@@ -26,6 +35,9 @@ class EnableWebhookJob extends AbstractJob
         DB::transaction(function () {
             $hook = $this->hook->freshLockForUpdate();
 
+            if (! $hook->state->canTransitionTo(Enabled::class))
+                return;
+
             $api = $hook->project->vcsProvider->api();
 
             $hookData = $api->addWebhookPush($hook->project->repo, $hook->payloadUrl);
@@ -35,7 +47,7 @@ class EnableWebhookJob extends AbstractJob
 
             $hook->externalId = $hookData->id;
 
-            $hook->status = Webhook::STATUS_ENABLED;
+            $hook->state = Enabled::class;
 
             $hook->save();
         }, 5);
