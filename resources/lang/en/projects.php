@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Worker;
+use App\States\Webhooks\Deleting;
+use App\States\Webhooks\Enabled;
+use App\States\Webhooks\Enabling;
 
 return [
 
@@ -185,6 +188,14 @@ return [
         'title' => 'Quick Deploy',
         'enable' => 'Enable Quick Deploy',
         'disable' => 'Disable Quick Deploy',
+    ],
+
+    'hooks' => [
+        'states' => [
+            Enabling::class => 'Enabling',
+            Enabled::class => 'Enabled',
+            Deleting::class => 'Deleting',
+        ],
     ],
 
 ];
