@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             CertificateSeeder::class,
             WorkerSeeder::class,
             DaemonSeeder::class,
+            WebhookSeeder::class,
         ]);
     }
 }
