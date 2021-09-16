@@ -54,4 +54,11 @@ return [
 
     ],
 
+    // TODO: CRITICAL! Don't forget to implement webhooks for Gitlab and Bitbucket as well.
+    'hook_providers' => [
+        'github' => 'github_v3',
+        'gitlab' => 'gitlab',
+        'bitbucket' => 'bitbucket',
+    ],
+
 ];
