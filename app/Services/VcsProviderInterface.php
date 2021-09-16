@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
+use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 
@@ -22,31 +23,19 @@ interface VcsProviderInterface
     /** Get a URL to the page with the specified commit on the VCS site. */
     public function commitUrl(string $repo, string $commit): string;
 
-    /**
-     * Check if provided credentials are valid by trying some auth-protected GET request.
-     */
+    /** Check if provided credentials are valid by trying some auth-protected GET request. */
     public function credentialsAreValid(): bool;
 
-    /**
-     * Get a collection of SSH keys added to this account.
-     */
+    /** Get a collection of SSH keys added to this account. */
     public function getAllSshKeys(): SshKeyDataCollection;
 
-    /**
-     * Get an SSH key data by its ID on the provider's side.
-     *
-     * @param string $id Provider's ID
-     */
-    public function getSshKey(string $id): SshKeyDto;
+    /** Get an SSH key data by its ID on the provider's side. */
+    public function getSshKey(string $sshKeyExternalId): SshKeyDto;
 
-    /**
-     * Add a new SSH key to the provider.
-     */
+    /** Add a new SSH key to the provider. */
     public function addSshKey(string $name, string $publicKey): SshKeyDto;
 
-    /**
-     * Add a new SSH key to the provider, checking if it was added before.
-     */
+    /** Add a new SSH key to the provider, checking if it was added before. */
     public function addSshKeySafely(string $name, string $publicKey): SshKeyDto;
 
     /*
@@ -55,29 +44,22 @@ interface VcsProviderInterface
      *       is to delete the key and add a new one, which will have a different ID.
      *       Check out other "update" method in ALL APIs as well.
      */
-    /**
-     * Update a previously added SSH key's name by its ID on the provider's side.
-     *
-     * @param string $id Provider's ID
-     */
+    /** Update a previously added SSH key's name by its ID on the provider's side. */
     public function updateSshKey(SshKeyDto $sshKey): SshKeyDto;
 
-    /**
-     * Delete a previously added SSH key by its ID on the provider's side.
-     *
-     * @param string $id
-     */
+    /** Delete a previously added SSH key by its ID on the provider's side. */
     public function deleteSshKey(string $id): void;
 
-    /**
-     * Get a VCS provider server host key for SSH host verification.
-     */
+    /** Get a VCS provider server host key for SSH host verification. */
     public function getSshHostKey(): string;
 
-    /**
-     * Get the SHA hash of the latest commit on the specified branch.
-     */
-    public function getLatestCommitHash(string|null $fullRepoName, string $branch, string $username = null, string $repo = null): string;
+    /** Get the SHA hash of the latest commit on the specified branch. */
+    public function getLatestCommitHash(
+        string|null $fullRepoName,
+        string $branch,
+        string $username = null,
+        string $repo = null,
+    ): string;
 
     /**
      * Convert a short repo string, like "username/repo" to
@@ -85,8 +67,21 @@ interface VcsProviderInterface
      */
     public static function getFullSshString(string $repo): string;
 
-    /**
-     * Create a "push" webhook for a given repo.
-     */
+    /** Get a repo webhook by its external id. */
+    public function getWebhook(string $repo, string $webhookExternalId): WebhookDto;
+
+    /** Get a collection of all webhooks created for the provided repo. */
+    public function getRepoWebhooks(string $repo): WebhookDataCollection;
+
+    /** Create a "push" webhook for a given repo. */
     public function addWebhookPush(string $repo, string $payloadUrl): WebhookDto;
+
+    /**
+     * Create a "push" webhook for a giver repo,
+     * while making sure not to create duplicates.
+     */
+    public function addWebhookSafelyPush(string $repo, string $payloadUrl): WebhookDto;
+
+    /** Get an existing webhook or null if it doesn't exist on the provider's side. */
+    public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null;
 }

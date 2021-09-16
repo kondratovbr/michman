@@ -8,5 +8,6 @@ class WebhookDto extends AbstractDto
         /** @var string[] */
         public array $events,
         public string|null $id = null,
+        public string|null $url = null,
     ) {}
 }

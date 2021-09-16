@@ -6,6 +6,7 @@ use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
+use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -78,9 +79,9 @@ class GitHubV3 extends AbstractVcsProvider
         return $collection;
     }
 
-    public function getSshKey(string $id): SshKeyDto
+    public function getSshKey(string $sshKeyExternalId): SshKeyDto
     {
-        $response = $this->get("/user/keys/{$id}");
+        $response = $this->get("/user/keys/{$sshKeyExternalId}");
         $data = $this->decodeJson($response->body());
 
         return $this->sshKeyDataFromResponseData($data);
@@ -140,9 +141,7 @@ class GitHubV3 extends AbstractVcsProvider
         return $data->sha;
     }
 
-    /**
-     * Convert SSH key object from response format to internal format.
-     */
+    /** Convert SSH key object from response format to internal format. */
     protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
         return new SshKeyDto(
@@ -162,14 +161,27 @@ class GitHubV3 extends AbstractVcsProvider
         return "git@github.com:{$repo}.git";
     }
 
-    public function getRepoWebhooks(): WebhookDataCollection
+    public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        //
+        $response = $this->get("/repos/{$repo}/hooks");
+        $data = $this->decodeJson($response->body());
+
+        $collection = new WebhookDataCollection;
+
+        /** @var object $hook */
+        foreach ($data as $hook) {
+            $collection->push($this->webhookDataFromResponseData($hook));
+        }
+
+        return $collection;
     }
 
-    public function getWebhook(): WebhookDto
+    public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        //
+        $response = $this->get("/repos/{$repo}/hooks/{$webhookExternalId}");
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
     public function addWebhookPush(string $repo, string $payloadUrl): WebhookDto
@@ -188,9 +200,39 @@ class GitHubV3 extends AbstractVcsProvider
         ]);
         $data = $this->decodeJson($response->body());
 
+        return $this->webhookDataFromResponseData($data);
+    }
+
+    public function addWebhookSafelyPush(string $repo, string $payloadUrl): WebhookDto
+    {
+        $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
+
+        if (! is_null($hook))
+            return $hook;
+
+        return $this->addWebhookPush($repo, $payloadUrl);
+    }
+
+    public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null
+    {
+        $hooks = $this->getRepoWebhooks($repo);
+
+        /** @var WebhookDto $hook */
+        foreach ($hooks as $hook) {
+            if ($hook->url === $payloadUrl && Arr::hasValue($hook->events, 'push'))
+                return $hook;
+        }
+
+        return null;
+    }
+
+    /** Convert webhook data from response format into the internal format. */
+    protected function webhookDataFromResponseData(object $data): WebhookDto
+    {
         return new WebhookDto(
-            id: $data->id,
             events: $data->events,
+            id: (string) $data->id,
+            url: $data->config->url,
         );
     }
 }
