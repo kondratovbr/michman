@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\Webhooks\WebhookCreatedEvent;
+use App\Events\Webhooks\WebhookDeletedEvent;
+use App\Events\Webhooks\WebhookUpdatedEvent;
 use App\Models\Traits\HasStatus;
 use App\Models\Traits\UsesUuid;
 use Carbon\CarbonInterface;
@@ -17,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @property-read string $payloadUrl
  *
  * @property-read Project $project
  *
@@ -53,6 +58,12 @@ class Webhook extends AbstractModel
         'updated' => WebhookUpdatedEvent::class,
         'deleted' => WebhookDeletedEvent::class,
     ];
+
+    /** Generate a URL that the external service should be sending payload to. */
+    public function getPayloadUrlAttribute(): string
+    {
+        return route('hook.push', [$this->project->vcsProvider->webhookProvider, $this]);
+    }
 
     public function enabled(): bool
     {
