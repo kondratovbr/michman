@@ -10,7 +10,7 @@ use App\States\Webhooks\Enabled;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Test.
+// TODO: CRITICAL! CONTINUE. Test. Also, I should probably monitor for the "ping" event and somehow use it to verify that the hook is working.
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -41,7 +41,7 @@ class EnableWebhookJob extends AbstractJob
 
             $api = $hook->project->vcsProvider->api();
 
-            $hookData = $api->addWebhookSafelyPush($hook->project->repo, $hook->payloadUrl);
+            $hookData = $api->addWebhookSafelyPush($hook->repo, $hook->payloadUrl);
 
             if (is_null($hookData->id))
                 throw new RuntimeException('Received no external ID after creating a webhook on ' . $hook->project->vcsProvider->provider);
