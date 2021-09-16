@@ -6,6 +6,7 @@ use App\Events\VcsProviders\VcsProviderCreatedEvent;
 use App\Events\VcsProviders\VcsProviderDeletedEvent;
 use App\Events\VcsProviders\VcsProviderUpdatedEvent;
 use App\Services\VcsProviderInterface;
+use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\VcsProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +29,8 @@ use Illuminate\Support\Facades\App;
  * @property string|null $secret
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @property-read string $webhookProvider
  *
  * @property-read User $user
  *
@@ -84,6 +87,16 @@ class VcsProvider extends AbstractModel
         }
 
         return $this->api;
+    }
+
+    /** Get the name of the webhook provider corresponding to this VCS provider. */
+    public function getWebhookProviderAttribute(): string
+    {
+        $providers = config('vcs.hook_providers');
+
+        return Arr::firstKey(Arr::where($providers,
+            fn(string $hookProvider, string $vcsProvider) => $vcsProvider === $this->provider
+        ));
     }
 
     /**
