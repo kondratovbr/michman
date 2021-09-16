@@ -55,7 +55,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read DatabaseUser|null $databaseUser
  * @property-read Collection $deployments
  * @property-read Collection $workers
- * @property-read Webhook $webhook
+ * @property-read Webhook|null $webhook
  *
  * @method static ProjectFactory factory(...$parameters)
  */
