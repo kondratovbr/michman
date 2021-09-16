@@ -5,17 +5,17 @@
 
     <x-slot name="content">
 
-        @if(is_null($hook) || $hook->enabling())
+        @if(is_null($hook) || $hook->isEnabling())
             <x-buttons.primary
                 wire:click.prevent="enable"
                 wire:loading.attr="disabled"
-                :loading="$hook?->enabling()"
+                :loading="$hook?->isEnabling()"
             >{{ __('projects.quick-deploy.enable') }}</x-buttons.primary>
         @else
             <x-buttons.danger
                 wire:click.prevent="disable"
                 wire:loading.attr="disabled"
-                :loading="$hook->deleting()"
+                :loading="$hook->isDeleting()"
             >{{ __('projects.quick-deploy.disable') }}</x-buttons.danger>
         @endif
 
