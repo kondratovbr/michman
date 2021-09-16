@@ -84,4 +84,13 @@ interface VcsProviderInterface
 
     /** Get an existing webhook or null if it doesn't exist on the provider's side. */
     public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null;
+
+    /** Delete webhook from the provider's side by its ID on that side. */
+    public function deleteWebhook(string $repo, string $webhookExternalId): void;
+
+    /**
+     * Delete "push" webhook by its repo name and payload URL,
+     * not throwing any errors if it doesn't exist.
+     */
+    public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void;
 }
