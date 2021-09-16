@@ -5,19 +5,24 @@
 
     <x-slot name="content">
 
-        @if(is_null($hook) || $hook->isEnabling())
+        @if(is_null($this->hook) || $this->hook->isEnabling())
             <x-buttons.primary
                 wire:click.prevent="enable"
                 wire:loading.attr="disabled"
-                :loading="$hook?->isEnabling()"
+                :loading="$this->hook?->isEnabling()"
             >{{ __('projects.quick-deploy.enable') }}</x-buttons.primary>
         @else
             <x-buttons.danger
                 wire:click.prevent="disable"
                 wire:loading.attr="disabled"
-                :loading="$hook->isDeleting()"
+                :loading="$this->hook->isDeleting()"
             >{{ __('projects.quick-deploy.disable') }}</x-buttons.danger>
         @endif
+
+        <x-buttons.secondary
+            wire:click.prevent="$refresh"
+            wire:loading.attr="disabled"
+        >Refresh</x-buttons.secondary>
 
     </x-slot>
 </x-action-section>
