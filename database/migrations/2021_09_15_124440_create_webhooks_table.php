@@ -16,6 +16,7 @@ class CreateWebhooksTable extends Migration
 
             $table->string('type');
             $table->string('status');
+            $table->string('external_id')->nullable();
 
             $table->timestamps();
         });

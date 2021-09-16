@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property string $id
  * @property string $type
+ * @property string|null $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -35,6 +36,7 @@ class Webhook extends AbstractModel
     protected $fillable = [
         'status',
         'type',
+        'external_id',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
