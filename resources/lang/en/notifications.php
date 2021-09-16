@@ -2,6 +2,7 @@
 
 use App\Notifications\Deployments\DeploymentFailedNotification;
 use App\Notifications\Projects\ProjectInstallationFailedNotification;
+use App\Notifications\Projects\WebhookDeletingFailedNotification;
 use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use App\Notifications\Providers\RequestingNewServerFromProviderFailedNotification;
 use App\Notifications\Servers\FailedToAddSshKeyToServerNotification;
@@ -35,6 +36,7 @@ return [
         ServerNotAvailableNotification::class => 'We were unable to connect to server :server.',
 
         WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook for project :project',
+        WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook for project :project from your repository.',
     ],
 
 ];
