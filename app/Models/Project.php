@@ -199,7 +199,7 @@ class Project extends AbstractModel
         if (! isset($this->webhook))
             return false;
 
-        return $this->webhook->enabled();
+        return $this->webhook->isEnabled();
     }
 
     /**

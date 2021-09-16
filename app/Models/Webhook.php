@@ -65,17 +65,17 @@ class Webhook extends AbstractModel
         return route('hook.push', [$this->project->vcsProvider->webhookProvider, $this]);
     }
 
-    public function enabling(): bool
+    public function isEnabling(): bool
     {
         return $this->state->is(Enabling::class);
     }
 
-    public function enabled(): bool
+    public function isEnabled(): bool
     {
         return $this->state->is(Enabled::class);
     }
 
-    public function deleting(): bool
+    public function isDeleting(): bool
     {
         return $this->state->is(Deleting::class);
     }
