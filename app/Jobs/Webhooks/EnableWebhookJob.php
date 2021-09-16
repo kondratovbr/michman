@@ -5,7 +5,7 @@ namespace App\Jobs\Webhooks;
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\InteractsWithVcsProviders;
 use App\Models\Webhook;
-use App\Notifications\Webhooks\WebhookEnablingFailedNotification;
+use App\Notifications\Projects\WebhookEnablingFailedNotification;
 use App\States\Webhooks\Enabled;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
@@ -41,7 +41,7 @@ class EnableWebhookJob extends AbstractJob
 
             $api = $hook->project->vcsProvider->api();
 
-            $hookData = $api->addWebhookPush($hook->project->repo, $hook->payloadUrl);
+            $hookData = $api->addWebhookSafelyPush($hook->project->repo, $hook->payloadUrl);
 
             if (is_null($hookData->id))
                 throw new RuntimeException('Received no external ID after creating a webhook on ' . $hook->project->vcsProvider->provider);
@@ -59,7 +59,7 @@ class EnableWebhookJob extends AbstractJob
         DB::transaction(function () {
             $hook = $this->hook->freshLockForUpdate();
 
-            $hook->user->notify(new WebhookEnablingFailedNotification($hook, $hook->project));
+            $hook->user->notify(new WebhookEnablingFailedNotification($hook->project));
 
             $hook->delete();
         }, 10);
