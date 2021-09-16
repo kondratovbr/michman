@@ -47,7 +47,9 @@ class Webhook extends AbstractModel
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
-        //
+        'created' => WebhookCreatedEvent::class,
+        'updated' => WebhookUpdatedEvent::class,
+        'deleted' => WebhookDeletedEvent::class,
     ];
 
     public function enabled(): bool
