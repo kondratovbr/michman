@@ -46,7 +46,7 @@ class QuickDeployForm extends LivewireComponent
 
     public function render(): View
     {
-        $this->hook = $this->project->webhook;
+        $this->hook = $this->project->webhook()->first();
 
         return view('projects.quick-deploy-form');
     }
