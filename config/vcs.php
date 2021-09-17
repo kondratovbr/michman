@@ -61,4 +61,6 @@ return [
         'bitbucket' => 'bitbucket',
     ],
 
+    'hook_url' => env('WEBHOOKS_URL'),
+
 ];
