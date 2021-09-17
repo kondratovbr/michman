@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Register route for spatie/laravel-webhook-client package to handle incoming webhook requests.
+Route::middleware([
+    'throttle:webhooks',
+    SubstituteBindings::class,
+])->group(function () {
+    Route::webhooks('hook');
+});

@@ -23,9 +23,6 @@ Route::redirect('/', '/servers')->name('home');
 Route::get('oauth/{oauthService}', [OAuthController::class, 'defaultCallback'])
     ->name('oauth.default-callback');
 
-// Register route for spatie/laravel-webhook-client package to handle incoming webhook requests.
-Route::webhooks('hook');
-
 //
 // Route::get('hook/{webhookProvider}/push/{webhook}', [HookController::class, 'push'])
 //     ->name('hook.push');
