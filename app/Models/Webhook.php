@@ -14,6 +14,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\WebhookFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\URL;
 use Spatie\ModelStates\HasStates;
 
 /**
@@ -69,6 +70,12 @@ class Webhook extends AbstractModel
     /** Generate a URL that the external service should be sending payload to. */
     public function getPayloadUrlAttribute(): string
     {
+        // This allows to have a separate domain for webhook payloads. Useful mainly for dev/debug purposes.
+        if (! empty(config('vcs.hook_url'))) {
+            return config('vcs.hook_url') .
+                route('hook.push', [$this->project->vcsProvider->webhookProvider, $this], false);
+        }
+
         return route('hook.push', [$this->project->vcsProvider->webhookProvider, $this]);
     }
 
