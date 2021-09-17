@@ -48,6 +48,9 @@ class RouteServiceProvider extends ServiceProvider
                 $this->registerWebRoutes();
             });
 
+        // Miscellaneous routes (neither API, nor web)
+        $this->registerMiscRoutes();
+
         // Customized package routes
         $this->registerJetstreamRoutes();
         $this->registerFortifyRoutes();
@@ -86,6 +89,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('debug')
                 ->group(base_path('routes/debug.php'));
         }
+    }
+
+    /** Register routes that are neither API, nor web. */
+    protected function registerMiscRoutes(): void
+    {
+        Route::group([], base_path('routes/misc.php'));
     }
 
     /**
