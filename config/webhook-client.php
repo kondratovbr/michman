@@ -21,7 +21,7 @@ return [
             'signature_header_name' => 'Signature',
 
             /*
-             *  This class will verify that the content of the signature header is valid.
+             * This class will verify that the content of the signature header is valid.
              *
              * It should implement \Spatie\WebhookClient\SignatureValidator\SignatureValidator
              */
@@ -50,7 +50,7 @@ return [
              * To store all headers, set this value to `*`.
              */
             'store_headers' => [
-
+                //
             ],
 
             /*
