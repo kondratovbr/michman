@@ -189,10 +189,10 @@ class GitHubV3 extends AbstractVcsProvider
         $response = $this->post("/repos/{$repo}/hooks", [
             'config' => [
                 'url' => $payloadUrl,
-                // TODO: CRITICAL! Don't forget to change this to the actual route.
-                // 'url' => 'https://www.michtest.com/',
                 'content_type' => 'json',
                 'insecure_ssl' => false,
+                // CRITICAL! Implement "secret" support. Read GitHub docs.
+                // 'secret' => null,
                 'events' => [
                     'push',
                 ],
