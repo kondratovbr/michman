@@ -6,6 +6,7 @@ use App\Actions\Deployments\StoreDeploymentAction;
 use App\DataTransferObjects\DeploymentDto;
 use App\Exceptions\NotImplementedException;
 use App\Models\Webhook;
+use Illuminate\Http\Response;
 
 class HookController extends AbstractController
 {
@@ -16,8 +17,10 @@ class HookController extends AbstractController
      *
      * I.e. a commit has been pushed to one of the repos we're connected to.
      */
-    public function push(Webhook $hook, StoreDeploymentAction $action): void
+    public function push(string $webhookProvider, Webhook $webhook, StoreDeploymentAction $action): mixed
     {
+        return ;
+
         // TODO: CRITICAL! Don't forget that I must update the webhook when user changes the deployment branch. And when they change the repo, of course.
 
         // TODO: CRITICAL! CONTINUE. Unfinished.
