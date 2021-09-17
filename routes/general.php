@@ -23,9 +23,12 @@ Route::redirect('/', '/servers')->name('home');
 Route::get('oauth/{oauthService}', [OAuthController::class, 'defaultCallback'])
     ->name('oauth.default-callback');
 
+// Register route for spatie/laravel-webhook-client package to handle incoming webhook requests.
+Route::webhooks('hook');
+
 //
-Route::post('hook/{webhookProvider}/push/{webhook}', [HookController::class, 'push'])
-    ->name('hook.push');
+// Route::get('hook/{webhookProvider}/push/{webhook}', [HookController::class, 'push'])
+//     ->name('hook.push');
 
 /*
  * Error page views to be able to serve those pages directly without exception.
