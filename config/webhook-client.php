@@ -1,5 +1,10 @@
 <?php
 
+// TODO: CRITICAL! CONTINUE. Set up and try this package.
+//       https://github.com/spatie/laravel-webhook-client
+//       https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#delivery-headers
+//       https://localhost.run
+
 return [
     'configs' => [
         [
