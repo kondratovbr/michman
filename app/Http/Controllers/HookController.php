@@ -19,7 +19,11 @@ class HookController extends AbstractController
      */
     public function push(string $webhookProvider, Webhook $webhook, StoreDeploymentAction $action): mixed
     {
-        return ;
+        // TODO: CRITICAL! Make sure to check the "X-GitHub-Event" header.
+
+        ray('HookController::push()');
+
+        return 'OK!';
 
         // TODO: CRITICAL! Don't forget that I must update the webhook when user changes the deployment branch. And when they change the repo, of course.
 
