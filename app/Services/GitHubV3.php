@@ -191,7 +191,7 @@ class GitHubV3 extends AbstractVcsProvider
                 'url' => $payloadUrl,
                 'content_type' => 'json',
                 'insecure_ssl' => false,
-                // CRITICAL! Implement "secret" support. Read GitHub docs.
+                // TODO: CRITICAL! Implement "secret" support. Read GitHub docs.
                 // 'secret' => null,
                 'events' => [
                     'push',
