@@ -23,10 +23,6 @@ Route::redirect('/', '/servers')->name('home');
 Route::get('oauth/{oauthService}', [OAuthController::class, 'defaultCallback'])
     ->name('oauth.default-callback');
 
-//
-// Route::get('hook/{webhookProvider}/push/{webhook}', [HookController::class, 'push'])
-//     ->name('hook.push');
-
 /*
  * Error page views to be able to serve those pages directly without exception.
  * Useful for rendering error thrown at the web-server (Nginx) or Livewire levels.
