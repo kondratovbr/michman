@@ -3,15 +3,15 @@
 namespace {{ namespace }};
 
 use Closure;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class {{ class }}
 {
-    /**
-     * Handle an incoming request.
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
+        //
+
         return $next($request);
     }
 }
