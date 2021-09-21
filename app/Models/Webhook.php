@@ -22,6 +22,7 @@ use Spatie\ModelStates\HasStates;
  *
  * @property string $id
  * @property string $type
+ * @property string $secret
  * @property string|null $externalId
  * @property WebhookState $state
  * @property CarbonInterface $createdAt
@@ -44,6 +45,7 @@ class Webhook extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'type',
+        'secret',
         'external_id',
     ];
 
@@ -53,6 +55,7 @@ class Webhook extends AbstractModel
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'state' => WebhookState::class,
+        'secret' => 'encrypted',
     ];
 
     /** @var string[] The event map for the model. */
