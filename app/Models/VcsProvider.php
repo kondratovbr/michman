@@ -67,12 +67,10 @@ class VcsProvider extends AbstractModel
         'deleted' => VcsProviderDeletedEvent::class,
     ];
 
-    /** @var VcsProviderInterface An interface to interact with the API. */
+    /** An interface to interact with the API. */
     private VcsProviderInterface $api;
 
-    /**
-     * Get an instance of VcsProviderInterface to interact with the VCS provider API.
-     */
+    /** Get an instance of VcsProviderInterface to interact with the VCS provider API. */
     public function api(): VcsProviderInterface
     {
         // We're caching an instance of ServerProviderInterface for this model,
@@ -99,17 +97,13 @@ class VcsProvider extends AbstractModel
         );
     }
 
-    /**
-     * Get a relation with the user that owns this VCS provider account.
-     */
+    /** Get a relation with the user that owns this VCS provider account. */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get a relation with the projects that use repositories by this VCS provider.
-     */
+    /** Get a relation with the projects that use repositories by this VCS provider. */
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);

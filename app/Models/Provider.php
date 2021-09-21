@@ -61,15 +61,13 @@ class Provider extends AbstractModel
         'secret' => 'encrypted',
     ];
 
-    /** @var ServerProviderInterface An interface to interact with the API. */
+    /** An interface to interact with the API. */
     private ServerProviderInterface $api;
 
-    /** @var string Current status of this provider. */
+    /** Current status of this provider. */
     private string $status;
 
-    /**
-     * Get the current status of this provider.
-     */
+    /** Get the current status of this provider. */
     public function getStatusAttribute(): string
     {
         // We're caching this attribute for an instance,
@@ -83,9 +81,7 @@ class Provider extends AbstractModel
         return $this->status = static::STATUS_READY;
     }
 
-    /**
-     * Get an instance of ServerProviderInterface to interact with the server provider API.
-     */
+    /** Get an instance of ServerProviderInterface to interact with the server provider API. */
     public function api(): ServerProviderInterface
     {
         // We're caching an instance of ServerProviderInterface for this model,
@@ -102,17 +98,13 @@ class Provider extends AbstractModel
         return $this->api;
     }
 
-    /**
-     * Get a relation to the user who owns this provider account.
-     */
+    /** Get a relation to the user who owns this provider account. */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    /**
-     * Get a relation to the servers created with this provider.
-     */
+    /** Get a relation to the servers created with this provider. */
     public function servers(): HasMany
     {
         return $this->hasMany(Server::class);
