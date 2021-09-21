@@ -15,9 +15,6 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     */
     public function boot(): void
     {
         $this->registerPolicies();

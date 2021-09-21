@@ -7,9 +7,6 @@ use Illuminate\Support\ServiceProvider;
 
 class BladeServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         // TODO: Do I even use this?

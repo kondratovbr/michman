@@ -14,9 +14,6 @@ use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         // This command tells Fortify to ignore the built-in routes from the file in vendor directory.
@@ -25,9 +22,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::ignoreRoutes();
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);

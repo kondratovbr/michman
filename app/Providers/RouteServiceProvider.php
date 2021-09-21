@@ -20,9 +20,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/';
 
-    /**
-     * Define your route model bindings, pattern filters, etc.
-     */
+    /** Define your route model bindings, pattern filters, etc. */
     public function boot(): void
     {
         $this->configureRateLimiting();
@@ -56,17 +54,13 @@ class RouteServiceProvider extends ServiceProvider
         $this->registerFortifyRoutes();
     }
 
-    /**
-     * Register API routes
-     */
+    /** Register API routes. */
     protected function registerApiRoutes(): void
     {
         Route::group([], base_path('routes/api.php'));
     }
 
-    /**
-     * Register web routes
-     */
+    /** Register web routes. */
     protected function registerWebRoutes(): void
     {
         // Register general routes
@@ -97,9 +91,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::group([], base_path('routes/misc.php'));
     }
 
-    /**
-     * Register customized Jetstream routes.
-     */
+    /** Register customized Jetstream routes. */
     protected function registerJetstreamRoutes(): void
     {
         Route::group([
@@ -108,9 +100,7 @@ class RouteServiceProvider extends ServiceProvider
         ], base_path('routes/jetstream.php'));
     }
 
-    /**
-     * Register customized Fortify routes.
-     */
+    /** Register customized Fortify routes. */
     protected function registerFortifyRoutes(): void
     {
         Route::group([
@@ -119,9 +109,7 @@ class RouteServiceProvider extends ServiceProvider
         ], base_path('routes/fortify.php'));
     }
 
-    /**
-     * Configure the rate limiters for the application.
-     */
+    /** Configure the rate limiters for the application. */
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
@@ -133,9 +121,7 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Configure custom route parameters patterns.
-     */
+    /** Configure custom route parameters patterns. */
     protected function configurePatterns(): void
     {
         Route::pattern(

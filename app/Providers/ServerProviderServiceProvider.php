@@ -6,9 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class ServerProviderServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services in the service container (Dependency Injection).
-     */
     public function register(): void
     {
         // Register service classes for server provider APIs.
@@ -16,13 +13,5 @@ class ServerProviderServiceProvider extends ServiceProvider
             if (! empty($config['provider_class']))
                 $this->app->bindIf($name, $config['provider_class']);
         }
-    }
-
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        //
     }
 }

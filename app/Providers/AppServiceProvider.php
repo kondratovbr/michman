@@ -12,9 +12,6 @@ use Illuminate\View\ViewServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
     public function register(): void
     {
         // Switch to using the immutable versions of Carbon objects across the whole application.
@@ -47,13 +44,5 @@ class AppServiceProvider extends ServiceProvider
 
             return $factory;
         });
-    }
-
-    /**
-     * Bootstrap services.
-     */
-    public function boot(): void
-    {
-        //
     }
 }

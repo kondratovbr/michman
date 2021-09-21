@@ -12,11 +12,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
-    /**
-     * The event listener mappings for the application.
-     *
-     * @var string[][]
-     */
+    /** @var string[][] The event listener mappings for the application. */
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
@@ -28,12 +24,4 @@ class EventServiceProvider extends ServiceProvider
             SendFailedDeploymentNotificationListener::class,
         ],
     ];
-
-    /**
-     * Register any events for your application.
-     */
-    public function boot(): void
-    {
-        //
-    }
 }
