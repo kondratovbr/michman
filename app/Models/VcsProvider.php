@@ -94,7 +94,7 @@ class VcsProvider extends AbstractModel
     {
         return Arr::firstKey(
             Arr::filterAssoc(config('vcs.hook_providers'),
-                fn(string $hookProvider, string $vcsProvider) => $vcsProvider === $this->provider
+                fn(string $hookProvider, array $config) => $config['vcs_provider'] === $this->provider
             )
         );
     }

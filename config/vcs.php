@@ -5,6 +5,7 @@
  */
 
 use App\Services\GitHubV3;
+use App\Services\Webhooks\GitHubWebhookService;
 
 return [
 
@@ -56,9 +57,18 @@ return [
 
     // TODO: CRITICAL! Don't forget to implement webhooks for Gitlab and Bitbucket as well.
     'hook_providers' => [
-        'github' => 'github_v3',
-        'gitlab' => 'gitlab',
-        'bitbucket' => 'bitbucket',
+        'github' => [
+            'vcs_provider' => 'github_v3',
+            'service_class' => GitHubWebhookService::class,
+        ],
+        'gitlab' => [
+            'vcs_provider' => 'gitlab',
+            'service_class' => null,
+        ],
+        'bitbucket' => [
+            'vcs_provider' => 'bitbucket',
+            'service_class' => null,
+        ],
     ],
 
     'hook_url' => env('WEBHOOKS_URL'),

@@ -142,7 +142,7 @@ class RouteServiceProvider extends ServiceProvider
             implode('|', Arr::keys(
                 Arr::filter(
                     config('vcs.hook_providers'),
-                    fn(string|null $vcsProvider) => ! empty($vcsProvider)
+                    fn(array $config) => ! empty($config['vcs_provider'])
                 )
             ))
         );
