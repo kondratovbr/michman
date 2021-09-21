@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Http\Client\Response;
 use RuntimeException;
 
 abstract class AbstractVcsProvider extends AbstractProvider implements VcsProviderInterface

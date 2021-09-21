@@ -6,7 +6,6 @@ use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
-use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
