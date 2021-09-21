@@ -11,7 +11,7 @@ class ServerProviderServiceProvider extends ServiceProvider
         // Register service classes for server provider APIs.
         foreach (config('providers.list') as $name => $config) {
             if (! empty($config['provider_class']))
-                $this->app->bindIf($name, $config['provider_class']);
+                $this->app->bind("{$name}-servers", $config['provider_class']);
         }
     }
 }

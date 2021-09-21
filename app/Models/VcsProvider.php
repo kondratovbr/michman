@@ -79,7 +79,7 @@ class VcsProvider extends AbstractModel
         // so it doesn't get made multiple times.
         if (! isset($this->api)) {
             $this->api = App::make(
-                $this->provider,
+                "{$this->provider}-vcs",
                 isset($this->token)
                     ? ['token' => $this->token, 'identifier' => $this->id]
                     : ['key' => $this->key, 'secret' => $this->secret, 'identifier' => $this->id]

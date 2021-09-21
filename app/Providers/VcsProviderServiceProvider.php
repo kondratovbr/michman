@@ -11,7 +11,7 @@ class VcsProviderServiceProvider extends ServiceProvider
         // Register service classes for VCS provider APIs.
         foreach (config('vcs.list') as $name => $config) {
             if (! empty($config['provider_class']))
-                $this->app->bindIf($name, $config['provider_class']);
+                $this->app->bind("{$name}-vcs", $config['provider_class']);
         }
     }
 }
