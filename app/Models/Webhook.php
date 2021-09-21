@@ -70,6 +70,9 @@ class Webhook extends AbstractModel
         'deleted' => WebhookDeletedEvent::class,
     ];
 
+    /** A service class to handle webhooks related functions. */
+    private WebhookServiceInterface $service;
+
     public function getUserAttribute(): User
     {
         return $this->project->user;
@@ -106,6 +109,16 @@ class Webhook extends AbstractModel
     public function isDeleting(): bool
     {
         return $this->state->is(Deleting::class);
+    }
+
+    public function service(): WebhookServiceInterface
+    {
+        // We're caching an instance of WebhookServiceInterface for this model,
+        // so it doesn't get made multiple times.
+        if (! isset($this->service))
+            $this->service = App::make("{$this->provider}-servers");
+
+        return $this->service;
     }
 
     /** Get a relation with the project that this webhook is attached to. */
