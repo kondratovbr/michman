@@ -2,10 +2,15 @@
 
 namespace {{ namespace }};
 
-class {{ class }}
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} implements CastsAttributes
 {
     /**
      * Cast the given value.
+     *
+     * @param Model $model
      */
     public function get($model, string $key, $value, array $attributes)
     {
@@ -14,6 +19,8 @@ class {{ class }}
 
     /**
      * Prepare the given value for storage.
+     *
+     * @param Model $model
      */
     public function set($model, string $key, $value, array $attributes)
     {
