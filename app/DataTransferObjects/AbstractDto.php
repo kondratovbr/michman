@@ -2,12 +2,14 @@
 
 namespace App\DataTransferObjects;
 
+use App\Casts\DtoCast;
+use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Support\Arrayable;
 use App\Support\Arr;
 use ReflectionClass;
 use ReflectionProperty;
 
-abstract class AbstractDto implements Arrayable
+abstract class AbstractDto implements Arrayable, Castable
 {
     protected array $exceptKeys = [];
 
@@ -91,5 +93,11 @@ abstract class AbstractDto implements Arrayable
         }
 
         return $array;
+    }
+
+    /** Get the caster object to use when casting from/to a DTO. */
+    public static function castUsing(array $arguments): DtoCast
+    {
+        return new DtoCast(static::class);
     }
 }
