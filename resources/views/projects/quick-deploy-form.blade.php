@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Unfinished. Make nicer, add info, add progress indicator/spinner.--}}
+{{--TODO: CRITICAL! Unfinished. Make nicer, add info, add progress indicator/spinner, remove the "Refresh" button added for debugging. --}}
 
 <x-action-section>
     <x-slot name="title">{{ __('projects.quick-deploy.title') }}</x-slot>
@@ -24,6 +24,7 @@
                 wire:click.prevent="$refresh"
                 wire:loading.attr="disabled"
             >Refresh</x-buttons.secondary>
+
         </x-buttons>
 
     </x-slot>
