@@ -141,7 +141,7 @@ class RouteServiceProvider extends ServiceProvider
             'webhookProvider',
             implode('|', Arr::keys(
                 Arr::filter(
-                    config('vcs.hook_providers'),
+                    config('webhooks.providers'),
                     fn(array $config) => ! empty($config['vcs_provider'])
                 )
             ))

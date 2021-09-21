@@ -91,7 +91,7 @@ class VcsProvider extends AbstractModel
     public function getWebhookProviderAttribute(): string
     {
         return Arr::firstKey(
-            Arr::filterAssoc(config('vcs.hook_providers'),
+            Arr::filterAssoc(config('webhooks.providers'),
                 fn(string $hookProvider, array $config) => $config['vcs_provider'] === $this->provider
             )
         );

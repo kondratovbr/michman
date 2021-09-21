@@ -74,8 +74,8 @@ class Webhook extends AbstractModel
     public function getPayloadUrlAttribute(): string
     {
         // This allows to have a separate domain for webhook payloads. Useful mainly for dev/debug purposes.
-        if (! empty(config('vcs.hook_url'))) {
-            return config('vcs.hook_url') .
+        if (! empty(config('webhooks.payload_url'))) {
+            return config('webhooks.payload_url') .
                 route('hook.push', [$this->project->vcsProvider->webhookProvider, $this], false);
         }
 
