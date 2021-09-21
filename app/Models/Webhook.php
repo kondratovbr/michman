@@ -6,21 +6,25 @@ use App\Events\Webhooks\WebhookCreatedEvent;
 use App\Events\Webhooks\WebhookDeletedEvent;
 use App\Events\Webhooks\WebhookUpdatedEvent;
 use App\Models\Traits\UsesUuid;
+use App\Services\Webhooks\WebhookServiceInterface;
 use App\States\Webhooks\Deleting;
 use App\States\Webhooks\Enabled;
 use App\States\Webhooks\Enabling;
 use App\States\Webhooks\WebhookState;
 use Carbon\CarbonInterface;
 use Database\Factories\WebhookFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\App;
 use Spatie\ModelStates\HasStates;
 
 /**
  * Webhook Eloquent model
  *
- * @property string $id
+ * @property int $id
+ * @property string $uuid
  * @property string $type
  * @property string $secret
  * @property string|null $externalId
@@ -33,6 +37,7 @@ use Spatie\ModelStates\HasStates;
  * @property-read string $repo
  *
  * @property-read Project $project
+ * @property-read Collection $calls
  *
  * @method static WebhookFactory factory(...$parameters)
  */
@@ -107,5 +112,11 @@ class Webhook extends AbstractModel
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /** Get a relation with the calls we received for this webhook. */
+    public function calls(): HasMany
+    {
+        return $this->hasMany(WebhookCall::class);
     }
 }
