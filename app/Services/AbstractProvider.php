@@ -68,7 +68,7 @@ abstract class AbstractProvider
     ): Response {
         $pendingRequest ??= $this->request();
 
-        if (! in_array($pendingRequest, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']))
+        if (! in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']))
             throw new RuntimeException("Unsupported HTTP method \"{$method}\" provided.");
 
         return $pendingRequest
