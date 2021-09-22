@@ -189,6 +189,7 @@ return [
         App\Providers\ServerProviderServiceProvider::class,
         App\Providers\VcsProviderServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
+        App\Providers\WebhooksServiceProvider::class,
     ],
 
     /*
