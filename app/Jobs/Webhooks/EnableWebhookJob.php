@@ -48,7 +48,11 @@ class EnableWebhookJob extends AbstractJob
              *       properly adapt for this.
              */
 
-            $hookData = $api->addWebhookSafelyPush($hook->repo, $hook->payloadUrl);
+            $hookData = $api->addWebhookSafelyPush(
+                $hook->repo,
+                $hook->payloadUrl,
+                $hook->secret,
+            );
 
             if (is_null($hookData->id))
                 throw new RuntimeException('Received no external ID after creating a webhook on ' . $hook->project->vcsProvider->provider);
