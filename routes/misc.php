@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use App\Http\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,8 @@ Route::middleware([
     'throttle:webhooks',
     SubstituteBindings::class,
 ])->group(function () {
-    Route::webhooks('hook');
+    Route::post('hook/{webhookProvider}/push/{webhook}', [WebhookController::class, 'push'])
+        ->name('hook.push');
+
+    // Route::webhooks('hook');
 });
