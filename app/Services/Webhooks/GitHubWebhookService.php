@@ -22,8 +22,6 @@ class GitHubWebhookService implements WebhookServiceInterface
 
         $signatureComputed = 'sha256=' . hash_hmac('sha256', $request->getContent(), $secret);
 
-        ray($signatureProvided, $signatureComputed, $signatureComputed === $signatureProvided);
-
         return hash_equals($signatureProvided, $signatureComputed);
     }
 }
