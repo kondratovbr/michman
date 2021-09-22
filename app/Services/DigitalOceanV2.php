@@ -138,7 +138,7 @@ class DigitalOceanV2 extends AbstractServerProvider
             'name' => $data->name,
             'region' => $data->region,
             'size' => $data->size,
-            'image' => (string) config('providers.list.digital_ocean_v2.default_image'),
+            'image' => (string) $this->config('default_image'),
             // TODO: CRITICAL! Don't forget to remove the second one!
             'ssh_keys' => [$sshKeyIdentifier, '46:2e:86:c8:74:2d:d6:bf:d3:00:49:20:a7:67:12:4f'],
             // 'ssh_keys' => [$sshKeyIdentifier],
