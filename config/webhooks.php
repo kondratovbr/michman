@@ -1,11 +1,8 @@
 <?php
 
+use App\Jobs\Webhooks\HandlePingWebhookJob;
+use App\Jobs\Webhooks\HandlePushWebhookJob;
 use App\Services\Webhooks\GitHubWebhookService;
-
-$vcsEvents = [
-    'ping',
-    'push',
-];
 
 return [
 
@@ -16,18 +13,32 @@ return [
         'github' => [
             'vcs_provider' => 'github_v3',
             'service_class' => GitHubWebhookService::class,
-            'events' => $vcsEvents,
+            'events' => [
+                'ping',
+                'push',
+            ],
         ],
         'gitlab' => [
             'vcs_provider' => 'gitlab',
             'service_class' => null,
-            'events' => $vcsEvents,
+            'events' => [
+                'ping',
+                'push',
+            ],
         ],
         'bitbucket' => [
             'vcs_provider' => 'bitbucket',
             'service_class' => null,
-            'events' => $vcsEvents,
+            'events' => [
+                'ping',
+                'push',
+            ],
         ],
+    ],
+
+    'jobs' => [
+        'ping' => HandlePingWebhookJob::class,
+        'push' => HandlePushWebhookJob::class,
     ],
 
 ];
