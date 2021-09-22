@@ -41,13 +41,6 @@ class EnableWebhookJob extends AbstractJob
 
             $api = $hook->project->vcsProvider->api();
 
-            /*
-             * TODO: CRITICAL! CONTINUE. Temporarily add bach my custom push hook payload route,
-             *       add my WEBHOOK_CLIENT_SECRET support while adding a hook and see what's
-             *       gonna happen on GitHub. Maybe the Spatie's package will be too hard to
-             *       properly adapt for this.
-             */
-
             $hookData = $api->addWebhookSafelyPush(
                 $hook->repo,
                 $hook->payloadUrl,
