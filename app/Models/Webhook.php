@@ -86,10 +86,10 @@ class Webhook extends AbstractModel
         // This allows to have a separate domain for webhook payloads. Useful mainly for dev/debug purposes.
         if (! empty(config('webhooks.payload_url'))) {
             return config('webhooks.payload_url') .
-                route('hook.push', [$this->project->vcsProvider->webhookProvider, $this], false);
+                route('hook.push', [$this->provider, $this], false);
         }
 
-        return route('hook.push', [$this->project->vcsProvider->webhookProvider, $this]);
+        return route('hook.push', [$this->provider, $this]);
     }
 
     /** Get the full name (with username) of the repository with this webhook. */
