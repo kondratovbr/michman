@@ -74,16 +74,24 @@ interface VcsProviderInterface
     public function getRepoWebhooks(string $repo): WebhookDataCollection;
 
     /** Create a "push" webhook for a given repo. */
-    public function addWebhookPush(string $repo, string $payloadUrl): WebhookDto;
+    public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto;
 
     /**
      * Create a "push" webhook for a giver repo,
      * while making sure not to create duplicates.
      */
-    public function addWebhookSafelyPush(string $repo, string $payloadUrl): WebhookDto;
+    public function addWebhookSafelyPush(string $repo, string $payloadUrl, string $secret): WebhookDto;
 
     /** Get an existing webhook or null if it doesn't exist on the provider's side. */
     public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null;
+
+    /** Update an existing webhook. */
+    public function updateWebhookPush(
+        string $repo,
+        string $webhookExternalId,
+        string $payloadUrl,
+        string $secret,
+    ): WebhookDto;
 
     /** Delete webhook from the provider's side by its ID on that side. */
     public function deleteWebhook(string $repo, string $webhookExternalId): void;

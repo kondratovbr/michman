@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Http;
 
 // TODO: CRITICAL! Docs mention "304 Not Modified" responses. Do I have to explicitly cache the results somehow?
 
+// TODO: CRITICAL! Make sure everything is test-covered. Cover the webhook stuff I've added, for example.
+
 class GitHubV3 extends AbstractVcsProvider
 {
     /**
@@ -183,33 +185,29 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->webhookDataFromResponseData($data);
     }
 
-    public function addWebhookPush(string $repo, string $payloadUrl): WebhookDto
+    public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
         $response = $this->post("/repos/{$repo}/hooks", [
-            'config' => [
-                'url' => $payloadUrl,
-                'content_type' => 'json',
-                'insecure_ssl' => false,
-                // TODO: CRITICAL! Implement "secret" support. Read GitHub docs.
-                // 'secret' => null,
-                'events' => [
-                    'push',
-                ],
-            ],
+            'config' => $this->webhookConfigArray('push', $payloadUrl, $secret),
         ]);
         $data = $this->decodeJson($response->body());
 
         return $this->webhookDataFromResponseData($data);
     }
 
-    public function addWebhookSafelyPush(string $repo, string $payloadUrl): WebhookDto
+    public function addWebhookSafelyPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
         $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
 
         if (! is_null($hook))
-            return $hook;
+            return $this->updateWebhookPush(
+                $repo,
+                $hook->id,
+                $payloadUrl,
+                $secret,
+            );
 
-        return $this->addWebhookPush($repo, $payloadUrl);
+        return $this->addWebhookPush($repo, $payloadUrl, $secret);
     }
 
     public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null
@@ -223,6 +221,20 @@ class GitHubV3 extends AbstractVcsProvider
         }
 
         return null;
+    }
+
+    public function updateWebhookPush(
+        string $repo,
+        string $webhookExternalId,
+        string $payloadUrl,
+        string $secret,
+    ): WebhookDto {
+        $response = $this->patch("/repos/{$repo}/hooks/{$webhookExternalId}", [
+            'config' => $this->webhookConfigArray('push', $payloadUrl, $secret),
+        ]);
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
     public function deleteWebhook(string $repo, string $webhookExternalId): void
@@ -248,5 +260,19 @@ class GitHubV3 extends AbstractVcsProvider
             id: (string) $data->id,
             url: $data->config->url,
         );
+    }
+
+    protected function webhookConfigArray(
+        array|string $events,
+        string $payloadUrl,
+        string $secret,
+    ): array {
+        return [
+            'url' => $payloadUrl,
+            'content_type' => 'json',
+            'insecure_ssl' => false,
+            'secret' => $secret,
+            'events' => Arr::wrap($events),
+        ];
     }
 }
