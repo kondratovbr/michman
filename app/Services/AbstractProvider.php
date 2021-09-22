@@ -59,50 +59,58 @@ abstract class AbstractProvider
         return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
     }
 
-    /** Send a request to a relative path with provided parameters. */
-    private function send(
-        string $method,
-        string $path,
-        array $parameters = [],
-        PendingRequest $pendingRequest = null,
-    ): Response {
+    /** Send a GET request to a relative path with provided parameters. */
+    protected function get(string $path, array $query = [], PendingRequest $pendingRequest = null): Response
+    {
         $pendingRequest ??= $this->request();
 
-        if (! in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']))
-            throw new RuntimeException("Unsupported HTTP method \"{$method}\" provided.");
-
         return $pendingRequest
-            ->send($method, $this->basePath . $path, $parameters)
+            ->baseUrl($this->basePath)
+            ->get($path, $query)
             ->throw();
     }
 
-    /** Send a GET request to a relative path with provided parameters. */
-    protected function get(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
-    {
-        return $this->send('GET', $path, $parameters, $pendingRequest);
-    }
-
     /** Send a POST request to a relative path with provided parameters. */
-    protected function post(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    protected function post(string $path, array $data = [], PendingRequest $pendingRequest = null): Response
     {
-        return $this->send('POST', $path, $parameters, $pendingRequest);
+        $pendingRequest ??= $this->request();
+
+        return $pendingRequest
+            ->baseUrl($this->basePath)
+            ->post($path, $data)
+            ->throw();
     }
 
     /** Send a PUT request to a relative path with provided parameters. */
-    protected function put(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    protected function put(string $path, array $data = [], PendingRequest $pendingRequest = null): Response
     {
-        return $this->send('PUT', $path, $parameters, $pendingRequest);
+        $pendingRequest ??= $this->request();
+
+        return $pendingRequest
+            ->baseUrl($this->basePath)
+            ->put($path, $data)
+            ->throw();
     }
 
     /** Send a PATCH request to a relative path with provided parameters. */
-    protected function patch(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    protected function patch(string $path, array $data = [], PendingRequest $pendingRequest = null): Response
     {
-        return $this->send('PATCH', $path, $parameters, $pendingRequest);
+        $pendingRequest ??= $this->request();
+
+        return $pendingRequest
+            ->baseUrl($this->basePath)
+            ->patch($path, $data)
+            ->throw();
     }
 
     /** Send a DELETE request to a relative path with provided parameters. */
-    protected function delete(string $path, array $parameters = [], PendingRequest $pendingRequest = null): Response
+    protected function delete(string $path, array $data = [], PendingRequest $pendingRequest = null): Response
     {
-        return $this->send('DELETE', $path, $parameters, $pendingRequest);
+        $pendingRequest ??= $this->request();
+
+        return $pendingRequest
+            ->baseUrl($this->basePath)
+            ->delete($path, $data)
+            ->throw();
     }
 }
