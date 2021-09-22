@@ -25,6 +25,7 @@ use Spatie\ModelStates\HasStates;
  *
  * @property int $id
  * @property string $uuid
+ * @property string $provider
  * @property string $type
  * @property string $secret
  * @property string|null $externalId
@@ -49,6 +50,7 @@ class Webhook extends AbstractModel
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
+        'provider',
         'type',
         'secret',
         'external_id',

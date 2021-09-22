@@ -20,6 +20,7 @@ class CreateProjectWebhookAction
                 return;
 
             $hook = $project->webhook()->create([
+                'provider' => $project->vcsProvider->webhookProvider,
                 'type' => 'push',
                 'state' => Enabling::class,
             ]);
