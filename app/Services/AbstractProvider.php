@@ -2,21 +2,22 @@
 
 namespace App\Services;
 
+use App\Services\Traits\HasConfig;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Log;
-use RuntimeException;
 
 abstract class AbstractProvider
 {
-    private string $configPrefix;
+    use HasConfig;
+
     private string $basePath;
     protected string $cachePrefix;
     protected int|null $identifier;
 
     public function __construct(int $identifier = null)
     {
-        $this->configPrefix = $this->getConfigPrefix();
+        $this->setConfigPrefix($this->getConfigPrefix());
         $this->basePath = $this->config('base_path');
         $this->identifier = $identifier;
     }
@@ -39,12 +40,6 @@ abstract class AbstractProvider
         }
 
         return true;
-    }
-
-    /** Get a config value for this provider using standard dot-notation. */
-    protected function config(string $key, mixed $default = null): mixed
-    {
-        return config($this->configPrefix . '.' . $key, $default);
     }
 
     /** Get a properly prefixed cache key for some parameter related to this specific server provider API credentials. */

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTransferObjects\DeploymentDto;
 use App\Exceptions\NotImplementedException;
 use App\Http\Exceptions\InvalidWebhookSignatureException;
+use App\Http\Exceptions\WebhookEventNotSupportedException;
 use App\Models\Webhook;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,20 +14,16 @@ class WebhookController extends AbstractController
 {
     // TODO: CRITICAL! Don't forget that services (see GitHub) want me to actually send some valid response to them with some actual info. See their docs.
 
-    /**
-     * Handle "push" webhook.
-     *
-     * I.e. a commit has been pushed to one of the repos we're connected to.
-     */
-    public function push(string $webhookProvider, Webhook $webhook, Request $request): mixed
+    /** Handle a received webhook. */
+    public function __invoke(string $webhookProvider, Webhook $webhook, Request $request): mixed
     {
         ray('WebhookController::push()');
 
         $this->validateWebhookProvider($webhookProvider, $webhook);
 
-        $this->validateSignature($request, $webhook);
+        $this->validateEvent($request, $webhook);
 
-        // TODO: CRITICAL! Make sure to check the "X-GitHub-Event" header.
+        $this->validateSignature($request, $webhook);
 
         ray('WebhookController - A OK!');
 
@@ -51,23 +48,21 @@ class WebhookController extends AbstractController
         //
     }
 
-    protected function validateSignature(Request $request, Webhook $webhook): void
-    {
-        ray('WebhookController::validateSignature()');
-
-        if (! $webhook->service()->signatureValid($request, $webhook->secret)) {
-            ray('Invalid signature!');
-            throw new InvalidWebhookSignatureException;
-        } else {
-            ray('Valid signature.');
-        }
-    }
-
     protected function validateWebhookProvider(string $provider, Webhook $webhook): void
     {
-        ray('WebhookController::validateWebhookProvider()');
-
         if ($webhook->project->vcsProvider->webhookProvider !== $provider)
             abort(404);
+    }
+
+    protected function validateEvent(Request $request, Webhook $webhook): void
+    {
+        if (! $webhook->service()->eventIsSupported($request))
+            throw new WebhookEventNotSupportedException;
+    }
+
+    protected function validateSignature(Request $request, Webhook $webhook): void
+    {
+        if (! $webhook->service()->signatureValid($request, $webhook->secret))
+            throw new InvalidWebhookSignatureException;
     }
 }
