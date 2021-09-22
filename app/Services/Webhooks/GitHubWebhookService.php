@@ -30,12 +30,20 @@ class GitHubWebhookService implements WebhookServiceInterface
         return hash_equals($signatureProvided, $signatureComputed);
     }
 
-    public function eventIsSupported(Request $request): bool
+    public function getEventName(Request $request): string|null
     {
         if (! $request->hasHeader(self::EVENT_HEADER_NAME))
-            return false;
+            return null;
 
-        $event = $request->header(self::EVENT_HEADER_NAME);
+        return $request->header(self::EVENT_HEADER_NAME);
+    }
+
+    public function eventIsSupported(Request $request): bool
+    {
+        $event = $this->getEventName($request);
+
+        if (is_null($event))
+            return false;
 
         return Arr::hasValue($this->config('events'), $event);
     }
