@@ -52,9 +52,10 @@ class EnableWebhookJob extends AbstractJob
 
             $hook->externalId = $hookData->id;
 
-            $hook->state = Enabled::class;
-
             $hook->save();
+
+            // We'll wait for a "ping" event to be sent and handled and then verify that it worked in a separate job.
+            VerifyWebhookEnabledJob::dispatch($hook)->delay(60);
         }, 5);
     }
 
