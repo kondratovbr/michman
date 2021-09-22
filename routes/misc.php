@@ -22,7 +22,7 @@ Route::middleware([
     'throttle:webhooks',
     SubstituteBindings::class,
 ])->group(function () {
-    Route::post('hook/{webhookProvider}/push/{webhook}', [WebhookController::class, 'push'])
+    Route::post('hook/{webhookProvider}/{webhook}', WebhookController::class)
         ->name('hook.push');
 
     // Route::webhooks('hook');
