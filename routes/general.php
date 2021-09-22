@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use App\Http\Controllers\ErrorController;
-use App\Http\Controllers\HookController;
+use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\OAuthController;
 use Illuminate\Support\Facades\Route;
 
