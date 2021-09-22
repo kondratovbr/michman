@@ -5,6 +5,7 @@ namespace App\Actions\Webhooks;
 use App\Jobs\Webhooks\EnableWebhookJob;
 use App\Models\Project;
 use App\States\Webhooks\Enabling;
+use App\Support\Str;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests!
@@ -22,6 +23,7 @@ class CreateProjectWebhookAction
             $hook = $project->webhook()->create([
                 'provider' => $project->vcsProvider->webhookProvider,
                 'type' => 'push',
+                'secret' => Str::random(40),
                 'state' => Enabling::class,
             ]);
 
