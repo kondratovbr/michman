@@ -26,7 +26,9 @@ class VerifyWebhookEnabledJob extends AbstractJob
             if (! $hook->state->is(Enabling::class))
                 return;
 
-            $hook->state->transitionTo();
+            // TODO: CRITICAL! CONTINUE. Somehow delete the hook if it failed and notify the user.
+
+            //
         }, 5);
     }
 }
