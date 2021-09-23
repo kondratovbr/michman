@@ -10,7 +10,7 @@ class CreateWebhooksTable extends Migration
     {
         Schema::create('webhooks', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid')->index();
+            $table->uuid('uuid')->unique()->index();
 
             $table->foreignId('project_id')->references('id')->on('projects');
 
