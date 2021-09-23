@@ -11,9 +11,6 @@ class DatabaseModelSeeder extends Seeder
     /** @var int Total number of databases to seed. */
     protected const NUM_DATABASES = 30;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         // Make sure something is seeded for the first server with which I'm usually working during development.

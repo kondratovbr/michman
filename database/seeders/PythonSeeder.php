@@ -11,9 +11,6 @@ class PythonSeeder extends Seeder
     /** @var int Fraction of existing servers to create Python models for. */
     private const FRACTION = 0.75;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         $servers = Server::query()

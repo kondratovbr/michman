@@ -11,9 +11,6 @@ class ProviderSeeder extends Seeder
     /** @var int Number of fake providers to seed. */
     private const NUM_PROVIDERS = 10;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         // Seed an actual dev token from config.

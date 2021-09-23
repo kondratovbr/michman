@@ -11,9 +11,6 @@ class ProjectSeeder extends Seeder
     /** @var int Number of fake projects to seed. */
     private const NUM_PROJECTS = 10;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         Project::factory()

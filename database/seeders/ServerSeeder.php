@@ -12,9 +12,6 @@ class ServerSeeder extends Seeder
     /** @var int Number of fake servers to seed. */
     private const NUM_SERVERS = 10;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         // Make sure the dev user has a server seeded.

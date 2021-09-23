@@ -6,9 +6,6 @@ use Illuminate\Database\Seeder;
 
 class ServerLogSeeder extends Seeder
 {
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         //

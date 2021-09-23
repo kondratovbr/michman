@@ -10,9 +10,6 @@ class UserSeeder extends Seeder
     /** @var int Number of generic users to seed. */
     private const NUM_USERS = 10;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         // Seed admin user.

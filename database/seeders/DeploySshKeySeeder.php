@@ -8,9 +8,6 @@ use Illuminate\Database\Seeder;
 
 class DeploySshKeySeeder extends Seeder
 {
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         DeploySshKey::factory()

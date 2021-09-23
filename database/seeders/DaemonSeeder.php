@@ -6,9 +6,6 @@ use Illuminate\Database\Seeder;
 
 class DaemonSeeder extends Seeder
 {
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         //

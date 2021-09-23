@@ -11,9 +11,6 @@ class DeploymentSeeder extends Seeder
     /** @var int Number of deployments to seed. */
     const NUM_DEPLOYMENTS=20;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         Deployment::factory()

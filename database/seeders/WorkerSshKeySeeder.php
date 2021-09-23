@@ -11,9 +11,6 @@ class WorkerSshKeySeeder extends Seeder
     /** @var int Fraction of existing servers to create worker SSH keys for. */
     private const FRACTION = 0.5;
 
-    /**
-     * Seed the database.
-     */
     public function run(): void
     {
         WorkerSshKey::factory()
