@@ -35,8 +35,8 @@ return [
         ServerIsNotSuitableNotification::class => 'The server :server is not suitable for Michman operations.',
         ServerNotAvailableNotification::class => 'We were unable to connect to server :server.',
 
-        WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook for project :project',
-        WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook for project :project from your repository.',
+        WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook (Quick Deploy) for project :project',
+        WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook (Quick Deploy) for project :project from your repository.',
     ],
 
 ];
