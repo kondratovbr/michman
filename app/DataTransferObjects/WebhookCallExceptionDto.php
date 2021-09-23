@@ -2,7 +2,7 @@
 
 namespace App\DataTransferObjects;
 
-class WebhookExceptionDto extends AbstractDto
+class WebhookCallExceptionDto extends AbstractDto
 {
     public function __construct(
         public int $code,
