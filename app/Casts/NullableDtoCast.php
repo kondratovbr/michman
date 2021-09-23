@@ -7,8 +7,6 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 
-// TODO: CRITICAL! CONTINUE. And cover this with tests as soon as it is ready.
-
 class NullableDtoCast implements CastsAttributes
 {
     public function __construct(
