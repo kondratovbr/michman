@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
-use Tests\AbstractFeatureTest;
+use Tests\AbstractUnitTest;
 use Tests\Dummies\DummyDto;
 use ArgumentCountError;
 use Throwable;
 
-class DtoTest extends AbstractFeatureTest
+class DtoTest extends AbstractUnitTest
 {
     public function test_positional_creation()
     {
