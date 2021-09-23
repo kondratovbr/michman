@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\WebhookExceptionDto;
+use App\Casts\ForceBooleanCast;
+use App\DataTransferObjects\WebhookCallExceptionDto;
 use Carbon\CarbonInterface;
 use Database\Factories\WebhookCallFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $url
  * @property array $headers
  * @property array $payload
- * @property array $exception
+ * @property WebhookCallExceptionDto|null $exception
  * @property bool $processed
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
@@ -36,6 +37,7 @@ class WebhookCall extends AbstractModel
         'headers',
         'payload',
         'exception',
+        'processed',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -45,7 +47,7 @@ class WebhookCall extends AbstractModel
     protected $casts = [
         'headers' => 'array',
         'payload' => 'array',
-        'exception' => WebhookExceptionDto::class,
+        'exception' => WebhookCallExceptionDto::class,
         'processed' => ForceBooleanCast::class,
     ];
 
@@ -57,9 +59,6 @@ class WebhookCall extends AbstractModel
     /** Get a relation with the webhook this call was made for. */
     public function webhook(): BelongsTo
     {
-        return $this->belongsTo(
-            related: Webhook::class,
-            relation: 'calls',
-        );
+        return $this->belongsTo(Webhook::class);
     }
 }
