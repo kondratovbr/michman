@@ -19,10 +19,8 @@ trait UsesUuid
     /**
      * Boot the trait, adding a creating observer.
      *
-     * When persisting a new model instance, we resolve the UUID field, then set
-     * a fresh UUID, taking into account if we need to cast to binary or not.
-     *
-     * @return void
+     * When persisting a new model instance, we resolve the UUID field,
+     * then set a fresh UUID.
      */
     public static function bootUsesUuid(): void
     {
