@@ -2,7 +2,7 @@
 
 namespace App\DataTransferObjects;
 
-use App\Casts\DtoCast;
+use App\Casts\NullableDtoCast;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Contracts\Support\Arrayable;
 use App\Support\Arr;
@@ -96,8 +96,8 @@ abstract class AbstractDto implements Arrayable, Castable
     }
 
     /** Get the caster object to use when casting from/to a DTO. */
-    public static function castUsing(array $arguments): DtoCast
+    public static function castUsing(array $arguments): NullableDtoCast
     {
-        return new DtoCast(static::class);
+        return new NullableDtoCast(static::class);
     }
 }
