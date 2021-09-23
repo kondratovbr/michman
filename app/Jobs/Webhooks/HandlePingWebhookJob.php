@@ -3,6 +3,7 @@
 namespace App\Jobs\Webhooks;
 
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\HandlesWebhooks;
 use App\Jobs\Traits\IsInternal;
 use App\Models\WebhookCall;
 use App\States\Webhooks\Enabled;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class HandlePingWebhookJob extends AbstractJob
 {
+    use HandlesWebhooks;
     use IsInternal;
 
     protected WebhookCall $call;
@@ -24,7 +26,7 @@ class HandlePingWebhookJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function () {
-            $call = $this->call->freshLockForUpdate();
+            $call = $this->call->freshLockForUpdate('webhook');
 
             if (! $call->webhook->state->canTransitionTo(Enabled::class))
                 return;
