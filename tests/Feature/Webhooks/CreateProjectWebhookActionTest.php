@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Webhooks;
 
 use App\Actions\Webhooks\CreateProjectWebhookAction;
 use App\Events\Webhooks\WebhookCreatedEvent;
