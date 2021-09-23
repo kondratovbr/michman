@@ -12,6 +12,7 @@ class GitHubWebhookService implements WebhookServiceInterface
 
     private const SIGNATURE_HEADER_NAME = 'X-Hub-Signature-256';
     private const EVENT_HEADER_NAME = 'X-GitHub-Event';
+    private const EXTERNAL_ID_HEADER_NAME = 'X-GitHub-Delivery';
 
     public function __construct()
     {
@@ -46,5 +47,13 @@ class GitHubWebhookService implements WebhookServiceInterface
             return false;
 
         return Arr::hasValue($this->config('events'), $event);
+    }
+
+    public function getExternalId(Request $request): string|null
+    {
+        if (! $request->hasHeader(self::EXTERNAL_ID_HEADER_NAME))
+            return null;
+
+        return $request->header(self::EXTERNAL_ID_HEADER_NAME);
     }
 }

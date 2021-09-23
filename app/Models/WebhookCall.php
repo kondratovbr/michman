@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $type
  * @property string $url
+ * @property string $externalId
  * @property array $headers
  * @property array $payload
  * @property WebhookCallExceptionDto|null $exception
@@ -34,6 +35,7 @@ class WebhookCall extends AbstractModel
     protected $fillable = [
         'type',
         'url',
+        'external_id',
         'headers',
         'payload',
         'exception',

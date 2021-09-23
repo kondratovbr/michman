@@ -15,6 +15,7 @@ class CreateWebhookCallsTable extends Migration
 
             $table->string('type');
             $table->string('url');
+            $table->string('external_id');
             $table->json('headers')->nullable();
             $table->json('payload')->nullable();
             $table->text('exception')->nullable();

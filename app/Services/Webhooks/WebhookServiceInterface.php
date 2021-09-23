@@ -14,4 +14,7 @@ interface WebhookServiceInterface
 
     /** Check if the webhook event received is configured to be allowed by the application. */
     public function eventIsSupported(Request $request): bool;
+
+    /** Get the external ID (delivery ID) of a webhook delivery from a request. */
+    public function getExternalId(Request $request): string|null;
 }
