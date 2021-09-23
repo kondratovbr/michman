@@ -49,17 +49,18 @@ class EnableWebhookJob extends AbstractJob
             $hook->save();
 
             // We'll wait for a "ping" event to be sent and handled and then verify that it worked in a separate job.
-            VerifyWebhookEnabledJob::dispatch($hook)->delay(60);
+            VerifyWebhookEnabledJob::dispatch($hook)->delay(120);
         }, 5);
     }
 
     public function failed(): void
     {
         DB::transaction(function () {
-            $hook = $this->hook->freshLockForUpdate();
+            $hook = $this->hook->freshLockForUpdate('calls');
 
             $hook->user->notify(new WebhookEnablingFailedNotification($hook->project));
 
+            $hook->calls()->delete();
             $hook->delete();
         }, 10);
     }
