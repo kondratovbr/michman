@@ -7,8 +7,6 @@ use App\Models\Webhook;
 use App\States\Webhooks\Deleting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class DeleteProjectWebhookAction
 {
     public function execute(Webhook $hook): void
