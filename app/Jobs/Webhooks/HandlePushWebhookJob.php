@@ -3,10 +3,15 @@
 namespace App\Jobs\Webhooks;
 
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\HandlesWebhooks;
+use App\Jobs\Traits\IsInternal;
 use App\Models\WebhookCall;
 
 class HandlePushWebhookJob extends AbstractJob
 {
+    use HandlesWebhooks;
+    use IsInternal;
+
     protected WebhookCall $call;
 
     public function __construct(WebhookCall $call)
