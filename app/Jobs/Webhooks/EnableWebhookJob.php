@@ -10,13 +10,7 @@ use App\States\Webhooks\Enabled;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! CONTINUE. Test. Also, I should probably monitor for the "ping" event and somehow use it to verify that the hook is working.
-
 // TODO: CRITICAL! Cover with tests!
-
-/*
- * TODO: CRITICAL! I should cleanup webhook model if this process fails and notify the user.
- */
 
 class EnableWebhookJob extends AbstractJob
 {

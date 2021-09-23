@@ -9,8 +9,6 @@ use App\Notifications\Projects\WebhookDeletingFailedNotification;
 use App\States\Webhooks\Deleting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! CONTINUE. Test.
-
 // TODO: CRITICAL! Cover with tests!
 
 class DeleteWebhookJob extends AbstractJob
