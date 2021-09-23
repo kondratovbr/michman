@@ -18,6 +18,8 @@ return [
 
     'title' => 'Notifications',
     'details-title' => 'Notification details',
+    'time' => 'Time',
+    'message' => 'Message',
 
     'messages' => [
         DeploymentFailedNotification::class => 'We were unable to deploy project :project.',

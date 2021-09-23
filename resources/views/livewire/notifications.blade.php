@@ -1,4 +1,4 @@
-{{--TODO: IMPORTANT! This section needs a slight redesign - it should look different in comparison to normal sections.--}}
+{{--TODO: IMPORTANT! The notifications should show up somewhere on the screen regardless of the scroll position. I.e. not like now, not on top of the page. Check out how other apps do this. Forge's way is lazy.--}}
 
 <div class="{{ $notifications->isEmpty() ? '' : 'mb-8' }}">
     @unless($notifications->isEmpty())
@@ -8,8 +8,8 @@
 
             <x-slot name="header">
                 <x-tr-header>
-                    <x-th>Time</x-th>
-                    <x-th>Message</x-th>
+                    <x-th>{{ __('notifications.time') }}</x-th>
+                    <x-th>{{ __('notifications.message') }}</x-th>
                     <x-th></x-th>
                 </x-tr-header>
             </x-slot>
