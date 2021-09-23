@@ -77,8 +77,9 @@
         <div class="flex items-center space-x-3">
             <x-buttons.primary
                 wire:click.prevent="deploy"
+                wire:loading.attr="disabled"
             >{{ __('deployments.deploy-button') }}</x-buttons.primary>
-            <div class="text-sm">Deploying the <x-code>{{ $project->branch }}</x-code> branch</div>
+            <div class="text-sm"><x-lang key="deployments.deploying-branch" branch="{{ $project->branch }}"/></div>
         </div>
     </x-slot>
 
