@@ -8,8 +8,6 @@ use App\States\Webhooks\Enabling;
 use App\Support\Str;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class CreateProjectWebhookAction
 {
     public function execute(Project $project): void
