@@ -16,6 +16,7 @@ class CreateWebhooksTable extends Migration
 
             $table->string('provider');
             $table->string('type');
+            $table->string('url');
             $table->text('secret');
             $table->string('state');
             $table->string('external_id')->nullable();

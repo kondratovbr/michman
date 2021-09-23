@@ -43,7 +43,7 @@ class EnableWebhookJob extends AbstractJob
 
             $hookData = $api->addWebhookSafelyPush(
                 $hook->repo,
-                $hook->payloadUrl,
+                $hook->url,
                 $hook->secret,
             );
 

@@ -37,7 +37,7 @@ class DeleteWebhookJob extends AbstractJob
             if (isset($hook->externalId)) {
                 $api = $hook->project->vcsProvider->api();
 
-                $api->deleteWebhookIfExistsPush($hook->repo, $hook->payloadUrl);
+                $api->deleteWebhookIfExistsPush($hook->repo, $hook->url);
             }
 
             $hook->delete();

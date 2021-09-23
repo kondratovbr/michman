@@ -27,6 +27,7 @@ use Spatie\ModelStates\HasStates;
  * @property string $uuid
  * @property string $provider
  * @property string $type
+ * @property string $url
  * @property string $secret
  * @property string|null $externalId
  * @property WebhookState $state
@@ -34,7 +35,6 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $updatedAt
  *
  * @property-read User $user
- * @property-read string $payloadUrl
  * @property-read string $repo
  *
  * @property-read Project $project
@@ -52,6 +52,7 @@ class Webhook extends AbstractModel
     protected $fillable = [
         'provider',
         'type',
+        'url',
         'secret',
         'external_id',
     ];
@@ -75,21 +76,29 @@ class Webhook extends AbstractModel
     /** A service class to handle webhooks related functions. */
     private WebhookServiceInterface $service;
 
+    public static function booted(): void
+    {
+        static::creating(function (Webhook $hook) {
+            if (empty($hook->url))
+                $hook->url = static::payloadUrl($hook);
+        });
+    }
+
     public function getUserAttribute(): User
     {
         return $this->project->user;
     }
 
-    /** Generate a URL that the external service should be sending payload to. */
-    public function getPayloadUrlAttribute(): string
+    /** Generate a payload URL for a webhook. */
+    public static function payloadUrl(Webhook $hook): string
     {
         // This allows to have a separate domain for webhook payloads. Useful mainly for dev/debug purposes.
         if (! empty(config('webhooks.payload_url'))) {
             return config('webhooks.payload_url') .
-                route('hook.push', [$this->provider, $this], false);
+                route('hook.push', [$hook->provider, $hook], false);
         }
 
-        return route('hook.push', [$this->provider, $this]);
+        return route('hook.push', [$hook->provider, $hook]);
     }
 
     /** Get the full name (with username) of the repository with this webhook. */
