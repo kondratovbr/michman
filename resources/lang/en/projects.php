@@ -186,6 +186,7 @@ return [
 
     'quick-deploy' => [
         'title' => 'Quick Deploy',
+        'info' => 'Michman can set up a webhook on your repository, so when you push to your deployment branch a deployment will be triggered automatically. You\'ll receive an email notification about the deployment process.',
         'enable' => 'Enable Quick Deploy',
         'disable' => 'Disable Quick Deploy',
     ],

@@ -1,11 +1,11 @@
-{{--TODO: CRITICAL! Unfinished. Make nicer, add info, add progress indicator/spinner, remove the "Refresh" button added for debugging. --}}
-
 <x-action-section>
     <x-slot name="title">{{ __('projects.quick-deploy.title') }}</x-slot>
 
     <x-slot name="content">
 
-        <x-buttons>
+        <div class="space-y-6">
+            <x-message colors="info">{{ __('projects.quick-deploy.info') }}</x-message>
+
             @if(is_null($this->hook) || $this->hook->isEnabling())
                 <x-buttons.primary
                     wire:click.prevent="enable"
@@ -20,12 +20,7 @@
                 >{{ __('projects.quick-deploy.disable') }}</x-buttons.danger>
             @endif
 
-            <x-buttons.secondary
-                wire:click.prevent="$refresh"
-                wire:loading.attr="disabled"
-            >Refresh</x-buttons.secondary>
-
-        </x-buttons>
+        </div>
 
     </x-slot>
 </x-action-section>
