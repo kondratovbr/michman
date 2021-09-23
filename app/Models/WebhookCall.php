@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property array $headers
  * @property array $payload
  * @property array $exception
+ * @property bool $processed
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -45,6 +46,7 @@ class WebhookCall extends AbstractModel
         'headers' => 'array',
         'payload' => 'array',
         'exception' => WebhookExceptionDto::class,
+        'processed' => ForceBooleanCast::class,
     ];
 
     /** @var string[] The event map for the model. */

@@ -27,6 +27,9 @@ class HandlePingWebhookJob extends AbstractJob
                 return;
 
             $call->webhook->state->transitionTo(Enabled::class);
+
+            $call->processed = true;
+            $call->save();
         }, 5);
     }
 }

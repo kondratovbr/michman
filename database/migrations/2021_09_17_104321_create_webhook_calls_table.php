@@ -18,6 +18,7 @@ class CreateWebhookCallsTable extends Migration
             $table->json('headers')->nullable();
             $table->json('payload')->nullable();
             $table->text('exception')->nullable();
+            $table->boolean('processes')->nullable();
 
             $table->timestamps();
         });
