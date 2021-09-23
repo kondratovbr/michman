@@ -55,6 +55,7 @@ class Webhook extends AbstractModel
         'url',
         'secret',
         'external_id',
+        'state',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
