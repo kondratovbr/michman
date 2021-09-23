@@ -8,6 +8,7 @@ use RuntimeException;
 
 abstract class AbstractModelState extends State
 {
+    public static string $name;
     public function is(string|array $states): bool
     {
         $abstract = get_parent_class($this);
