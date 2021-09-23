@@ -8,8 +8,6 @@ use App\Models\Daemon;
 use App\Models\Server;
 use App\States\Daemons\Starting;
 
-// TODO: CRITICAL! Cover with tests!
-
 class StoreDaemonAction
 {
     public function execute(DaemonDto $data, Server $server): Daemon
