@@ -40,6 +40,7 @@ class DeleteWebhookJob extends AbstractJob
                 $api->deleteWebhookIfExistsPush($hook->repo, $hook->url);
             }
 
+            $hook->calls()->delete();
             $hook->delete();
         }, 5);
     }
@@ -55,6 +56,7 @@ class DeleteWebhookJob extends AbstractJob
 
             $this->hook->user->notify(new WebhookDeletingFailedNotification($this->hook->project));
 
+            $hook->calls()->delete();
             $hook->delete();
         }, 5);
     }
