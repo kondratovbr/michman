@@ -17,9 +17,9 @@ class DeployProjectAction
         protected StoreDeploymentAction $store,
     ) {}
 
-    public function execute(Project $project): Deployment
+    public function execute(Project $project, string $commit = null): Deployment
     {
-        $commit = $project->vcsProvider->api()
+        $commit ??= $project->vcsProvider->api()
             ->getLatestCommitHash($project->repo, $project->branch);
 
         return $this->store->execute(new DeploymentDto(
