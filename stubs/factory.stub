@@ -7,12 +7,8 @@ use {{ namespacedModel }};
 
 class {{ factory }}Factory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = {{ model }}::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
