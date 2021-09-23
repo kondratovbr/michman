@@ -29,4 +29,15 @@ abstract class AbstractModelState extends State
 
         return false;
     }
+
+    /** Override the built-in method to prevent transitioning from a state to the same state. */
+    public function canTransitionTo($newState, ...$transitionArgs): bool
+    {
+        ray($this::class, $newState);
+
+        if ($this instanceof $newState || static::$name === $newState)
+            return false;
+
+        return parent::canTransitionTo($newState, $transitionArgs);
+    }
 }
