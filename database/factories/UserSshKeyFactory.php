@@ -9,12 +9,8 @@ use phpseclib3\Crypt\EC;
 
 class UserSshKeyFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = UserSshKey::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [

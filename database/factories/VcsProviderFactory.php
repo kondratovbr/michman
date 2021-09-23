@@ -10,12 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VcsProviderFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = VcsProvider::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -42,7 +38,7 @@ class VcsProviderFactory extends Factory
     /**
      * Attach this VCS provider to a random user from a collection provided.
      *
-     * @return self
+     * @return $this
      */
     public function forRandomUserOnceFrom(Collection $users): self
     {
@@ -56,9 +52,7 @@ class VcsProviderFactory extends Factory
         });
     }
 
-    /**
-     * Attach VCS provider to a user.
-     */
+    /** Attach VCS provider to a user. */
     private function associateUser(VcsProvider $vcsProvider, User $user): void
     {
         $vcsProvider->user()->associate($user);

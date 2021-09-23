@@ -9,12 +9,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PythonFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = Python::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -25,9 +21,7 @@ class PythonFactory extends Factory
         ];
     }
 
-    /**
-     * Set the status of this python to "installing".
-     */
+    /** Set the status of this python to "installing". */
     public function installing(): static
     {
         return $this->state([
@@ -35,9 +29,7 @@ class PythonFactory extends Factory
         ]);
     }
 
-    /**
-     * Set the status of this python to "updating".
-     */
+    /** Set the status of this python to "updating". */
     public function updating(): static
     {
         return $this->state([
@@ -72,9 +64,7 @@ class PythonFactory extends Factory
         });
     }
 
-    /**
-     * Associate a Python model with a Server.
-     */
+    /** Associate a Python model with a Server. */
     protected function associateWithServer(Python $python, Server $server): void
     {
         $python->server()->associate($server);

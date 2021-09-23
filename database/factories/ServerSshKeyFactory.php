@@ -10,12 +10,8 @@ use phpseclib3\Crypt\EC;
 
 class ServerSshKeyFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = ServerSshKey::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -67,18 +63,14 @@ class ServerSshKeyFactory extends Factory
         });
     }
 
-    /**
-     * Associate an SSH key with a Server.
-     */
+    /** Associate an SSH key with a Server. */
     protected function associateWithServer(ServerSshKey $sshKey, Server $server): void
     {
         $sshKey->server()->associate($server);
         $this->updateKeyAndName($sshKey);
     }
 
-    /**
-     * Create a new SSH key and update "name" attribute of a model.
-     */
+    /** Create a new SSH key and update "name" attribute of a model. */
     protected function updateKeyAndName(ServerSshKey $sshKey): void
     {
         $key = EC::createKey('Ed25519');

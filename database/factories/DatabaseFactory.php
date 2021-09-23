@@ -4,19 +4,14 @@ namespace Database\Factories;
 
 use App\Models\Database;
 use App\Models\DatabaseUser;
-use App\Models\Provider;
 use App\Models\Server;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DatabaseFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = Database::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -36,6 +31,8 @@ class DatabaseFactory extends Factory
 
     /**
      * Also create database users for this database on the same server.
+     *
+     * @return $this
      */
     public function withDatabaseUsers(int $count = 1): static
     {
@@ -51,6 +48,8 @@ class DatabaseFactory extends Factory
 
     /**
      * Attach databases to random servers from a collection.
+     *
+     * @return $this
      */
     public function forRandomServerFrom(Collection $servers): static
     {
@@ -59,9 +58,7 @@ class DatabaseFactory extends Factory
         );
     }
 
-    /**
-     * Attach a database to a server.
-     */
+    /** Attach a database to a server. */
     protected function associateServer(Database $database, Server $server): void
     {
         $database->server()->associate($server);

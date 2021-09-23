@@ -8,16 +8,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use phpseclib3\Crypt\EC;
 
-// TODO: Test the factory. May not work.
-
 class DeploySshKeyFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = DeploySshKey::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -65,18 +59,14 @@ class DeploySshKeyFactory extends Factory
         });
     }
 
-    /**
-     * Associate an SSH key with a Server.
-     */
+    /** Associate an SSH key with a Server. */
     protected function associateWithProject(DeploySshKey $sshKey, Project $project): void
     {
         $sshKey->project()->associate($project);
         $this->updateKey($sshKey);
     }
 
-    /**
-     * Create a new SSH key.
-     */
+    /** Create a new SSH key. */
     protected function updateKey(DeploySshKey $sshKey): void
     {
         $key = EC::createKey('Ed25519');

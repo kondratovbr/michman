@@ -10,12 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProviderFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = Provider::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -67,9 +63,7 @@ class ProviderFactory extends Factory
         );
     }
 
-    /**
-     * Attach provider to a user.
-     */
+    /** Attach provider to a user. */
     protected function associateOwner(Provider $provider, User $user): void
     {
         $provider->owner()->associate($user);

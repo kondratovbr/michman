@@ -10,12 +10,8 @@ use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [

@@ -9,12 +9,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DatabaseUserFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = DatabaseUser::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -62,9 +58,7 @@ class DatabaseUserFactory extends Factory
         });
     }
 
-    /**
-     * Attach a database user to a server.
-     */
+    /** Attach a database user to a server. */
     protected function associateServer(DatabaseUser $databaseUser, Server $server): void
     {
         $databaseUser->server()->associate($server);

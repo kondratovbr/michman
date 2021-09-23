@@ -9,12 +9,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ServerFactory extends Factory
 {
-    /** @var string The name of the factory's corresponding model. */
     protected $model = Server::class;
 
-    /**
-     * Define the model's default state.
-     */
     public function definition(): array
     {
         return [
@@ -53,9 +49,7 @@ class ServerFactory extends Factory
         );
     }
 
-    /**
-     * Attach server to a provider.
-     */
+    /** Attach server to a provider. */
     protected function associateProvider(Server $server, Provider $provider): void
     {
         $server->provider()->associate($provider);
