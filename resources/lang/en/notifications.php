@@ -1,5 +1,6 @@
 <?php
 
+use App\Notifications\Daemons\DaemonFailedNotification;
 use App\Notifications\Deployments\DeploymentFailedNotification;
 use App\Notifications\Projects\ProjectInstallationFailedNotification;
 use App\Notifications\Projects\WebhookDeletingFailedNotification;
@@ -39,6 +40,8 @@ return [
 
         WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook (Quick Deploy) for project :project',
         WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook (Quick Deploy) for project :project from your repository.',
+
+        DaemonFailedNotification::class => 'A daemon failed to start on a server :server.',
     ],
 
 ];

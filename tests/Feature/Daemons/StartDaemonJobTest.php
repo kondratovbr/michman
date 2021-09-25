@@ -9,12 +9,14 @@ use App\Jobs\Daemons\StartDaemonJob;
 use App\Jobs\Daemons\UpdateDaemonStateJob;
 use App\Models\Daemon;
 use App\Models\Server;
+use App\Notifications\Daemons\DaemonFailedNotification;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\StartDaemonScript;
 use App\States\Daemons\Failed;
 use App\States\Daemons\Starting;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
@@ -136,11 +138,13 @@ class StartDaemonJobTest extends AbstractFeatureTest
 
         Bus::fake();
         Event::fake();
+        Notification::fake();
 
         $this->app->call([$job, 'handle']);
 
         Bus::assertNotDispatched(UpdateDaemonStateJob::class);
         Event::assertDispatched(DaemonUpdatedEvent::class);
+        Notification::assertSentTo($daemon->user, DaemonFailedNotification::class);
 
         $this->assertDatabaseHas('daemons', [
             'id' => $daemon->id,
