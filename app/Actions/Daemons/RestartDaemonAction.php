@@ -7,8 +7,6 @@ use App\Models\Daemon;
 use App\States\Daemons\Restarting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class RestartDaemonAction
 {
     public function execute(Daemon $daemon): void
