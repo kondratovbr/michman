@@ -16,7 +16,7 @@ abstract class DaemonState extends AbstractModelState
             ->allowTransition([Starting::class, Restarting::class], Active::class)
             ->allowTransition(Stopping::class, Stopped::class)
             ->allowTransition([Stopping::class, Stopped::class], Starting::class)
-            ->allowTransition([Starting::class, Active::class], Stopping::class)
+            ->allowTransition([Starting::class, Active::class, Restarting::class], Stopping::class)
             ->allowTransition([Starting::class, Active::class, Stopping::class, Stopped::class, Failed::class], Restarting::class)
             ->allowTransition([Starting::class, Restarting::class, Active::class], Failed::class)
             ->allowTransition([
