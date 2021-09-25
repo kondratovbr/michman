@@ -11,6 +11,8 @@ use App\States\Daemons\Failed;
 use App\States\Daemons\Restarting;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests!
+
 class RestartDaemonJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;

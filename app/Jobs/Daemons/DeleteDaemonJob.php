@@ -8,6 +8,8 @@ use App\Scripts\Root\StopDaemonScript;
 use App\States\Daemons\Deleting;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests!
+
 class DeleteDaemonJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;
