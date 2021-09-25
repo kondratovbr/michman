@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\AbstractNotification;
 
+// TODO: CRITICAL! Don't forget to implement a WebhookFailed type of notification.
+
 abstract class AbstractWebhookNotification extends AbstractNotification
 {
     public function __construct(
