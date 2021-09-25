@@ -7,8 +7,6 @@ use App\Models\Daemon;
 use App\States\Daemons\Starting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class StartDaemonAction
 {
     public function execute(Daemon $daemon): void

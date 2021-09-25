@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Tests\AbstractFeatureTest;
 
-// TODO: CRITICAL! CONTINUE.
-
 class StartDaemonActionTest extends AbstractFeatureTest
 {
     public function test_daemon_in_active_state_is_ignored()
@@ -27,9 +25,9 @@ class StartDaemonActionTest extends AbstractFeatureTest
         $this->assertIgnored($this->execute('deleting'));
     }
 
-    public function test_daemon_in_failed_state_gets_started()
+    public function test_daemon_in_failed_state_gets_ignored()
     {
-        $this->assertPerformed($this->execute('failed'));
+        $this->assertIgnored($this->execute('failed'));
     }
 
     public function test_daemon_in_restarting_state_is_ignored()
@@ -91,7 +89,7 @@ class StartDaemonActionTest extends AbstractFeatureTest
 
         $daemon->refresh();
 
-        $this->assertTrue($daemon->state->is($sourceState));
+        $this->assertTrue($daemon->state->is($sourceState::class));
 
         Bus::assertNotDispatched(StartDaemonJob::class);
         Event::assertNotDispatched(DaemonUpdatedEvent::class);
