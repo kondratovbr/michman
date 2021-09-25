@@ -46,6 +46,7 @@ class StartDaemonJobTest extends AbstractFeatureTest
 
         Bus::fake();
         Event::fake();
+        Notification::fake();
 
         $this->app->call([$job, 'handle']);
 
@@ -53,6 +54,7 @@ class StartDaemonJobTest extends AbstractFeatureTest
         Event::assertNotDispatched(DaemonCreatedEvent::class);
         Event::assertNotDispatched(DaemonUpdatedEvent::class);
         Event::assertNotDispatched(DaemonDeletedEvent::class);
+        Notification::assertNothingSent();
 
         $this->assertDatabaseHas('daemons', [
             'id' => $daemon->id,
@@ -82,6 +84,7 @@ class StartDaemonJobTest extends AbstractFeatureTest
 
         Bus::fake();
         Event::fake();
+        Notification::fake();
 
         $this->app->call([$job, 'handle']);
 
@@ -89,6 +92,7 @@ class StartDaemonJobTest extends AbstractFeatureTest
         Event::assertNotDispatched(DaemonCreatedEvent::class);
         Event::assertNotDispatched(DaemonUpdatedEvent::class);
         Event::assertNotDispatched(DaemonDeletedEvent::class);
+        Notification::assertNothingSent();
 
         $this->assertDatabaseHas('daemons', [
             'id' => $daemon->id,
