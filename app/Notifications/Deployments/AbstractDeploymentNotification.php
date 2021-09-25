@@ -21,9 +21,7 @@ abstract class AbstractDeploymentNotification extends AbstractNotification
         ];
     }
 
-    /**
-     * Retrieve the deployment model from the database.
-     */
+    /** Retrieve the deployment model from the database. */
     protected static function deployment(array $data): Deployment|null
     {
         /** @var Deployment|null $deployment */
