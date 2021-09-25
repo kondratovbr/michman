@@ -7,8 +7,6 @@ use App\Models\Daemon;
 use App\States\Daemons\Stopping;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class StopDaemonAction
 {
     public function execute(Daemon $daemon): void
