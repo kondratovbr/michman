@@ -11,8 +11,6 @@ use App\States\Workers\Failed;
 use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class StartWorkerJob extends AbstractRemoteServerJob
 {
     protected Worker $worker;
