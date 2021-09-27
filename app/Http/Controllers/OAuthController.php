@@ -188,14 +188,13 @@ class OAuthController extends AbstractController
             $vcsProviderData = VcsProviderDto::fromOauth(
                 $oauthUser,
                 $vcsProviderName,
-                $user,
             );
 
             $vcsProvider = $user->vcs($vcsProviderName, true);
 
             // The user has no VcsProvider configured, so we can create one immediately.
             if (is_null($vcsProvider)) {
-                $this->storeVcsProvider->execute($vcsProviderData);
+                $this->storeVcsProvider->execute($vcsProviderData, $user);
                 return;
             }
 

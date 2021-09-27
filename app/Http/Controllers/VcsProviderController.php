@@ -74,9 +74,8 @@ class VcsProviderController extends AbstractController
 
             $this->storeVcsProvider->execute(VcsProviderDto::fromOauth(
                 $oauthUser,
-                $vcsProviderName,
-                Auth::user()),
-            );
+                $vcsProviderName
+            ), Auth::user());
         }, 5);
 
         return redirect()->route('account.show', 'vcs');

@@ -3,14 +3,14 @@
 namespace App\DataTransferObjects;
 
 use App\Exceptions\NotImplementedException;
-use App\Models\User;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
+
+// TODO: CRITICAL! Cover with tests.
 
 class VcsProviderDto extends AbstractDto
 {
     public function __construct(
-        public User $user,
         public string $provider,
         public string $external_id,
         public string $nickname,
@@ -19,20 +19,19 @@ class VcsProviderDto extends AbstractDto
         public string|null $secret = null,
     ) {}
 
-    public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName, User $user): static
+    public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName): static
     {
         return match ($vcsProviderName) {
-            'github_v3' => static::github($oauthUser, $user),
-            'gitlab' => static::gitlab($oauthUser, $user),
-            'bitbucket' => static::bitbucket($oauthUser, $user),
+            'github_v3' => static::github($oauthUser),
+            'gitlab' => static::gitlab($oauthUser),
+            'bitbucket' => static::bitbucket($oauthUser),
             default => throw new RuntimeException('Unknown VCS provider name.')
         };
     }
 
-    private static function github(OAuthUser $oauthUser, User $user): static
+    private static function github(OAuthUser $oauthUser): static
     {
         return new static(
-            user: $user,
             provider: 'github_v3',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
@@ -40,7 +39,7 @@ class VcsProviderDto extends AbstractDto
         );
     }
 
-    private static function gitlab(OAuthUser $oauthUser, User $user): static
+    private static function gitlab(OAuthUser $oauthUser): static
     {
         // TODO: CRITICAL! Implement.
 
@@ -49,7 +48,7 @@ class VcsProviderDto extends AbstractDto
         //
     }
 
-    private static function bitbucket(OAuthUser $oauthUser, User $user): static
+    private static function bitbucket(OAuthUser $oauthUser): static
     {
         // TODO: CRITICAL! Implement.
 
