@@ -3,8 +3,11 @@
 namespace App\States;
 
 use App\Support\Arr;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\ModelStates\State;
 use RuntimeException;
+
+// TODO: CRITICAL! Cover with tests.
 
 abstract class AbstractModelState extends State
 {
@@ -37,5 +40,17 @@ abstract class AbstractModelState extends State
             return false;
 
         return parent::canTransitionTo($newState, $transitionArgs);
+    }
+
+    /**
+     * Check that the requested transition is possible and perform it.
+     * Silently do nothing if it isn't possible.
+     */
+    public function transitionToIfCan($newState, ...$transitionArgs): Model
+    {
+        if ($this->canTransitionTo(...func_get_args()))
+            $this->transitionTo(...func_get_args());
+
+        return $this->getModel();
     }
 }
