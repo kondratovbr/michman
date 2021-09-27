@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Support\Arr;
 use App\Support\ConfigViewFactory;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Date;
 use Carbon\CarbonImmutable;
@@ -43,6 +45,20 @@ class AppServiceProvider extends ServiceProvider
             $factory->share('app', $app);
 
             return $factory;
+        });
+    }
+
+    public function boot(): void
+    {
+        /*
+         * This will rollback any transactions that may have been
+         * left open after a job has failed.
+         * @see https://laravel.com/docs/8.x/queues#job-events
+         */
+        Queue::looping(function () {
+            while (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
         });
     }
 }
