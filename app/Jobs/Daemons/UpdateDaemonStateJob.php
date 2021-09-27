@@ -14,8 +14,6 @@ use App\States\Daemons\Stopping;
 use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class UpdateDaemonStateJob extends AbstractRemoteServerJob
 {
     use Batchable;
@@ -50,11 +48,10 @@ class UpdateDaemonStateJob extends AbstractRemoteServerJob
 
             try {
                 $daemon->state = $script->execute($server, $daemon);
+                $daemon->save();
             } catch (ServerScriptException) {
-                $daemon->state = Failed::class;
+                $daemon->state->transitionTo(Failed::class);
             }
-
-            $daemon->save();
 
             // If the daemon is still starting, i.e. hasn't failed or successfully started yet -
             // repeat this job a bit later.
