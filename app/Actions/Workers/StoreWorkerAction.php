@@ -9,8 +9,6 @@ use App\Models\Server;
 use App\Models\Worker;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class StoreWorkerAction
 {
     public function execute(WorkerDto $data, Project $project, Server $server): Worker
