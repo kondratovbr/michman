@@ -18,6 +18,7 @@ class WebhookFactory extends Factory
             'url' => 'http://localhost/',
             'secret' => '1234567890',
             'state' => 'enabling',
+            'external_id' => null,
         ];
     }
 
@@ -32,7 +33,7 @@ class WebhookFactory extends Factory
     {
         return $this->state([
             'state' => 'enabled',
-            'external_id' => 123,
+            'external_id' => '123',
         ]);
     }
 
