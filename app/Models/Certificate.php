@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
-use App\Models\Traits\HasStatus;
+use App\States\Certificates\CertificateState;
+use App\States\Certificates\Installed;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\ModelStates\HasStates;
 
 /*
  * To "expand" a certificate, i.e. to add more sub-domains:
@@ -26,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $type
  * @property string[] $domains
+ * @property CertificateState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -39,20 +42,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Certificate extends AbstractModel
 {
-    use HasFactory,
-        HasStatus;
+    use HasFactory;
+    use HasStates;
 
     public const TYPE_LETS_ENCRYPT = 'lets-encrypt';
 
-    public const STATUS_INSTALLING = 'installing';
-    public const STATUS_INSTALLED = 'installed';
-    public const STATUS_DELETING = 'deleting';
-
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'status',
         'type',
         'domains',
+        'state',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -61,6 +60,7 @@ class Certificate extends AbstractModel
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'domains' => 'array',
+        'state' => CertificateState::class,
     ];
 
     /** @var string[] The event map for the model. */
@@ -116,7 +116,7 @@ class Certificate extends AbstractModel
      */
     public function isInstalled(): bool
     {
-        return $this->status === static::STATUS_INSTALLED;
+        return $this->state->is(Installed::class);
     }
 
     /**

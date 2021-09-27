@@ -2,13 +2,8 @@
 
 use App\Models\Certificate;
 use App\Models\Python;
-use App\States\Daemons\Active;
-use App\States\Daemons\Deleting;
-use App\States\Daemons\Failed;
-use App\States\Daemons\Restarting;
-use App\States\Daemons\Starting;
-use App\States\Daemons\Stopped;
-use App\States\Daemons\Stopping;
+use App\States\Daemons;
+use App\States\Certificates;
 
 return [
 
@@ -222,10 +217,10 @@ return [
             Certificate::TYPE_LETS_ENCRYPT => 'Let\'s Encrypt',
         ],
 
-        'statuses' => [
-            Certificate::STATUS_INSTALLING => 'Installing',
-            Certificate::STATUS_INSTALLED => 'Active',
-            Certificate::STATUS_DELETING => 'Deleting',
+        'states' => [
+            Certificates\Installing::class => 'Installing',
+            Certificates\Installed::class => 'Active',
+            Certificates\Deleting::class => 'Deleting',
         ],
     ],
 
@@ -273,13 +268,13 @@ return [
         ],
 
         'states' => [
-            Starting::class => 'Starting',
-            Active::class => 'Active',
-            Stopping::class => 'Stopping',
-            Stopped::class => 'Stopped',
-            Restarting::class => 'Restarting',
-            Failed::class => 'Failed',
-            Deleting::class => 'Deleting',
+            Daemons\Starting::class => 'Starting',
+            Daemons\Active::class => 'Active',
+            Daemons\Stopping::class => 'Stopping',
+            Daemons\Stopped::class => 'Stopped',
+            Daemons\Restarting::class => 'Restarting',
+            Daemons\Failed::class => 'Failed',
+            Daemons\Deleting::class => 'Deleting',
         ],
     ],
 

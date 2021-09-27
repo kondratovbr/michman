@@ -5,6 +5,7 @@ namespace App\Actions\Certificates;
 use App\Jobs\Certificates\InstallLetsEncryptCertificateJob;
 use App\Models\Certificate;
 use App\Models\Server;
+use App\States\Certificates\Installing;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests.
@@ -19,7 +20,7 @@ class StoreLetsEncryptCertificateAction
             $certificate = $server->certificates()->create([
                 'type' => Certificate::TYPE_LETS_ENCRYPT,
                 'domains' => $domains,
-                'status' => Certificate::STATUS_INSTALLING,
+                'state' => Installing::class,
             ]);
 
             InstallLetsEncryptCertificateJob::dispatch($certificate);

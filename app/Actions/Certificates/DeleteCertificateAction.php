@@ -4,6 +4,7 @@ namespace App\Actions\Certificates;
 
 use App\Jobs\Certificates\DeleteLetsEncryptCertificateJob;
 use App\Models\Certificate;
+use App\States\Certificates\Deleting;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
@@ -14,11 +15,10 @@ class DeleteCertificateAction
         DB::transaction(function () use ($certificate) {
             $certificate = $certificate->freshLockForUpdate();
 
-            if ($certificate->isStatus(Certificate::STATUS_DELETING))
+            if (! $certificate->state->canTransitionTo(Deleting::class))
                 return;
 
-            $certificate->status = Certificate::STATUS_DELETING;
-            $certificate->save();
+            $certificate->state->transitionTo(Deleting::class);
 
             // TODO: CRITICAL! Don't forget to implement the rest as well, if I have any.
             if ($certificate->type !== Certificate::TYPE_LETS_ENCRYPT)

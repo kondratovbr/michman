@@ -18,7 +18,8 @@
                 <x-td>{{ __("servers.ssl.types.{$cert->type}") }}</x-td>
                 <x-td>
 {{--                    TODO: Should I center these badges? Here and in all other tables.--}}
-                    <x-certificates.status-badge :certificate="$cert" />
+{{--                    TODO: CRITICAL! I changed it, so make sure it works.--}}
+                    <x-state-badge :state="$cert->state" />
                 </x-td>
                 <x-td>
                     <div class="flex justify-end items-center">

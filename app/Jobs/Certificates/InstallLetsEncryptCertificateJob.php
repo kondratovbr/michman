@@ -9,6 +9,8 @@ use App\Scripts\Root\InstallLetsEncryptCertificateScript;
 use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\Root\UploadPlaceholderPageNginxConfigScript;
+use App\States\Certificates\Installed;
+use App\States\Certificates\Installing;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -30,9 +32,6 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
         $this->certificate = $certificate->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(
         InstallLetsEncryptCertificateScript $installCertificate,
         UpdateProjectNginxConfigOnServerScript $updateNginxConfig,
@@ -44,6 +43,9 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
         ) {
             $server = $this->server->freshSharedLock();
             $certificate = $this->certificate->freshLockForUpdate();
+
+            if (! $certificate->state->is(Installing::class))
+                return;
 
             $rootSsh = $server->sftp('root');
 
@@ -62,8 +64,7 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
 
             $restartNginx->execute($server, $rootSsh);
 
-            $certificate->status = Certificate::STATUS_INSTALLED;
-            $certificate->save();
+            $certificate->state->transitionTo(Installed::class);
 
             // TODO: CRITICAL! Need to somehow verify that the certificate is received and, later, that it is installed and works.
 

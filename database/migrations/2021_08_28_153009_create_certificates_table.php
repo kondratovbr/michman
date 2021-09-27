@@ -15,7 +15,7 @@ class CreateCertificatesTable extends Migration
 
             $table->string('type');
             $table->json('domains');
-            $table->string('status')->nullable();
+            $table->string('state');
 
             $table->timestamps();
         });
