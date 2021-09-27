@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Certificate;
-use App\Models\Project;
+use App\Models\Server;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CertificateFactory extends Factory
@@ -13,13 +13,23 @@ class CertificateFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'type' => 'lets-encrypt',
+            'domains' => [$this->faker->domainName],
+            'state' => 'installing',
         ];
     }
 
     /** @return $this */
-    public function withProject(): static
+    public function withServer(): static
     {
-        return $this->for(Project::factory()->withUserAndServers());
+        return $this->for(Server::factory()->withProvider());
+    }
+
+    /** @return $this */
+    public function inState(string $state): static
+    {
+        return $this->state([
+            'state' => $state,
+        ]);
     }
 }
