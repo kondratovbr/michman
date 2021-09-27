@@ -6,6 +6,8 @@ use App\Services\Traits\HasConfig;
 use App\Support\Arr;
 use Illuminate\Http\Request;
 
+// TODO: CRITICAL! Cover with tests.
+
 class GitHubWebhookService implements WebhookServiceInterface
 {
     use HasConfig;
