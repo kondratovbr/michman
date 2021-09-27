@@ -7,8 +7,6 @@ use App\Models\Worker;
 use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class RestartWorkerAction
 {
     public function execute(Worker $worker): void
