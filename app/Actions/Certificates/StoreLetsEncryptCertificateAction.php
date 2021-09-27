@@ -8,8 +8,6 @@ use App\Models\Server;
 use App\States\Certificates\Installing;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class StoreLetsEncryptCertificateAction
 {
     /** @param string[] $domains */
