@@ -9,8 +9,6 @@ use App\States\Daemons\Stopped;
 use App\States\Daemons\Stopping;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class StopDaemonJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;
