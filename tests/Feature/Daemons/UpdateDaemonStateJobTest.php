@@ -177,7 +177,7 @@ class UpdateDaemonStateJobTest extends AbstractFeatureTest
                         && $daemonArg->is($daemon);
                 })
                 ->once()
-                ->andThrowExceptions([new ServerScriptException]);
+                ->andThrow(new ServerScriptException);
         });
 
         $job = new UpdateDaemonStateJob($daemon);
