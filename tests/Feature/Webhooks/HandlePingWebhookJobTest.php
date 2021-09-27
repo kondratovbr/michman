@@ -3,6 +3,7 @@
 namespace Tests\Feature\Webhooks;
 
 use App\Events\Webhooks\WebhookUpdatedEvent;
+use App\Jobs\Exceptions\WrongWebhookCallTypeException;
 use App\Jobs\Webhooks\HandlePingWebhookJob;
 use App\Models\Webhook;
 use App\Models\WebhookCall;
@@ -98,6 +99,42 @@ class HandlePingWebhookJobTest extends AbstractFeatureTest
 
         $this->assertTrue($call->exists);
         $this->assertTrue($call->processed);
+
+        Event::assertNotDispatched(WebhookUpdatedEvent::class);
+    }
+
+    public function test_call_type_gets_verified()
+    {
+        /** @var Webhook $hook */
+        $hook = Webhook::factory()
+            ->withProject()
+            ->inState('enabling')
+            ->create();
+        /** @var WebhookCall $call */
+        $call = WebhookCall::factory([
+            'type' => 'push',
+            'processed' => false,
+        ])
+            ->for($hook)
+            ->create();
+
+        $job = new HandlePingWebhookJob($call);
+
+        Bus::fake();
+        Event::fake();
+
+        $this->expectException(WrongWebhookCallTypeException::class);
+
+        $this->app->call([$job, 'handle']);
+
+        $this->assertDatabaseHas('webhooks', [
+            'id' => $hook->id,
+            'state' => 'enabling',
+        ]);
+        $this->assertDatabaseHas('webhook_calls', [
+            'id' => $call->id,
+            'processed' => false,
+        ]);
 
         Event::assertNotDispatched(WebhookUpdatedEvent::class);
     }
