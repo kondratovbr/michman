@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class StoreLetsEncryptCertificateAction
 {
-    /**
-     * @param string[] $domains
-     */
+    /** @param string[] $domains */
     public function execute(Server $server, array $domains): Certificate
     {
         return DB::transaction(function () use ($server, $domains): Certificate {
