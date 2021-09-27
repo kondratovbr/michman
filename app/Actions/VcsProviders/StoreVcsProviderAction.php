@@ -6,8 +6,6 @@ use App\DataTransferObjects\VcsProviderDto;
 use App\Models\User;
 use App\Models\VcsProvider;
 
-// TODO: CRITICAL! Cover with tests!
-
 class StoreVcsProviderAction
 {
     public function execute(VcsProviderDto $data, User $user): VcsProvider
