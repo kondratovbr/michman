@@ -5,9 +5,8 @@ namespace App\Jobs\Workers;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Worker;
 use App\Scripts\Root\StopWorkerScript;
+use App\States\Workers\Deleting;
 use Illuminate\Support\Facades\DB;
-
-// TODO: CRITICAL! Cover with tests.
 
 class DeleteWorkerJob extends AbstractRemoteServerJob
 {
@@ -25,6 +24,9 @@ class DeleteWorkerJob extends AbstractRemoteServerJob
         DB::transaction(function () use ($script) {
             $server = $this->server->freshSharedLock();
             $worker = $this->worker->freshLockForUpdate();
+
+            if (! $worker->state->is(Deleting::class))
+                return;
 
             $script->execute($server, $worker);
 
