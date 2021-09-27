@@ -33,6 +33,8 @@ class HandlePushWebhookJob extends AbstractJob
             /** @var Project $project */
             $project = $call->webhook->project()->sharedLock()->firstOrFail();
 
+            $this->verifyHookCallType($call, 'push');
+
             $action->execute($project, $call->payload['after']);
 
             $call->processed = true;

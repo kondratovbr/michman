@@ -30,10 +30,9 @@ class HandlePingWebhookJob extends AbstractJob
         DB::transaction(function () {
             $call = $this->call->freshLockForUpdate('webhook');
 
-            if (! $call->webhook->state->canTransitionTo(Enabled::class))
-                return;
+            $this->verifyHookCallType($call, 'ping');
 
-            $call->webhook->state->transitionTo(Enabled::class);
+            $call->webhook->state->transitionToIfCan(Enabled::class);
 
             $call->processed = true;
             $call->save();
