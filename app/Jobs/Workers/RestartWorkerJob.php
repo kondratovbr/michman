@@ -12,8 +12,6 @@ use App\States\Workers\Failed;
 use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests. Not only the happy path.
-
 class RestartWorkerJob extends AbstractRemoteServerJob
 {
     protected Worker $worker;
@@ -39,7 +37,7 @@ class RestartWorkerJob extends AbstractRemoteServerJob
             $stop->execute($server, $worker, $ssh);
 
             try {
-                $success = $start->execute($server, $worker);
+                $success = $start->execute($server, $worker, $ssh);
                 $worker->state->transitionTo($success ? Active::class : Failed::class);
             } catch (ServerScriptException) {
                 $worker->state->transitionTo(Failed::class);
