@@ -86,8 +86,8 @@ class StopDaemonJobTest extends AbstractFeatureTest
         $this->app->call([$job, 'handle']);
 
         Bus::assertNotDispatched(UpdateDaemonStateJob::class);
-        Event::assertNotDispatched(DaemonUpdatedEvent::class);
         Event::assertNotDispatched(DaemonCreatedEvent::class);
+        Event::assertNotDispatched(DaemonUpdatedEvent::class);
         Event::assertNotDispatched(DaemonDeletedEvent::class);
         Notification::assertNothingSent();
 
