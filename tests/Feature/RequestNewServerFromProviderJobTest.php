@@ -36,7 +36,7 @@ class RequestNewServerFromProviderJobTest extends AbstractFeatureTest
 
         $this->assertEquals('providers', $job->queue);
 
-        $this->mockBind('digital_ocean_v2', ServerProviderInterface::class,
+        $this->mockBind('digital_ocean_v2-servers', ServerProviderInterface::class,
             function (MockInterface $mock) use ($data, $server) {
                 $mock->shouldReceive('createServer')
                     ->with($data, $server->workerSshKey->externalId)
