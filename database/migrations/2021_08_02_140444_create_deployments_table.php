@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDeploymentsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('deployments', function (Blueprint $table) {

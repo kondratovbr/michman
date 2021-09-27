@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateVcsProvidersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('vcs_providers', function (Blueprint $table) {

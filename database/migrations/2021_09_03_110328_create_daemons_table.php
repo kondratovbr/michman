@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDaemonsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('daemons', function (Blueprint $table) {

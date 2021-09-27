@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePythonsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('pythons', function (Blueprint $table) {

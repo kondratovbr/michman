@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class AddOauthFieldsToUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {

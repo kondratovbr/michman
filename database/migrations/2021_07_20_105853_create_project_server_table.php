@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateProjectServerTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('project_server', function (Blueprint $table) {

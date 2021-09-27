@@ -9,9 +9,6 @@ class CreateServerLogsTable extends Migration
     /** @var string The database connection that should be used by the migration. */
     protected $connection = 'db-logs';
 
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('server_logs', function (Blueprint $table) {

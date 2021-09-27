@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateProvidersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('providers', function (Blueprint $table) {

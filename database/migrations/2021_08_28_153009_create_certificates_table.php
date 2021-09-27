@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCertificatesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('certificates', function (Blueprint $table) {

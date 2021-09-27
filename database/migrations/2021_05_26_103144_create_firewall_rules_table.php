@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFirewallRulesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('firewall_rules', function (Blueprint $table) {

@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class AddDatabaseIdAndDatabaseUserIdToProjectsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {

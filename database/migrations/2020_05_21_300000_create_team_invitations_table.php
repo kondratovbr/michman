@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTeamInvitationsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('team_invitations', function (Blueprint $table) {

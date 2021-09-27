@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateServersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('servers', function (Blueprint $table) {

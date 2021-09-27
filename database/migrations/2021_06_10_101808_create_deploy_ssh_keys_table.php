@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateDeploySshKeysTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('deploy_ssh_keys', function (Blueprint $table) {

@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTeamUserTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('team_user', function (Blueprint $table) {

@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateJobBatchesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('job_batches', function (Blueprint $table) {
