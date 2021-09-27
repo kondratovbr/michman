@@ -23,7 +23,8 @@
 {{--                TODO: CRITICAL! Make sure to support other types in here.--}}
                 <x-td>{{ implode(', ', $worker->queues ?? ['Celery']) }}</x-td>
                 <x-td>{{ $worker->processes ?? 'Auto' }}</x-td>
-                <x-td><x-workers.status-badge :worker="$worker" /></x-td>
+{{--                TODO: CRITICAL! Check that this badge works - I've recently updated it from using the old status badge.--}}
+                <x-td><x-state-badge :state="$worker->state" /></x-td>
 
                 <x-td>
                     @if($worker->isStarting())

@@ -4,6 +4,7 @@ namespace App\Actions\Workers;
 
 use App\Jobs\Workers\DeleteWorkerJob;
 use App\Models\Worker;
+use App\States\Workers\Deleting;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests.
@@ -15,11 +16,10 @@ class DeleteWorkerAction
         DB::transaction(function () use ($worker) {
             $worker = $worker->freshLockForUpdate();
 
-            if ($worker->isStatus(Worker::STATUS_DELETING))
+            if (! $worker->state->canTransitionTo(Deleting::class))
                 return;
 
-            $worker->status = Worker::STATUS_DELETING;
-            $worker->save();
+            $worker->state->transitionTo(Deleting::class);
 
             DeleteWorkerJob::dispatch($worker);
         }, 5);

@@ -6,8 +6,10 @@ use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Worker;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\StartWorkerScript;
+use App\States\Workers\Active;
+use App\States\Workers\Failed;
+use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 // TODO: CRITICAL! Cover with tests.
 
@@ -28,18 +30,14 @@ class StartWorkerJob extends AbstractRemoteServerJob
             $server = $this->server->freshSharedLock();
             $worker = $this->worker->freshLockForUpdate();
 
-            if ($worker->isActive()) {
-                Log::warning('StartWorkerJob: This worker is already marked as active. Worker ID: ' . $worker->id);
+            if (! $worker->state->is(Starting::class))
                 return;
-            }
 
             try {
                 $success = $script->execute($server, $worker);
-                $worker->status = $success ? Worker::STATUS_ACTIVE : Worker::STATUS_FAILED;
+                $worker->state->transitionTo($success ? Active::class : Failed::class);
             } catch (ServerScriptException) {
-                $worker->status = Worker::STATUS_FAILED;
-            } finally {
-                $worker->save();
+                $worker->state->transitionTo(Failed::class);
             }
         }, 5);
     }

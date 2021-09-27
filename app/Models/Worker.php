@@ -6,12 +6,16 @@ use App\Events\Workers\WorkerCreatedEvent;
 use App\Events\Workers\WorkerDeletedEvent;
 use App\Events\Workers\WorkerUpdatedEvent;
 use App\Facades\ConfigView;
-use App\Models\Traits\HasStatus;
+use App\States\Workers\Active;
+use App\States\Workers\Deleting;
+use App\States\Workers\Starting;
+use App\States\Workers\WorkerState;
 use Carbon\CarbonInterface;
 use Database\Factories\WorkerFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use RuntimeException;
+use Spatie\ModelStates\HasStates;
 
 /**
  * Worker Eloquent model
@@ -26,6 +30,7 @@ use RuntimeException;
  * @property int $stopSeconds
  * @property int|null $maxTasksPerChild
  * @property int|null $maxMemoryPerChild
+ * @property WorkerState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -40,17 +45,12 @@ use RuntimeException;
  */
 class Worker extends AbstractModel
 {
-    use HasFactory,
-        HasStatus;
-
-    public const STATUS_STARTING = 'starting';
-    public const STATUS_ACTIVE = 'active';
-    public const STATUS_DELETING = 'deleting';
-    public const STATUS_FAILED = 'failed';
+    use HasFactory;
+    use HasStates;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        'status',
+        'state',
         'type',
         'app',
         'processes',
@@ -66,6 +66,7 @@ class Worker extends AbstractModel
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'queues' => 'array',
+        'state' => WorkerState::class,
     ];
 
     /** @var string[] The event map for the model. */
@@ -118,17 +119,17 @@ class Worker extends AbstractModel
 
     public function isStarting(): bool
     {
-        return $this->status === static::STATUS_STARTING;
+        return $this->state->is(Starting::class);
     }
 
     public function isActive(): bool
     {
-        return $this->status === static::STATUS_ACTIVE;
+        return $this->state->is(Active::class);
     }
 
     public function isDeleting(): bool
     {
-        return $this->status === static::STATUS_DELETING;
+        return $this->state->is(Deleting::class);
     }
 
     /**

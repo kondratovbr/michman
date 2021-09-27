@@ -4,6 +4,7 @@ namespace App\Actions\Workers;
 
 use App\Jobs\Workers\RestartWorkerJob;
 use App\Models\Worker;
+use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests.
@@ -15,8 +16,10 @@ class RestartWorkerAction
         DB::transaction(function () use ($worker) {
             $worker = $worker->freshLockForUpdate();
 
-            $worker->status = Worker::STATUS_STARTING;
-            $worker->save();
+            if (! $worker->state->canTransitionTo(Starting::class))
+                return;
+
+            $worker->state->transitionTo(Starting::class);
 
             RestartWorkerJob::dispatch($worker);
         }, 5);

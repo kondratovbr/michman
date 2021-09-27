@@ -7,6 +7,9 @@ use App\Models\Worker;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\StartWorkerScript;
 use App\Scripts\Root\StopWorkerScript;
+use App\States\Workers\Active;
+use App\States\Workers\Failed;
+use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests. Not only the happy path.
@@ -28,17 +31,18 @@ class RestartWorkerJob extends AbstractRemoteServerJob
             $server = $this->server->freshSharedLock();
             $worker = $this->worker->freshLockForUpdate();
 
+            if (! $worker->state->is(Starting::class))
+                return;
+
             $ssh = $server->sftp();
 
             $stop->execute($server, $worker, $ssh);
 
             try {
                 $success = $start->execute($server, $worker);
-                $worker->status = $success ? Worker::STATUS_ACTIVE : Worker::STATUS_FAILED;
+                $worker->state->transitionTo($success ? Active::class : Failed::class);
             } catch (ServerScriptException) {
-                $worker->status = Worker::STATUS_FAILED;
-            } finally {
-                $worker->save();
+                $worker->state->transitionTo(Failed::class);
             }
         }, 5);
     }

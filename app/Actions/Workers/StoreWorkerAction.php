@@ -7,6 +7,7 @@ use App\Jobs\Workers\StartWorkerJob;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\Worker;
+use App\States\Workers\Starting;
 use Illuminate\Support\Facades\DB;
 
 class StoreWorkerAction
@@ -18,7 +19,7 @@ class StoreWorkerAction
             $worker = $project->workers()->make($data->toArray());
 
             $worker->server()->associate($server);
-            $worker->status = Worker::STATUS_STARTING;
+            $worker->state = Starting::class;
             $worker->save();
 
             StartWorkerJob::dispatch($worker);

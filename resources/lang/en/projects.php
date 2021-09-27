@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Worker;
-use App\States\Webhooks\Deleting;
-use App\States\Webhooks\Enabled;
-use App\States\Webhooks\Enabling;
+use App\States\Webhooks;
+use App\States\Workers;
 
 return [
 
@@ -176,11 +174,11 @@ return [
             'empty' => 'No queue workers configured for this project.',
         ],
 
-        'statuses' => [
-            Worker::STATUS_STARTING => 'Starting',
-            Worker::STATUS_ACTIVE => 'Active',
-            Worker::STATUS_DELETING => 'Removing',
-            Worker::STATUS_FAILED => 'Failed',
+        'states' => [
+            Workers\Starting::class => 'Starting',
+            Workers\Active::class => 'Active',
+            Workers\Deleting::class => 'Removing',
+            Workers\Failed::class => 'Failed',
         ],
     ],
 
@@ -193,9 +191,9 @@ return [
 
     'hooks' => [
         'states' => [
-            Enabling::class => 'Enabling',
-            Enabled::class => 'Enabled',
-            Deleting::class => 'Deleting',
+            Webhooks\Enabling::class => 'Enabling',
+            Webhooks\Enabled::class => 'Enabled',
+            Webhooks\Deleting::class => 'Deleting',
         ],
     ],
 

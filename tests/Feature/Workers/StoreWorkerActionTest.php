@@ -8,6 +8,7 @@ use App\Events\Workers\WorkerCreatedEvent;
 use App\Jobs\Workers\StartWorkerJob;
 use App\Models\Project;
 use App\Models\Worker;
+use App\States\Workers\Starting;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Tests\AbstractFeatureTest;
@@ -39,7 +40,7 @@ class StoreWorkerActionTest extends AbstractFeatureTest
 
         $this->assertDatabaseHas('workers', $data->except('queues')->toArray([
             'server_id' => $project->servers->first()->id,
-            'status' => 'starting',
+            'state' => 'starting',
         ]));
 
         $project->refresh();
@@ -48,6 +49,7 @@ class StoreWorkerActionTest extends AbstractFeatureTest
         $worker = $project->workers()->firstOrFail();
 
         $this->assertEquals(['one', 'two'], $worker->queues);
+        $this->assertTrue($worker->state->is(Starting::class));
 
         Bus::assertDispatched(StartWorkerJob::class);
         Event::assertDispatched(WorkerCreatedEvent::class);
