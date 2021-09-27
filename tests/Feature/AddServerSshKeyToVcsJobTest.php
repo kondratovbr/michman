@@ -32,7 +32,7 @@ class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
 
         $this->assertEquals('providers', $job->queue);
 
-        $this->mockBind('github_v3-vcs', VcsProviderInterface::class,
+        $this->mockBind('github_v3_vcs', VcsProviderInterface::class,
             function (MockInterface $mock) use ($server, $key) {
                 $mock->shouldReceive('addSshKeySafely')
                     ->with(

@@ -19,7 +19,7 @@ class ProviderKeyValid implements Rule
     public function passes($attribute, $value): bool
     {
         /** @var ServerProviderInterface $api */
-        $api = App::make($this->providerName . '-servers', [
+        $api = App::make("{$this->providerName}_servers", [
             'key' => $value,
             'secret' => $this->secret ?? ''
         ]);

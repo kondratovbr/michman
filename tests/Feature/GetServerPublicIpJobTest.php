@@ -26,7 +26,7 @@ class GetServerPublicIpJobTest extends AbstractFeatureTest
 
         $this->assertEquals('providers', $job->queue);
 
-        $this->mockBind('digital_ocean_v2-servers', ServerProviderInterface::class,
+        $this->mockBind('digital_ocean_v2_servers', ServerProviderInterface::class,
             function (MockInterface $mock) use ($server) {
                 $mock->shouldReceive('getServerPublicIp4')
                     ->with($server->externalId)

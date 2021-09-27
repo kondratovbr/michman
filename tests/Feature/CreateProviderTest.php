@@ -32,7 +32,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('digital_ocean_v2-servers', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('digital_ocean_v2_servers', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldReceive('credentialsAreValid')->once()->andReturn(true);
         });
 
@@ -77,7 +77,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('aws-servers', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('aws_servers', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldReceive('credentialsAreValid')->once()->andReturn(true);
         });
 
@@ -122,7 +122,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('aws-servers', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('aws_servers', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldNotHaveBeenCalled();
         });
 
@@ -155,7 +155,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('digital_ocean_v2-servers', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('digital_ocean_v2_servers', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldReceive('credentialsAreValid')->once()->andReturnFalse();
         });
 
@@ -186,7 +186,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('aws-servers', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('aws_servers', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldNotHaveBeenCalled();
         });
 

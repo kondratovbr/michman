@@ -18,7 +18,7 @@ class ProviderTokenValid implements Rule
     public function passes($attribute, $value): bool
     {
         /** @var ServerProviderInterface $api */
-        $api = App::make($this->providerName . '-servers', ['token' => $value]);
+        $api = App::make("{$this->providerName}_servers", ['token' => $value]);
 
         return $api->credentialsAreValid();
     }

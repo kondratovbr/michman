@@ -11,7 +11,7 @@ class WebhooksServiceProvider extends ServiceProvider
         // Register service classes for services that can send us webhooks.
         foreach (config('webhooks.providers') as $hookProvider => $config) {
             if (! empty($config['service_class']))
-                $this->app->bind("{$hookProvider}-webhooks", $config['service_class']);
+                $this->app->bind("{$hookProvider}_webhooks", $config['service_class']);
         }
     }
 }

@@ -88,7 +88,7 @@ class Provider extends AbstractModel
         // so it doesn't get made multiple times.
         if (! isset($this->api)) {
             $this->api = App::make(
-                "{$this->provider}-servers",
+                "{$this->provider}_servers",
                 isset($this->token)
                     ? ['token' => $this->token, 'identifier' => $this->id]
                     : ['key' => $this->key, 'secret' => $this->secret, 'identifier' => $this->id]

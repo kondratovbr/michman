@@ -128,7 +128,7 @@ class Webhook extends AbstractModel
         // We're caching an instance of WebhookServiceInterface for this model,
         // so it doesn't get made multiple times.
         if (! isset($this->service))
-            $this->service = App::make("{$this->provider}-webhooks");
+            $this->service = App::make("{$this->provider}_webhooks");
 
         return $this->service;
     }
