@@ -7,8 +7,6 @@ use App\Models\Worker;
 use App\States\Workers\Deleting;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
-
 class DeleteWorkerAction
 {
     public function execute(Worker $worker): void
