@@ -9,6 +9,8 @@ use App\Models\WebhookCall;
 use App\States\Webhooks\Enabled;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests.
+
 class HandlePingWebhookJob extends AbstractJob
 {
     use HandlesWebhooks;
