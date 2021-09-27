@@ -8,8 +8,6 @@ use App\Notifications\Projects\WebhookEnablingFailedNotification;
 use App\States\Webhooks\Enabling;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class VerifyWebhookEnabledJob extends AbstractJob
 {
     /** Delete the job if its models no longer exist. */
