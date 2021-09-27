@@ -41,9 +41,6 @@ class EnableWebhookJob extends AbstractJob
                 $hook->secret,
             );
 
-            if (is_null($hookData->id))
-                throw new RuntimeException('Received no external ID after creating a webhook on ' . $hook->project->vcsProvider->provider);
-
             $hook->externalId = $hookData->id;
 
             $hook->save();
