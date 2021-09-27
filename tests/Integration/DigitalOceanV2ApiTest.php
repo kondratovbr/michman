@@ -78,7 +78,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $this->assertTrue($api->credentialsAreValid());
     }
@@ -95,7 +95,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $this->assertFalse($api->credentialsAreValid());
     }
@@ -110,7 +110,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $server = $api->getServer($serverId);
 
@@ -128,7 +128,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $servers = $api->getAllServers();
 
@@ -148,7 +148,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $address = $api->getServerPublicIp4($serverId);
 
@@ -181,7 +181,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $createdServer = $api->createServer($serverData, 1);
 
@@ -198,7 +198,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $regions = $api->getAllRegions();
 
@@ -236,7 +236,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $sizes = $api->getAllSizes();
 
@@ -279,7 +279,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $regions = $api->getAvailableRegions();
 
@@ -307,7 +307,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $sizes = $api->getAvailableSizes();
 
@@ -345,7 +345,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $sizes = $api->getSizesAvailableInRegion($region);
 
@@ -377,7 +377,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $sizes = $api->getSizesAvailableInRegion($region);
 
@@ -405,7 +405,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $key = $api->getSshKey($id);
 
@@ -430,7 +430,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $key = $api->addSshKey($name, $publicKey);
 
@@ -451,7 +451,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $key = $api->updateSshKey($id, $name);
 
@@ -470,7 +470,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $keys = $api->getAllSshKeys();
 
@@ -511,7 +511,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $key = $api->addSshKeySafely($name, $publicKey);
 
@@ -536,7 +536,7 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         );
 
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2', ['token' => $token]);
+        $api = App::make('digital_ocean_v2-servers', ['token' => $token]);
 
         $key = $api->addSshKeySafely($name, $publicKey);
 
