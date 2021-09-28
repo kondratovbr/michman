@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 
-// TODO: CRITICAL! Cover with tests!
-
 class VcsProviderController extends AbstractController
 {
     public function __construct(
