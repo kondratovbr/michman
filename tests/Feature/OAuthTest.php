@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\VcsProvider;
-use Database\Factories\VcsProviderFactory;
 use Laravel\Socialite\Facades\Socialite;
 use Mockery;
 use Mockery\MockInterface;

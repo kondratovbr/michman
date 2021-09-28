@@ -18,8 +18,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Contracts\User as OauthUser;
 
-// TODO: CRITICAL! Cover with tests!
-
 class OAuthController extends AbstractController
 {
     public function __construct(
