@@ -15,8 +15,6 @@ use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class InstallProjectRepoAction
 {
     public function execute(
