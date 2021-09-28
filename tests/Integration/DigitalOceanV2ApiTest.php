@@ -37,8 +37,12 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
                     $mock->shouldReceive('acceptJson')
                         ->once()
                         ->andReturnSelf();
+                    $mock->shouldReceive('baseUrl')
+                        ->with(self::BASE_PATH)
+                        ->once()
+                        ->andReturnSelf();
                     $mock->shouldReceive($method)
-                        ->with(self::BASE_PATH . $path, $parameters)
+                        ->with($path, $parameters)
                         ->once()
                         ->andReturn($this->mockResponse($response));
                 }
