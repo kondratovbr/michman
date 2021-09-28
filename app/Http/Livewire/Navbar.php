@@ -20,9 +20,6 @@ class Navbar extends Component
         'refresh-navigation-menu' => '$refresh',
     ];
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         $user = Auth::user()->load('servers');

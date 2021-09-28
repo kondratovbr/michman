@@ -37,33 +37,23 @@ abstract class AbstractSubpagesView extends LivewireComponent
         return implode('|', Arr::keys(static::VIEWS));
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(string $show = null): void
     {
         $this->show = $show ?? static::DEFAULT_SHOW;
     }
 
-    /**
-     * Get the name of the view for the currently shown page.
-     */
+    /** Get the name of the view for the currently shown page. */
     public function getPageProperty(): string
     {
         return static::VIEWS[$this->show];
     }
 
-    /**
-     * Change a currently shown page.
-     */
+    /** Change a currently shown page. */
     public function show(string $show): void
     {
         $this->show = $show;
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         /*
