@@ -28,9 +28,7 @@ class OAuthController extends AbstractController
         private UpdateVcsProviderAction $updateVcsProvider,
     ) {}
 
-    /**
-     * Redirect the user to an external authentication page of an OAuth provider.
-     */
+    /** Redirect the user to an external authentication page of an OAuth provider. */
     public function login(string $oauthProvider): SymfonyRedirect
     {
         $socialite = Socialite::driver($oauthProvider);
@@ -43,9 +41,7 @@ class OAuthController extends AbstractController
         return $socialite->redirect();
     }
 
-    /**
-     * Handle a callback from an OAuth provider.
-     */
+    /** Handle a callback from an OAuth provider. */
     public function callback(string $oauthProvider): RedirectResponse
     {
         // TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
@@ -109,9 +105,7 @@ class OAuthController extends AbstractController
         };
     }
 
-    /**
-     * Try to find a user previously registered via OAuth by their OAuth ID returned from an OAuth provider.
-     */
+    /** Try to find a user previously registered via OAuth by their OAuth ID returned from an OAuth provider. */
     private function findUserByOauthId(string $oauthProvider, OauthUser $oauthUser): User|null
     {
         /** @var User|null $user */
@@ -123,9 +117,7 @@ class OAuthController extends AbstractController
         return $user;
     }
 
-    /**
-     * Try to find a user by an email returned from an OAuth provider.
-     */
+    /** Try to find a user by an email returned from an OAuth provider. */
     private function findUserByEmail(string $oauthProvider, OauthUser $oauthUser): User|null
     {
         return DB::transaction(function () use ($oauthProvider, $oauthUser) {
@@ -149,9 +141,7 @@ class OAuthController extends AbstractController
         }, 5);
     }
 
-    /**
-     * Register a new user using data returned from an OAuth provider.
-     */
+    /** Register a new user using data returned from an OAuth provider. */
     private function registerUserByOauth(string $oauthProvider, OauthUser $oauthUser): User
     {
         /*
@@ -173,9 +163,7 @@ class OAuthController extends AbstractController
         });
     }
 
-    /**
-     * Create or update a VCS provider for the authenticated user corresponding with the OAuth provider used.
-     */
+    /** Create or update a VCS provider for the authenticated user corresponding with the OAuth provider used. */
     private function updateVcs(string $oauthProvider, OauthUser $oauthUser, User $user): void
     {
         DB::transaction(function () use ($oauthProvider, $oauthUser, $user) {
@@ -206,9 +194,7 @@ class OAuthController extends AbstractController
         }, 5);
     }
 
-    /**
-     * Get a VCS provider name from config by its OAuth provider name.
-     */
+    /** Get a VCS provider name from config by its OAuth provider name. */
     private function getVcsProviderName(string $vcsProviderOauthName): string|null
     {
         return config("auth.oauth_providers.{$vcsProviderOauthName}.vcs_provider");
