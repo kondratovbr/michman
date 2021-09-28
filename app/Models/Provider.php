@@ -84,6 +84,7 @@ class Provider extends AbstractModel
     /** Get an instance of ServerProviderInterface to interact with the server provider API. */
     public function api(): ServerProviderInterface
     {
+        // TODO: CRITICAL! Cover with tests. Other similar methods as well. Make sure to cover caching as well.
         // We're caching an instance of ServerProviderInterface for this model,
         // so it doesn't get made multiple times.
         if (! isset($this->api)) {
