@@ -57,7 +57,6 @@ class VcsProviderController extends AbstractController
                     VcsProviderDto::fromOauth(
                         $oauthUser,
                         $vcsProviderName,
-                        Auth::user(),
                     )
                 );
 
