@@ -20,9 +20,7 @@ class VcsProviderController extends AbstractController
         private UpdateVcsProviderAction $updateVcsProvider,
     ) {}
 
-    /**
-     * Get a redirect to link a third-party VCS provider account to the current user's account as a VCS provider.
-     */
+    /** Get a redirect to link a third-party VCS provider account to the current user's account as a VCS provider. */
     public function redirect(string $vcsProviderOauthName): SymfonyRedirect
     {
         $vcsProviderName = $this->getVcsProviderName($vcsProviderOauthName);
@@ -33,9 +31,7 @@ class VcsProviderController extends AbstractController
             ->redirect();
     }
 
-    /**
-     * Handle an OAuth callback from a third-party VCS provider.
-     */
+    /** Handle an OAuth callback from a third-party VCS provider. */
     public function callback(string $vcsProviderOauthName): RedirectResponse
     {
         // TODO: CRITICAl! Show a success message when the link or refresh is successful.
@@ -79,9 +75,7 @@ class VcsProviderController extends AbstractController
         return redirect()->route('account.show', 'vcs');
     }
 
-    /**
-     * Disconnect the user from a third-part VCS provider account.
-     */
+    /** Disconnect the user from a third-part VCS provider account. */
     public function unlink(string $vcsProviderOauthName): RedirectResponse
     {
         $vcsProviderName = $this->getVcsProviderName($vcsProviderOauthName);
@@ -102,9 +96,7 @@ class VcsProviderController extends AbstractController
         //
     }
 
-    /**
-     * Get a VCS provider name from config by its OAuth provider name.
-     */
+    /** Get a VCS provider name from config by its OAuth provider name. */
     private function getVcsProviderName(string $vcsProviderOauthName): string
     {
         return (string) config("auth.oauth_providers.{$vcsProviderOauthName}.vcs_provider");
