@@ -6,8 +6,6 @@ use App\Exceptions\NotImplementedException;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests.
-
 class VcsProviderDto extends AbstractDto
 {
     public function __construct(
@@ -41,7 +39,7 @@ class VcsProviderDto extends AbstractDto
 
     private static function gitlab(OAuthUser $oauthUser): static
     {
-        // TODO: CRITICAL! Implement.
+        // TODO: CRITICAL! Implement. And add a test for it.
 
         throw new NotImplementedException;
 
@@ -50,7 +48,7 @@ class VcsProviderDto extends AbstractDto
 
     private static function bitbucket(OAuthUser $oauthUser): static
     {
-        // TODO: CRITICAL! Implement.
+        // TODO: CRITICAL! Implement. And add a test for it.
 
         throw new NotImplementedException;
 
