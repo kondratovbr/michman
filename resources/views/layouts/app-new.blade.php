@@ -5,8 +5,6 @@
 
     <div class="min-h-screen">
 
-{{--        TODO: Maybe turn the navbar and bottombar into a Livewire component and don't reload the whole page on navigation at all?--}}
-
         <livewire:navbar/>
 
         {{-- Bottombar has "fixed" positioning to the bottom.
