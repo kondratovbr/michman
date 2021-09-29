@@ -1,7 +1,6 @@
 <x-layouts.html>
 
-{{--    TODO: CRITICAL! WTF is this? Does it even work?--}}
-    <x-jet-banner/>
+    <livewire:flash-message/>
 
     <div class="min-h-screen">
 

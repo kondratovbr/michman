@@ -1,6 +1,6 @@
-<x-layouts.html>
+{{--TODO: CRITICAL! Do I even use this layout? I replaced it with "app-new" view.--}}
 
-    <x-jet-banner/>
+<x-layouts.html>
 
     <div class="min-h-screen">
         <livewire:navbar/>
