@@ -32,17 +32,13 @@ class Notifications extends LivewireComponent
         );
     }
 
-    /**
-     * Get a notification-specific details view.
-     */
+    /** Get a notification-specific details view. */
     public function getDetailsViewProperty(): View
     {
         return $this->notification->detailsView();
     }
 
-    /**
-     * Open a modal with the details about a notification.
-     */
+    /** Open a modal with the details about a notification. */
     public function details(string $id): void
     {
         $notification = $this->validatedNotification($id);
@@ -55,9 +51,7 @@ class Notifications extends LivewireComponent
         $this->modalOpen = true;
     }
 
-    /**
-     * Trash a notification, i.e. mark it as read.
-     */
+    /** Trash a notification, i.e. mark it as read. */
     public function trash(string $id): void
     {
         $notification = $this->validatedNotification($id);
