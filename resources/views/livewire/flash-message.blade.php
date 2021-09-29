@@ -1,3 +1,5 @@
+{{--TODO: CRITICAL! Unfinished. Adapt to mobile. Make screen-wide on tiny screens and almost screen-wide on small ones.--}}
+
 @php
 use App\Events\Users\FlashMessageEvent;
 @endphp
