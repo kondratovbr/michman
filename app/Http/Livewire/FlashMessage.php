@@ -45,8 +45,6 @@ class FlashMessage extends LivewireComponent
 
     public function updatedShow(): void
     {
-        ray('updatedShow');
-
         $this->reset();
     }
 
