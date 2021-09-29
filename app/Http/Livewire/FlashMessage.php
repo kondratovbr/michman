@@ -36,7 +36,7 @@ class FlashMessage extends LivewireComponent
     public function flash(array $data): void
     {
         // TODO: CRITICAL! Figure out how to fade out the currently shown message if there's one and fade in the new one.
-        // TODO: CRITICAL! Also figure out how to quickly throw a flash message front-to-front without this component being involved at all - works quicker. Using Alpine events, obviously.
+        // TODO: CRITICAL! Also figure out how to quickly throw a flash message front-to-front without this component being involved at all - works quicker. Using Alpine events, obviously. Maybe also try to work with broadcasted messages without using Livewire at all - only in Alpine. This specific case doesn't need anything done on the backend.
 
         $this->show = true;
         $this->message = $data['message'] ?? null;
