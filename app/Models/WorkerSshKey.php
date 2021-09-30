@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * @property-read User $user
+ *
  * @property-read Server $server
  *
  * @method static WorkerSshKeyFactory factory(...$parameters)
@@ -38,9 +40,7 @@ class WorkerSshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    /**
-     * Generate a name for a worker SSH key based on the server name.
-     */
+    /** Generate a name for a worker SSH key based on the server name. */
     public static function createName(Server|string $server): string
     {
         if ($server instanceof Server)
@@ -54,9 +54,12 @@ class WorkerSshKey extends AbstractModel implements SshKeyInterface
         return static::createName($this->server);
     }
 
-    /**
-     * Get a relation with the server that uses this key.
-     */
+    public function getUserAttribute(): User
+    {
+        return $this->server->user;
+    }
+
+    /** Get a relation with the server that uses this key. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);
