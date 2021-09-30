@@ -7,8 +7,6 @@ use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
 use phpseclib3\Crypt\PublicKeyLoader;
 use Throwable;
 
-// TODO: CRITICAL! Cover with tests. Definitely.
-
 class SshPublicKeyRule implements Rule
 {
     public function passes($attribute, $value): bool

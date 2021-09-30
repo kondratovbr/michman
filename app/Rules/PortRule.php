@@ -5,8 +5,6 @@ namespace App\Rules;
 use App\Support\Str;
 use Illuminate\Contracts\Validation\Rule;
 
-// TODO: CRITICAL! Cover with tests.
-
 class PortRule implements Rule
 {
     public function passes($attribute, $value): bool

@@ -4,8 +4,6 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-// TODO: CRITICAL! Cover with tests!
-
 class DomainRule implements Rule
 {
     public function passes($attribute, $value): bool
