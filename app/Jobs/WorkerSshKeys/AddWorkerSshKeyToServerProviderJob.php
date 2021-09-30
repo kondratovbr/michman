@@ -10,6 +10,8 @@ use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
+// TODO: CRITICAL! Cover with tests.
+
 class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 {
     use InteractsWithServerProviders;
