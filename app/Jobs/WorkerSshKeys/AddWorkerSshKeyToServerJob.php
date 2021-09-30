@@ -7,7 +7,6 @@ use App\Models\Project;
 use App\Notifications\Servers\FailedToAddSshKeyToServerNotification;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 /*
  * TODO: IMPORTANT! I also need a job to update the worker key,
@@ -16,8 +15,6 @@ use Throwable;
  *       Also need a general contingency plan in case the database got compromised,
  *       i.e. other full keys got leaked. Which are - WorkerSshKeys, ServerSshKeys and DeploySshKeys.
  */
-
-// TODO: CRITICAL! Cover with tests.
 
 class AddWorkerSshKeyToServerJob extends AbstractRemoteServerJob
 {
@@ -48,7 +45,7 @@ class AddWorkerSshKeyToServerJob extends AbstractRemoteServerJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new FailedToAddSshKeyToServerNotification($this->server));
     }
