@@ -29,25 +29,19 @@ abstract class AbstractServerScript
         return null;
     }
 
-    /**
-     * Set a server attribute.
-     */
+    /** Set a server attribute. */
     protected function setServer($server): void
     {
         $this->server = $server;
     }
 
-    /**
-     * Set a current SSH session attribute;
-     */
+    /** Set a current SSH session attribute; */
     protected function setSsh(SFTP|null $ssh): void
     {
         $this->ssh = $ssh ?? $this->server->sftp();
     }
 
-    /**
-     * Initialize an SSH session.
-     */
+    /** Initialize an SSH session. */
     protected function initialize(): SFTP
     {
         if (! isset($this->server))
@@ -58,9 +52,7 @@ abstract class AbstractServerScript
         return $this->ssh;
     }
 
-    /**
-     * Execute a command on a remote server over SSH.
-     */
+    /** Execute a command on a remote server over SSH. */
     protected function exec(
         string $command,
         bool $scrubCommand = false,
@@ -93,9 +85,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Execute a command on a remote server over SSH using a PTY mode.
-     */
+    /** Execute a command on a remote server over SSH using a PTY mode. */
     protected function execPty(
         string $command,
         bool $scrubCommand = false,
@@ -118,9 +108,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Read an output printed to the PTY.
-     */
+    /** Read an output printed to the PTY. */
     protected function read(
         string $expected = '',
         $mode = SSH2::READ_SIMPLE,
@@ -143,9 +131,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Write a string to the shell.
-     */
+    /** Write a string to the shell. */
     protected function write(
         string $input,
         bool $scrubInput = false,
@@ -166,9 +152,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Enable PTY on the current SSH session.
-     */
+    /** Enable PTY on the current SSH session. */
     protected function enablePty(): void
     {
         $this->initialize();
@@ -176,9 +160,7 @@ abstract class AbstractServerScript
         $this->ssh->enablePTY();
     }
 
-    /**
-     * Disable PTY on the current SSH session.
-     */
+    /** Disable PTY on the current SSH session. */
     protected function disablePty(): void
     {
         $this->initialize();
@@ -186,9 +168,7 @@ abstract class AbstractServerScript
         $this->ssh->disablePTY();
     }
 
-    /**
-     * Set a command timeout for the current SSH session.
-     */
+    /** Set a command timeout for the current SSH session. */
     protected function setTimeout(int $seconds = 0): void
     {
         $this->initialize();
@@ -196,9 +176,7 @@ abstract class AbstractServerScript
         $this->ssh->setTimeout($seconds);
     }
 
-    /**
-     * Send a local file to the server over SFTP.
-     */
+    /** Send a local file to the server over SFTP. */
     protected function sendFile(string $remotePath, string $localPath): bool
     {
         $this->initialize();
@@ -219,9 +197,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Send a string to a remote file on the server over SFTP.
-     */
+    /** Send a string to a remote file on the server over SFTP. */
     protected function sendString(string $remotePath, string $content): bool
     {
         $this->initialize();
@@ -241,9 +217,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Append a string to the end of a remote file on the server over SFTP.
-     */
+    /** Append a string to the end of a remote file on the server over SFTP. */
     protected function appendString(string $remotePath, string $content): bool
     {
         $this->initialize();
@@ -263,9 +237,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Download a file from a server and return its content as a string.
-     */
+    /** Download a file from a server and return its content as a string. */
     protected function getString(string $remotePath): string|null
     {
         try {
@@ -280,26 +252,19 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Get the exit status of the last executed command.
-     */
+    /** Get the exit status of the last executed command. */
     protected function getExitStatus(): false|int
     {
         return $this->ssh->getExitStatus();
     }
 
-    /**
-     * Check if the previous command has failed.
-     */
+    /** Check if the previous command has failed. */
     protected function failed(): bool
     {
         return $this->getExitStatus() !== 0;
     }
 
-    /**
-     * Execute a command that uses sudo,
-     * making sure that the password is supplied if requested.
-     */
+    /** Execute a command that uses sudo, making sure that the password is supplied if requested. */
     protected function execSudo(
         string $command,
         bool $scrubCommandLog = false,
@@ -342,9 +307,7 @@ abstract class AbstractServerScript
         }
     }
 
-    /**
-     * Initialize the script instance - set Server and SSH session.
-     */
+    /** Initialize the script instance - set Server and SSH session. */
     protected function init(Server $server, SFTP|null $ssh = null, string $user = 'root'): void
     {
         if (! is_null($ssh) && $user !== 'root')
