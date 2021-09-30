@@ -27,7 +27,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
     // TODO: Make it possible to add more than one copy of the same named rule.
 
     /**
-     * All of the named rules recognised by this class
+     * All the named rules recognised by this class
      *
      * Rules will be applied in the same order as in this array. lowercase only. Usable for applying 'bail' rule.
      *
@@ -72,9 +72,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
         }
     }
 
-    /**
-     * Add the rule to the list of rules.
-     */
+    /** Add the rule to the list of rules. */
     public function addRule(string|object $rule): static
     {
         if ($this->hasRule($rule))
@@ -95,9 +93,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
         throw new InvalidRule($rule);
     }
 
-    /**
-     * Add the rule to the list of rules if a condition is true.
-     */
+    /** Add the rule to the list of rules if a condition is true. */
     public function addRuleIf(string|object $rule, bool|\Closure $condition): static
     {
         if ($this->checkCondition($condition))
@@ -176,9 +172,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
         return explode(':', $rule)[1] ?? '';
     }
 
-    /**
-     * Check a potentially callable condition.
-     */
+    /** Check a potentially callable condition. */
     protected function checkCondition($condition): bool
     {
         if (is_callable($condition))
