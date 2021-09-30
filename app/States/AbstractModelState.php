@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\ModelStates\State;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests.
-
 abstract class AbstractModelState extends State
 {
     public static string $name;
