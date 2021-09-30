@@ -36,10 +36,12 @@ class DomainRuleTest extends AbstractUnitTest
         return [
             ['foo.com'],
             ['www.foo.com'],
+            ['foo.com.'],
             ['bar.com'],
             ['foo.bar.baz'],
             ['f_o_o.cc'],
             ['123.com'],
+            ['1.2.3.com'],
             ['domain.comdomain.com'],
         ];
     }
@@ -50,6 +52,7 @@ class DomainRuleTest extends AbstractUnitTest
             ['f f f'],
             ['фубар'],
             ['nocom'],
+            ['foo.123'],
             ['domain1.com, domain2.com'],
             ['domain1.com domain2.com'],
             [null],
