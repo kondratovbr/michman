@@ -58,8 +58,8 @@ RUN if [ "${XDEBUG}" = 'false' ]; then \
 fi;
 
 ARG PCOV_CONFIG=/etc/php/8.0/mods-available/pcov.ini
-RUN echo "pcov.directory=./app" >> $PCOV_CONFIG \ &&
-    echo "pcov.enabled=0" >> $PCOV_CONFIG
+RUN echo "pcov.directory=./app" >> $PCOV_CONFIG \
+    && echo "pcov.enabled=0" >> $PCOV_CONFIG
 
 RUN echo "max_execution_time = 600" >> /etc/php/8.0/cli/php.ini
 
