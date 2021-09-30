@@ -11,9 +11,6 @@ use Throwable;
 
 class SshPublicKeyRule implements Rule
 {
-    /**
-     * Determine if the validation rule passes.
-     */
     public function passes($attribute, $value): bool
     {
         try {
@@ -29,9 +26,6 @@ class SshPublicKeyRule implements Rule
         return true;
     }
 
-    /**
-     * Get the validation error message.
-     */
     public function message(): string
     {
         return __('validation.custom.ssh-public-key');

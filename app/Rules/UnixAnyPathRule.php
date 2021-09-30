@@ -9,9 +9,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class UnixAnyPathRule implements Rule
 {
-    /**
-     * Determine if the validation rule passes.
-     */
     public function passes($attribute, $value): bool
     {
         if (Str::length($value) == 0)
@@ -22,9 +19,6 @@ class UnixAnyPathRule implements Rule
         return UnixAbsolutePathRule::isAbsolutePath($absolute);
     }
 
-    /**
-     * Get the validation error message.
-     */
     public function message(): string
     {
         return __('validation.custom.path');

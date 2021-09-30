@@ -8,14 +8,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class DomainRule implements Rule
 {
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Determine if the validation rule passes.
-     */
     public function passes($attribute, $value): bool
     {
         // https://regexr.com/3g5j0
@@ -25,9 +17,6 @@ class DomainRule implements Rule
         );
     }
 
-    /**
-     * Get the validation error message.
-     */
     public function message(): string
     {
         return __('validation.custom.domain');

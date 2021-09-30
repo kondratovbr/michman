@@ -9,9 +9,6 @@ use Illuminate\Contracts\Validation\Rule;
 
 class PortRule implements Rule
 {
-    /**
-     * Determine if the validation rule passes.
-     */
     public function passes($attribute, $value): bool
     {
         if (is_int($value))
@@ -28,9 +25,6 @@ class PortRule implements Rule
         return $this->validatePort($value);
     }
 
-    /**
-     * Get the validation error message.
-     */
     public function message(): string
     {
         return __('validation.custom.port');
