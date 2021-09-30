@@ -10,6 +10,9 @@ class UnixAbsolutePathRule implements Rule
 {
     public function passes($attribute, $value): bool
     {
+        if (! is_string($value))
+            return false;
+
         return static::isAbsolutePath($value);
     }
 
