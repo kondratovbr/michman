@@ -26,7 +26,6 @@ class CreateUserSshKeyForm extends LivewireComponent
 
     public function rules(): array
     {
-        // TODO: CRITICAL! Attribute names in error messages here suck as well. Fix.
         return [
             'state.name' => Rules::string(1, 255)->required(),
             'state.public_key' => Rules::sshPublicKey()->required(),
