@@ -137,7 +137,7 @@ if [ $# -gt 0 ]; then
 
     # Proxy the "test" command to PHPUnit
     # while enabling test coverage monitoring in Xdebug.
-    elif [ "$1" == "coverage" ]; then
+    elif [ "$1" == "coverage-xdebug" ]; then
         shift 1
 
         if [ "$EXEC" == "yes" ]; then
@@ -149,7 +149,23 @@ if [ $# -gt 0 ]; then
                     --configuration=/var/www/html/phpunit.xml \
                     --coverage-html storage/coverage/ \
                     "$@"
-                    # --printer="NunoMaduro\Collision\Adapters\Phpunit\Printer" \
+        else
+            sail_is_not_running
+        fi
+
+    # Proxy the "test" command to PHPUnit
+    # while enabling test coverage monitoring via pcov extension.
+    elif [ "$1" == "coverage" ]; then
+        shift 1
+
+        if [ "$EXEC" == "yes" ]; then
+            docker-compose exec \
+                -u sail \
+                "$APP_SERVICE" \
+                php -dpcov.enabled=1 vendor/bin/phpunit \
+                    --configuration=/var/www/html/phpunit.xml \
+                    --coverage-html storage/coverage/ \
+                    "$@"
         else
             sail_is_not_running
         fi
