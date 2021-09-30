@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Support\Str;
 use Illuminate\Contracts\Validation\Rule;
 
 class DomainRule implements Rule
@@ -9,6 +10,12 @@ class DomainRule implements Rule
     public function passes($attribute, $value): bool
     {
         if (! is_string($value))
+            return false;
+
+        if (Str::contains(' ', $value))
+            return false;
+
+        if (Str::contains(',', $value))
             return false;
 
         // https://regexr.com/3g5j0
