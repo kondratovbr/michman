@@ -24,6 +24,4 @@ Route::middleware([
 ])->group(function () {
     Route::post('hook/{webhookProvider}/{webhook}', WebhookController::class)
         ->name('hook.push');
-
-    // Route::webhooks('hook');
 });
