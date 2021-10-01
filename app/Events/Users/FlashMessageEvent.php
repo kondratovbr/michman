@@ -5,6 +5,12 @@ namespace App\Events\Users;
 use App\Models\User;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/*
+ * TODO: IMPORTANT! I'm using my standard broadcasting logic to broadcast these events.
+ *       Is there a significant delay because of that in the real world?
+ *       Can it be improved or reworked entirely?
+ */
+
 class FlashMessageEvent extends AbstractUserEvent implements ShouldBroadcast
 {
     // TODO: Replace these with a PHP8.1 enum, if possible.
