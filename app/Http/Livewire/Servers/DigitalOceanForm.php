@@ -67,16 +67,8 @@ class DigitalOceanForm extends Component
     /** @var string[] */
     protected $listeners = ['store-server-button-pressed' => 'store'];
 
-    /**
-     * Get the validation rules for user input.
-     */
     public function rules(): array
     {
-        /*
-         * TODO: CRITICAL! Error messages here suck. They all display the field name like "state.provider id",
-         *       which is bullshit. Fix.
-         */
-
         $rules = [
             'state.provider_id' => Rules::integer()
                 ->in(Arr::keys($this->providers))
@@ -113,9 +105,6 @@ class DigitalOceanForm extends Component
         return $rules;
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->providers = Auth::user()->providers()
@@ -145,9 +134,7 @@ class DigitalOceanForm extends Component
         $this->loadDefaults();
     }
 
-    /**
-     * Put default values for user inputs.
-     */
+    /** Put default values for user inputs. */
     protected function loadDefaults(): void
     {
         $this->state['provider_id'] = Arr::first(Arr::keys($this->providers));
@@ -174,17 +161,11 @@ class DigitalOceanForm extends Component
         $this->state['size'] = Arr::firstKey($this->availableSizes);
     }
 
-    /**
-     * Prepare the component before each request.
-     */
     public function hydrate(): void
     {
         $this->loadApi();
     }
 
-    /**
-     * Runs after a property is changed.
-     */
     public function updated(string $name, mixed $value): void
     {
         switch ($name) {
@@ -204,9 +185,7 @@ class DigitalOceanForm extends Component
         }
     }
 
-    /**
-     * Create and store inside this component an instance of an API handler.
-     */
+    /** Create and store inside this component an instance of an API handler. */
     protected function loadApi(): void
     {
         if (isset($this->state['provider_id'])) {
@@ -218,9 +197,7 @@ class DigitalOceanForm extends Component
         }
     }
 
-    /**
-     * Load data about a current provider.
-     */
+    /** Load data about a current provider. */
     protected function loadProviderData(): void
     {
         $this->handleApiErrors(function () {
@@ -235,9 +212,7 @@ class DigitalOceanForm extends Component
         });
     }
 
-    /**
-     * Load data about a currently selected region.
-     */
+    /** Load data about a currently selected region. */
     protected function loadRegionData(): void
     {
         $this->handleApiErrors(function () {
@@ -269,9 +244,7 @@ class DigitalOceanForm extends Component
         });
     }
 
-    /**
-     * Wrap any external API calls into an exception handler to gracefully handle possible errors.
-     */
+    /** Wrap any external API calls into an exception handler to gracefully handle possible errors. */
     protected function handleApiErrors(callable $closure): void
     {
         try {
@@ -283,9 +256,7 @@ class DigitalOceanForm extends Component
         }
     }
 
-    /**
-     * Determine if we should install a certain program based on the currently chosen server type.
-     */
+    /** Determine if we should install a certain program based on the currently chosen server type. */
     public function shouldInstall(string $program): bool
     {
         if (! Arr::has(config('servers.types'), $this->state['type']))
@@ -294,9 +265,7 @@ class DigitalOceanForm extends Component
         return Arr::hasValue(config('servers.types.' . $this->state['type'] . '.install'), $program);
     }
 
-    /**
-     * Validate and store a new server.
-     */
+    /** Validate and store a new server. */
     public function store(StoreServerAction $action): void
     {
         $this->authorize('create', Server::class);
@@ -313,9 +282,6 @@ class DigitalOceanForm extends Component
         // TODO: CRITICAL! UNFINISHED! Don't forget to provide some feedback on success or failure. And don't forget to show the sudo password to the user!
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('servers.digital-ocean-form');
