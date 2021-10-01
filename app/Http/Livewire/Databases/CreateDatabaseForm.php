@@ -71,7 +71,7 @@ class CreateDatabaseForm extends LivewireComponent
     {
         return [
             /*
-             * TODO: CRITICAL! Make sure users cannot use reserved words like "information_schema".
+             * TODO: IMPORTANT! Make sure users cannot use reserved words like "information_schema".
              *       Those are different for each database as well.
              *       Here's an example for MySQL 8.0:
              *       https://dev.mysql.com/doc/refman/8.0/en/keywords.html
