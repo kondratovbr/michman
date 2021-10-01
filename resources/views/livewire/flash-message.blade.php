@@ -10,7 +10,7 @@ use App\Events\Users\FlashMessageEvent;
     x-init="$watch('show', (value) => {
         if (! show) return;
         clearTimeout(timeout);
-        timeout = setTimeout(() => { show = false }, 4000);
+        timeout = setTimeout(() => { show = false }, 5000);
     })"
     x-show="show"
     x-transition
