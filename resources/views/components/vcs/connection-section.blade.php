@@ -1,4 +1,4 @@
-<x-action-section>
+<x-action-section {{ $attributes->class(['w-full lg:w-4/5 2xl:w-2/3']) }}>
     <x-slot name="content">
 
         <h3 class="text-lg font-medium">
