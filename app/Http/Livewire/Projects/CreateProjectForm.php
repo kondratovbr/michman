@@ -83,11 +83,6 @@ class CreateProjectForm extends LivewireComponent
 
     protected function rules(): array
     {
-        /*
-         * TODO: CRITICAL! Error messages here probably suck. Check it out.
-         *       Seems like ValidatesInput trait should have handled it. Why doesn't it work?
-         */
-
         $rules = [
             'state.domain' => Rules::domain()->required(),
             'state.aliases' => Rules::array()->nullable(),
