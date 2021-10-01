@@ -21,9 +21,6 @@ class CreateServerSshKeyJob extends AbstractJob
         $this->server = $server->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(CreateServerSshKeyAction $action): void
     {
         DB::transaction(function () use ($action) {

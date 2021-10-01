@@ -19,9 +19,6 @@ class PatchPythonJob extends AbstractRemoteServerJob
         $this->python = $python->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function () {

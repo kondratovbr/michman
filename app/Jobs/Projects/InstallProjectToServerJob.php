@@ -14,7 +14,6 @@ use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 // TODO: CRITICAL! Cover with test.
 
@@ -73,7 +72,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->project->user->notify(new ProjectInstallationFailedNotification($this->project));
     }

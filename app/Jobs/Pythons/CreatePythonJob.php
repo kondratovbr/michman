@@ -25,9 +25,6 @@ class CreatePythonJob extends AbstractJob
         $this->sync = $sync;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(StorePythonAction $storePython): void
     {
         DB::transaction(function () use ($storePython) {

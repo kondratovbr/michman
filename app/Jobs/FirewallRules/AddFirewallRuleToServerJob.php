@@ -18,9 +18,6 @@ class AddFirewallRuleToServerJob extends AbstractRemoteServerJob
         $this->rule = $rule->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(AddFirewallRuleScript $addFirewallRule): void
     {
         DB::transaction(function () use ($addFirewallRule) {

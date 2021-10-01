@@ -22,9 +22,6 @@ class DeleteDatabaseUserJob extends AbstractRemoteServerJob
         $this->databaseUser->incrementTasks();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function () {

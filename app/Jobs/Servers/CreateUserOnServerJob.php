@@ -9,7 +9,6 @@ use App\Notifications\Servers\FailedToCreateNewUserOnServerNotification;
 use App\Scripts\Root\AddSshKeyToUserScript;
 use App\Scripts\Root\CreateGenericUserScript;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 class CreateUserOnServerJob extends AbstractRemoteServerJob
 {
@@ -56,7 +55,7 @@ class CreateUserOnServerJob extends AbstractRemoteServerJob
         });
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new FailedToCreateNewUserOnServerNotification($this->server));
     }

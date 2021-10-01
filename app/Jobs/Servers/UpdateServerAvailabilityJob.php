@@ -64,9 +64,7 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
         $this->notify();
     }
 
-    /**
-     * Notify the user that the server is not available.
-     */
+    /** Notify the user that the server is not available. */
     protected function notify(): void
     {
         $this->server->user->notify(new ServerNotAvailableNotification($this->server));

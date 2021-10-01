@@ -11,9 +11,6 @@ use RuntimeException;
 
 class InstallNginxJob extends AbstractRemoteServerJob
 {
-    /**
-     * Execute the job.
-     */
     public function handle(
         InstallNginxScript $installNginx,
         RestartNginxScript $restartNginx,

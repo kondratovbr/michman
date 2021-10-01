@@ -12,7 +12,6 @@ use App\Models\Server;
 use App\Notifications\Servers\FailedToConfigureServerNotification;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -57,7 +56,7 @@ class ConfigureAppServerJob extends AbstractJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new FailedToConfigureServerNotification($this->server));
     }

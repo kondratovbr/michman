@@ -21,9 +21,6 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
         $this->database = $database;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         if (is_null($this->database) || $this->database === 'none')

@@ -18,9 +18,6 @@ class DeleteFirewallRuleJob extends AbstractRemoteServerJob
         $this->rule = $rule->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(DeleteFirewallRuleScript $deleteFirewallRule): void
     {
         DB::transaction(function () use ($deleteFirewallRule) {

@@ -22,9 +22,6 @@ class CreateDatabaseOnServerJob extends AbstractRemoteServerJob
         $this->database->incrementTasks();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function() {

@@ -17,7 +17,6 @@ use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpdateSnapScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 // TODO: CRITICAL! Cover with tests!
 
@@ -79,7 +78,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new FailedToPrepareServerNotification($this->server));
     }

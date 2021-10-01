@@ -9,7 +9,6 @@ use App\Models\Server;
 use App\Notifications\Providers\RequestingNewServerFromProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class RequestNewServerFromProviderJob extends AbstractJob
 {
@@ -48,7 +47,7 @@ class RequestNewServerFromProviderJob extends AbstractJob
         });
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new RequestingNewServerFromProviderFailedNotification($this->server->provider));
     }

@@ -7,7 +7,6 @@ use App\Models\Server;
 use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Scripts\Root\UploadSshKeyToServerScript;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 class UploadServerSshKeyToServerJob extends AbstractRemoteServerJob
 {
@@ -33,7 +32,7 @@ class UploadServerSshKeyToServerJob extends AbstractRemoteServerJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new FailedToUploadServerSshKeyToServerNotification($this->server));
     }

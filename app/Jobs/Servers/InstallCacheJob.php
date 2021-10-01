@@ -20,9 +20,6 @@ class InstallCacheJob extends AbstractRemoteServerJob
         $this->cache = $cache;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         if (is_null($this->cache) || $this->cache === 'none')

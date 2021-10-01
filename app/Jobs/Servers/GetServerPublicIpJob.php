@@ -23,9 +23,6 @@ class GetServerPublicIpJob extends AbstractJob
         $this->server = $server->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         DB::transaction(function () {

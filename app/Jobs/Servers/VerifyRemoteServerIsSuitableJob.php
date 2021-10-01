@@ -7,7 +7,6 @@ use App\Jobs\AbstractRemoteServerJob;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 {
@@ -37,7 +36,7 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new ServerIsNotSuitableNotification($this->server));
     }

@@ -8,7 +8,6 @@ use App\Models\Server;
 use App\Models\WorkerSshKey;
 use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
-use Throwable;
 
 // TODO: CRITICAL! Cover with tests.
 
@@ -44,7 +43,7 @@ class AddWorkerSshKeyToServerProviderJob extends AbstractJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->user->notify(new AddingSshKeyToProviderFailedNotification($this->server->provider));
     }

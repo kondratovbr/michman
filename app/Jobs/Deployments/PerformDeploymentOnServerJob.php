@@ -35,9 +35,6 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
         $this->deployment = $deployment->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(
         UpdateProjectEnvironmentOnServerScript $updateEnvironment,
         UpdateProjectDeployScriptOnServerScript $updateDeployScript,
