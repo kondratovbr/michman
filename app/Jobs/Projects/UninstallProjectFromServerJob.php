@@ -6,6 +6,8 @@ use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
 
+// TODO: CRITICAL! Implement.
+
 class UninstallProjectFromServerJob extends AbstractRemoteServerJob
 {
     protected Project $project;
@@ -17,9 +19,6 @@ class UninstallProjectFromServerJob extends AbstractRemoteServerJob
         $this->project = $project->withoutRelations();
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         //
