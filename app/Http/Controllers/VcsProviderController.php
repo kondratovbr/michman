@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\VcsProviders\StoreVcsProviderAction;
 use App\Actions\VcsProviders\UpdateVcsProviderAction;
 use App\DataTransferObjects\VcsProviderDto;
+use App\Events\Users\FlashMessageEvent;
 use App\Exceptions\NotImplementedException;
 use App\Facades\Auth;
 use App\Models\VcsProvider;
@@ -12,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
+use Laravel\Socialite\Contracts\User as OAuthUser;
 
 class VcsProviderController extends AbstractController
 {
@@ -34,8 +36,6 @@ class VcsProviderController extends AbstractController
     /** Handle an OAuth callback from a third-party VCS provider. */
     public function callback(string $vcsProviderOauthName): RedirectResponse
     {
-        // TODO: CRITICAl! Show a success message when the link or refresh is successful.
-
         DB::transaction(function () use ($vcsProviderOauthName) {
             $vcsProviderName = $this->getVcsProviderName($vcsProviderOauthName);
 
@@ -43,35 +43,72 @@ class VcsProviderController extends AbstractController
 
             $vcsProvider = Auth::user()->vcs($vcsProviderName, true);
 
-            // If the user is already linked we'll just update the credentials.
+            // If the account is already linked we'll just update the credentials.
             if (! is_null($vcsProvider)) {
-                $this->authorize('update', $vcsProvider);
-
-                // User cannot refresh credentials using a different account - they should unlink it first.
-                // TODO: CRITICAL! Show some error to the user in such case, don't just leave it like that.
-                if ($vcsProvider->externalId != $oauthUser->getId())
-                    return;
-
-                $this->updateVcsProvider->execute(
-                    $vcsProvider,
-                    VcsProviderDto::fromOauth(
-                        $oauthUser,
-                        $vcsProviderName,
-                    )
-                );
-
+                $this->updateVcsProvider($vcsProvider, $oauthUser, $vcsProviderName);
                 return;
             }
 
-            $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
-
-            $this->storeVcsProvider->execute(VcsProviderDto::fromOauth(
-                $oauthUser,
-                $vcsProviderName
-            ), Auth::user());
+            $this->createVcsProvider($oauthUser, $vcsProviderName);
         }, 5);
 
         return redirect()->route('account.show', 'vcs');
+    }
+
+    protected function updateVcsProvider(VcsProvider $vcsProvider, OAuthUser $oauthUser, string $vcsProviderName): VcsProvider
+    {
+        $this->authorize('update', $vcsProvider);
+
+        // User cannot refresh credentials using a different account - they should unlink it first.
+        if ($vcsProvider->externalId != $oauthUser->getId()) {
+            event(new FlashMessageEvent(
+                Auth::user(),
+                __('flash.vcs-provider-link-failed-different-account', [
+                    'vcs' => __("projects.repo.providers.{$vcsProvider->provider}"),
+                ]),
+                FlashMessageEvent::STYLE_DANGER,
+            ));
+
+            return $vcsProvider;
+        }
+
+        $vcsProvider = $this->updateVcsProvider->execute(
+            $vcsProvider,
+            VcsProviderDto::fromOauth(
+                $oauthUser,
+                $vcsProviderName,
+            )
+        );
+
+        event(new FlashMessageEvent(
+            Auth::user(),
+            __('flash.vcs-provider-updated', [
+                'vcs' => __("projects.repo.providers.{$vcsProvider->provider}"),
+            ]),
+            FlashMessageEvent::STYLE_INFO,
+        ));
+
+        return $vcsProvider;
+    }
+
+    protected function createVcsProvider(OAuthUser $oauthUser, string $vcsProviderName): VcsProvider
+    {
+        $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
+
+        $vcsProvider = $this->storeVcsProvider->execute(VcsProviderDto::fromOauth(
+            $oauthUser,
+            $vcsProviderName
+        ), Auth::user());
+
+        event(new FlashMessageEvent(
+            Auth::user(),
+            __('flash.vcs-provider-linked', [
+                'vcs' => __("projects.repo.providers.{$vcsProvider->provider}"),
+            ]),
+            FlashMessageEvent::STYLE_SUCCESS,
+        ));
+
+        return $vcsProvider;
     }
 
     /** Disconnect the user from a third-part VCS provider account. */

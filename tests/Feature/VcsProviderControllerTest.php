@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Events\Users\FlashMessageEvent;
 use App\Models\User;
 use App\Models\VcsProvider;
+use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
 use Mockery;
 use Mockery\MockInterface;
@@ -62,6 +64,8 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                     }));
             }));
 
+        Event::fake();
+
         $response = $this->actingAs($user)->get('/oauth/github/vcs-callback?code=123456789&state=123456789');
 
         $response->assertRedirect();
@@ -76,6 +80,8 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         $this->assertCount(1, $user->vcsProviders);
         $this->assertNotNull($user->vcs('github_v3'));
         $this->assertEquals('foobar', $user->vcs('github_v3')->token);
+
+        Event::assertDispatched(FlashMessageEvent::class);
     }
 
     public function test_github_refresh()
@@ -106,6 +112,8 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                     }));
             }));
 
+        Event::fake();
+
         $response = $this->actingAs($user)->get('/oauth/github/vcs-callback?code=123456789&state=123456789');
 
         $user->refresh();
@@ -122,5 +130,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
         $this->assertCount(1, $user->vcsProviders);
         $this->assertNotNull($user->vcs('github_v3'));
         $this->assertEquals('foobar', $user->vcs('github_v3')->token);
+
+        Event::assertDispatched(FlashMessageEvent::class);
     }
 }
