@@ -15,18 +15,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-/*
- * TODO: CRITICAL! Don't forget to implement something like "Quick Deploy" in Forge.
- *       Should figure out how it's done.
- *       Probably by installing some GitHub hook or something using their API,
- *       so that it makes some request to us when a commit is done to the deployment branch.
- *       I've seen that GitHub can "notify" apps on its "events" happening.
- */
-
 class DeploymentsIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use ListensForEchoes;
 
     public Project $project;
 
@@ -61,9 +53,7 @@ class DeploymentsIndexTable extends LivewireComponent
         $this->authorize('index', [Deployment::class, $this->project]);
     }
 
-    /**
-     * Trigger the project's deployment.
-     */
+    /** Trigger the project's deployment. */
     public function deploy(DeployProjectAction $deployAction): void
     {
         $this->authorize('create', [Deployment::class, $this->project]);
@@ -71,9 +61,7 @@ class DeploymentsIndexTable extends LivewireComponent
         $deployAction->execute($this->project);
     }
 
-    /**
-     * Open a modal with a deployment output log.
-     */
+    /** Open a modal with a deployment output log. */
     public function showLog(string $deploymentKey, string $serverKey): void
     {
         $deployment = Deployment::validated($deploymentKey, $this->deployments);
