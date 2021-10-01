@@ -100,25 +100,19 @@ class Project extends AbstractModel
         'deleted' => ProjectDeletedEvent::class,
     ];
 
-    /**
-     * Get a domain name of this project for the front-end.
-     */
+    /** Get a domain name of this project for the front-end. */
     public function getFullDomainNameAttribute(): string
     {
         return ($this->allowSubDomains ? '*.' : '') . $this->domain;
     }
 
-    /**
-     * Get a name for a server user that will be created and used to run this project.
-     */
+    /** Get a name for a server user that will be created and used to run this project. */
     public function getServerUsernameAttribute(): string
     {
         return Str::replace('.', '_', Str::lower($this->domain));
     }
 
-    /**
-     * Derive a project name from the repo name of this project.
-     */
+    /** Derive a project name from the repo name of this project. */
     public function getProjectNameAttribute(): string|null
     {
         if (empty($this->repo))
@@ -127,65 +121,49 @@ class Project extends AbstractModel
         return explode('/', $this->repo, 2)[1];
     }
 
-    /**
-     * Get the path to the file where the deploy script is stored on a server.
-     */
+    /** Get the path to the file where the deploy script is stored on a server. */
     public function getDeployScriptFilePathAttribute(): string
     {
         return "/home/{$this->serverUsername}/.michman/{$this->projectName}_deploy.sh";
     }
 
-    /**
-     * Get the path to the .env file on a server.
-     */
+    /** Get the path to the .env file on a server. */
     public function getEnvFilePathAttribute(): string
     {
         return "/home/{$this->serverUsername}/{$this->domain}/.env";
     }
 
-    /**
-     * Get the path to the Nginx config file on a server.
-     */
+    /** Get the path to the Nginx config file on a server. */
     public function getNginxConfigFilePathAttribute(): string
     {
         return "/etc/nginx/sites-available/{$this->projectName}.conf";
     }
 
-    /**
-     * Get the path to the user-customizable part of the Nginx config on a server.
-     */
+    /** Get the path to the user-customizable part of the Nginx config on a server. */
     public function getUserNginxConfigFilePathAttribute(): string
     {
         return "{$this->michmanDir}/{$this->projectName}_nginx.conf";
     }
 
-    /**
-     * Get the path to the Gunicorn config file on a server.
-     */
+    /** Get the path to the Gunicorn config file on a server. */
     public function getGunicornConfigFilePathAttribute(): string
     {
         return "{$this->michmanDir}/{$this->projectName}_gunicorn_config.py";
     }
 
-    /**
-     * Get the path to the directory where this project is cloned on a server.
-     */
+    /** Get the path to the directory where this project is cloned on a server. */
     public function getProjectDirAttribute(): string
     {
         return "/home/{$this->serverUsername}/{$this->domain}";
     }
 
-    /**
-     * Get the path to the directory where we store important files we add to a server.
-     */
+    /** Get the path to the directory where we store important files we add to a server. */
     public function getMichmanDirAttribute(): string
     {
         return "/home/{$this->serverUsername}/.michman";
     }
 
-    /**
-     * Check if this project is currently deployed.
-     */
+    /** Check if this project is currently deployed. */
     public function getDeployedProperty(): bool
     {
         // TODO: CRITICAL! Update this when "undeploy" feature is implemented,
@@ -202,33 +180,25 @@ class Project extends AbstractModel
         return $this->webhook->isEnabled();
     }
 
-    /**
-     * Check if the project has a configured Git repository.
-     */
+    /** Check if the project has a configured Git repository. */
     public function repoInstalled(): bool
     {
         return isset($this->vcsProvider) && ! empty($this->repo);
     }
     
-    /**
-     * Get the latest successful deployment of this project.
-     */
+    /** Get the latest successful deployment of this project. */
     public function getCurrentDeployment(): Deployment|null
     {
         return $this->deployments()->successful()->latest()->first();
     }
 
-    /**
-     * Get a relation with the user that owns this project.
-     */
+    /** Get a relation with the user that owns this project. */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get a relation with the servers this project is using.
-     */
+    /** Get a relation with the servers this project is using. */
     public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'project_server')
@@ -236,49 +206,37 @@ class Project extends AbstractModel
             ->withTimestamps();
     }
 
-    /**
-     * Get a relation with the deploy key used by this project, if any.
-     */
+    /** Get a relation with the deploy key used by this project, if any. */
     public function deploySshKey(): HasOne
     {
         return $this->hasOne(DeploySshKey::class);
     }
 
-    /**
-     * Get a relation to the VCS provider this project uses, if any.
-     */
+    /** Get a relation to the VCS provider this project uses, if any. */
     public function vcsProvider(): BelongsTo
     {
         return $this->belongsTo(VcsProvider::class);
     }
 
-    /**
-     * Get a relation to the deployments performed for this project, if any.
-     */
+    /** Get a relation to the deployments performed for this project, if any. */
     public function deployments(): HasMany
     {
         return $this->hasMany(Deployment::class);
     }
 
-    /**
-     * Get a relation with the database that this project is using, if any.
-     */
+    /** Get a relation with the database that this project is using, if any. */
     public function database(): BelongsTo
     {
         return $this->belongsTo(Database::class);
     }
 
-    /**
-     * Get a relation with the database user that this project is using, if any.
-     */
+    /** Get a relation with the database user that this project is using, if any. */
     public function databaseUser(): BelongsTo
     {
         return $this->belongsTo(DatabaseUser::class);
     }
 
-    /**
-     * Get a relation with the queue workers configured for this project.
-     */
+    /** Get a relation with the queue workers configured for this project. */
     public function workers(): HasMany
     {
         return $this->hasMany(Worker::class);

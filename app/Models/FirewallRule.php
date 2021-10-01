@@ -62,41 +62,31 @@ class FirewallRule extends AbstractModel
         'deleted' => FirewallRuleDeletedEvent::class,
     ];
 
-    /**
-     * Get the owner of the server where this firewall rule belongs.
-     */
+    /** Get the owner of the server where this firewall rule belongs. */
     public function getUserAttribute(): User
     {
         return $this->server->provider->owner;
     }
 
-    /**
-     * Check if the rule was added to the server.
-     */
+    /** Check if the rule was added to the server. */
     public function isAdded(): bool
     {
         return $this->status === static::STATUS_ADDED;
     }
 
-    /**
-     * Check if the rule is in the process of being added to the server.
-     */
+    /** Check if the rule is in the process of being added to the server. */
     public function isAdding(): bool
     {
         return $this->status === static::STATUS_ADDING;
     }
 
-    /**
-     * Check if the rule is in the process of being deleted from the server.
-     */
+    /** Check if the rule is in the process of being deleted from the server. */
     public function isDeleting(): bool
     {
         return $this->status === static::STATUS_DELETING;
     }
 
-    /**
-     * Get a relation to the server that has this rule.
-     */
+    /** Get a relation to the server that has this rule. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);

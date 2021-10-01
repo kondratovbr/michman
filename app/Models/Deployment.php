@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-// TODO: Later I will need to somehow distinguish manual deployments from automatic ones.
+// TODO: CRITICAL! Distinguish manual deployments from automatic ones and update the index table to reflect it (with icons and a tooltip).
 
 /**
  * Deployment Eloquent model
@@ -85,9 +85,7 @@ class Deployment extends AbstractModel
         'updated' => DeploymentUpdatedEvent::class,
     ];
 
-    /**
-     * Get the user who owns the project that is being deployed by this deployment.
-     */
+    /** Get the user who owns the project that is being deployed by this deployment. */
     public function getUserAttribute(): User
     {
         /*
@@ -98,9 +96,7 @@ class Deployment extends AbstractModel
         return $this->project->user;
     }
 
-    /**
-     * Check if this deployment has been started.
-     */
+    /** Check if this deployment has been started. */
     public function getStartedAttribute(): bool
     {
         return $this->servers->reduce(
@@ -109,9 +105,7 @@ class Deployment extends AbstractModel
         );
     }
 
-    /**
-     * Check if this deployment is finished (regardless of its success) or is it still going.
-     */
+    /** Check if this deployment is finished (regardless of its success) or is it still going. */
     public function getFinishedAttribute(): bool
     {
         return $this->servers->reduce(
@@ -120,9 +114,7 @@ class Deployment extends AbstractModel
         );
     }
 
-    /**
-     * Check if this deployment was successful.
-     */
+    /** Check if this deployment was successful. */
     public function getSuccessfulAttribute(): bool|null
     {
         /** @var Server $server */
@@ -137,9 +129,7 @@ class Deployment extends AbstractModel
         return true;
     }
 
-    /**
-     * Check if the deployment has failed.
-     */
+    /** Check if the deployment has failed. */
     public function getFailedAttribute(): bool|null
     {
         if (is_null($this->successful))
@@ -148,9 +138,7 @@ class Deployment extends AbstractModel
         return ! $this->successful;
     }
 
-    /**
-     * Derive the status of this deployment from the properties of its pivots with servers.
-     */
+    /** Derive the status of this deployment from the properties of its pivots with servers. */
     public function getStatusAttribute(): string
     {
         if (! $this->started)
@@ -162,17 +150,13 @@ class Deployment extends AbstractModel
         return $this->successful ? static::STATUS_COMPLETED : static::STATUS_FAILED;
     }
 
-    /**
-     * Get a timestamp when this deployment was started on any server.
-     */
+    /** Get a timestamp when this deployment was started on any server. */
     public function getStartedAtAttribute(): CarbonInterface|null
     {
         return $this->servers->pluck('serverDeployment')->min('started_at');
     }
 
-    /**
-     * Get a timestamp when this deployment was finished on the last server it happened on.
-     */
+    /** Get a timestamp when this deployment was finished on the last server it happened on. */
     public function getFinishedAtAttribute(): CarbonInterface|null
     {
         return $this->servers->pluck('serverDeployment')->max('finished_at');
@@ -204,17 +188,13 @@ class Deployment extends AbstractModel
         return $this->project->vcsProvider->api()->commitUrl($this->project->repo, $this->commit);
     }
 
-    /**
-     * Get a relation with the project that was deployed by this deployment.
-     */
+    /** Get a relation with the project that was deployed by this deployment. */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    /**
-     * Get a relation with the servers where this deployment happened.
-     */
+    /** Get a relation with the servers where this deployment happened. */
     public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'deployment_server')

@@ -84,41 +84,31 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         $this->attributes['email'] = Str::lower($email);
     }
 
-    /**
-     * Derive user's name from the email.
-     */
+    /** Derive user's name from the email. */
     public function getNameAttribute(): string
     {
         return explode('@', $this->email, 2)[0];
     }
 
-    /**
-     * Get the URL for the user's profile photo.
-     */
+    /** Get the URL for the user's profile photo. */
     public function getAvatarUrlAttribute(): string
     {
         return $this->profile_photo_url;
     }
 
-    /**
-     * Generate a name for the user's automatically created personal team.
-     */
+    /** Generate a name for the user's automatically created personal team. */
     public function getNameForPersonalTeam(): string
     {
         return ucfirst(explode('@', $this->email, 2)[0]) . "'s Team";
     }
 
-    /**
-     * The channel the user receives notification broadcasts on.
-     */
+    /** The channel the user receives notification broadcasts on. */
     public function receivesBroadcastNotificationsOn(): string
     {
         return UserChannel::name($this);
     }
 
-    /**
-     * Get the 2FA QR code as a more flexible SVG string.
-     */
+    /** Get the 2FA QR code as a more flexible SVG string. */
     public function twoFactorQrCodeSvg(
         int $size = 192,
         int $margin = 0,
@@ -137,25 +127,19 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
             ->generate($this->twoFactorQrCodeUrl());
     }
 
-    /**
-     * Determine if this user has 2FA enabled.
-     */
+    /** Determine if this user has 2FA enabled. */
     public function tfaEnabled(): bool
     {
         return ! empty($this->two_factor_secret);
     }
 
-    /**
-     * Determine if this user authenticates using OAuth.
-     */
+    /** Determine if this user authenticates using OAuth. */
     public function usesOauth(): bool
     {
         return ! empty($this->oauthProvider) && ! empty($this->oauthId);
     }
 
-    /**
-     * Determine if this user uses email+password authentication.
-     */
+    /** Determine if this user uses email+password authentication. */
     public function usesPassword(): bool
     {
         return ! empty($this->password);
@@ -171,9 +155,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return 'en';
     }
 
-    /**
-     * Get this user's VcsProvider for a third-party service with the name provided.
-     */
+    /** Get this user's VcsProvider for a third-party service with the name provided. */
     public function vcs(string $provider, bool $lock = false): VcsProvider|null
     {
         $query = $this->vcsProviders()
@@ -189,41 +171,31 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $vcsProvider;
     }
 
-    /**
-     * Get a relation with server providers owned by this user.
-     */
+    /** Get a relation with server providers owned by this user. */
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class);
     }
 
-    /**
-     * Get a relation with servers owned by this user.
-     */
+    /** Get a relation with servers owned by this user. */
     public function servers(): HasManyThrough
     {
         return $this->hasManyThrough(Server::class, Provider::class);
     }
 
-    /**
-     * Get a relation with the SSH keys added by this user.
-     */
+    /** Get a relation with the SSH keys added by this user. */
     public function userSshKeys(): HasMany
     {
         return $this->hasMany(UserSshKey::class);
     }
 
-    /**
-     * Get a relation with the VCS providers connected by this user.
-     */
+    /** Get a relation with the VCS providers connected by this user. */
     public function vcsProviders(): HasMany
     {
         return $this->hasMany(VcsProvider::class);
     }
 
-    /**
-     * Get a relation with the projects this user owns.
-     */
+    /** Get a relation with the projects this user owns. */
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);

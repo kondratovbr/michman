@@ -51,9 +51,7 @@ class Python extends AbstractModel
         return $this->server->provider->owner;
     }
 
-    /**
-     * Check if this instance of Python was installed on the server.
-     */
+    /** Check if this instance of Python was installed on the server. */
     public function isInstalled(): bool
     {
         return in_array($this->status, [
@@ -62,17 +60,13 @@ class Python extends AbstractModel
         ]);
     }
 
-    /**
-     * Check if this instance of Python is currently updating.
-     */
+    /** Check if this instance of Python is currently updating. */
     public function isUpdating(): bool
     {
         return $this->status === static::STATUS_UPDATING;
     }
 
-    /**
-     * Get a relation with the server where this Python instance is installed.
-     */
+    /** Get a relation with the server where this Python instance is installed. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);

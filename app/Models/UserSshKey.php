@@ -61,25 +61,19 @@ class UserSshKey extends AbstractModel implements SshKeyInterface
         return $this->name;
     }
 
-    /**
-     * Check if this key is added to all the servers it's owner has.
-     */
+    /** Check if this key is added to all the servers it's owner has. */
     public function addedToAllServers(): bool
     {
         return $this->servers()->count() == $this->user->servers()->count();
     }
 
-    /**
-     * Get a relation with the user who owns this key.
-     */
+    /** Get a relation with the user who owns this key. */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get a relation with the server that owns this key.
-     */
+    /** Get a relation with the server that owns this key. */
     public function servers(): BelongsToMany
     {
         return $this->belongsToMany(Server::class, 'server_user_ssh_key')

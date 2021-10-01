@@ -39,9 +39,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    /**
-     * Get a name for the key to use as a filename on servers.
-     */
+    /** Get a name for the key to use as a filename on servers. */
     public function getNameAttribute(): string
     {
         return Str::snake(Str::lower($this->project->domain));
@@ -52,9 +50,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
         return $this->project->domain . ' - deploy key';
     }
 
-    /**
-     * Get a relation with the project that uses this key.
-     */
+    /** Get a relation with the project that uses this key. */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);

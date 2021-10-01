@@ -73,9 +73,7 @@ class Daemon extends AbstractModel
         return $this->server->user;
     }
 
-    /**
-     * Derive the name for this daemon from its properties.
-     */
+    /** Derive the name for this daemon from its properties. */
     public function getNameAttribute(): string
     {
         return "daemon-{$this->id}";
@@ -93,25 +91,19 @@ class Daemon extends AbstractModel
         return Arr::last(explode('/', $this->directory));
     }
 
-    /**
-     * Get the path to the Supervisor config for this daemon on a server.
-     */
+    /** Get the path to the Supervisor config for this daemon on a server. */
     public function configPath(): string
     {
         return "/etc/supervisor/conf.d/{$this->name}.conf";
     }
 
-    /**
-     * Get the path to the file where this daemon stores logs on a server.
-     */
+    /** Get the path to the file where this daemon stores logs on a server. */
     public function logFilePath(): string
     {
         return "/var/log/michman/{$this->name}.log";
     }
 
-    /**
-     * Create a supervisord config for this daemon.
-     */
+    /** Create a supervisord config for this daemon. */
     public function supervisorConfig(): string
     {
         return ConfigView::render('supervisor.daemon', [
@@ -120,9 +112,7 @@ class Daemon extends AbstractModel
         ]);
     }
 
-    /**
-     * Get a relation with the server where this daemon is running.
-     */
+    /** Get a relation with the server where this daemon is running. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);

@@ -98,57 +98,43 @@ class Server extends AbstractModel
         'deleted' => ServerDeletedEvent::class,
     ];
 
-    /**
-     * Get SSH port attribute or the default one if it's null.
-     */
+    /** Get SSH port attribute or the default one if it's null. */
     public function getSshPortAttribute(): string
     {
         return $this->attributes['ssh_port'] ?? (string) config('servers.default_ssh_port');
     }
 
-    /**
-     * Get the owner of this server.
-     */
+    /** Get the owner of this server. */
     public function getUserAttribute(): User
     {
         return $this->provider->owner;
     }
 
-    /**
-     * Get the path to a directory for public files on this servers.
-     */
+    /** Get the path to a directory for public files on this server. */
     public function getPublicWorkerDirAttribute(): string
     {
         return '/home/' . config('servers.worker_user') . '/public';
     }
 
-    /**
-     * Check if a database can be created on this server.
-     */
+    /** Check if a database can be created on this server. */
     public function canCreateDatabase(): bool
     {
         return ! empty($this->installedDatabase);
     }
 
-    /**
-     * Check if a database user can be created on this server.
-     */
+    /** Check if a database user can be created on this server. */
     public function canCreateDatabaseUser(): bool
     {
         return ! empty($this->installedDatabase);
     }
 
-    /**
-     * Check if this server has an SSL certificate.
-     */
+    /** Check if this server has an SSL certificate. */
     public function hasSsl(): bool
     {
         return $this->certificates()->count() > 0;
     }
 
-    /**
-     * Get a short info about this server to show in the UI.
-     */
+    /** Get a short info about this server to show in the UI. */
     public function shortInfo(): string
     {
         $info = [];
@@ -179,9 +165,7 @@ class Server extends AbstractModel
         );
     }
 
-    /**
-     * Open an SSH session to the server with SFTP enabled.
-     */
+    /** Open an SSH session to the server with SFTP enabled. */
     public function sftp(string $user = null): SFTP
     {
         /** @var SFTP $sftp */
@@ -189,9 +173,7 @@ class Server extends AbstractModel
         return $sftp;
     }
 
-    /**
-     * Open an SSH session to the server.
-     */
+    /** Open an SSH session to the server. */
     public function ssh(string $user = null, SSH2 $ssh = null): SSH2
     {
         $ssh ??= $this->newSshSession();
@@ -212,9 +194,7 @@ class Server extends AbstractModel
         return $ssh;
     }
 
-    /**
-     * Load and save the server's SSH host key.
-     */
+    /** Load and save the server's SSH host key. */
     protected function updateSshHostKey(SSH2 $ssh = null): void
     {
         $ssh ??= $this->newSshSession();
@@ -228,9 +208,7 @@ class Server extends AbstractModel
         $this->update(['ssh_host_key' => $hostKey]);
     }
 
-    /**
-     * Create a new instance of an SSH session to this server.
-     */
+    /** Create a new instance of an SSH session to this server. */
     protected function newSshSession(): SSH2
     {
         return App::make(SSH2::class, [
@@ -239,9 +217,7 @@ class Server extends AbstractModel
         ]);
     }
 
-    /**
-     * Create a new instance of an SFTP session to this server.
-     */
+    /** Create a new instance of an SFTP session to this server. */
     protected function newSftpSession(): SFTP
     {
         return App::make(SFTP::class, [
@@ -250,9 +226,7 @@ class Server extends AbstractModel
         ]);
     }
 
-    /**
-     * Create a ServerLog entry for this server.
-     */
+    /** Create a ServerLog entry for this server. */
     public function log(
         string $type,
         string $command = null,
@@ -275,25 +249,19 @@ class Server extends AbstractModel
         ]);
     }
 
-    /**
-     * Get a relation to the provider that runs this server.
-     */
+    /** Get a relation to the provider that runs this server. */
     public function provider(): BelongsTo
     {
         return $this->belongsTo(Provider::class);
     }
 
-    /**
-     * Get a relation to the SSH key used to access this server.
-     */
+    /** Get a relation to the SSH key used to access this server. */
     public function workerSshKey(): HasOne
     {
         return $this->hasOne(WorkerSshKey::class);
     }
 
-    /**
-     * Get a relation to the SSH keys added by the user for this server.
-     */
+    /** Get a relation to the SSH keys added by the user for this server. */
     public function userSshKeys(): BelongsToMany
     {
         return $this->belongsToMany(UserSshKey::class, 'server_user_ssh_key')
@@ -301,57 +269,43 @@ class Server extends AbstractModel
             ->withTimestamps();
     }
 
-    /**
-     * Get a relation to the logs of operations performed on this server.
-     */
+    /** Get a relation to the logs of operations performed on this server. */
     public function logs(): HasMany
     {
         return $this->hasMany(ServerLog::class);
     }
 
-    /**
-     * Get a relation with the databases this server holds.
-     */
+    /** Get a relation with the databases this server holds. */
     public function databases(): HasMany
     {
         return $this->hasMany(Database::class);
     }
 
-    /**
-     * Get a relation with the database users this server has.
-     */
+    /** Get a relation with the database users this server has. */
     public function databaseUsers(): HasMany
     {
         return $this->hasMany(DatabaseUser::class);
     }
 
-    /**
-     * Get a relation with Python instances installed on this server.
-     */
+    /** Get a relation with Python instances installed on this server. */
     public function pythons(): HasMany
     {
         return $this->hasMany(Python::class);
     }
 
-    /**
-     * Get a relation with the SHH key that this server is using to access VCS repositories.
-     */
+    /** Get a relation with the SHH key that this server is using to access VCS repositories. */
     public function serverSshKey(): HasOne
     {
         return $this->hasOne(ServerSshKey::class);
     }
 
-    /**
-     * Get a relation with the firewall rules created for this server.
-     */
+    /** Get a relation with the firewall rules created for this server. */
     public function firewallRules(): HasMany
     {
         return $this->hasMany(FirewallRule::class);
     }
 
-    /**
-     * Get a relation with the projects that are using this server.
-     */
+    /** Get a relation with the projects that are using this server. */
     public function projects(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'project_server')
@@ -360,9 +314,7 @@ class Server extends AbstractModel
             ->withTimestamps();
     }
 
-    /**
-     * Get a relation with the deployments performed on this server.
-     */
+    /** Get a relation with the deployments performed on this server. */
     public function deployments(): BelongsToMany
     {
         return $this->belongsToMany(Deployment::class, 'deployment_server')
@@ -372,25 +324,19 @@ class Server extends AbstractModel
             ->withTimestamps();
     }
 
-    /**
-     * Get a relation with the SSL certificates installed on this server.
-     */
+    /** Get a relation with the SSL certificates installed on this server. */
     public function certificates(): HasMany
     {
         return $this->hasMany(Certificate::class);
     }
 
-    /**
-     * Get a relation with the queue workers that run on this server.
-     */
+    /** Get a relation with the queue workers that run on this server. */
     public function workers(): HasMany
     {
         return $this->hasMany(Worker::class);
     }
 
-    /**
-     * Get a relation with the daemons that run on this server.
-     */
+    /** Get a relation with the daemons that run on this server. */
     public function daemons(): HasMany
     {
         return $this->hasMany(Daemon::class);

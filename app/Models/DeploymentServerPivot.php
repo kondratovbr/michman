@@ -54,25 +54,19 @@ class DeploymentServerPivot extends AbstractPivot
         'successful' => 'bool',
     ];
 
-    /**
-     * Check if the deployment on the server has started.
-     */
+    /** Check if the deployment on the server has started. */
     public function getStartedAttribute(): bool
     {
         return isset($this->startedAt);
     }
 
-    /**
-     * Check if the deployment on the server is finished (regardless if its success) or is it still in progress.
-     */
+    /** Check if the deployment on the server is finished (regardless if its success) or is it still in progress. */
     public function getFinishedAttribute(): bool
     {
         return isset($this->finishedAt);
     }
 
-    /**
-     * Calculate the time the server spent working on the deployment.
-     */
+    /** Calculate the time the server spent working on the deployment. */
     public function getDurationAttribute(): CarbonInterval|null
     {
         if (is_null($this->startedAt) || is_null($this->finishedAt))
@@ -81,9 +75,7 @@ class DeploymentServerPivot extends AbstractPivot
         return $this->finishedAt->diffAsCarbonInterval($this->startedAt);
     }
 
-    /**
-     * Check if the deployment on the server has failed.
-     */
+    /** Check if the deployment on the server has failed. */
     public function getFailedAttribute(): bool|null
     {
         if (is_null($this->successful))
@@ -92,9 +84,7 @@ class DeploymentServerPivot extends AbstractPivot
         return ! $this->successful;
     }
 
-    /**
-     * Retrieve the logs of the deployment on the server.
-     */
+    /** Retrieve the logs of the deployment on the server. */
     public function logs(): Collection
     {
         return ServerLog::query()

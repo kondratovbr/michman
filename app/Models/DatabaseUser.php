@@ -58,34 +58,26 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
         'deleted' => DatabaseUserDeletedEvent::class,
     ];
 
-    /**
-     * Get the user who owns the server with this database user.
-     */
+    /** Get the user who owns the server with this database user. */
     public function getUserAttribute(): User
     {
         return $this->server->provider->owner;
     }
 
-    /**
-     * Get a relation with the server where this database user is created.
-     */
+    /** Get a relation with the server where this database user is created. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);
     }
 
-    /**
-     * Get a relation with the databases this database user can access.
-     */
+    /** Get a relation with the databases this database user can access. */
     public function databases(): BelongsToMany
     {
         return $this->belongsToMany(Database::class, 'database_database_user')
             ->withTimestamps();
     }
 
-    /**
-     * Get a relation with the project that uses this database user, if any.
-     */
+    /** Get a relation with the project that uses this database user, if any. */
     public function project(): HasOne
     {
         return $this->hasOne(Project::class);

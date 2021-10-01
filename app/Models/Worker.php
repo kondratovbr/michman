@@ -76,17 +76,13 @@ class Worker extends AbstractModel
         'deleted' => WorkerDeletedEvent::class,
     ];
 
-    /**
-     * Get a configured stopSeconds attribute or the default value.
-     */
+    /** Get a configured stopSeconds attribute or the default value. */
     public function getStopSecondsAttribute(): int
     {
         return $this->attributes['stop_seconds'] ?? 600;
     }
 
-    /**
-     * Get the user who owns this worker.
-     */
+    /** Get the user who owns this worker. */
     public function getUserAttribute(): User
     {
         return $this->project->user;
@@ -101,17 +97,13 @@ class Worker extends AbstractModel
         return $this->attributes['app'] ?? $this->project->package;
     }
 
-    /**
-     * Get a desired debug level for this queue worker.
-     */
+    /** Get a desired debug level for this queue worker. */
     public function getDebugLevelAttribute(): string
     {
         return 'INFO';
     }
 
-    /**
-     * Derive a name for this worker from its properties.
-     */
+    /** Derive a name for this worker from its properties. */
     public function getNameAttribute(): string
     {
         return "{$this->type}-{$this->id}";
@@ -132,9 +124,7 @@ class Worker extends AbstractModel
         return $this->state->is(Deleting::class);
     }
 
-    /**
-     * Create a supervisord config for this worker.
-     */
+    /** Create a supervisord config for this worker. */
     public function supervisorConfig(): string
     {
         return ConfigView::render(match ($this->type) {
@@ -148,25 +138,19 @@ class Worker extends AbstractModel
         ]);
     }
 
-    /**
-     * Get the path to the supervisord config file for this worker on a server.
-     */
+    /** Get the path to the supervisord config file for this worker on a server. */
     public function configPath(): string
     {
         return "/etc/supervisor/conf.d/{$this->name}.conf";
     }
 
-    /**
-     * Get the path to the file where this worker stores logs on a server.
-     */
+    /** Get the path to the file where this worker stores logs on a server. */
     public function logFilePath(): string
     {
         return "/var/log/celery/{$this->name}.log";
     }
 
-    /**
-     * Generate a command that will run this worker on a server.
-     */
+    /** Generate a command that will run this worker on a server. */
     public function command(): string
     {
         $app = $this->app ?? $this->project->package;
@@ -192,17 +176,13 @@ class Worker extends AbstractModel
         );
     }
 
-    /**
-     * Get a relation with the project this worker is configured for.
-     */
+    /** Get a relation with the project this worker is configured for. */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    /**
-     * Get a relation with the server this worker is set up on.
-     */
+    /** Get a relation with the server this worker is set up on. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);

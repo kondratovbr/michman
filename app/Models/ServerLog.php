@@ -47,17 +47,13 @@ class ServerLog extends AbstractModel
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    /**
-     * Check if this log is of type that can be shown to a user as an output log.
-     */
+    /** Check if this log is of type that can be shown to a user as an output log. */
     public function getRenderableAttribute(): bool
     {
         return ! empty($this->command) || ! empty($this->content);
     }
 
-    /**
-     * Get a relation to the server that owns this log.
-     */
+    /** Get a relation to the server that owns this log. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);

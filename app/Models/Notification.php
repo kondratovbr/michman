@@ -25,17 +25,13 @@ class Notification extends DatabaseNotification
     use UsesCamelCaseAttributes,
         HasModelHelpers;
 
-    /**
-     * Get the message to show in the UI.
-     */
+    /** Get the message to show in the UI. */
     public function getMessageAttribute(): string
     {
         return $this->type::message($this->data);
     }
 
-    /**
-     * Get a notification-specific details view.
-     */
+    /** Get a notification-specific details view. */
     public function detailsView(): View
     {
         if (! $this->viewable())
@@ -44,9 +40,7 @@ class Notification extends DatabaseNotification
         return $this->type::view($this->data);
     }
 
-    /**
-     * Check if the underlying Notification has a detailed view in the UI.
-     */
+    /** Check if the underlying Notification has a detailed view in the UI. */
     public function viewable(): bool
     {
         return classImplements($this->type, Viewable::class);

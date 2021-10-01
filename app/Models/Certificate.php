@@ -70,58 +70,44 @@ class Certificate extends AbstractModel
         'deleted' => CertificateDeletedEvent::class,
     ];
 
-    /**
-     * Get the user who owns this certificate.
-     */
+    /** Get the user who owns this certificate. */
     public function getUserAttribute(): User
     {
         return $this->server->user;
     }
 
-    /**
-     * Derive a name for this certificate from its domains.
-     */
+    /** Derive a name for this certificate from its domains. */
     public function getNameAttribute(): string
     {
         return $this->domains[0];
     }
 
-    /**
-     * Get a directory where the files related to this certificate are stored on a server.
-     */
+    /** Get a directory where the files related to this certificate are stored on a server. */
     public function getDirectoryAttribute(): string
     {
         return "/etc/letsencrypt/live/{$this->name}";
     }
 
-    /**
-     * Check if this certificate has a domain from a project.
-     */
+    /** Check if this certificate has a domain from a project. */
     public function hasDomainOf(Project $project): bool
     {
         return Arr::hasValue($this->domains, $project->domain)
             || ! empty(Arr::intersect($this->domains, $project->aliases));
     }
 
-    /**
-     * Check if this certificate is a subset of another certificate.
-     */
+    /** Check if this certificate is a subset of another certificate. */
     public function isSubsetOf(Certificate $certificate): bool
     {
         return empty(array_diff($this->domains, $certificate->domains));
     }
 
-    /**
-     * Check if this certificate is installed on a server.
-     */
+    /** Check if this certificate is installed on a server. */
     public function isInstalled(): bool
     {
         return $this->state->is(Installed::class);
     }
 
-    /**
-     * Get a relation to the server that has this certificate installed.
-     */
+    /** Get a relation to the server that has this certificate installed. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);

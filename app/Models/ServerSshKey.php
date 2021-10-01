@@ -47,9 +47,7 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
         return static::createName($this->server);
     }
 
-    /**
-     * Get a name for a server SSH key based on the server name.
-     */
+    /** Get a name for a server SSH key based on the server name. */
     public static function createName(Server|string $server): string
     {
         if ($server instanceof Server)
@@ -58,9 +56,7 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
         return $server . ' - server key';
     }
 
-    /**
-     * Get a relation with the server that uses this key.
-     */
+    /** Get a relation with the server that uses this key. */
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);
