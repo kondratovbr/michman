@@ -202,7 +202,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
      */
     public function servers(): HasManyThrough
     {
-        // TODO: CRITICAL! Does it work? Need to declare foreign keys here?
         return $this->hasManyThrough(Server::class, Provider::class);
     }
 
