@@ -25,7 +25,7 @@ class WebhookController extends AbstractController
 
             /*
              * If we already have this delivery stored it means it was a re-delivery for some reason,
-             * so it is already processed, so we don't have to do anything.
+             * and it is already processed, so we don't have to do anything.
              * We'll just return 200 to ensure idempotence.
              */
             if (! is_null(WebhookCall::query()->firstWhere('external_id', $externalId)))
