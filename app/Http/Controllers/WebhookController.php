@@ -42,8 +42,6 @@ class WebhookController extends AbstractController
         }, 5);
 
         return response(status: Response::HTTP_OK);
-
-        // TODO: CRITICAL! Don't forget that I must update the webhook when user changes the deployment branch. And when they change the repo, of course.
     }
 
     protected function validateWebhook(string $webhookProvider, Request $request, Webhook $webhook): void
