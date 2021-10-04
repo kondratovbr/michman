@@ -75,10 +75,6 @@ class InstallRepoForm extends LivewireComponent
 
     public function rules(): array
     {
-        /*
-         * TODO: CRITICAL! Error messages here suck. Check it out. Check out all forms that use $state - the attribute names are all wrong like "state.repo" - should fix it. In other forms as well.
-         */
-
         return [
             'state.vcsProviderKey' => Rules::integer()->in(Auth::user()->vcsProviders->modelKeys())->required(),
             'state.repo' => Rules::gitRepoName()->required(),
