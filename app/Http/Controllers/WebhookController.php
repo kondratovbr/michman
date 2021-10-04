@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
-
 class WebhookController extends AbstractController
 {
     /** Handle a received webhook. */
