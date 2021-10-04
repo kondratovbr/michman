@@ -20,9 +20,7 @@ class ProjectDeployScriptEditForm extends LivewireComponent
 
     public string $script = '';
 
-    /**
-     * Check if the currently saved project deploy script is not the same as the last deployed one.
-     */
+    /** Check if the currently saved project deploy script is not the same as the last deployed one. */
     public function getModifiedProperty(): bool
     {
         $deployment = $this->project->getCurrentDeployment();
@@ -61,9 +59,7 @@ class ProjectDeployScriptEditForm extends LivewireComponent
         $this->script = $this->project->refresh()->deployScript ?? '';
     }
 
-    /**
-     * Update the project's deploy script.
-     */
+    /** Update the project's deploy script. */
     public function update(UpdateProjectDeployScriptAction $action): void
     {
         $script = $this->validate()['script'] ?? '';
@@ -75,9 +71,7 @@ class ProjectDeployScriptEditForm extends LivewireComponent
         $this->resetState();
     }
 
-    /**
-     * Replace the current project's deploy script with the last deployed one.
-     */
+    /** Replace the current project's deploy script with the last deployed one. */
     public function rollback(RollbackProjectDeployScriptAction $action): void
     {
         $this->authorize('update', $this->project);

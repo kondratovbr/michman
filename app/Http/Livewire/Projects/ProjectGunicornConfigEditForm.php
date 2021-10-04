@@ -20,9 +20,7 @@ class ProjectGunicornConfigEditForm extends LivewireComponent
 
     public string $gunicornConfig;
 
-    /**
-     * Check if the currently saved project's Gunicorn config is not the same as the last deployed one.
-     */
+    /** Check if the currently saved project's Gunicorn config is not the same as the last deployed one. */
     public function getModifiedProperty(): bool
     {
         $deployment = $this->project->getCurrentDeployment();
@@ -61,9 +59,7 @@ class ProjectGunicornConfigEditForm extends LivewireComponent
         $this->gunicornConfig = $this->project->refresh()->gunicornConfig ?? '';
     }
 
-    /**
-     * Update the project's Gunicorn config.
-     */
+    /** Update the project's Gunicorn config. */
     public function update(UpdateProjectGunicornConfigAction $action): void
     {
         $gunicornConfig = $this->validate()['gunicornConfig'] ?? '';
@@ -75,9 +71,7 @@ class ProjectGunicornConfigEditForm extends LivewireComponent
         $this->resetState();
     }
 
-    /**
-     * Replace the current project's Gunicorn config with the last deployed one.
-     */
+    /** Replace the current project's Gunicorn config with the last deployed one. */
     public function rollback(RollbackProjectGunicornConfigAction $action): void
     {
         $this->authorize('update', $this->project);

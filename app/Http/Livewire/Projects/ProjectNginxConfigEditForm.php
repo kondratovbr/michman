@@ -20,9 +20,7 @@ class ProjectNginxConfigEditForm extends LivewireComponent
 
     public string $nginxConfig = '';
 
-    /**
-     * Check if the currently saved project's Nginx config is not the same as the last deployed one.
-     */
+    /** Check if the currently saved project's Nginx config is not the same as the last deployed one. */
     public function getModifiedProperty(): bool
     {
         $deployment = $this->project->getCurrentDeployment();
@@ -61,9 +59,7 @@ class ProjectNginxConfigEditForm extends LivewireComponent
         $this->nginxConfig = $this->project->refresh()->nginxConfig ?? '';
     }
 
-    /**
-     * Update the project's Nginx config.
-     */
+    /** Update the project's Nginx config. */
     public function update(UpdateProjectNginxConfigAction $action): void
     {
         $nginxConfig = $this->validate()['nginxConfig'] ?? '';
@@ -75,9 +71,7 @@ class ProjectNginxConfigEditForm extends LivewireComponent
         $this->resetState();
     }
 
-    /**
-     * Replace the current project's Nginx config with the last deployed one.
-     */
+    /** Replace the current project's Nginx config with the last deployed one. */
     public function rollback(RollbackProjectNginxConfigAction $action): void
     {
         $this->authorize('update', $this->project);

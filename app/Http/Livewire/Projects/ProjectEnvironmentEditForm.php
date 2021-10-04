@@ -20,9 +20,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
 
     public string $environment = '';
 
-    /**
-     * Check if the currently saved project's environment is not the same as the last deployed one.
-     */
+    /** Check if the currently saved project's environment is not the same as the last deployed one. */
     public function getModifiedProperty(): bool
     {
         $deployment = $this->project->getCurrentDeployment();
@@ -61,9 +59,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
         $this->environment = $this->project->refresh()->environment ?? '';
     }
 
-    /**
-     * Update the project's environment.
-     */
+    /** Update the project's environment. */
     public function update(UpdateProjectEnvironmentAction $action): void
     {
         $environment = $this->validate()['environment'] ?? null;
@@ -75,9 +71,7 @@ class ProjectEnvironmentEditForm extends LivewireComponent
         $this->resetState();
     }
 
-    /**
-     * Replace the current project's environment with the last deployed one.
-     */
+    /** Replace the current project's environment with the last deployed one. */
     public function rollback(RollbackProjectEnvironmentAction $action): void
     {
         $this->authorize('update', $this->project);
