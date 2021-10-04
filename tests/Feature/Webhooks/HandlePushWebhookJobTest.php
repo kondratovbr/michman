@@ -6,6 +6,7 @@ use App\Actions\Projects\DeployProjectAction;
 use App\Jobs\Exceptions\WrongWebhookCallTypeException;
 use App\Jobs\Webhooks\HandlePushWebhookJob;
 use App\Models\Project;
+use App\Models\Webhook;
 use App\Models\WebhookCall;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
@@ -82,6 +83,41 @@ class HandlePushWebhookJobTest extends AbstractFeatureTest
         $this->assertDatabaseHas('webhook_calls', [
             'id' => $call->id,
             'processed' => false,
+        ]);
+    }
+
+    public function test_call_of_deleting_hook_is_ignored()
+    {
+        /** @var Webhook $hook */
+        $hook = Webhook::factory()
+            ->withProject()
+            ->inState('deleting')
+            ->create();
+
+        /** @var WebhookCall $call */
+        $call = WebhookCall::factory([
+            'type' => 'push',
+            'processed' => false,
+            'payload' => [
+                'after' => '1234567890',
+            ],
+        ])
+            ->for($hook)
+            ->create();
+
+        $job = new HandlePushWebhookJob($call);
+
+        $this->assertEquals('default', $job->queue);
+
+        $this->mock(DeployProjectAction::class, function (MockInterface $mock) use ($call) {
+            $mock->shouldNotHaveBeenCalled();
+        });
+
+        $this->app->call([$job, 'handle']);
+
+        $this->assertDatabaseHas('webhook_calls', [
+            'id' => $call->id,
+            'processed' => true,
         ]);
     }
 }

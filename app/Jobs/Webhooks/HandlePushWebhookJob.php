@@ -8,7 +8,6 @@ use App\Jobs\Traits\HandlesWebhooks;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Project;
 use App\Models\WebhookCall;
-use Illuminate\Support\Facades\DB;
 
 class HandlePushWebhookJob extends AbstractJob
 {
@@ -22,25 +21,16 @@ class HandlePushWebhookJob extends AbstractJob
         $this->setQueue('default');
 
         $this->call = $call->withoutRelations();
+        $this->callType = 'push';
     }
 
-    public function handle(DeployProjectAction $action): void
+    public function execute(DeployProjectAction $action): void
     {
-        DB::transaction(function () use ($action) {
-            $call = $this->call->freshLockForUpdate();
-            /** @var Project $project */
-            $project = $call->webhook->project()->sharedLock()->firstOrFail();
+        /** @var Project $project */
+        $project = $this->call->webhook->project()->sharedLock()->firstOrFail();
 
-            $this->verifyHookCallType($call, 'push');
+        $action->execute($project, $this->call->payload['after']);
 
-            $action->execute($project, $call->payload['after']);
-
-            $call->processed = true;
-            $call->save();
-
-            // TODO: CRITICAL! Notify the user about a triggered deployment via email. Show in the UI (by storing in the DB) as well.
-
-            //
-        }, 5);
+        // TODO: CRITICAL! Notify the user about a triggered deployment via email. Show in the UI (by storing in the DB) as well.
     }
 }

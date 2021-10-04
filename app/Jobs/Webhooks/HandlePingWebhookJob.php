@@ -7,7 +7,6 @@ use App\Jobs\Traits\HandlesWebhooks;
 use App\Jobs\Traits\IsInternal;
 use App\Models\WebhookCall;
 use App\States\Webhooks\Enabled;
-use Illuminate\Support\Facades\DB;
 
 class HandlePingWebhookJob extends AbstractJob
 {
@@ -21,19 +20,11 @@ class HandlePingWebhookJob extends AbstractJob
         $this->setQueue('default');
 
         $this->call = $call->withoutRelations();
+        $this->callType = 'ping';
     }
 
-    public function handle(): void
+    public function execute(): void
     {
-        DB::transaction(function () {
-            $call = $this->call->freshLockForUpdate('webhook');
-
-            $this->verifyHookCallType($call, 'ping');
-
-            $call->webhook->state->transitionToIfCan(Enabled::class);
-
-            $call->processed = true;
-            $call->save();
-        }, 5);
+        $this->call->webhook->state->transitionToIfCan(Enabled::class);
     }
 }

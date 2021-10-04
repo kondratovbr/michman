@@ -139,6 +139,40 @@ class HandlePingWebhookJobTest extends AbstractFeatureTest
         Event::assertNotDispatched(WebhookUpdatedEvent::class);
     }
 
+    public function test_call_of_deleting_hook_is_ignored()
+    {
+        /** @var Webhook $hook */
+        $hook = Webhook::factory()
+            ->withProject()
+            ->inState('deleting')
+            ->create();
+        /** @var WebhookCall $call */
+        $call = WebhookCall::factory([
+            'type' => 'ping',
+            'processed' => false,
+        ])
+            ->for($hook)
+            ->create();
+
+        $job = new HandlePingWebhookJob($call);
+
+        Bus::fake();
+        Event::fake();
+
+        $this->app->call([$job, 'handle']);
+
+        $this->assertDatabaseHas('webhooks', [
+            'id' => $hook->id,
+            'state' => 'deleting',
+        ]);
+        $this->assertDatabaseHas('webhook_calls', [
+            'id' => $call->id,
+            'processed' => true,
+        ]);
+
+        Event::assertNotDispatched(WebhookUpdatedEvent::class);
+    }
+
     public function irrelevantStates(): array
     {
         return [
