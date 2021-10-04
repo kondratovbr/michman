@@ -20,10 +20,6 @@ class InstallNginxScript extends AbstractServerScript
          *       Also, figure out what to do if something fails here, like in all other scripts.
          */
 
-        /*
-         * TODO: CRITICAL! Don't forget to figure out SSL setup.
-         */
-
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
@@ -37,8 +33,6 @@ class InstallNginxScript extends AbstractServerScript
 
         // Create a nologin system user to run Nginx workers as configured in nginx.conf.
         $this->exec('useradd -r -s /usr/sbin/nologin nginx');
-
-        // TODO: CRITICAL! Don't forget to also send the config files and restart nginx afterwards.
 
         // Carefully remove the default config files that we don't need.
         foreach ([
@@ -61,7 +55,6 @@ class InstallNginxScript extends AbstractServerScript
         $this->exec("rm -rf {$nginxDir}/sites-enabled/* && rm -rf {$nginxDir}/sites-available/*");
 
         // Send all the custom Nginx config files to their intended locations.
-        // TODO: CRITICAL! Check if Blade comments in .blade files are getting rendered - they shouldn't.
         foreach ([
             'nginx.conf' => 'nginx',
             'proxy_params' => 'proxy_params',
