@@ -17,4 +17,18 @@ interface WebhookServiceInterface
 
     /** Get the external ID (delivery ID) of a webhook delivery from a request. */
     public function getExternalId(Request $request): string|null;
+
+    /**
+     * Get the name of the branch that the commits in the push event were pushed on.
+     *
+     * Returns null if the commits were not on a branch.
+     */
+    public function pushedBranch(array $data): string|null;
+
+    /**
+     * Get the hash of the commit pushed by the push event.
+     *
+     * Returns null if no such info found in the call payload.
+     */
+    public function pushedCommitHash(array $data): string|null;
 }

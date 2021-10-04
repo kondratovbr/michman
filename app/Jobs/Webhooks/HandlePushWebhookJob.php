@@ -8,6 +8,7 @@ use App\Jobs\Traits\HandlesWebhooks;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Project;
 use App\Models\WebhookCall;
+use RuntimeException;
 
 class HandlePushWebhookJob extends AbstractJob
 {
@@ -29,8 +30,29 @@ class HandlePushWebhookJob extends AbstractJob
         /** @var Project $project */
         $project = $this->call->webhook->project()->sharedLock()->firstOrFail();
 
-        $action->execute($project, $this->call->payload['after']);
+        if (! $this->validates())
+            return;
+
+        $hash = $this->call->webhook->service()->pushedCommitHash($this->call->payload);
+
+        $action->execute($project, $hash);
 
         // TODO: CRITICAL! Notify the user about a triggered deployment via email. Show in the UI (by storing in the DB) as well.
+    }
+
+    protected function validates(): bool
+    {
+        $project = $this->call->webhook->project;
+        $service = $this->call->webhook->service();
+
+        $branch = $service->pushedBranch($this->call->payload);
+
+        if (empty($branch) || $branch != $project->branch)
+            return false;
+
+        if (empty($service->pushedCommitHash($this->call->payload)))
+            throw new RuntimeException('No commit hash found in the push webhook event payload.');
+
+        return true;
     }
 }

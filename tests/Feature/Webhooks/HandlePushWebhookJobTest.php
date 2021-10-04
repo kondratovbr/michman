@@ -55,6 +55,65 @@ class HandlePushWebhookJobTest extends AbstractFeatureTest
         $this->assertTrue($call->processed);
     }
 
+    public function test_event_with_irrelevant_ref_is_ignored()
+    {
+        /** @var WebhookCall $call */
+        $call = WebhookCall::factory([
+            'type' => 'push',
+            'processed' => false,
+            'payload' => [
+                'ref' => 'refs/tags/v1.2',
+                'after' => '1234567890',
+            ],
+        ])
+            ->withWebhook()
+            ->create();
+
+        $job = new HandlePushWebhookJob($call);
+
+        $this->mock(DeployProjectAction::class, function (MockInterface $mock) use ($call) {
+            $mock->shouldNotHaveBeenCalled();
+        });
+
+        $this->app->call([$job, 'handle']);
+
+        $this->assertDatabaseHas('webhook_calls', [
+            'id' => $call->id,
+            'processed' => true,
+        ]);
+    }
+
+    public function test_event_with_mismatched_branch_is_ignored()
+    {
+        /** @var WebhookCall $call */
+        $call = WebhookCall::factory([
+            'type' => 'push',
+            'processed' => false,
+            'payload' => [
+                'ref' => 'refs/heads/feature1',
+                'after' => '1234567890',
+            ],
+        ])
+            ->withWebhook()
+            ->create();
+
+        $call->webhook->project->branch = 'main';
+        $call->webhook->project->save();
+
+        $job = new HandlePushWebhookJob($call);
+
+        $this->mock(DeployProjectAction::class, function (MockInterface $mock) use ($call) {
+            $mock->shouldNotHaveBeenCalled();
+        });
+
+        $this->app->call([$job, 'handle']);
+
+        $this->assertDatabaseHas('webhook_calls', [
+            'id' => $call->id,
+            'processed' => true,
+        ]);
+    }
+
     public function test_call_type_gets_verified()
     {
         /** @var WebhookCall $call */
@@ -69,8 +128,6 @@ class HandlePushWebhookJobTest extends AbstractFeatureTest
             ->create();
 
         $job = new HandlePushWebhookJob($call);
-
-        $this->assertEquals('default', $job->queue);
 
         $this->mock(DeployProjectAction::class, function (MockInterface $mock) use ($call) {
             $mock->shouldNotHaveBeenCalled();
@@ -106,8 +163,6 @@ class HandlePushWebhookJobTest extends AbstractFeatureTest
             ->create();
 
         $job = new HandlePushWebhookJob($call);
-
-        $this->assertEquals('default', $job->queue);
 
         $this->mock(DeployProjectAction::class, function (MockInterface $mock) use ($call) {
             $mock->shouldNotHaveBeenCalled();

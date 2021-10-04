@@ -25,7 +25,7 @@ class WebhookFactory extends Factory
     /** @return $this */
     public function withProject(): static
     {
-        return $this->for(Project::factory()->withUserAndServers());
+        return $this->for(Project::factory()->withUserAndServers()->repoInstalled());
     }
 
     /** @return $this */

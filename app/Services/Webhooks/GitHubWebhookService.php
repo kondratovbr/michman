@@ -4,6 +4,7 @@ namespace App\Services\Webhooks;
 
 use App\Services\Traits\HasConfig;
 use App\Support\Arr;
+use App\Support\Str;
 use Illuminate\Http\Request;
 
 // TODO: CRITICAL! Cover with tests.
@@ -57,5 +58,25 @@ class GitHubWebhookService implements WebhookServiceInterface
             return null;
 
         return $request->header(self::EXTERNAL_ID_HEADER_NAME);
+    }
+
+    public function pushedBranch(array $data): string|null
+    {
+        $ref = $data['ref'] ?? null;
+
+        if (empty($ref))
+            return null;
+
+        if (! Str::contains($ref, 'heads'))
+            return null;
+
+        return Arr::last(explode('/', trim($ref)));
+    }
+
+    public function pushedCommitHash(array $data): string|null
+    {
+        $hash = $data['after'] ?? null;
+
+        return empty($hash) ? null : $hash;
     }
 }
