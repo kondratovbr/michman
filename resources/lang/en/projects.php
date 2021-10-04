@@ -197,4 +197,10 @@ return [
         ],
     ],
 
+    'branch' => [
+        'title' => 'Deployment Branch',
+        'label' => 'Branch',
+        'button' => 'Update Branch',
+    ],
+
 ];

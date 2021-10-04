@@ -6,6 +6,7 @@ use App\Actions\Projects\DeployProjectAction;
 use App\Broadcasting\ProjectChannel;
 use App\Events\Deployments\DeploymentCreatedEvent;
 use App\Events\Deployments\DeploymentUpdatedEvent;
+use App\Events\Projects\ProjectUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Deployment;
 use App\Models\Project;
@@ -33,7 +34,7 @@ class DeploymentsIndexTable extends LivewireComponent
 
     /** @var string[] */
     protected $listeners = [
-        //
+        'project-updated' => '$refresh',
     ];
 
     protected function configureEchoListeners(): void
@@ -43,6 +44,7 @@ class DeploymentsIndexTable extends LivewireComponent
             [
                 DeploymentCreatedEvent::class,
                 DeploymentUpdatedEvent::class,
+                ProjectUpdatedEvent::class,
             ],
             '$refresh',
         );

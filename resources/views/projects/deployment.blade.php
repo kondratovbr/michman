@@ -14,15 +14,7 @@
 
         <x-section-separator/>
 
-        <div>Maintenance Mode</div>
-
-        <x-section-separator/>
-
-        <div>Deployment Branch</div>
-
-        <x-section-separator/>
-
-        <div>Update Git Remote</div>
+        <livewire:projects.project-deployment-branch-edit-form :project="$project" />
 
         <x-section-separator/>
 
