@@ -17,18 +17,12 @@ interface HasTasksCounterInterface
 
     public function setTasksAttribute(int|null $value): void;
 
-    /**
-     * Get the tasks DB column name.
-     */
+    /** Get the tasks DB column name. */
     public function tasksAttributeName(): string;
 
-    /**
-     * Increment the tasks counter attribute on this model.
-     */
+    /** Increment the tasks counter attribute on this model. */
     public function incrementTasks(int $amount = 1): void;
 
-    /**
-     * Decrement the tasks counter attribute on this model.
-     */
+    /** Decrement the tasks counter attribute on this model. */
     public function decrementTasks(int $amount = 1): void;
 }

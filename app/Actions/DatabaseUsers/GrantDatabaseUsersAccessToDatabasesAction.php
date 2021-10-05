@@ -46,9 +46,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
         }, 5);
     }
 
-    /**
-     * Reload and lockForUpdate database users.
-     */
+    /** Reload and lockForUpdate database users. */
     private function lockDatabaseUsers(BaseCollection $databaseUsers): EloquentCollection
     {
         /** @var EloquentCollection $collection */
@@ -63,9 +61,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
         return $collection;
     }
 
-    /**
-     * Reload and lockForUpdate databases.
-     */
+    /** Reload and lockForUpdate databases. */
     private function lockDatabases(BaseCollection $databases): EloquentCollection
     {
         /** @var EloquentCollection $collection */
@@ -80,9 +76,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
         return $collection;
     }
 
-    /**
-     * Check that databases and database users all belong to the same server.
-     */
+    /** Check that databases and database users all belong to the same server. */
     private function runServerChecks(Collection $databaseUsers, Collection $databases): void
     {
         if ($databaseUsers->pluck('server_id')->unique()->count() > 1)
@@ -95,9 +89,7 @@ class GrantDatabaseUsersAccessToDatabasesAction
             throw new RuntimeException('The databases and database users belong to different servers.');
     }
 
-    /**
-     * Attach every database user to every database.
-     */
+    /** Attach every database user to every database. */
     private function attachModels(Collection $databaseUsers, Collection $databases): void
     {
         /** @var Database $database */

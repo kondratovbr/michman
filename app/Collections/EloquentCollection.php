@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class EloquentCollection extends Collection
 {
-    /**
-     * Increment "tasks" attribute on every model in this collection.
-     */
+    /** Increment "tasks" attribute on every model in this collection. */
     public function incrementTasks(int $amount = 1): void
     {
         DB::transaction(function () use ($amount) {
@@ -22,9 +20,7 @@ class EloquentCollection extends Collection
         }, 5);
     }
 
-    /**
-     * Decrement "tasks" attribute on every model in this collection.
-     */
+    /** Decrement "tasks" attribute on every model in this collection. */
     public function decrementTasks(int $amount = 1): void
     {
         DB::transaction(function () use ($amount) {

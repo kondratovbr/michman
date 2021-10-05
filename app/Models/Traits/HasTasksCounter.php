@@ -16,11 +16,7 @@ use Illuminate\Support\Facades\Log;
  */
 trait HasTasksCounter
 {
-    /**
-     * The name of the tasks counter attribute in the database.
-     *
-     * @var string
-     */
+    /** @var string The name of the tasks counter attribute in the database. */
     protected string $tasksAttributeName = 'tasks';
 
     public function getTasksAttribute(): int
@@ -68,7 +64,6 @@ trait HasTasksCounter
                 $this->tasksAttributeName(),
                 $amount,
                 $this->usesTimestamps()
-                    // ? [$this->getQualifiedUpdatedAtColumn() => $now]
                     ? [$this->getUpdatedAtColumn() => $now]
                     : [],
             );
@@ -107,28 +102,22 @@ trait HasTasksCounter
         }
     }
 
-    /**
-     * Check if there is any tasks pending for this model.
-     */
+    /** Check if there is any tasks pending for this model. */
     public function hasTasks(): bool
     {
         return $this->tasks > 0;
     }
 
-    /**
-     * Fire the "updated" if this model has it declared.
-     */
+    /** Fire the "updated" if this model has it declared. */
     private function fireUpdatedEvent(): void
     {
         // The model wasn't "saved" here, but it was "updated",
         // so we only fire the "updated" event.
         if ($event = Arr::get($this->dispatchesEvents,'updated'))
-            event (new $event($this));
+            event(new $event($this));
     }
 
-    /**
-     * Log a warning that the update query has failed.
-     */
+    /** Log a warning that the update query has failed. */
     private function logFailedQueryWarning(): void
     {
         Log::warning(
@@ -139,9 +128,7 @@ trait HasTasksCounter
         );
     }
 
-    /**
-     * Set "updated_at" column on this model instance attributes including "original" one.
-     */
+    /** Set "updated_at" column on this model instance attributes including "original" one. */
     private function setUpdatedAtAttributes(CarbonInterface $timestamp): void
     {
         if (! $this->usesTimestamps())
@@ -153,9 +140,7 @@ trait HasTasksCounter
         $this->original[$this->getUpdatedAtColumn()] = $timestamp;
     }
 
-    /**
-     * Increment "tasks" attribute including the original one.
-     */
+    /** Increment "tasks" attribute including the original one. */
     private function incrementAttributes(int $amount): void
     {
         // We're doing this after we updated this value in the DB,
@@ -169,9 +154,7 @@ trait HasTasksCounter
         $this->attributes[$this->tasksAttributeName()] = $this->original[$this->tasksAttributeName()];
     }
 
-    /**
-     * Decrement "tasks" attribute including the original one.
-     */
+    /** Decrement "tasks" attribute including the original one. */
     private function decrementAttributes(int $amount): void
     {
         // We're doing this after we updated this value in the DB,

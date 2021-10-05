@@ -47,9 +47,7 @@ abstract class AbstractModel extends Model
         return $model;
     }
 
-    /**
-     * Retrieve a new instance of this model from the database and apply an UPDATE LOCK on it.
-     */
+    /** Retrieve a new instance of this model from the database and apply an UPDATE LOCK on it. */
     public function freshLockForUpdate(array|string $with = []): static
     {
         $query = $this->newQuery();
@@ -63,9 +61,7 @@ abstract class AbstractModel extends Model
         return $model;
     }
 
-    /**
-     * Retrieve a new instance of this model from the database and apply a SHARED LOCK on it.
-     */
+    /** Retrieve a new instance of this model from the database and apply a SHARED LOCK on it. */
     public function freshSharedLock(array|string $with = []): static
     {
         $query = $this->newQuery();
@@ -79,9 +75,7 @@ abstract class AbstractModel extends Model
         return $model;
     }
 
-    /**
-     * Create a new custom Eloquent Collection instance.
-     */
+    /** Create a new custom Eloquent Collection instance. */
     public function newCollection(array $models = []): EloquentCollection
     {
         return new EloquentCollection($models);
