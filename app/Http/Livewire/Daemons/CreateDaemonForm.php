@@ -23,9 +23,9 @@ use Livewire\Component as LivewireComponent;
 
 class CreateDaemonForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        HasState,
-        TrimsInputBeforeValidation;
+    use AuthorizesRequests;
+    use HasState;
+    use TrimsInputBeforeValidation;
 
     public Server $server;
 
