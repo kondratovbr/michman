@@ -4,6 +4,8 @@ namespace Tests\Feature\Databases;
 
 use App\Actions\Databases\DeleteDatabaseAction;
 use App\Actions\DatabaseUsers\RevokeDatabaseUsersAccessToDatabasesAction;
+use App\Events\Databases\DatabaseUpdatedEvent;
+use App\Events\DatabaseUsers\DatabaseUserUpdatedEvent;
 use App\Jobs\Databases\DeleteDatabaseJob;
 use App\Jobs\DatabaseUsers\RevokeDatabaseUsersAccessToDatabasesJob;
 use App\Models\Database;
@@ -50,5 +52,14 @@ class DeleteDatabaseActionTest extends AbstractFeatureTest
             RevokeDatabaseUsersAccessToDatabasesJob::class,
             DeleteDatabaseJob::class,
         ]);
+
+        $database->refresh();
+
+        $this->assertEquals(2, $database->tasks);
+        $this->assertEquals(1, $database->databaseUsers[0]->tasks);
+        $this->assertEquals(1, $database->databaseUsers[1]->tasks);
+
+        Event::assertDispatched(DatabaseUpdatedEvent::class);
+        Event::assertDispatchedTimes(DatabaseUserUpdatedEvent::class, 2);
     }
 }
