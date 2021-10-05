@@ -35,4 +35,13 @@ class EloquentCollection extends Collection
     {
         return $this->firstWhere($key, $this->max($key));
     }
+
+    /** Call refresh() method on every item in this collection. */
+    public function refreshAll(): void
+    {
+        /** @var Model $model */
+        foreach ($this as $model) {
+            $model->refresh();
+        }
+    }
 }
