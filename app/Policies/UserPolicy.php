@@ -9,49 +9,37 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine if a user can enable 2FA for a user.
-     */
+    /** Determine if a user can enable 2FA for another user. */
     public function enableTfa(User $user, User $subject): bool
     {
         return $user->is($subject) && $user->usesPassword();
     }
 
-    /**
-     * Determine if a user can disable 2FA for a user.
-     */
+    /** Determine if a user can disable 2FA for another user. */
     public function disableTfa(User $user, User $subject): bool
     {
         return $user->is($subject) && $user->tfaEnabled();
     }
 
-    /**
-     * Determine if a user can logout other sessions for a user.
-     */
+    /** Determine if a user can log out other sessions for another user. */
     public function logoutOtherSessions(User $user, User $subject): bool
     {
         return $user->is($subject) && $user->usesPassword();
     }
 
-    /**
-     * Determine if a user can change email for a user.
-     */
+    /** Determine if a user can change email address for another user. */
     public function changeEmail(User $user, User $subject): bool
     {
         return $user->is($subject) && $user->usesPassword();
     }
 
-    /**
-     * Determine if a user can change a user's password.
-     */
+    /** Determine if a user can change another user's password. */
     public function changePassword(User $user, User $subject): bool
     {
         return $user->is($subject) && $user->usesPassword();
     }
 
-    /**
-     * Determine if a user can delete a user account.
-     */
+    /** Determine if a user can delete another user's account. */
     public function deleteAccount(User $user, User $subject): bool
     {
         return $user->is($subject);
