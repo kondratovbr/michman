@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Add a confirmation window on database deletion and make sure a database that's in use by an active project cannot be deleted. See how Forge does it.
+// TODO: IMPORTANT! Add a confirmation window on database deletion and make sure a database that's in use by an active project cannot be deleted. See how Forge does it. Same for DB users.
 
 class DatabasesIndexTable extends LivewireComponent
 {
