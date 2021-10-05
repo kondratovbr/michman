@@ -9,14 +9,11 @@ use App\Models\Server;
 use App\Models\User;
 use App\Policies\DatabasePolicy;
 use Livewire\Livewire;
-use Mockery;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
 class DeleteDatabaseTest extends AbstractFeatureTest
 {
-    // TODO: CRITICAL! Don't forget to update this to include the confirmation dialog after it is made.
-
     public function test_database_can_be_deleted()
     {
         /** @var Database $database */
@@ -37,17 +34,14 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                 ->andReturnTrue();
         });
 
+        $this->mock(DeleteDatabaseAction::class, function (MockInterface $mock) use ($server, $database) {
+            $mock->shouldReceive('execute')
+                ->withArgs(fn(Database $databaseArg) => $databaseArg->is($database))
+                ->once();
+        });
+
         Livewire::test(DatabasesIndexTable::class, ['server' => $server])
-            ->call('delete',
-                Mockery::mock(DeleteDatabaseAction::class,
-                    function (MockInterface $mock) use ($server, $database) {
-                        $mock->shouldReceive('execute')
-                            ->withArgs(fn(Database $databaseArg) => $databaseArg->is($database))
-                            ->once();
-                    }
-                ),
-                (string) $database->id,
-            )
+            ->call('delete', (string) $database->id)
             ->assertOk()
             ->assertHasNoErrors();
     }
@@ -75,15 +69,12 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                 ->andReturnTrue();
         });
 
+        $this->mock(DeleteDatabaseAction::class, function (MockInterface $mock) {
+            $mock->shouldNotHaveBeenCalled();
+        });
+
         Livewire::test(DatabasesIndexTable::class, ['server' => $server])
-            ->call('delete',
-                Mockery::mock(DeleteDatabaseAction::class,
-                    function (MockInterface $mock) {
-                        $mock->shouldNotHaveBeenCalled();
-                    }
-                ),
-                (string) $database->id,
-            )
+            ->call('delete', (string) $database->id)
             ->assertHasErrors('key');
     }
 
@@ -108,15 +99,12 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                 ->andReturnTrue();
         });
 
+        $this->mock(DeleteDatabaseAction::class, function (MockInterface $mock) {
+            $mock->shouldNotHaveBeenCalled();
+        });
+
         Livewire::test(DatabasesIndexTable::class, ['server' => $server])
-            ->call('delete',
-                Mockery::mock(DeleteDatabaseAction::class,
-                    function (MockInterface $mock) {
-                        $mock->shouldNotHaveBeenCalled();
-                    }
-                ),
-                '',
-            )
+            ->call('delete', '')
             ->assertHasErrors('key');
     }
 }
