@@ -75,9 +75,7 @@ class CreateDaemonForm extends LivewireComponent
         $this->authorize('create', [Daemon::class, $this->server]);
     }
 
-    /**
-     * Store the newly configured daemon.
-     */
+    /** Store the newly configured daemon. */
     public function store(StoreDaemonAction $action): void
     {
         $state = $this->validateState();
