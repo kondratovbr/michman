@@ -57,9 +57,7 @@ class DaemonsIndexTable extends LivewireComponent
         $this->authorize('index', [Daemon::class, $this->server]);
     }
 
-    /**
-     * Update the daemon's statuses.
-     */
+    /** Update the daemon's statuses. */
     public function updateStatuses(UpdateDaemonsStatusesAction $action): void
     {
         $this->authorize('index', [Daemon::class, $this->server]);
@@ -67,9 +65,7 @@ class DaemonsIndexTable extends LivewireComponent
         $action->execute($this->server);
     }
 
-    /**
-     * Stop a running daemon.
-     */
+    /** Stop a running daemon. */
     public function stop(string $daemonKey, StopDaemonAction $action): void
     {
         $daemon = Daemon::validated($daemonKey, $this->daemons);
@@ -79,9 +75,7 @@ class DaemonsIndexTable extends LivewireComponent
         $action->execute($daemon);
     }
 
-    /**
-     * Start a stopped daemon.
-     */
+    /** Start a stopped daemon. */
     public function start(string $daemonKey, StartDaemonAction $action): void
     {
         $daemon = Daemon::validated($daemonKey, $this->daemons);
@@ -91,9 +85,7 @@ class DaemonsIndexTable extends LivewireComponent
         $action->execute($daemon);
     }
 
-    /**
-     * Restart a daemon.
-     */
+    /** Restart a daemon. */
     public function restart(string $daemonKey, RestartDaemonAction $action): void
     {
         $daemon = Daemon::validated($daemonKey, $this->daemons);
@@ -103,9 +95,7 @@ class DaemonsIndexTable extends LivewireComponent
         $action->execute($daemon);
     }
 
-    /**
-     * Stop and delete a daemon.
-     */
+    /** Stop and delete a daemon. */
     public function delete(string $daemonKey, DeleteDaemonAction $action): void
     {
         $daemon = Daemon::validated($daemonKey, $this->daemons);
