@@ -49,9 +49,6 @@ class CreateDatabaseForm extends LivewireComponent
         );
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->authorize('create', [Database::class, $this->server]);
@@ -64,9 +61,6 @@ class CreateDatabaseForm extends LivewireComponent
         return $attributes;
     }
 
-    /**
-     * Get the validation rules.
-     */
     public function rules(): array
     {
         return [
@@ -84,9 +78,7 @@ class CreateDatabaseForm extends LivewireComponent
         ];
     }
 
-    /**
-     * Store a new database.
-     */
+    /** Store a new database. */
     public function store(StoreDatabaseAction $storeDatabase): void
     {
         $validated = $this->validate();
@@ -108,9 +100,6 @@ class CreateDatabaseForm extends LivewireComponent
         $this->emit('database-user-updated');
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         $this->databaseUsers = $this->server->databaseUsers()->oldest()->get();

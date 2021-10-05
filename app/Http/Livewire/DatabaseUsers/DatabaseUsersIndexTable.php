@@ -75,17 +75,12 @@ class DatabaseUsersIndexTable extends LivewireComponent
         ];
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->authorize('index', [DatabaseUser::class, $this->server]);
     }
 
-    /**
-     * Delete a database user.
-     */
+    /** Delete a database user. */
     public function delete(DeleteDatabaseUserAction $deleteAction, string $databaseUserKey): void
     {
         $databaseUser = DatabaseUser::validated($databaseUserKey, $this->databaseUsers);
@@ -95,9 +90,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
         $deleteAction->execute($databaseUser);
     }
 
-    /**
-     * Open database user updating dialog.
-     */
+    /** Open database user updating dialog. */
     public function openModal(string $databaseUserKey): void
     {
         $this->updatingUser = DatabaseUser::validated($databaseUserKey, $this->databaseUsers);
@@ -115,9 +108,7 @@ class DatabaseUsersIndexTable extends LivewireComponent
         $this->modalOpen = true;
     }
 
-    /**
-     * Update the database user.
-     */
+    /** Update the database user. */
     public function update(UpdateDatabaseUserAction $updateAction): void
     {
         $validated = $this->validate();
@@ -141,9 +132,6 @@ class DatabaseUsersIndexTable extends LivewireComponent
         $this->emit('database-updated');
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         $this->databases = $this->server->databases()->oldest()->get();

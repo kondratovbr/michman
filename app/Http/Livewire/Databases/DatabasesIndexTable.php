@@ -45,17 +45,12 @@ class DatabasesIndexTable extends LivewireComponent
         );
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->authorize('index', [Database::class, $this->server]);
     }
 
-    /**
-     * Delete a database.
-     */
+    /** Delete a database. */
     public function delete(DeleteDatabaseAction $action, string $databaseKey): void
     {
         $database = Database::validated($databaseKey, $this->databases);
@@ -65,9 +60,6 @@ class DatabasesIndexTable extends LivewireComponent
         $action->execute($database);
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         $this->databases = $this->server->databases()->oldest()->get();
