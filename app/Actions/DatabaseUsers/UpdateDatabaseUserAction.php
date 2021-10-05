@@ -19,7 +19,7 @@ class UpdateDatabaseUserAction
     ): DatabaseUser {
         return DB::transaction(function () use ($databaseUser, $newPassword, $grantedDatabases) {
             /** @var DatabaseUser $databaseUser */
-            $databaseUser = DatabaseUser::query()->lockForUpdate()->findOrFail($databaseUser->getKey());
+            $databaseUser = $databaseUser->freshLockForUpdate();
 
             $jobs = [];
 

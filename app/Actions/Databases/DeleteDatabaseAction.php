@@ -18,10 +18,7 @@ class DeleteDatabaseAction
     {
         DB::transaction(function () use ($database) {
             /** @var Database $database */
-            $database = Database::query()
-                ->with('server')
-                ->lockForUpdate()
-                ->findOrFail($database->getKey());
+            $database = $database->freshLockForUpdate('server');
 
             if ($database->databaseUsers->isNotEmpty()) {
                 $revokeJob = $this->revokeAction->execute(
