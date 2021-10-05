@@ -19,8 +19,6 @@ use Livewire\Component as LivewireComponent;
  *       Supervisor is often used with a script.
  */
 
-// TODO: CRITICAL! Cover with tests!
-
 class CreateDaemonForm extends LivewireComponent
 {
     use AuthorizesRequests;
