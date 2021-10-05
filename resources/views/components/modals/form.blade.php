@@ -5,7 +5,7 @@
     id="{{ $modalId ?? md5($attributes->wire('model')) }}"
 >
 
-{{--    TODO: IMPORTANT! Unfinished! Figure out responsiveness and mobile/touch!--}}
+{{--    TODO: CRITICAL! Unfinished! Figure out responsiveness and mobile/touch!--}}
     <div class="grid grid-cols-12">
 
         <x-box
