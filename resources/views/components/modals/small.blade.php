@@ -7,7 +7,7 @@
 
 {{--    TODO: IMPORTANT! Make sure it works on touch as intended. Check multiple browsers.--}}
     {{-- Sizing and centering container for the box --}}
-    <div class="h-full w-full py-6 px-2 sm:px-0 md:w-4/5 md:px-0 lg:w-2/3 mx-auto">
+    <div class="h-full w-full py-6 px-2 sm:px-0 sm:max-w-prose mx-auto">
 
         {{-- Box --}}
         <div class="w-full max-h-full min-h-0 bg-navy-300 rounded-lg flex flex-col"

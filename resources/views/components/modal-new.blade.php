@@ -4,7 +4,7 @@
 <div
     {{-- Some Livewire functions require a unique ID here. --}}
     id="{{ $id ?? md5($attributes->wire('model')) }}"
-    class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+    class="fixed inset-0 overflow-y-auto z-50"
 {{--        TODO: IMPORTANT! Test the scroll prevention om mobile. --}}
 {{--        TODO: If this thing even works - maybe extract it to a componnt.--}}
     {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
@@ -61,7 +61,7 @@
     <div
         x-show="show"
         x-cloak
-        class="container mx-auto transform transition-opacity-transform"
+        class="h-full container mx-auto transform transition-opacity-transform"
         {{-- Close modal on click on the background --}}
         x-on:click.stop="show = false"
         {{-- Transitions for opening the modal --}}
@@ -74,6 +74,7 @@
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
         <div
+            class="h-full w-full"
 {{--            TODO: Maybe I can replace this whole piece of JS with Alpine's "x-trap" plugin. See: https://alpinejs.dev/plugins/trap--}}
             {{-- This component contains functions that handle focus changes (Tab button),
             so that when modal is shown focus is kept inside the modal. --}}

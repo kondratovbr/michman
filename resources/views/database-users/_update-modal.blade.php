@@ -1,4 +1,4 @@
-<x-modals.form wireModel="modalOpen" modalId="updateDatabaseUserModal">
+<x-modals.small wireModel="modalOpen" modalId="updateDatabaseUserModal">
     @if(! is_null($updatingUser ?? null))
 
         <x-slot name="header">
@@ -55,4 +55,4 @@
         </x-slot>
 
     @endif
-</x-modals.form>
+</x-modals.small>

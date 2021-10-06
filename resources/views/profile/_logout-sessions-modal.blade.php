@@ -1,6 +1,6 @@
-{{--TODO: Figure out how to put small modals (like this one) on the middle of the screen, when the screen allows for it.--}}
+{{--TODO: Figure out how to put small modals (like this one) on the middle of the screen (vertically), when the screen allows for it.--}}
 
-<x-modals.form wireModel="modalOpened" modalId="logoutSessionsModal">
+<x-modals.small wireModel="modalOpened" modalId="logoutSessionsModal">
 
     <x-slot name="header">
         <h3 class="text-lg font-medium">
@@ -53,4 +53,4 @@
         </x-buttons>
     </x-slot>
 
-</x-modals.form>
+</x-modals.small>
