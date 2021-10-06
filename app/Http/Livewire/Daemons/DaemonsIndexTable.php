@@ -65,6 +65,18 @@ class DaemonsIndexTable extends LivewireComponent
         $action->execute($this->server);
     }
 
+    /** Open a modal with a daemon output log. */
+    public function showLog(string $daemonKey): void
+    {
+        $daemon = Daemon::validated($daemonKey, $this->daemons);
+
+        $this->authorize('view', $daemon);
+
+        // TODO: CRITICAL! CONTINUE. Implement this then implement a similar thing for workers. Then cover both with tests.
+
+        //
+    }
+
     /** Stop a running daemon. */
     public function stop(string $daemonKey, StopDaemonAction $action): void
     {
