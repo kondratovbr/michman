@@ -5,21 +5,21 @@
     {{-- Some Livewire functions require a unique ID here. --}}
     id="{{ $id ?? md5($attributes->wire('model')) }}"
     class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+{{--        TODO: IMPORTANT! Test the scroll prevention om mobile. --}}
+{{--        TODO: If this thing even works - maybe extract it to a componnt.--}}
     {{-- Livewire model (which should be a bool indicating if the modal is opened or closed) will always be the same as Alpines "show" variable used here. Syncronization works both ways. --}}
-{{--        TODO: IMPORTANT! Test the scroll prevention om mobile. I still haven't figured it out for desktop. --}}
-{{--        TODO: If this thing even works - extract it to a componnt.--}}
-    x-data="{ show: @entangle($attributes->wire('model')),
-        preventDefault(e) {
-            e.preventDefault();
-        },
+    x-data="{
+        show: @entangle($attributes->wire('model')),
         disableScroll() {
-            document.body.addEventListener('touchmove', this.preventDefault, { passive: false });
+            document.body.classList.add('overflow-y-hidden');
         },
         enableScroll() {
-            document.body.removeEventListener('touchmove', this.preventDefault);
+            document.body.classList.remove('overflow-y-hidden');
         },
     }"
     x-init="
+        if (show) disableScroll();
+
         $watch('show', value => {
             if (value) {
                 disableScroll();
@@ -27,14 +27,6 @@
                 enableScroll();
             }
         });
-
-        $watch('show', value => {
-            if (value) {
-                document.body.classList.add('overflow-y-hidden');
-            } else {
-                document.body.classList.remove('overflow-y-hidden');
-            }
-        })
     "
     x-show="show"
     x-cloak
