@@ -11,14 +11,19 @@ class DaemonPolicy
 {
     use HandlesAuthorization;
 
+    public function index(User $user, Server $server): bool
+    {
+        return $user->is($server->user);
+    }
+    
     public function create(User $user, Server $server): bool
     {
         return $user->is($server->user);
     }
 
-    public function index(User $user, Server $server): bool
+    public function view(User $user, Daemon $daemon): bool
     {
-        return $user->is($server->user);
+        return $user->is($daemon->user);
     }
 
     public function update(User $user, Daemon $daemon): bool
