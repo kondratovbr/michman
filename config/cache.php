@@ -22,7 +22,7 @@ return [
     | Cache Stores
     |--------------------------------------------------------------------------
     |
-    | Here you may define all of the cache "stores" for your application as
+    | Here you may define all the cache "stores" for your application as
     | well as their drivers. You may even define multiple stores for the
     | same cache driver to group types of items stored in your caches.
     |
@@ -65,11 +65,11 @@ return [
     |
     | When utilizing a RAM based store such as APC or Memcached, there might
     | be other applications utilizing the same cache. So, we'll specify a
-    | value to get prefixed to all our keys so we can avoid collisions.
+    | value to get prefixed to all our keys, so we can avoid collisions.
     |
     */
 
-    // We use Redis in this project and we already have a prefix configured in database.php,
+    // We use Redis in this project, and we already have a prefix configured in database.php,
     // so we won't add another one here.
     'prefix' => env('CACHE_PREFIX', 'cache'),
 
