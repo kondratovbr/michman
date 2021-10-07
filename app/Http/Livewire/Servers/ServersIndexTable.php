@@ -40,9 +40,6 @@ class ServersIndexTable extends LivewireComponent
         $this->authorize('index', [Server::class, Auth::user()]);
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         $this->servers = Auth::user()->servers()

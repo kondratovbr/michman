@@ -33,9 +33,7 @@ class FirewallCreateForm extends LivewireComponent
         ];
     }
 
-    /**
-     * Store a new firewall rule.
-     */
+    /** Store a new firewall rule. */
     public function store(StoreFirewallRuleAction $storeFirewallRule): void
     {
         $validated = $this->validate();
@@ -57,9 +55,6 @@ class FirewallCreateForm extends LivewireComponent
         $this->emit('firewall-rule-stored');
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('firewall.create-form');

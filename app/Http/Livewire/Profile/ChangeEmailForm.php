@@ -15,17 +15,12 @@ class ChangeEmailForm extends Component
     /** @var string Currently typed email address. */
     public string $email;
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->email = Auth::user()->email;
     }
 
-    /**
-     * Save the new user's email address.
-     */
+    /** Save the new user's email address. */
     public function changeEmail(UpdatesUserProfileInformation $updater): void
     {
         // The validation is done by the Updater object,
@@ -46,9 +41,6 @@ class ChangeEmailForm extends Component
         $this->emit('refresh-navigation');
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('profile.change-email-form');

@@ -54,9 +54,7 @@ class WorkersIndexTable extends LivewireComponent
         $this->authorize('index', [Worker::class, $this->project]);
     }
 
-    /**
-     * Restart a queue worker.
-     */
+    /** Restart a queue worker. */
     public function restart(string $workerKey, RestartWorkerAction $action): void
     {
         $worker = Worker::validated($workerKey, $this->workers);
@@ -66,9 +64,7 @@ class WorkersIndexTable extends LivewireComponent
         $action->execute($worker);
     }
 
-    /**
-     * Stop and delete a queue worker.
-     */
+    /** Stop and delete a queue worker. */
     public function delete(string $workerKey, DeleteWorkerAction $action): void
     {
         $worker = Worker::validated($workerKey, $this->workers);

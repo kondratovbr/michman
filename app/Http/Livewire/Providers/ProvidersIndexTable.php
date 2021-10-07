@@ -17,9 +17,6 @@ class ProvidersIndexTable extends Component
         'provider-stored' => '$refresh',
     ];
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         $this->authorize('indexUser', [Provider::class, Auth::user()]);

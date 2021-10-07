@@ -24,17 +24,12 @@ class CreateProviderForm extends Component
     public string|null $secret = null;
     public string|null $name = null;
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->provider = (string) config('providers.default');
     }
 
-    /**
-     * Remove auth parameters unrelated to the chosen provider.
-     */
+    /** Remove auth parameters unrelated to the chosen provider. */
     protected function prepareForValidation($attributes): mixed
     {
         if ((string) config('providers.list.' . $attributes['provider'] . '.auth_type') == 'token') {
@@ -49,9 +44,6 @@ class CreateProviderForm extends Component
         return $attributes;
     }
 
-    /**
-     * Get the validation rules.
-     */
     protected function rules(): array
     {
         /*
@@ -88,9 +80,7 @@ class CreateProviderForm extends Component
         ];
     }
 
-    /**
-     * Store a new server provider credentials.
-     */
+    /** Store a new server provider credentials. */
     public function store(StoreProviderAction $action): void
     {
         $this->authorize('create', Provider::class);
@@ -107,9 +97,6 @@ class CreateProviderForm extends Component
         $this->emit('provider-stored');
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('providers.create-provider-form');

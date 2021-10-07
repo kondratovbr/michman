@@ -18,9 +18,6 @@ class ChangePasswordForm extends Component
     public string $password = '';
     public string $password_confirmation = '';
 
-    /**
-     * Get the validation rules.
-     */
     protected function rules(): array
     {
         return [
@@ -29,9 +26,7 @@ class ChangePasswordForm extends Component
         ];
     }
 
-    /**
-     * Update the user's password.
-     */
+    /** Update the user's password. */
     public function updatePassword(UpdatesUserPasswords $updater): void
     {
         $validated = $this->validate();
@@ -49,17 +44,12 @@ class ChangePasswordForm extends Component
         $this->emit('saved');
     }
 
-    /**
-     * Get the current user of the application.
-     */
+    /** Get the current user of the application. */
     public function getUserProperty(): User
     {
         return Auth::user();
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('profile.change-password-form');

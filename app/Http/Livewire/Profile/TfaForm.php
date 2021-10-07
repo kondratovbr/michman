@@ -27,9 +27,7 @@ class TfaForm extends Component
     /** Indicates if two factor authentication recovery codes are being displayed. */
     public bool $showingRecoveryCodes = false;
 
-    /**
-     * Enable two factor authentication for the user.
-     */
+    /** Enable two-factor authentication for the user. */
     public function enableTwoFactorAuthentication(EnableTwoFactorAuthentication $enable): void
     {
         $this->authorize('enableTfa', [Auth::user()]);
@@ -45,9 +43,7 @@ class TfaForm extends Component
         $this->showingRecoveryCodes = true;
     }
 
-    /**
-     * Display the user's recovery codes.
-     */
+    /** Display the user's recovery codes. */
     public function showRecoveryCodes(): void
     {
         if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
@@ -57,9 +53,7 @@ class TfaForm extends Component
         $this->showingRecoveryCodes = true;
     }
 
-    /**
-     * Generate new recovery codes for the user.
-     */
+    /** Generate new recovery codes for the user. */
     public function regenerateRecoveryCodes(GenerateNewRecoveryCodes $generate): void
     {
         if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
@@ -71,9 +65,7 @@ class TfaForm extends Component
         $this->showingRecoveryCodes = true;
     }
 
-    /**
-     * Disable two factor authentication for the user.
-     */
+    /** Disable two-factor authentication for the user. */
     public function disableTwoFactorAuthentication(DisableTwoFactorAuthentication $disable): void
     {
         $this->authorize('disableTfa', [Auth::user()]);
@@ -86,17 +78,13 @@ class TfaForm extends Component
         $disable(Auth::user());
     }
 
-    /**
-     * Get the current user of the application.
-     */
+    /** Get the current user of the application. */
     public function getUserProperty(): User
     {
         return Auth::user();
     }
 
-    /**
-     * Determine if two factor authentication is enabled.
-     */
+    /** Determine if two-factor authentication is enabled. */
     public function getEnabledProperty(): bool
     {
         return ! empty($this->user->two_factor_secret);

@@ -45,9 +45,6 @@ class PythonsIndexTable extends LivewireComponent
         );
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $this->authorize('index', [Python::class, $this->server]);
@@ -55,9 +52,7 @@ class PythonsIndexTable extends LivewireComponent
         $this->pythonVersions = Arr::keys(config('servers.python'));
     }
 
-    /**
-     * Install a new instance of Python on the server.
-     */
+    /** Install a new instance of Python on the server. */
     public function install(StorePythonAction $storePython, string $version): void
     {
         $version = Validator::make(
@@ -72,9 +67,7 @@ class PythonsIndexTable extends LivewireComponent
         $storePython->execute($version, $this->server);
     }
 
-    /**
-     * Update a Python installation on the server to the most recent patch version available.
-     */
+    /** Update a Python installation on the server to the most recent patch version available. */
     public function patch(PatchPythonAction $patchPython, string $pythonKey): void
     {
         $python = Python::validated($pythonKey, $this->pythons);
@@ -84,9 +77,7 @@ class PythonsIndexTable extends LivewireComponent
         $patchPython->execute($python);
     }
 
-    /**
-     * Remove a Python installation from the server.
-     */
+    /** Remove a Python installation from the server. */
     public function remove(string $pythonKey): void
     {
         // TODO: CRITICAL! Implement and cover with tests.
@@ -94,9 +85,6 @@ class PythonsIndexTable extends LivewireComponent
         //
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         // TODO: Is there are caching opportunity here? So, no reloading these from the DB every time? See other similar Livewire tables as well.

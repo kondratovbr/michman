@@ -129,9 +129,7 @@ class CreateProjectForm extends LivewireComponent
         );
     }
 
-    /**
-     * Store a new project.
-     */
+    /** Store a new project. */
     public function store(StoreProjectAction $storeAction): void
     {
         $state = $this->validate()['state'];

@@ -37,9 +37,7 @@ class CreateUserSshKeyForm extends LivewireComponent
         $this->authorize('create', [UserSshKey::class, Auth::user()]);
     }
 
-    /**
-     * Store a new user's SSH key.
-     */
+    /** Store a new user's SSH key. */
     public function store(StoreUserSshKeyAction $action): void
     {
         $state = $this->validate()['state'];

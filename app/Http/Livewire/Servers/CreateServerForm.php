@@ -20,9 +20,7 @@ class CreateServerForm extends Component
     /** @var string[] Providers supported by the app where the user have credentials. */
     public array $availableProviders = [];
 
-    /**
-     * Provider name to form component mapping.
-     */
+    /** @var array|string[] Provider name to form component mapping. */
     private array $formComponents = [
         'digital_ocean_v2' => 'servers.digital-ocean-form',
     ];
@@ -34,9 +32,6 @@ class CreateServerForm extends Component
         ];
     }
 
-    /**
-     * Initialize the component.
-     */
     public function mount(): void
     {
         $usersProviders = Auth::user()->providers()
@@ -55,9 +50,7 @@ class CreateServerForm extends Component
         $this->validateOnly($field);
     }
 
-    /**
-     * Trigger an underlying server creation form to store a new server.
-     */
+    /** Trigger an underlying server creation form to store a new server. */
     public function store(): void
     {
         $this->validate();
@@ -65,17 +58,13 @@ class CreateServerForm extends Component
         $this->emitTo($this->formComponent, 'store-server-button-pressed');
     }
 
-    /**
-     * Cancel server creation and reset the form.
-     */
+    /** Cancel server creation and reset the form. */
     public function cancel(): void
     {
         $this->reset('provider');
     }
 
-    /**
-     * Get the name of a server creation form component for a chosen provider.
-     */
+    /** Get the name of a server creation form component for a chosen provider. */
     public function getFormComponentProperty(): string|null
     {
         // User just loaded this component and haven't chosen a provider yet.
@@ -91,9 +80,6 @@ class CreateServerForm extends Component
         return $this->formComponents[$this->provider];
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('servers.create-form');

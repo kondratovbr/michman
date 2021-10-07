@@ -101,9 +101,7 @@ class CreateWorkerForm extends LivewireComponent
         $this->state['app'] = "{$this->project->package}.celery";
     }
 
-    /**
-     * Get an array of available worker types and their names for the type select field.
-     */
+    /** Get an array of available worker types and their names for the type select field. */
     public function getTypesProperty(): array
     {
         $workers = Arr::keys(config('projects.workers'));
@@ -111,17 +109,13 @@ class CreateWorkerForm extends LivewireComponent
         return Arr::mapAssoc($workers, fn(int $index, string $type) => [$type, __("projects.queue.types.{$type}")]);
     }
 
-    /**
-     * Get an array of available servers types and their names for the server select field.
-     */
+    /** Get an array of available servers types and their names for the server select field. */
     public function getServersProperty(): array
     {
         return $this->project->servers->mapWithKeys(fn(Server $server) => [$server->getKey() => $server->name])->toArray();
     }
 
-    /**
-     * Store a newly configured queue worker.
-     */
+    /** Store a newly configured queue worker. */
     public function store(StoreWorkerAction $action): void
     {
         $state = $this->validate()['state'];

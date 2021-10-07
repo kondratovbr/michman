@@ -25,9 +25,6 @@ class LogoutSessionsForm extends Component
     /** @var string Currently typed user's password. */
     public string $password = '';
 
-    /**
-     * Get the validation rules.
-     */
     protected function rules(): array
     {
         return [
@@ -35,9 +32,7 @@ class LogoutSessionsForm extends Component
         ];
     }
 
-    /**
-     * Open modal confirmation dialog.
-     */
+    /** Open modal confirmation dialog. */
     public function openModal(): void
     {
         // We have to reset validation errors, otherwise errors
@@ -51,10 +46,7 @@ class LogoutSessionsForm extends Component
         $this->modalOpened = true;
     }
 
-    /**
-     * Invalidate all browser sessions of the current user,
-     * beside the current one.
-     */
+    /** Invalidate all browser sessions of the current user, beside the current one. */
     public function logoutOtherSessions(StatefulGuard $guard): void
     {
         $this->validate();
@@ -88,9 +80,7 @@ class LogoutSessionsForm extends Component
         $this->emit('loggedOut');
     }
 
-    /**
-     * Delete the other browser session records from storage.
-     */
+    /** Delete the other browser session records from storage. */
     protected function deleteOtherSessionRecords(): void
     {
         if (config('session.driver') !== 'database') {
@@ -104,9 +94,7 @@ class LogoutSessionsForm extends Component
             ->delete();
     }
 
-    /**
-     * Get a list of auth'ed user's currently active sessions.
-     */
+    /** Get a list of auth'ed user's currently active sessions. */
     public function getSessionsProperty(): BasicCollection
     {
         // No way to get the list if we're using something but a DB to store sessions,
@@ -132,9 +120,7 @@ class LogoutSessionsForm extends Component
         });
     }
 
-    /**
-     * Create a new agent instance from the given session.
-     */
+    /** Create a new agent instance from the given session. */
     protected function createAgent($session): Agent
     {
         $agent = new Agent;
@@ -142,9 +128,6 @@ class LogoutSessionsForm extends Component
         return $agent;
     }
 
-    /**
-     * Render the component.
-     */
     public function render(): View
     {
         return view('profile.logout-sessions-form');

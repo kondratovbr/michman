@@ -46,9 +46,7 @@ class UserSshKeysIndexTable extends LivewireComponent
         $this->authorize('index', [UserSshKey::class, Auth::user()]);
     }
 
-    /**
-     * Add an existing key to all existing servers of the user.
-     */
+    /** Add an existing key to all existing servers of the user. */
     public function addToAllServers(string $id, AddUserSshKeyToOwnerServersAction $action): void
     {
         $userSshKey = UserSshKey::validated($id, $this->keys);
@@ -58,9 +56,7 @@ class UserSshKeysIndexTable extends LivewireComponent
         $action->execute($userSshKey);
     }
 
-    /**
-     * Remove a user's SSH key only from the database, leaving it on the servers.
-     */
+    /** Remove a user's SSH key only from the database, leaving it on the servers. */
     public function removeFromMichman(string $id, DeleteUserSshKeyAction $action): void
     {
         $userSshKey = UserSshKey::validated($id, $this->keys);
@@ -70,9 +66,7 @@ class UserSshKeysIndexTable extends LivewireComponent
         $action->execute($userSshKey);
     }
 
-    /**
-     * Remove a user's SSH key from the database as well as from all the servers.
-     */
+    /** Remove a user's SSH key from the database as well as from all the servers. */
     public function removeFromServers(string $id, FullyDeleteUserSshKeyAction $action): void
     {
         $userSshKey = UserSshKey::validated($id, $this->keys);
