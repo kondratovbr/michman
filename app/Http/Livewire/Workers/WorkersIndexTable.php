@@ -17,7 +17,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
 /*
- * TODO: CRITICAL! This thing needs a log viewer and an "Check Workers Status" button.
+ * TODO: CRITICAL! CONTINUE. This thing needs a log viewer and an "Check Workers Status" button. Like the daemons index table have.
  */
 
 // TODO: CRITICAL! Cover with tests.
