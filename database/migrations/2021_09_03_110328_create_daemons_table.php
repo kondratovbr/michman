@@ -13,7 +13,7 @@ class CreateDaemonsTable extends Migration
 
             $table->foreignId('server_id')->references('id')->on('servers');
 
-            $table->string('command');
+            $table->string('command', 1024 * 6);
             $table->string('username');
             $table->string('directory')->nullable();
             $table->integer('processes');
