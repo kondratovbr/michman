@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Daemons;
 
 use App\Actions\Daemons\DeleteDaemonAction;
 use App\Actions\Daemons\RestartDaemonAction;
+use App\Actions\Daemons\RetrieveDaemonLogAction;
 use App\Actions\Daemons\StartDaemonAction;
 use App\Actions\Daemons\StopDaemonAction;
 use App\Actions\Daemons\UpdateDaemonsStatusesAction;
@@ -19,12 +20,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-/*
- * TODO: CRITICAL! CONTINUE. Implement the log viewer here. See Workers as well.
- */
-
-// TODO: CRITICAL! Cover with tests!
-
 class DaemonsIndexTable extends LivewireComponent
 {
     use AuthorizesRequests,
@@ -33,6 +28,14 @@ class DaemonsIndexTable extends LivewireComponent
     public Server $server;
 
     public Collection $daemons;
+
+    /** Indicates if a log viewer modal should currently be opened. */
+    public bool $modalOpen = false;
+    /** Daemon for which the logs are currently shown. */
+    public Daemon|null $daemon = null;
+    public string|null $log = null;
+    /** Indicates if we failed to retrieve logs. */
+    public bool $error = false;
 
     /** @var string[] */
     protected $listeners = [
@@ -66,15 +69,35 @@ class DaemonsIndexTable extends LivewireComponent
     }
 
     /** Open a modal with a daemon output log. */
-    public function showLog(string $daemonKey): void
+    public function showLog(string $daemonKey, RetrieveDaemonLogAction $action): void
     {
+        // TODO: A loading animation here can definitely be improved. A modal should open immediately and then animate some spinner inside until the log is retrieved. Some other places, like Worker logs can also benefit from this.
+
         $daemon = Daemon::validated($daemonKey, $this->daemons);
 
         $this->authorize('view', $daemon);
 
-        // TODO: CRITICAL! CONTINUE. Implement this then implement a similar thing for workers. Then cover both with tests.
+        $this->daemon = $daemon;
 
-        //
+        $result = $action->execute($this->daemon);
+
+        if ($result === false) {
+            $this->error = true;
+            $this->log = null;
+        } else {
+            $this->log = $result;
+        }
+
+        $this->modalOpen = true;
+    }
+
+    /** Reset data when the modal is closed. */
+    public function updatedModalOpen(bool $value): void
+    {
+        if ($value) return;
+
+        $this->daemon = null;
+        $this->log = null;
     }
 
     /** Stop a running daemon. */

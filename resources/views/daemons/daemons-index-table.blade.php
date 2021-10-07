@@ -34,6 +34,16 @@
                     <x-ellipsis-dropdown>
                         <x-dropdown.menu align="right">
                             <x-dropdown.button
+                                x-data="{}"
+                                class="text-sm"
+                                wire:click="showLog('{{ $daemon->getKey() }}')"
+                                wire:loading.attr="disabled"
+                                x-on:click.stop="$dispatch('open-modal')"
+                            >
+                                {{ __('servers.daemons.view-log-button') }}
+                            </x-dropdown.button>
+                            <x-dropdown.separator/>
+                            <x-dropdown.button
                                 class="text-sm"
                                 wire:click="start('{{ $daemon->getKey() }}')"
                                 wire:loading.attr="disabled"
@@ -67,6 +77,10 @@
                 </x-td>
             </x-tr>
         @endforeach
+    </x-slot>
+
+    <x-slot name="modal">
+        @include('daemons._log-modal')
     </x-slot>
 
     @if($daemons->isEmpty())

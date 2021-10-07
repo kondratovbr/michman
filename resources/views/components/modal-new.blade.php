@@ -33,8 +33,11 @@
     {{-- Close modal on ESC button and similar actions --}}
     x-on:close.stop="show = false"
     x-on:keydown.escape.window="show = false"
-{{--    This allows to throw an event from somewhere inside the modal to close it. Useful for "X"/"Close"/"Cancel" buttons.--}}
-    x-on:close-modal="show = false"
+    {{-- These allow to throw an event from somewhere inside the modal to close or open it. Useful for "X"/"Close"/"Cancel" buttons.--}}
+    x-on:close-modal.prevent="show = false"
+    x-on:open-modal.prevent="show = true"
+    x-on:close-modal.window.prevent="show = false"
+    x-on:open-modal.window.prevent="show = true"
 >
     {{-- Opaque background container - needed for proper transitions. --}}
     {{-- Separated from the modal box itself to be able to have different transitions on them. --}}

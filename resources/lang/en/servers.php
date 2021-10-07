@@ -276,6 +276,10 @@ return [
             Daemons\Failed::class => 'Failed',
             Daemons\Deleting::class => 'Deleting',
         ],
+
+        'log-modal-title' => 'Daemon Log',
+        'view-log-button' => 'View Log',
+        'failed-to-retrieve-logs' => 'We were unable to retrieve this daemon\'s logs from the server.',
     ],
 
 ];

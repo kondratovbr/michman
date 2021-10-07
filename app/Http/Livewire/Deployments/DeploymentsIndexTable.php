@@ -25,12 +25,12 @@ class DeploymentsIndexTable extends LivewireComponent
 
     public Collection $deployments;
 
-    /** Indicates if a confirmation modal should currently be opened. */
+    /** Indicates if a log viewer modal should currently be opened. */
     public bool $modalOpen = false;
-    /** Logs to show in the logs view modal. */
+    /** Logs to show in the modal. */
     public Collection|null $logs = null;
-    /** The server that the logs that are currently shown are taken from. */
-    public Server $server;
+    /** The server that the currently shown logs are taken from. */
+    public Server|null $server = null;
 
     /** @var string[] */
     protected $listeners = [
@@ -75,6 +75,15 @@ class DeploymentsIndexTable extends LivewireComponent
         $this->logs = $this->server->serverDeployment->logs();
 
         $this->modalOpen = true;
+    }
+
+    /** Reset data when the modal is closed. */
+    public function updatedModalOpen(bool $value): void
+    {
+        if ($value) return;
+
+        $this->server = null;
+        $this->logs = null;
     }
 
     public function render(): View
