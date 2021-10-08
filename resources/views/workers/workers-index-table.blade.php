@@ -7,7 +7,7 @@
             <x-th>{{ __('projects.queue.create.type.label') }}</x-th>
             <x-th>{{ __('projects.queue.create.server.label') }}</x-th>
             <x-th>{{ __('projects.queue.create.queues.label') }}</x-th>
-            <x-th>{{ __('projects.queue.create.processes.table') }}</x-th>
+            <x-th show="lg">{{ __('projects.queue.create.processes.table') }}</x-th>
             <x-th>{{ __('misc.status') }}</x-th>
 
             <x-th></x-th>
@@ -18,11 +18,10 @@
         @foreach($workers as $worker)
             <x-tr>
                 <x-td>{{ __("projects.queue.types.{$worker->type}") }}</x-td>
-{{--                TODO: CRITICAL! Make this a link.--}}
-                <x-td>{{ $worker->server->name }}</x-td>
+                <x-td><x-app-link href="{{ route('servers.show', $worker->server) }}">{{ $worker->server->name }}</x-app-link></x-td>
 {{--                TODO: CRITICAL! Make sure to support other types in here.--}}
                 <x-td>{{ implode(', ', $worker->queues ?? ['Celery']) }}</x-td>
-                <x-td>{{ $worker->processes ?? 'Auto' }}</x-td>
+                <x-td show="lg">{{ $worker->processes ?? 'Auto' }}</x-td>
 {{--                TODO: CRITICAL! Check that this badge works - I've recently updated it from using the old status badge.--}}
                 <x-td><x-state-badge :state="$worker->state" /></x-td>
 
