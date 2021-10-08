@@ -1,6 +1,6 @@
 {{--TODO: This modal needs an "X" button in the corner, like Forge does. Just in case.--}}
 
-<x-modals.dialog wireModel="modalOpen" modalId="viewDamonLogModal">
+<x-modals.dialog wireModel="modalOpen" modalId="viewDaemonLogModal">
 
     <x-slot name="header">
         <h3>{{ __('servers.daemons.log-modal-title') }}</h3>
