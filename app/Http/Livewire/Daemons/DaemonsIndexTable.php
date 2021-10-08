@@ -71,8 +71,6 @@ class DaemonsIndexTable extends LivewireComponent
     /** Open a modal with a daemon output log. */
     public function showLog(string $daemonKey, RetrieveDaemonLogAction $action): void
     {
-        // TODO: A loading animation here can definitely be improved. A modal should open immediately and then animate some spinner inside until the log is retrieved. Some other places, like Worker logs can also benefit from this.
-
         $daemon = Daemon::validated($daemonKey, $this->daemons);
 
         $this->authorize('view', $daemon);
