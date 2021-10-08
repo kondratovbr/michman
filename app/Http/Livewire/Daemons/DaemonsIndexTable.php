@@ -33,6 +33,7 @@ class DaemonsIndexTable extends LivewireComponent
     public bool $modalOpen = false;
     /** Daemon for which the logs are currently shown. */
     public Daemon|null $daemon = null;
+    /** Currently shown daemon logs. */
     public string|null $log = null;
     /** Indicates if we failed to retrieve logs. */
     public bool $error = false;
@@ -96,6 +97,7 @@ class DaemonsIndexTable extends LivewireComponent
 
         $this->daemon = null;
         $this->log = null;
+        $this->error = false;
     }
 
     /** Stop a running daemon. */
