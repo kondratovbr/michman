@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
  * Custom user account routes
  */
 Route::redirect('/account', '/account/profile');
-Route::get('/account/{show}', AccountView::class)
+Route::get('/account/{show?}', AccountView::class)
     ->where('show', AccountView::viewsValidationRegex())
     ->name('account.show');
 
@@ -30,7 +30,7 @@ Route::get('/account/{show}', AccountView::class)
  * Servers routes
  */
 Route::get('servers', [ServerController::class, 'index'])->name('server.index');
-Route::get('servers/{server}/{show}', ServerView::class)
+Route::get('servers/{server}/{show?}', ServerView::class)
     ->where('show', ServerView::viewsValidationRegex())
     ->name('servers.show');
 
@@ -49,6 +49,6 @@ Route::name('vcs.')->group(function () {
 /*
  * Projects routes
  */
-Route::get('projects/{project}/{show}', ProjectView::class)
+Route::get('projects/{project}/{show?}', ProjectView::class)
     ->where('show', ProjectView::viewsValidationRegex())
     ->name('projects.show');
