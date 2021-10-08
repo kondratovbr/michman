@@ -25,7 +25,7 @@
                             <i class="{{ config("providers.list.{$server->provider->provider}.icon") }}"></i>
                         </x-icon>
                         <div class="ml-2 flex flex-col">
-                            <x-app-link href="{{ route('servers.show', [$server, 'projects']) }}">
+                            <x-app-link href="{{ route('servers.show', $server) }}">
                                 {{ $server->name }}
                             </x-app-link>
                             <p class="text-sm">{{ $server->shortInfo() }}</p>

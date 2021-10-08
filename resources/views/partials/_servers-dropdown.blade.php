@@ -12,7 +12,7 @@
     <x-dropdown.menu>
         @foreach($user->servers as $server)
             <x-dropdown.link
-                href="{{ route('servers.show', [$server, 'projects']) }}"
+                href="{{ route('servers.show', $server) }}"
                 :capitalize="false"
             >
 {{--                TODO: This icon looks rather dull. Any better options? Maybe some effects or slight animations? Should google it.--}}
