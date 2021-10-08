@@ -14,5 +14,6 @@ return [
     'copy-clipboard' => 'Copy to clipboard',
     'copied' => 'Copied',
     'dismiss' => 'Dismiss',
+    'delete' => 'Delete',
 
 ];

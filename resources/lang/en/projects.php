@@ -180,6 +180,10 @@ return [
             Workers\Deleting::class => 'Removing',
             Workers\Failed::class => 'Failed',
         ],
+
+        'log-modal-title' => 'Worker Log',
+        'failed-to-retrieve-logs' => 'We were unable to retrieve this worker\'s logs from the server.',
+        'view-log-button' => 'View Log',
     ],
 
     'quick-deploy' => [

@@ -31,26 +31,46 @@
                             <x-spinner />
                         </div>
                     @else
-                        <div class="flex justify-end items-center space-x-2">
-                            <x-buttons.secondary
-                                wire:click.prevent="restart('{{ $worker->getKey() }}')"
-                                wire:loading.attr="disabled"
-                                :disabled="$worker->isDeleting()"
-                            >
-{{--                                TODO: CRITICAL! Have I already implemented a button with an icon earlier? The icon should be positioned a bit to the left (maybe just a smaller left margin would do). See if I've done it before.--}}
-                                <x-icon><i class="fas fa-redo"></i></x-icon>
-                                <span class="ml-1.5">{{ __('misc.restart') }}</span>
-                            </x-buttons.secondary>
-                            <x-buttons.trash
-                                wire:click.prevent="delete('{{ $worker->getKey() }}')"
-                                wire:loading.attr="disabled"
-                                :loading="$worker->isDeleting()"
-                            />
-                        </div>
+                        <x-ellipsis-dropdown>
+                            <x-dropdown.menu align="right">
+                                <x-dropdown.button
+                                    class="text-sm"
+                                    wire:click.stop="showLog('{{ $worker->getKey() }}')"
+                                    wire:loading.attr="disabled"
+                                    x-data="{}"
+                                    x-on:click.stop="$dispatch('open-modal')"
+                                >
+                                    <x-icon><i class="fas fa-eye"></i></x-icon>
+                                    <span class="ml-1">{{ __('projects.queue.view-log-button') }}</span>
+                                </x-dropdown.button>
+                                <x-dropdown.button
+                                    class="text-sm"
+                                    wire:click.prevent="restart('{{ $worker->getKey() }}')"
+                                    wire:loading.attr="disabled"
+                                    :disabled="$worker->isDeleting()"
+                                >
+                                    <x-icon><i class="fas fa-redo"></i></x-icon>
+                                    <span class="ml-1">{{ __('misc.restart') }}</span>
+                                </x-dropdown.button>
+                                <x-dropdown.button
+                                    class="text-sm"
+                                    wire:click.prevent="delete('{{ $worker->getKey() }}')"
+                                    wire:loading.attr="disabled"
+                                    :loading="$worker->isDeleting()"
+                                >
+                                    <x-icon><i class="fas fa-trash"></i></x-icon>
+                                    <span class="ml-1">{{ __('misc.delete') }}</span>
+                                </x-dropdown.button>
+                            </x-dropdown.menu>
+                        </x-ellipsis-dropdown>
                     @endif
                 </x-td>
             </x-tr>
         @endforeach
+    </x-slot>
+
+    <x-slot name="modal">
+        @include('workers._log-modal')
     </x-slot>
 
     @if($workers->isEmpty())

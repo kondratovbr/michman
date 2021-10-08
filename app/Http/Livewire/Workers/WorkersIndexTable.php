@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Workers;
 
 use App\Actions\Workers\DeleteWorkerAction;
 use App\Actions\Workers\RestartWorkerAction;
+use App\Actions\Workers\RetrieveWorkerLogAction;
 use App\Broadcasting\ProjectChannel;
 use App\Events\Workers\WorkerCreatedEvent;
 use App\Events\Workers\WorkerDeletedEvent;
@@ -20,7 +21,7 @@ use Livewire\Component as LivewireComponent;
  * TODO: CRITICAL! CONTINUE. This thing needs a log viewer and an "Check Workers Status" button. Like the daemons index table have.
  */
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: CRITICAL! CONTINUE. Cover with tests.
 
 class WorkersIndexTable extends LivewireComponent
 {
@@ -30,6 +31,15 @@ class WorkersIndexTable extends LivewireComponent
     public Project $project;
 
     public Collection $workers;
+
+    /** Indicates if a log viewer modal should currently be open. */
+    public bool $modalOpen = false;
+    /** A worker for which logs are currently shown. */
+    public Worker|null $worker = null;
+    /** Currently shown worker logs. */
+    public string|null $log = null;
+    /** Indicates if we failed to retrieve logs. */
+    public bool $error = false;
 
     /** @var string[] */
     protected $listeners = [
@@ -52,6 +62,37 @@ class WorkersIndexTable extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('index', [Worker::class, $this->project]);
+    }
+
+    /** Open a modal with a worker output log. */
+    public function showLog(string $workerKey, RetrieveWorkerLogAction $action): void
+    {
+        $worker = Worker::validated($workerKey, $this->workers);
+
+        $this->authorize('view', $worker);
+
+        $this->worker = $worker;
+
+        $result = $action->execute($worker);
+
+        if ($result === false) {
+            $this->error = true;
+            $this->log = null;
+        } else {
+            $this->log = $result;
+        }
+
+        $this->modalOpen = true;
+    }
+
+    /** Reset data when the modal is closed. */
+    public function updatedModalOpen(bool $value): void
+    {
+        if ($value) return;
+
+        $this->worker = null;
+        $this->log = null;
+        $this->error = false;
     }
 
     /** Restart a queue worker. */
