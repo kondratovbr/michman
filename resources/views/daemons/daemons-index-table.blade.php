@@ -40,7 +40,8 @@
                                 x-data="{}"
                                 x-on:click.stop="$dispatch('open-modal')"
                             >
-                                {{ __('servers.daemons.view-log-button') }}
+                                <x-icon><i class="fas fa-eye"></i></x-icon>
+                                <span class="ml-1">{{ __('servers.daemons.view-log-button') }}</span>
                             </x-dropdown.button>
                             <x-dropdown.separator/>
                             <x-dropdown.button
@@ -48,21 +49,24 @@
                                 wire:click="start('{{ $daemon->getKey() }}')"
                                 wire:loading.attr="disabled"
                             >
-                                {{ __('servers.daemons.index.start') }}
+                                <x-icon><i class="fas fa-play"></i></x-icon>
+                                <span class="ml-1">{{ __('servers.daemons.index.start') }}</span>
                             </x-dropdown.button>
                             <x-dropdown.button
                                 class="text-sm"
                                 wire:click="stop('{{ $daemon->getKey() }}')"
                                 wire:loading.attr="disabled"
                             >
-                                {{ __('servers.daemons.index.stop') }}
+                                <x-icon><i class="fas fa-stop"></i></x-icon>
+                                <span class="ml-1">{{ __('servers.daemons.index.stop') }}</span>
                             </x-dropdown.button>
                             <x-dropdown.button
                                 class="text-sm"
                                 wire:click="restart('{{ $daemon->getKey() }}')"
                                 wire:loading.attr="disabled"
                             >
-                                {{ __('servers.daemons.index.restart') }}
+                                <x-icon><i class="fas fa-redo"></i></x-icon>
+                                <span class="ml-1">{{ __('servers.daemons.index.restart') }}</span>
                             </x-dropdown.button>
                             <x-dropdown.separator/>
                             <x-dropdown.button
@@ -70,7 +74,8 @@
                                 wire:click="delete('{{ $daemon->getKey() }}')"
                                 wire:loading.attr="disabled"
                             >
-                                {{ __('servers.daemons.index.delete') }}
+                                <x-icon><i class="fas fa-trash"></i></x-icon>
+                                <span class="ml-1">{{ __('servers.daemons.index.delete') }}</span>
                             </x-dropdown.button>
                         </x-dropdown.menu>
                     </x-ellipsis-dropdown>
