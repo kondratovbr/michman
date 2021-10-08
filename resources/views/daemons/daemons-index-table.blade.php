@@ -36,7 +36,7 @@
                             <x-dropdown.button
                                 x-data="{}"
                                 class="text-sm"
-                                wire:click="showLog('{{ $daemon->getKey() }}')"
+                                wire:click.stop="showLog('{{ $daemon->getKey() }}')"
                                 wire:loading.attr="disabled"
                                 x-on:click.stop="$dispatch('open-modal')"
                             >
