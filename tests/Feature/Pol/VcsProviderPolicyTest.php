@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\VcsProviders;
+namespace Tests\Feature\Policies;
 
 use App\Models\User;
 use App\Models\VcsProvider;

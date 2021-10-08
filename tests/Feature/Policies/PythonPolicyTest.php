@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Pythons;
+namespace Tests\Feature\Policies;
 
 use App\Models\Python;
 use App\Models\Server;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Policies;
 
 use App\Models\User;
 use App\Policies\UserPolicy;

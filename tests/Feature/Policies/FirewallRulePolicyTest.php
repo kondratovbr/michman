@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Firewall;
+namespace Tests\Feature\Policies;
 
 use App\Models\FirewallRule;
 use App\Models\Server;
