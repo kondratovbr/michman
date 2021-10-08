@@ -1,3 +1,5 @@
+{{--TODO: Refactor this so icon is easier to set (not a whole slot, like now, just a single parameter - icon class, like "fas fa-trash". Check every place I have this thing.--}}
+
 @props(['capitalize' => true, 'textClasses' => '', 'external' => false])
 
 <button
