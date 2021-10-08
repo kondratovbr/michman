@@ -1,4 +1,4 @@
-@props(['capitalize', 'link' => false,  'size' => null])
+@props(['capitalize', 'link' => false,  'size' => null, 'icon' => null])
 
 @php
     $classes = implode(' ', [
@@ -20,10 +20,16 @@
 
 @if($link)
     <a {{ $attributes->merge(['class' => $classes])->except('type') }}>
-        {{ $slot }}
+        @if(! empty($icon))
+            <x-icon class="-ml-1 mr-1"><i class="{{ $icon }}"></i></x-icon>
+        @endif
+        <span>{{ $slot }}</span>
     </a>
 @else
     <button {{ $attributes->merge(['class' => $classes, 'type' => 'button']) }}>
-        {{ $slot }}
+        @if(! empty($icon))
+            <x-icon class="-ml-1 mr-1"><i class="{{ $icon }}"></i></x-icon>
+        @endif
+        <span>{{ $slot }}</span>
     </button>
 @endif
