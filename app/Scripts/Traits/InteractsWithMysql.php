@@ -13,9 +13,7 @@ use App\Support\Str;
  */
 trait InteractsWithMysql
 {
-    /**
-     * Execute a MySQL query locally on the server over SSH.
-     */
+    /** Execute a MySQL query locally on the server over SSH. */
     protected function execMysql(string $query, string $dbUser = 'root', string $password = null): string|bool
     {
         $this->initialize();
@@ -61,9 +59,7 @@ trait InteractsWithMysql
         return Arr::trimValues($lines);
     }
 
-    /**
-     * Get the list of database users that exist on the server.
-     */
+    /** Get the list of database users that exist on the server. */
     protected function mysqlGetDatabaseUsers(string $dbUser = 'root', string $password = null): array
     {
         $output = $this->execMysql(
@@ -97,9 +93,7 @@ trait InteractsWithMysql
         });
     }
 
-    /**
-     * Check if a database user has been granted full access to a database on the server.
-     */
+    /** Check if a database user has been granted full access to a database on the server. */
     protected function mysqlUserHasGrants(
         string $dbName,
         string $userName,
@@ -131,17 +125,13 @@ trait InteractsWithMysql
         );
     }
 
-    /**
-     * Check if a database user exists on the server.
-     */
+    /** Check if a database user exists on the server. */
     protected function mysqlUserExists(string $userName, string $dbUser = 'root', string $password = null): bool
     {
         return ! is_null($this->mysqlGetDatabaseUser($userName, $dbUser, $password));
     }
 
-    /**
-     * Create a command to run an SQL query over a local MySQL server on a remote server over SSH.
-     */
+    /** Create a command to run an SQL query over a local MySQL server on a remote server over SSH. */
     private function mysqlCommand(string $query, string $dbUser, string $password = null): string
     {
         return isset($password)
