@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Workers;
 use App\Actions\Workers\DeleteWorkerAction;
 use App\Actions\Workers\RestartWorkerAction;
 use App\Actions\Workers\RetrieveWorkerLogAction;
+use App\Actions\Workers\UpdateWorkersStatusesAction;
 use App\Broadcasting\ProjectChannel;
 use App\Events\Workers\WorkerCreatedEvent;
 use App\Events\Workers\WorkerDeletedEvent;
@@ -16,12 +17,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
-
-/*
- * TODO: CRITICAL! CONTINUE. This thing needs a log viewer and an "Check Workers Status" button. Like the daemons index table have.
- */
-
-// TODO: CRITICAL! CONTINUE. Cover with tests.
 
 class WorkersIndexTable extends LivewireComponent
 {
@@ -62,6 +57,14 @@ class WorkersIndexTable extends LivewireComponent
     public function mount(): void
     {
         $this->authorize('index', [Worker::class, $this->project]);
+    }
+
+    /** Update the worker statuses. */
+    public function updateStatuses(UpdateWorkersStatusesAction $action): void
+    {
+        $this->authorize('index', [Worker::class, $this->project]);
+
+        $action->execute($this->project);
     }
 
     /** Open a modal with a worker output log. */

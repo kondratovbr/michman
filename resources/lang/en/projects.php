@@ -184,6 +184,7 @@ return [
         'log-modal-title' => 'Worker Log',
         'failed-to-retrieve-logs' => 'We were unable to retrieve this worker\'s logs from the server.',
         'view-log-button' => 'View Log',
+        'update-statuses' => 'Update Statuses',
     ],
 
     'quick-deploy' => [

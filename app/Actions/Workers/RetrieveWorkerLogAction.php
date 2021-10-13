@@ -3,19 +3,25 @@
 namespace App\Actions\Workers;
 
 use App\Models\Worker;
-
-// TODO: CRITICAL! CONTINUE. Implement and cover with tests.
+use App\Scripts\Root\RetrieveWorkerLogScript;
+use Throwable;
 
 class RetrieveWorkerLogAction
 {
     public function __construct(
-        //
+        protected RetrieveWorkerLogScript $script,
     ) {}
 
     public function execute(Worker $worker): string|false
     {
-        return 'Worker log, mothefucka!';
-
-        //
+        try {
+            return retry(
+                5,
+                fn() => $this->script->execute($worker->server, $worker),
+                100,
+            );
+        } catch (Throwable) {
+            return false;
+        }
     }
 }

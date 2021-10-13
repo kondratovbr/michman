@@ -3,6 +3,7 @@
 namespace App\States\Workers;
 
 use App\States\AbstractModelState;
+use App\States\Workers\Transitions\ToFailed;
 use Spatie\ModelStates\StateConfig;
 
 class WorkerState extends AbstractModelState
@@ -15,7 +16,7 @@ class WorkerState extends AbstractModelState
             ->default(Starting::class)
             ->allowTransition([Starting::class, Active::class, Failed::class], Starting::class)
             ->allowTransition(Starting::class, Active::class)
-            ->allowTransition([Starting::class, Active::class], Failed::class)
+            ->allowTransition([Starting::class, Active::class], Failed::class, ToFailed::class)
             ->allowTransition([Starting::class, Active::class, Failed::class], Deleting::class);
     }
 }

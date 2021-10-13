@@ -14,6 +14,7 @@ use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Notifications\Servers\ServerNotAvailableNotification;
 use App\Notifications\Projects\WebhookEnablingFailedNotification;
+use App\Notifications\Workers\WorkerFailedNotification;
 
 return [
 
@@ -42,6 +43,8 @@ return [
         WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook (Quick Deploy) for project :project from your repository.',
 
         DaemonFailedNotification::class => 'A daemon failed to start on a server :server.',
+
+        WorkerFailedNotification::class => 'A queue worker for a project :project failed to start.',
     ],
 
 ];

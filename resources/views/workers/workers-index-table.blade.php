@@ -2,6 +2,13 @@
 
     <x-slot name="title">{{ __('projects.queue.index.title') }}</x-slot>
 
+    <x-slot name="titleActions">
+        <x-buttons.secondary
+            wire:click.prevent="updateStatuses"
+            wire:loading.attr="disabled"
+        >{{ __('projects.queue.update-statuses') }}</x-buttons.secondary>
+    </x-slot>
+
     <x-slot name="header">
         <x-tr-header>
             <x-th>{{ __('projects.queue.create.type.label') }}</x-th>
@@ -9,7 +16,6 @@
             <x-th>{{ __('projects.queue.create.queues.label') }}</x-th>
             <x-th show="lg">{{ __('projects.queue.create.processes.table') }}</x-th>
             <x-th>{{ __('misc.status') }}</x-th>
-
             <x-th></x-th>
         </x-tr-header>
     </x-slot>
@@ -22,7 +28,6 @@
 {{--                TODO: CRITICAL! Make sure to support other types in here.--}}
                 <x-td>{{ implode(', ', $worker->queues ?? ['Celery']) }}</x-td>
                 <x-td show="lg">{{ $worker->processes ?? 'Auto' }}</x-td>
-{{--                TODO: CRITICAL! Check that this badge works - I've recently updated it from using the old status badge.--}}
                 <x-td><x-state-badge :state="$worker->state" /></x-td>
 
                 <x-td>
