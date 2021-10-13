@@ -106,8 +106,7 @@ trait InteractsWithMysql
                 $dbUser,
                 $password,
             ),
-            // Notice that syntax here is a bit different than in the query above -
-            // MySQL outputs with backticks.
+            // Notice that syntax here is a bit different from the query above - MySQL outputs with backticks.
             "GRANT ALL PRIVILEGES ON `{$dbName}`.* TO `{$userName}`@`%`"
         );
     }
