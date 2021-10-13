@@ -69,6 +69,7 @@ abstract class AbstractServerScript
         try {
             return $output = $this->ssh->exec($command);
         } finally {
+            $output ??= null;
             $outputToLog = $output === false ? null : $output;
             $exitCode = $this->ssh->getExitStatus();
             if ($exitCode === false)
