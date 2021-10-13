@@ -14,11 +14,9 @@ use App\Scripts\Root\UpdateDaemonStateScript;
 use App\States\Daemons\Active;
 use App\States\Daemons\Failed;
 use App\States\Daemons\Starting;
-use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Queue;
 use Mockery\MockInterface;
 use Tests\AbstractFeatureTest;
 
