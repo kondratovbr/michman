@@ -15,7 +15,7 @@ use Tests\AbstractFeatureTest;
 
 class UpdateDaemonsStatusesActionTest extends AbstractFeatureTest
 {
-    public function test_example()
+    public function test_jobs_get_dispatched()
     {
         /** @var Server $server */
         $server = Server::factory()->withProvider()->create();
@@ -43,6 +43,7 @@ class UpdateDaemonsStatusesActionTest extends AbstractFeatureTest
                 && $batch->allowsFailures()
                 && $batch->queue() === 'servers';
         });
+
         Event::assertNotDispatched(DaemonUpdatedEvent::class);
     }
 }

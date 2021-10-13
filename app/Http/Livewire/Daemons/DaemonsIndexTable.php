@@ -61,7 +61,7 @@ class DaemonsIndexTable extends LivewireComponent
         $this->authorize('index', [Daemon::class, $this->server]);
     }
 
-    /** Update the daemon's statuses. */
+    /** Update the daemon statuses. */
     public function updateStatuses(UpdateDaemonsStatusesAction $action): void
     {
         $this->authorize('index', [Daemon::class, $this->server]);
