@@ -4,7 +4,7 @@
 
     <x-slot name="titleActions">
         <x-buttons.secondary
-            wire:click="updateStatuses"
+            wire:click.prevent="updateStatuses"
             wire:loading.attr="disabled"
         >{{ __('servers.daemons.index.update-statuses') }}</x-buttons.secondary>
     </x-slot>
