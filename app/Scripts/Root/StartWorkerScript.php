@@ -10,7 +10,7 @@ use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 /*
- * TODO: CRITICAL! A refactoring idea - add the "throw new ServerScriptException" into the parent class and have an option on "exec" commands to skip it when necessary.
+ * TODO: CRITICAL! CONTINUE. A refactoring idea - add the "throw new ServerScriptException" into the parent class and have an option on "exec" commands to skip it when necessary.
  */
 
 class StartWorkerScript extends AbstractServerScript
