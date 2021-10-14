@@ -23,8 +23,8 @@ class VerifyServerIsSuitableScript extends AbstractServerScript
             return false;
 
         // The version of Ubuntu is relatively recent - at least 16.04.
-        $version = $this->exec('lsb_release -sr');
-        if ($this->getExitStatus() || Comparator::lessThan($version, '16.04'))
+        $version = $this->exec(command: 'lsb_release -sr', throw: false);
+        if ($this->failed() || Comparator::lessThan($version, '16.04'))
             return false;
 
         // We have root access at the moment.
@@ -32,7 +32,7 @@ class VerifyServerIsSuitableScript extends AbstractServerScript
             return false;
 
         // apt-get is installed and accessible.
-        $this->exec('apt-get -v');
+        $this->exec(command: 'apt-get -v', throw: false);
         if ($this->getExitStatus() !== 0)
             return false;
 

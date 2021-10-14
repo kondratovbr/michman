@@ -23,9 +23,6 @@ class CreateDatabaseScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Command to create a new database failed.');
-
         if (! Arr::hasValue(
             $this->mysqlGetDatabases('root', $server->databaseRootPassword),
             $dbName

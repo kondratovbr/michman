@@ -2,7 +2,6 @@
 
 namespace App\Scripts\User;
 
-
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
@@ -24,9 +23,6 @@ class CreateProjectVenvScript extends AbstractServerScript
         $this->init($server, $ssh, $project->serverUsername);
 
         $this->exec("cd {$workdir} && virtualenv venv");
-
-        if ($this->failed())
-            throw new ServerScriptException('"virtualenv" command has failed.');
 
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min - pip install may take a long time if there's a lot of stuff to install.

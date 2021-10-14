@@ -35,7 +35,7 @@ class InstallCacheScript extends AbstractServerScript
         $output = $this->exec('systemctl status redis');
         if (
             ! Str::contains(Str::lower($output), 'active (running)')
-            || $this->getExitStatus() !== 0
+            || $this->failed()
         ) {
             throw new ServerScriptException('Redis failed to start.');
         }

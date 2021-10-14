@@ -37,9 +37,6 @@ class GrantDatabaseUserAccessToDatabaseScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Command to grant all privileges to a database user failed.');
-
         $this->execMysql(
             'FLUSH PRIVILEGES',
             'root',

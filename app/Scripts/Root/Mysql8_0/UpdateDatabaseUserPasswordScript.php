@@ -4,7 +4,6 @@ namespace App\Scripts\Root\Mysql8_0;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithMysql;
 use phpseclib3\Net\SFTP;
 
@@ -30,8 +29,5 @@ class UpdateDatabaseUserPasswordScript extends AbstractServerScript
             'root',
             $server->databaseRootPassword,
         );
-
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('MySQL command to change a regular user\'s password failed.');
     }
 }

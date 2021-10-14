@@ -3,6 +3,7 @@
 namespace App\Scripts;
 
 use App\Models\Server;
+use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\RunsStatically;
 use App\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -60,6 +61,7 @@ abstract class AbstractServerScript
         bool $scrubCommand = false,
         bool $scrubOutput = false,
         string $logCommand = null,
+        bool $throw = true,
     ): string|bool {
         $this->initialize();
 
@@ -67,7 +69,13 @@ abstract class AbstractServerScript
             $this->disablePty();
 
         try {
-            return $output = $this->ssh->exec($command);
+            $output = $this->ssh->exec($command);
+
+            // TODO: CRITICAL! CONTINUE. Account for this addition in every single script.
+            if ($throw && $this->failed())
+                throw new ServerScriptException('Shell command has failed.');
+
+            return $output;
         } finally {
             $output ??= null;
             $outputToLog = $output === false ? null : $output;

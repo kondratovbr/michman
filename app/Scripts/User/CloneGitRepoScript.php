@@ -5,7 +5,6 @@ namespace App\Scripts\User;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
 
 class CloneGitRepoScript extends AbstractServerScript
@@ -45,9 +44,8 @@ class CloneGitRepoScript extends AbstractServerScript
 
         // TODO: CRITICAL! Figure out file permissions here. Project files shouldn't be modifiable and directories
         //       shouldn't be writable by other users. Same thing when we pull changes during deployment.
-        $this->exec("git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}");
-
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Cloning the project\'s git repo failed.');
+        $this->exec(
+            "git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}"
+        );
     }
 }

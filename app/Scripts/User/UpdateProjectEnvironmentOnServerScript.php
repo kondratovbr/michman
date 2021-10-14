@@ -20,8 +20,5 @@ class UpdateProjectEnvironmentOnServerScript extends AbstractServerScript
             throw new ServerScriptException("Failed to send string to file: {$envFile}");
 
         $this->exec("chmod 0600 {$envFile}");
-
-        if ($this->failed())
-            throw new ServerScriptException('chmod command failed.');
     }
 }

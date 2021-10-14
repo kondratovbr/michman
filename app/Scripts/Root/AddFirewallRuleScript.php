@@ -25,9 +25,6 @@ class AddFirewallRuleScript extends AbstractServerScript
 
         $this->exec($command);
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException("Failed to add a firewall rule. Command: \"{$command}\"");
-
         // This is to log the output into out server_logs table just in case.
         $this->exec('ufw status verbose');
     }

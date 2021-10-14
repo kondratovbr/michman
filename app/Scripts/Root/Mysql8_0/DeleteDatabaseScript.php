@@ -23,9 +23,6 @@ class DeleteDatabaseScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Command to drop a database failed.');
-
         if (Arr::hasValue(
             $this->mysqlGetDatabases('root', $server->databaseRootPassword),
             $dbName

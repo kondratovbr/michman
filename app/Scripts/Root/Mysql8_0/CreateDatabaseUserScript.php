@@ -32,9 +32,6 @@ class CreateDatabaseUserScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Command to create a new database user failed.');
-
         $createdUser = $this->mysqlGetDatabaseUser($userName, 'root', $server->databaseRootPassword);
 
         if (is_null($createdUser))

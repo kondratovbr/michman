@@ -32,9 +32,6 @@ class InstallDatabaseScript extends AbstractServerScript
 
         $this->exec('systemctl start mysql');
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('systemctl command to start MySQL failed.');
-
         // Wait a bit in case MySQL needs some time to start.
         $this->setTimeout(60);
         $this->exec("sleep 30");
@@ -43,7 +40,7 @@ class InstallDatabaseScript extends AbstractServerScript
         $output = $this->exec('systemctl status mysql');
         if (
             ! Str::contains(Str::lower($output), 'active (running)')
-            || $this->getExitStatus() !== 0
+            || $this->failed()
         ) {
             throw new ServerScriptException('MySQL failed to start.');
         }
@@ -66,8 +63,12 @@ class InstallDatabaseScript extends AbstractServerScript
             "ALTER USER 'root'@'localhost' IDENTIFIED WITH '{$authPlugin}' BY '{$server->databaseRootPassword}'; flush privileges;"
         );
 
-        if (Str::contains(Str::lower($output), 'access denied') || $this->getExitStatus() !== 0)
+        if (
+            Str::contains(Str::lower($output), 'access denied')
+            || $this->failed()
+        ) {
             throw new ServerScriptException('Failed accessing the database as root.');
+        }
 
         $output = $this->execMysql(
             "SHOW DATABASES",

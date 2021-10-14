@@ -5,7 +5,6 @@ namespace App\Scripts\Root;
 use App\Models\Interfaces\SshKeyInterface;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\SshKeyFormatter;
 use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Net\SFTP;
@@ -36,12 +35,6 @@ class DeleteSshKeyFromUserScript extends AbstractServerScript
 
         $this->exec("test -w {$remoteFile}");
 
-        if ($this->failed())
-            throw new ServerScriptException("File authorized_keys of user {$username} either not writable at all or doesn't exist.");
-
         $this->exec("sed -i '/{$sshKeyString}/d' {$remoteFile}");
-
-        if ($this->failed())
-            throw new ServerScriptException('Failed to remove the key from authorized_keys file.');
     }
 }

@@ -15,19 +15,13 @@ class StartDaemonScript extends AbstractServerScript
         $this->init($server, $rootSsh);
 
         $this->exec("mkdir -p /etc/supervisor/conf.d && mkdir -p /var/log/michman");
-        if ($this->failed())
-            throw new ServerScriptException('Failed to create config and log directories.');
 
         if ($this->sendString($daemon->configPath(), $daemon->supervisorConfig()) === false)
             throw new ServerScriptException('Failed to send config file to this path: ' . $daemon->configPath());
 
         $this->exec("supervisorctl reread");
-        if ($this->failed())
-            throw new ServerScriptException('supervisorctl reread command has failed.');
 
         $this->exec("supervisorctl update {$daemon->name}");
-        if ($this->failed())
-            throw new ServerScriptException('supervisorctl update command has failed.');
 
         /*
          * We aren't going to wait for the daemon to start,

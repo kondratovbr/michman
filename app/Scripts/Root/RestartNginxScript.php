@@ -15,8 +15,6 @@ class RestartNginxScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         $this->exec("systemctl restart nginx");
-        if ($this->failed())
-            throw new ServerScriptException('systemctl command to restart Nginx has failed.');
 
         // Wait a bit for Nginx to be started by systemd.
         $this->setTimeout(60);

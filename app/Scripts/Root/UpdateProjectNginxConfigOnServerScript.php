@@ -38,8 +38,5 @@ class UpdateProjectNginxConfigOnServerScript extends AbstractServerScript
         }
 
         $this->exec("chown {$project->serverUsername}:{$project->serverUsername} {$project->userNginxConfigFilePath}");
-
-        if ($this->failed())
-            throw new ServerScriptException("Failed to chown file {$project->userNginxConfigFilePath} to user {$project->serverUsername}");
     }
 }

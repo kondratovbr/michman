@@ -20,8 +20,5 @@ class UpdateProjectDeployScriptOnServerScript extends AbstractServerScript
             throw new ServerScriptException("Failed to send string to file: {$deployScriptFile}");
 
         $this->exec("chmod 0744 {$deployScriptFile}");
-
-        if ($this->failed())
-            throw new ServerScriptException('chmod command failed.');
     }
 }

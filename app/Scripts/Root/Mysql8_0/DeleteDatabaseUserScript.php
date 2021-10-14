@@ -28,9 +28,6 @@ class DeleteDatabaseUserScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Command to drop a database user failed.');
-
         if ($this->mysqlUserExists($userName, 'root', $server->databaseRootPassword))
             throw new ServerScriptException('The database user was not deleted.');
     }

@@ -37,9 +37,6 @@ class RevokeDatabaseUserAccessToDatabaseScript extends AbstractServerScript
             $server->databaseRootPassword,
         );
 
-        if ($this->getExitStatus() !== 0)
-            throw new ServerScriptException('Command to revoke all privileges from a database user failed.');
-
         $this->execMysql(
             'FLUSH PRIVILEGES',
             'root',

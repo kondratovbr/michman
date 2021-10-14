@@ -8,6 +8,8 @@ use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
 use Illuminate\Support\Facades\DB;
 
+// TODO: CRITICAL! Cover with tests.
+
 class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 {
     // Override the normal backoff time to speed up the server creation process for users.
@@ -20,9 +22,12 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 
             try {
                 $ssh = $server->sftp('root');
-            } catch (SshAuthFailedException $exception) {
+            } catch (SshAuthFailedException) {
                 $server->suitable = false;
                 $server->save();
+
+                $this->notify();
+
                 return;
             }
 
@@ -33,11 +38,20 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 
             $server->suitable = $verifyServerIsSuitable->execute($server, $ssh);
             $server->save();
+
+            if (! $server->suitable)
+                $this->notify();
         }, 5);
+    }
+
+    /** Notify the user that the server isn't suitable. */
+    protected function notify(): void
+    {
+        $this->server->user->notify(new ServerIsNotSuitableNotification($this->server));
     }
 
     public function failed(): void
     {
-        $this->server->user->notify(new ServerIsNotSuitableNotification($this->server));
+        $this->notify();
     }
 }

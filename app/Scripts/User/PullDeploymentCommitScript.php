@@ -5,7 +5,6 @@ namespace App\Scripts\User;
 use App\Models\Deployment;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
 
 class PullDeploymentCommitScript extends AbstractServerScript
@@ -23,17 +22,13 @@ class PullDeploymentCommitScript extends AbstractServerScript
         $this->setTimeout(60 * 5);
         // Just in case the user was tinkering with the repo
         $this->exec("cd {$project->projectDir} && git checkout --quiet --force {$deployment->branch}");
-        if ($this->failed())
-            throw new ServerScriptException("git checkout command has failed.");
 
         // Fetch and merge replace pull, which is done to ensure the exact specific commit is being deployed.
 
-        $this->exec("cd {$project->projectDir} && git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" fetch --quiet --force origin {$deployment->branch}");
-        if ($this->failed())
-            throw new ServerScriptException("git fetch command has failed.");
+        $this->exec(
+            "cd {$project->projectDir} && git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" fetch --quiet --force origin {$deployment->branch}"
+        );
 
         $this->exec("cd {$project->projectDir} && git merge --quiet -X theirs {$deployment->commit}");
-        if ($this->failed())
-            throw new ServerScriptException("git merge command has failed.");
     }
 }

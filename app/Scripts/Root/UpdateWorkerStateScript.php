@@ -5,7 +5,6 @@ namespace App\Scripts\Root;
 use App\Models\Server;
 use App\Models\Worker;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
 use App\States\Workers\Active;
 use App\States\Workers\Failed;
 use App\States\Workers\Starting;
@@ -20,8 +19,6 @@ class UpdateWorkerStateScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         $output = $this->exec("supervisorctl status {$worker->name}");
-        if ($this->failed())
-            throw new ServerScriptException('supervisorctl status command has failed.');
 
         // See graph: http://supervisord.org/subprocess.html
         return match (true) {
