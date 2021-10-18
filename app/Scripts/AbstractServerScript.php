@@ -71,7 +71,6 @@ abstract class AbstractServerScript
         try {
             $output = $this->ssh->exec($command);
 
-            // TODO: CRITICAL! CONTINUE. Account for this addition in every single script.
             if ($throw && $this->failed())
                 throw new ServerScriptException('Shell command has failed.');
 
