@@ -41,18 +41,14 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
         return $via;
     }
 
-    /**
-     * Get the broadcastable representation of the notification.
-     */
+    /** Get the broadcastable representation of the notification. */
     public function toBroadcast(User $notifiable): BroadcastMessage
     {
         return (new BroadcastMessage($this->toArray($notifiable)))
             ->onQueue('broadcasting');
     }
 
-    /**
-     * Get the notification message to show in the UI.
-     */
+    /** Get the notification message to show in the UI. */
     public static function message(array $data = []): string
     {
         $type = get_called_class();
@@ -60,9 +56,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
         return __("notifications.messages.{$type}", static::dataForMessage($data));
     }
 
-    /**
-     * Get the data for localized message strings for this notification.
-     */
+    /** Get the data for localized message strings for this notification. */
     protected static function dataForMessage(array $data = []): array
     {
         return [];
