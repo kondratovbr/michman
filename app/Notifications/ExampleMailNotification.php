@@ -16,7 +16,7 @@ class ExampleMailNotification extends AbstractNotification
 
     public function __construct()
     {
-        //
+        parent::__construct();
     }
 
     /**
