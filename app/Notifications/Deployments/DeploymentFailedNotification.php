@@ -13,9 +13,7 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification implem
 {
     protected bool $mail = true;
 
-    /**
-     * Get the mail representation of the notification.
-     */
+    /** Get the mail representation of the notification. */
     public function toMail(User $notifiable): MailMessage
     {
         /*
@@ -33,9 +31,7 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification implem
             );
     }
 
-    /**
-     * Get the notification message to show in the UI.
-     */
+    /** Get the notification message to show in the UI. */
     public static function message(array $data = []): string
     {
         $deployment = static::deployment($data);
@@ -46,9 +42,7 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification implem
         ]);
     }
 
-    /**
-     * Get the details view to display this notification in the UI.
-     */
+    /** Get the details view to display this notification in the UI. */
     public static function view(array $data = []): View
     {
         $deployment = static::deployment($data);
