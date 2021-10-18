@@ -27,9 +27,9 @@ use Illuminate\Contracts\View\View;
 
 class CreateProjectForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        TrimsInputBeforeValidation,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use TrimsInputBeforeValidation;
+    use ListensForEchoes;
 
     public Server $server;
 

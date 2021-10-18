@@ -13,8 +13,8 @@ use Livewire\Component as LivewireComponent;
 
 class ProjectGunicornConfigEditForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        TrimsInputBeforeValidation;
+    use AuthorizesRequests;
+    use TrimsInputBeforeValidation;
 
     public Project $project;
 

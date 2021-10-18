@@ -26,9 +26,9 @@ use Livewire\Component as LivewireComponent;
  */
 class CreateWorkerForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        TrimsInputBeforeValidation,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use TrimsInputBeforeValidation;
+    use ListensForEchoes;
 
     public Project $project;
 

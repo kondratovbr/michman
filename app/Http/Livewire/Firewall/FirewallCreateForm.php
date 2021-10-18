@@ -15,8 +15,8 @@ use Livewire\Component as LivewireComponent;
 
 class FirewallCreateForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        TrimsInputBeforeValidation;
+    use AuthorizesRequests;
+    use TrimsInputBeforeValidation;
 
     public Server $server;
 

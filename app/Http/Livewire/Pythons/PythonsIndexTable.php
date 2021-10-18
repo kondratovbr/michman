@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Validator;
 
 class PythonsIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use ListensForEchoes;
 
     public Server $server;
 

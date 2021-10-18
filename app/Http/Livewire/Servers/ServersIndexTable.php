@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Servers;
 
-use App\Broadcasting\ServerChannel;
 use App\Broadcasting\UserChannel;
 use App\Events\Servers\ServerCreatedEvent;
 use App\Events\Servers\ServerDeletedEvent;
@@ -17,8 +16,8 @@ use Livewire\Component as LivewireComponent;
 
 class ServersIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use ListensForEchoes;
 
     public Collection $servers;
 

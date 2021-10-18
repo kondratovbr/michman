@@ -24,9 +24,9 @@ use Livewire\Component as LivewireComponent;
 
 class InstallRepoForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        TrimsInput,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use TrimsInput;
+    use ListensForEchoes;
 
     public Server $server;
     public Project $project;

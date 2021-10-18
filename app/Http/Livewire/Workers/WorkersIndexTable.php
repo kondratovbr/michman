@@ -20,8 +20,8 @@ use Livewire\Component as LivewireComponent;
 
 class WorkersIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use ListensForEchoes;
 
     public Project $project;
 

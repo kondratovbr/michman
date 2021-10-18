@@ -19,7 +19,8 @@ use Livewire\Component;
  */
 class TfaForm extends Component
 {
-    use ConfirmsPasswords, AuthorizesRequests;
+    use ConfirmsPasswords;
+    use AuthorizesRequests;
 
     /** Indicates if two factor authentication QR code is being displayed. */
     public bool $showingQrCode = false;

@@ -21,8 +21,8 @@ use Livewire\Component as LivewireComponent;
 
 class DatabaseUsersIndexTable extends LivewireComponent
 {
-    use AuthorizesRequests,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use ListensForEchoes;
 
     public Server $server;
 

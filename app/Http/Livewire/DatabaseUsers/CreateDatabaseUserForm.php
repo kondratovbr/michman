@@ -21,9 +21,9 @@ use Livewire\Component as LivewireComponent;
 
 class CreateDatabaseUserForm extends LivewireComponent
 {
-    use AuthorizesRequests,
-        TrimsInput,
-        ListensForEchoes;
+    use AuthorizesRequests;
+    use TrimsInput;
+    use ListensForEchoes;
 
     public Server $server;
 
