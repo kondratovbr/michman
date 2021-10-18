@@ -49,7 +49,7 @@ class FirewallCreateForm extends LivewireComponent
         );
 
         // This event is used to show the success message.
-        // TODO: CRITICAL! Implement this.
+        // TODO: Implement this.
         $this->emit('saved');
         // This event is used to update the providers table.
         $this->emit('firewall-rule-stored');
