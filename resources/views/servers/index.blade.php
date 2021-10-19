@@ -1,5 +1,7 @@
 {{--TODO: IMPORTANT! Improve the single column layout - looks weird.--}}
 
+{{--TODO: CRITICAL! The servers page should have notifications as well.--}}
+
 <x-layouts.app-one-column>
 
     <x-slot name="header">

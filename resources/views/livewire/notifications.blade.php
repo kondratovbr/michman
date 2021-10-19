@@ -1,5 +1,7 @@
 {{--TODO: IMPORTANT! The notifications should show up somewhere on the screen regardless of the scroll position. I.e. not like now, not on top of the page. Check out how other apps do this. Forge's way is lazy.--}}
 
+{{--TODO: CRITICAL! Check out how this works on mobile.--}}
+
 <div class="{{ $notifications->isEmpty() ? '' : 'mb-8' }}">
     @unless($notifications->isEmpty())
         <x-table-section>
