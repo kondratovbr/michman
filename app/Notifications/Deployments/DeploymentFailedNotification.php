@@ -17,9 +17,8 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification implem
     public function toMail(User $notifiable): MailMessage
     {
         /*
-         * TODO: CRITICAL! CONTINUE. Obviously I should customize the message template. Make it dark in the brand colors, etc. Ignore Markdown emails for now - YAGNI.
-         *
-         * TODO: CRITICAL! I should, of course, use localized strings here as well. And test that localization works. Note: User model should have the method to retrieve the user's locale. I've already added a placeholder for it. See details: https://laravel.com/docs/8.x/notifications#user-preferred-locales
+         * TODO: CRITICAL! CONTINUE. I should, of course, use localized strings here as well. And test that localization works. Note: User model should have the method to retrieve the user's locale. I've already added a placeholder for it. See details: https://laravel.com/docs/8.x/notifications#user-preferred-locales
+         *      And refactor this, so the theme would be globally set on the abstract notification class. I can also DRY the subjects (to localized strings) and have a default greeting as well.
          */
         return (new MailMessage)
             ->error()

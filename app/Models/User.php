@@ -145,13 +145,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return ! empty($this->password);
     }
 
-    /**
-     * Get this user's preferred locale,
-     * which will be used to localize notifications and emails.
-     */
+    /** Get this user's preferred locale, which will be used to localize notifications and emails. */
     public function preferredLocale(): string
     {
-        // TODO: Implement preferredLocale() method.
+        // TODO: IMPORTANT! Implement preferredLocale() method. To do this - store the user's locale and make sure to properly remember and update it when necessary. Same with the dark/light preference, btw.
         return 'en';
     }
 
