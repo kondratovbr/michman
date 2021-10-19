@@ -21,6 +21,8 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification implem
          *      And refactor this, so the theme would be globally set on the abstract notification class. I can also DRY the subjects (to localized strings) and have a default greeting as well.
          */
         return (new MailMessage)
+            ->subject('Deployment Failed')
+            ->theme('dark')
             ->error()
             ->greeting('Oy! Michman reporting.')
             ->line("Something went wrong when performing a deployment of your project {$this->deployment->project->projectName}.")
