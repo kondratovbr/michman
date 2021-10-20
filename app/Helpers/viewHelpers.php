@@ -4,9 +4,7 @@ use App\Models\User;
 use App\Facades\Auth;
 
 if (! function_exists('filesize_for_humans')) {
-    /**
-     * Convert filesize in bytes into a human-readable formatted string with rounding.
-     */
+    /** Convert filesize in bytes into a human-readable formatted string with rounding. */
     function sizeForHumansRounded(int $bytes, $precision = 2): string
     {
         static $units = ['B','KB','MB','GB','TB','PB','EB','ZB','YB'];
@@ -21,9 +19,7 @@ if (! function_exists('filesize_for_humans')) {
 }
 
 if (! function_exists('spaceToNbsp')) {
-    /**
-     * Convert all spaces in a string to non-breaking spaces.
-     */
+    /** Convert all spaces in a string to non-breaking spaces. */
     function spaceToNbsp(string $string): string
     {
         return str_replace(' ', "\xc2\xa0", $string);
@@ -31,9 +27,7 @@ if (! function_exists('spaceToNbsp')) {
 }
 
 if (! function_exists('siteName')) {
-    /**
-     * Get a properly formatted app name.
-     */
+    /** Get a properly formatted app name. */
     function siteName(): string
     {
         return spaceToNbsp((string) config('app.name'));
@@ -55,9 +49,7 @@ if (! function_exists('title')) {
 }
 
 if (! function_exists('user')) {
-    /**
-     * Get the currently authenticated user.
-     */
+    /** Get the currently authenticated user. */
     function user(): ?User
     {
         return Auth::user();
@@ -66,9 +58,7 @@ if (! function_exists('user')) {
 
 if (! function_exists('classes')) {
     // TODO: Would be nice to also properly "merge" them?
-    /**
-     * Combine all provided CSS classes into a single space-separated string.
-     */
+    /** Combine all provided CSS classes into a single space-separated string. */
     function classes(string|array ...$classes): string
     {
         return array_reduce($classes, function (string $carry, string|array $item) {

@@ -5,9 +5,7 @@ use App\Support\Arr;
 use App\Support\Str;
 
 if (! function_exists('version')) {
-    /**
-     * Get a string with a full current version of the app.
-     */
+    /** Get a string with a full current version of the app. */
     function version(): string
     {
         return (string) config('app.version');
@@ -15,9 +13,7 @@ if (! function_exists('version')) {
 }
 
 if (! function_exists('isDebug')) {
-    /**
-     * Check if the app is in debug mode.
-     */
+    /** Check if the app is in debug mode. */
     function isDebug(): bool
     {
         return config('app.debug') === true;
@@ -56,9 +52,7 @@ if (! function_exists('generateRandomName')) {
 }
 
 if (! function_exists('randomFloat')) {
-    /**
-     * Generate a pseudo-random float between 0 and 1 inclusively.
-     */
+    /** Generate a pseudo-random float between 0 and 1 inclusively. */
     function randomFloat(): float
     {
         return (float) rand() / (float) getrandmax();
@@ -66,9 +60,7 @@ if (! function_exists('randomFloat')) {
 }
 
 if (! function_exists('collection')) {
-    /**
-     * Turn the provided array into an instance of custom EloquentCollection.
-     */
+    /** Turn the provided array into an instance of custom EloquentCollection. */
     function collection(array $items): EloquentCollection
     {
         return new EloquentCollection($items);
@@ -95,9 +87,7 @@ if (! function_exists('trimRelativePath')) {
 }
 
 if (! function_exists('getClassName')) {
-    /**
-     * Get only the last part of the class name.
-     */
+    /** Get only the last part of the class name. */
     function getClassName(string $classname): string|false|int
     {
         $pos = strrpos($classname, '\\');
@@ -110,9 +100,7 @@ if (! function_exists('getClassName')) {
 }
 
 if (! function_exists('classImplements')) {
-    /**
-     * Check that a given class implements a given interface.
-     */
+    /** Check that a given class implements a given interface. */
     function classImplements(string $class, string $interface): bool
     {
         $interfaces = class_implements($class);
