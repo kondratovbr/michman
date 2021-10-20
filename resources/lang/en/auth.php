@@ -44,4 +44,11 @@ return [
         ],
     ],
 
+    'verification-email' => [
+        'subject' => 'Verify Email Address',
+        'first-line' => 'Please click the button below to verify your email address.',
+        'action' => 'Verify Email Address',
+        'second-line' => 'If you did not create an account, no further action is required, and sorry for bothering you.',
+    ],
+
 ];

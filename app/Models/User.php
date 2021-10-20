@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Broadcasting\UserChannel;
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
+use App\Notifications\VerifyEmailNotification;
 use App\Support\Str;
 use BaconQrCode\Renderer\Color\Rgb;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection;
@@ -150,6 +152,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     {
         // TODO: IMPORTANT! Implement preferredLocale() method. To do this - store the user's locale and make sure to properly remember and update it when necessary. Same with the dark/light preference, btw.
         return 'en';
+    }
+
+    /** Send the customized email verification notification. */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification);
     }
 
     /** Get this user's VcsProvider for a third-party service with the name provided. */
