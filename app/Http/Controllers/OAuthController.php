@@ -55,7 +55,7 @@ class OAuthController extends AbstractController
          */
 
         /*
-         * TODO: CRITICAL! Also handle user avatars provided by OAuth providers. I mean, implement user avatars in general.
+         * TODO: IMPORTANT! Also handle user avatars provided by OAuth providers. I mean, implement user avatars in general.
          *       Don't store any avatars at all - use an OAuth provided avatar (by its URL)
          *       or use an external service to generate an avatar when OAuth gives nothing or isn't even used.
          */
