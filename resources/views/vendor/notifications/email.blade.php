@@ -1,13 +1,14 @@
+{{--NOTE: There's no indentations here because the content will be rendered as Markdown.--}}
 @component('mail::message')
 
 {{-- Greeting --}}
 @if (! empty($greeting))
 # {{ $greeting }}
 @else
-@if ($level === 'error')
-# @lang('Whoops!')
+@if (($level ?? null) === 'error')
+# @lang('notifications.whoops')
 @else
-# @lang('Hello!')
+# @lang('notifications.hello')
 @endif
 @endif
 
@@ -18,16 +19,12 @@
 
 {{-- Action Button --}}
 @isset($actionText)
-<?php
-switch ($level) {
-case 'success':
-case 'error':
-$color = $level;
-break;
-default:
-$color = 'primary';
-}
-?>
+@php
+$color = match ($level ?? null) {
+    'success', 'error' => $level,
+    default => 'primary',
+};
+@endphp
 @component('mail::button', ['url' => $actionUrl, 'color' => $color])
 {{ $actionText }}
 @endcomponent
@@ -43,15 +40,13 @@ $color = 'primary';
 {{ $salutation }}
 @else
 {{ config('app.name') }},<br>
-@lang('Over and out').
+@lang('notifications.over')
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
 @slot('subcopy')
-@lang("Can't click the button? Copy and paste this URL into your web browser:", [
-    'actionText' => $actionText,
-]) <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
+@lang('notifications.cant-click') <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
 @endslot
 @endisset
 
