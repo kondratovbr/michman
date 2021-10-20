@@ -63,4 +63,9 @@ return [
         ],
     ],
 
+    'hello' => 'Ahoy!',
+    'whoops' => 'Whoopsies!',
+    'cant-click' => 'Can\'t click the button? Copy and paste this URL into your web browser:',
+    'over' => 'Over and out.',
+
 ];
