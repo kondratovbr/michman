@@ -108,3 +108,16 @@ if (! function_exists('classImplements')) {
         return in_array($interface, $interfaces);
     }
 }
+
+if (! function_exists('trans_try')) {
+    /** Try multiple lang keys and return the first string found or null if nothing found. */
+    function trans_try(array|string $keys, array $replace = [], string|null $locale = null): string|null
+    {
+        foreach (Arr::wrap($keys) as $key) {
+            if (trans()->has($key))
+                return trans()->get($key, $replace, $locale);
+        }
+
+        return null;
+    }
+}
