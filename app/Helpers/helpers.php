@@ -55,7 +55,7 @@ if (! function_exists('generateRandomName')) {
     }
 }
 
-if (! function_exists('')) {
+if (! function_exists('randomFloat')) {
     /**
      * Generate a pseudo-random float between 0 and 1 inclusively.
      */
