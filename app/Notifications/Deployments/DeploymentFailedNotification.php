@@ -13,34 +13,15 @@ class DeploymentFailedNotification extends AbstractDeploymentNotification implem
 {
     protected bool $mail = true;
 
-    /** Get the mail representation of the notification. */
-    public function toMail(User $notifiable): MailMessage
+    /** Configure the mail representation of the notification. */
+    protected function mail(MailMessage $mail, User $notifiable): MailMessage
     {
-        /*
-         * TODO: CRITICAL! CONTINUE. I should, of course, use localized strings here as well. And test that localization works. Note: User model should have the method to retrieve the user's locale. I've already added a placeholder for it. See details: https://laravel.com/docs/8.x/notifications#user-preferred-locales
-         *      And refactor this, so the theme would be globally set on the abstract notification class. I can also DRY the subjects (to localized strings) and have a default greeting as well.
-         */
-        return (new MailMessage)
-            ->subject('Deployment Failed')
-            ->theme('dark')
+        return $mail
             ->error()
-            ->greeting('Oy! Michman reporting.')
-            ->line("Something went wrong when performing a deployment of your project {$this->deployment->project->projectName}.")
             ->action(
-                'View Deployments',
+                $this->transMail('action'),
                 route('projects.show', [$this->deployment->project, 'deployment'])
             );
-    }
-
-    /** Get the notification message to show in the UI. */
-    public static function message(array $data = []): string
-    {
-        $deployment = static::deployment($data);
-        $type = get_called_class();
-
-        return __("notifications.messages.{$type}", [
-            'project' => $deployment->project->projectName,
-        ]);
     }
 
     /** Get the details view to display this notification in the UI. */

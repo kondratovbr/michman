@@ -21,6 +21,22 @@ abstract class AbstractDeploymentNotification extends AbstractNotification
         ];
     }
 
+    protected static function dataForMessage(array $data = []): array
+    {
+        $deployment = static::deployment($data);
+
+        return [
+            'project' => $deployment->project->projectName,
+        ];
+    }
+
+    protected function dataForMail(): array
+    {
+        return [
+            'project' => $this->deployment->project->projectName,
+        ];
+    }
+
     /** Retrieve the deployment model from the database. */
     protected static function deployment(array $data): Deployment|null
     {

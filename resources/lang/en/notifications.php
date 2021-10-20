@@ -47,4 +47,20 @@ return [
         WorkerFailedNotification::class => 'A queue worker for a project :project failed to start.',
     ],
 
+    'mails' => [
+        'default' => [
+            'subject' => 'Michman Notification',
+            'greeting' => 'Oy! Michman reporting.',
+            'action' => 'Go to Dashboard',
+        ],
+
+        DeploymentFailedNotification::class => [
+            'subject' => 'Deployment Failed',
+            'lines' => [
+                'Something went wrong when performing a deployment of your project :project.',
+            ],
+            'action' => 'View Deployments',
+        ],
+    ],
+
 ];
