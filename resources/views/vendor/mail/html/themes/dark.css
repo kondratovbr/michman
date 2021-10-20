@@ -245,29 +245,47 @@ img {
 
 .button-blue,
 .button-primary {
-    background-color: #2d3748;
-    border-bottom: 8px solid #2d3748;
-    border-left: 18px solid #2d3748;
-    border-right: 18px solid #2d3748;
-    border-top: 8px solid #2d3748;
+    /*background-color: #2d3748;*/
+    background-color: #e6c200;
+    color: #111827;
+    /*border-bottom: 8px solid #2d3748;*/
+    /*border-left: 18px solid #2d3748;*/
+    /*border-right: 18px solid #2d3748;*/
+    /*border-top: 8px solid #2d3748;*/
+    border-bottom: 8px solid #e6c200;
+    border-left: 18px solid #e6c200;
+    border-right: 18px solid #e6c200;
+    border-top: 8px solid #e6c200;
 }
 
 .button-green,
 .button-success {
-    background-color: #48bb78;
-    border-bottom: 8px solid #48bb78;
-    border-left: 18px solid #48bb78;
-    border-right: 18px solid #48bb78;
-    border-top: 8px solid #48bb78;
+    /*background-color: #48bb78;*/
+    background-color: #e6c200;
+    color: #111827;
+    /*border-bottom: 8px solid #48bb78;*/
+    /*border-left: 18px solid #48bb78;*/
+    /*border-right: 18px solid #48bb78;*/
+    /*border-top: 8px solid #48bb78;*/
+    border-bottom: 8px solid #e6c200;
+    border-left: 18px solid #e6c200;
+    border-right: 18px solid #e6c200;
+    border-top: 8px solid #e6c200;
 }
 
 .button-red,
 .button-error {
-    background-color: #e53e3e;
-    border-bottom: 8px solid #e53e3e;
-    border-left: 18px solid #e53e3e;
-    border-right: 18px solid #e53e3e;
-    border-top: 8px solid #e53e3e;
+    /*background-color: #e53e3e;*/
+    background-color: #DC2626;
+    color: #F3F4F6;
+    /*border-bottom: 8px solid #e53e3e;*/
+    /*border-left: 18px solid #e53e3e;*/
+    /*border-right: 18px solid #e53e3e;*/
+    /*border-top: 8px solid #e53e3e;*/
+    border-bottom: 8px solid #DC2626;
+    border-left: 18px solid #DC2626;
+    border-right: 18px solid #DC2626;
+    border-top: 8px solid #DC2626;
 }
 
 /* Panels */
