@@ -2,7 +2,6 @@
 
 namespace App\DataTransferObjects;
 
-use App\Exceptions\NotImplementedException;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
 
@@ -39,19 +38,21 @@ class VcsProviderDto extends AbstractDto
 
     private static function gitlab(OAuthUser $oauthUser): static
     {
-        // TODO: CRITICAL! Implement. And add a test for it.
-
-        throw new NotImplementedException;
-
-        //
+        return new static(
+            provider: 'gitlab',
+            external_id: (string) $oauthUser->getId(),
+            nickname: $oauthUser->getNickname(),
+            token: (string) $oauthUser->token,
+        );
     }
 
     private static function bitbucket(OAuthUser $oauthUser): static
     {
-        // TODO: CRITICAL! Implement. And add a test for it.
-
-        throw new NotImplementedException;
-
-        //
+        return new static(
+            provider: 'bitbucket',
+            external_id: (string) $oauthUser->getId(),
+            nickname: $oauthUser->getNickname(),
+            token: (string) $oauthUser->token,
+        );
     }
 }

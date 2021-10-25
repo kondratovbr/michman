@@ -35,12 +35,12 @@ return [
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
         /*
          * NOTE: GitHub should have a full URL configured in the GitHub OAuth App settings,
-         *       but it can have only a prefix, i.e. something like: "https://michman.dev/oauth/github"
+         *       but it may have only a prefix, i.e. something like: "https://michman.dev/oauth/github".
          *       The URL configured here will be requested as a callback URL
          *       by Socialite package when redirecting to GitHub,
          *       it will be automatically completed into a full URL by Socialite.
          *       It should match the prefix configured in GitHub settings,
-         *       otherwise github will redirect to the one in its settings with an error description
+         *       otherwise GitHub will redirect to the one in its settings with an error description
          *       as a URL parameter.
          */
         'redirect' => '/oauth/github/callback',
@@ -51,6 +51,18 @@ return [
 
         // https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps#directing-users-to-review-their-access
         'review_access_url' => 'https://github.com/settings/connections/applications/' . env('GITHUB_CLIENT_ID'),
+    ],
+
+    'gitlab' => [
+        'client_id' => env('GITLAB_CLIENT_ID'),
+        'client_secret' => env('GITLAB_CLIENT_SECRET'),
+        'redirect' => '/oauth/gitlab/callback',
+    ],
+
+    'bitbucket' => [
+        'client_id' => env('BITBUCKET_CLIENT_ID'),
+        'client_secret' => env('BITBUCKET_CLIENT_SECRET'),
+        'redirect' => '/oauth/bitbucket/callback',
     ],
 
 ];

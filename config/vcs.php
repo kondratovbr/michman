@@ -19,6 +19,7 @@ return [
         // TODO: CRITICAL! Don't forget to implement support for all of these.
 
         'github_v3' => [
+            // GitHub scopes are per-request and should be properly configured here.
             'oauth_scopes' => ['user', 'repo', 'admin:public_key'],
             'provider_class' => GitHubV3::class,
             'base_path' => 'https://api.github.com',
@@ -31,7 +32,9 @@ return [
         ],
 
         'gitlab' => [
-            'oauth_scopes' => [],
+            // GitLab scopes are configured on the OAuth application on gitlab.com,
+            // but fewer scopes may be requested by a request.
+            'oauth_scopes' => ['read_user', 'api'],
             'provider_class' => null,
             'base_path' => null,
             'auth_type' => 'token',
@@ -42,6 +45,7 @@ return [
         ],
 
         'bitbucket' => [
+            // Bitbucket doesn't support granular scopes. Scopes are configured on the OAuth application (consumer) on bitbucket.com
             'oauth_scopes' => [],
             'provider_class' => null,
             'base_path' => null,

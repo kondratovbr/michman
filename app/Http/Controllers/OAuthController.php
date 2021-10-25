@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Contracts\User as OauthUser;
 
+// TODO: CRITICAL! CONTINUE. Add a test for multiple VCS providers. I.e. a user auth'ed with GitHub first and then with GitLab - he should have two VCS providers created.
+
 class OAuthController extends AbstractController
 {
     public function __construct(
