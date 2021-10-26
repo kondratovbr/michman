@@ -10,19 +10,18 @@ use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
-// TODO: CRITICAL! Should I handle possible redirects here? Does Laravel do it automatically?
-
-// TODO: CRITICAL! Have I entirely forgot about pagination in responses?
+// TODO: CRITICAL! Have I entirely forgot about pagination in responses? Implement it and cover it with tests.
 
 /*
- * TODO: CRITICAL! I should also handle the "scope".
+ * TODO: CRITICAL! I should also handle the "scope". A user can change permissions given to us in the GitHub UI.
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
  *       a button to repair permissions.
  */
 
 // TODO: CRITICAL! Docs mention "304 Not Modified" responses. Do I have to explicitly cache the results somehow?
 
-// TODO: CRITICAL! Make sure everything is test-covered. Cover the webhook stuff I've added, for example.
+// TODO: CRITICAL! Cover with tests. Make sure everything is test-covered. Cover the webhook stuff I've added, for example.
+//       https://laravel.com/docs/8.x/http-client#testing
 
 class GitHubV3 extends AbstractVcsProvider
 {
@@ -67,17 +66,16 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function getAllSshKeys(): SshKeyDataCollection
     {
-        $response = $this->get('/user/keys');
-        $data = $this->decodeJson($response->body());
+        return $this->get('/user/keys', [],
+            function (SshKeyDataCollection $carry, array $data) {
+                /** @var object $key */
+                foreach ($data as $key) {
+                    $carry->push($this->sshKeyDataFromResponseData($key));
+                }
 
-        $collection = new SshKeyDataCollection;
-
-        /** @var object $key */
-        foreach ($data as $key) {
-            $collection->push($this->sshKeyDataFromResponseData($key));
-        }
-
-        return $collection;
+                return $carry;
+            },
+        new SshKeyDataCollection);
     }
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
@@ -97,27 +95,6 @@ class GitHubV3 extends AbstractVcsProvider
         $data = $this->decodeJson($response->body());
 
         return $this->sshKeyDataFromResponseData($data);
-    }
-
-    public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
-    {
-        $addedKeys = $this->getAllSshKeys();
-
-        /** @var SshKeyDto $duplicatedAddedKey */
-        $duplicatedAddedKey = $addedKeys->firstWhere('publicKey', $publicKey);
-
-        if ($duplicatedAddedKey !== null) {
-            if ($duplicatedAddedKey->name === $name)
-                return $duplicatedAddedKey;
-
-            return $this->updateSshKey(new SshKeyDto(
-                id: $duplicatedAddedKey->id,
-                publicKey: $publicKey,
-                name: $name,
-            ));
-        }
-
-        return $this->addSshKey($name, $publicKey);
     }
 
     public function updateSshKey(SshKeyDto $sshKey): SshKeyDto
@@ -146,7 +123,7 @@ class GitHubV3 extends AbstractVcsProvider
     protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
         return new SshKeyDto(
-            id: $data->id,
+            id: (string) $data->id,
             publicKey: $data->key,
             name: $data->title,
         );
@@ -164,17 +141,16 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        $response = $this->get("/repos/{$repo}/hooks");
-        $data = $this->decodeJson($response->body());
+        return $this->get("/repos/{$repo}/hooks", [],
+            function (WebhookDataCollection $carry, array $data) {
+                /** @var object $key */
+                foreach ($data as $key) {
+                    $carry->push($this->webhookDataFromResponseData($key));
+                }
 
-        $collection = new WebhookDataCollection;
-
-        /** @var object $hook */
-        foreach ($data as $hook) {
-            $collection->push($this->webhookDataFromResponseData($hook));
-        }
-
-        return $collection;
+                return $carry;
+            },
+            new WebhookDataCollection);
     }
 
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto

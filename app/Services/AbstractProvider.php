@@ -54,19 +54,38 @@ abstract class AbstractProvider
         return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
     }
 
-    /** Send a GET request to a relative path with provided parameters. */
-    protected function get(string $path, array $query = [], PendingRequest $pendingRequest = null): Response
+    /**
+     * Send a GET request to a relative path with provided parameters.
+     *
+     * Handles link-based pagination.
+     *
+     * @return Response|mixed
+     */
+    protected function get(string $path, array $query = [], callable $closure = null, mixed $initial = null): mixed
     {
-        $pendingRequest ??= $this->request();
-
-        return $pendingRequest
+        $response = $this->request()
             ->baseUrl($this->basePath)
             ->get($path, $query)
             ->throw();
+
+        if (is_null($closure))
+            return $response;
+
+        $carry = $closure($initial, $this->decodeJson($response->body()));
+        $next = $response->nextUrl();
+
+        while (! is_null($next)) {
+            $response = $this->request()->get($next)->throw();
+
+            $carry = $closure($carry, $this->decodeJson($response->body()));
+            $next = $response->nextUrl();
+        }
+
+        return $carry;
     }
 
     /** Send a POST request to a relative path with provided parameters. */
-    protected function post(string $path, array $data = [], PendingRequest $pendingRequest = null): Response
+    protected function post(string $path, array $data = []): Response
     {
         $pendingRequest ??= $this->request();
 

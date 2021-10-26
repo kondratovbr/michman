@@ -190,6 +190,7 @@ return [
         App\Providers\VcsProviderServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
         App\Providers\WebhooksServiceProvider::class,
+        App\Providers\GuzzleServiceProvider::class,
     ],
 
     /*
