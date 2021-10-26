@@ -32,7 +32,7 @@ class StoreServerActionTest extends AbstractFeatureTest
             'provider' => 'github_v3',
         ])->for($user)->create();
         VcsProvider::factory([
-            'provider' => 'gitlab',
+            'provider' => 'gitlab_v4',
         ])->for($user)->create();
 
         $spy = $this->spy(CreateWorkerSshKeyAction::class);

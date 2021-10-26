@@ -134,7 +134,7 @@ return [
         ],
         'gitlab' => [
             'icon' => 'fab fa-gitlab',
-            'vcs_provider' => 'gitlab',
+            'vcs_provider' => 'gitlab_v4',
         ],
         'bitbucket' => [
             'icon' => 'fab fa-bitbucket',

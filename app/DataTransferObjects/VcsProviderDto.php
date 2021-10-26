@@ -2,6 +2,7 @@
 
 namespace App\DataTransferObjects;
 
+use App\Support\Arr;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
 
@@ -20,7 +21,7 @@ class VcsProviderDto extends AbstractDto
     {
         return match ($vcsProviderName) {
             'github_v3' => static::github($oauthUser),
-            'gitlab' => static::gitlab($oauthUser),
+            'gitlab_v4' => static::gitlab($oauthUser),
             'bitbucket' => static::bitbucket($oauthUser),
             default => throw new RuntimeException('Unknown VCS provider name.')
         };
@@ -39,7 +40,7 @@ class VcsProviderDto extends AbstractDto
     private static function gitlab(OAuthUser $oauthUser): static
     {
         return new static(
-            provider: 'gitlab',
+            provider: 'gitlab_v4',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
             token: (string) $oauthUser->token,

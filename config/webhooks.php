@@ -19,7 +19,7 @@ return [
             ],
         ],
         'gitlab' => [
-            'vcs_provider' => 'gitlab',
+            'vcs_provider' => 'gitlab_v4',
             'service_class' => null,
             'events' => [
                 'ping',

@@ -97,7 +97,7 @@ return [
         ],
         'providers' => [
             'github_v3' => 'GitHub',
-            'gitlab' => 'GitLab',
+            'gitlab_v4' => 'GitLab',
             'bitbucket' => 'Bitbucket',
         ],
     ],

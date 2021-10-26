@@ -52,9 +52,9 @@ class VcsProviderDtoTest extends AbstractUnitTest
 
         $oauthUser->map($data)->setRaw($data);
 
-        $dto = VcsProviderDto::fromOauth($oauthUser, 'gitlab');
+        $dto = VcsProviderDto::fromOauth($oauthUser, 'gitlab_v4');
 
-        $this->assertEquals('gitlab', $dto->provider);
+        $this->assertEquals('gitlab_v4', $dto->provider);
         $this->assertEquals('123', $dto->external_id);
         $this->assertEquals('FreeGuy', $dto->nickname);
         $this->assertEquals('1234567890', $dto->token);
