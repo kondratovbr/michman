@@ -27,6 +27,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.0",
         "jenssegers/agent": "^2.6",
+        "kevinrob/guzzle-cache-middleware": "^3.4",
         "laravel/framework": "^8.12",
         "laravel/jetstream": "^2.2",
         "laravel/sanctum": "^2.6",
