@@ -10,15 +10,11 @@ use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
-// TODO: CRITICAL! Have I entirely forgot about pagination in responses? Implement it and cover it with tests.
-
 /*
  * TODO: CRITICAL! I should also handle the "scope". A user can change permissions given to us in the GitHub UI.
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
  *       a button to repair permissions.
  */
-
-// TODO: CRITICAL! Docs mention "304 Not Modified" responses. Do I have to explicitly cache the results somehow?
 
 // TODO: CRITICAL! Cover with tests. Make sure everything is test-covered. Cover the webhook stuff I've added, for example.
 //       https://laravel.com/docs/8.x/http-client#testing
