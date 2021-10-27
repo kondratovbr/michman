@@ -253,4 +253,88 @@ class OAuthTest extends AbstractFeatureTest
         $this->assertNull($vcsProvider->key);
         $this->assertNull($vcsProvider->secret);
     }
+
+    public function test_multiple_vcs_providers_can_be_created()
+    {
+        /** @var User $user */
+        $user = User::factory()
+            ->viaGithub()
+            ->withPersonalTeam()
+            ->create([
+                'oauth_id' => '12345',
+            ]);
+
+        /** @var VcsProvider $vcsProvider */
+        $vcsProvider = VcsProvider::factory([
+            'provider' => 'github_v3',
+            'external_id' => '123',
+            'nickname' => 'Jekyll',
+        ])
+            ->for($user)
+            ->create();
+
+        Socialite::shouldReceive('driver')
+            ->with('gitlab')
+            ->once()
+            ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) use ($user, $vcsProvider) {
+                $mock->shouldReceive('user')
+                    ->once()
+                    ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) use ($user, $vcsProvider) {
+                        $mock->shouldReceive('getId')
+                            ->withNoArgs()
+                            ->times(3)
+                            ->andReturn('321');
+                        $mock->shouldReceive('getNickname')
+                            ->withNoArgs()
+                            ->once()
+                            ->andReturn('Hyde');
+                        $mock->shouldReceive('getEmail')
+                            ->withNoArgs()
+                            ->once()
+                            ->andReturn($user->email);
+                        $mock->token = '666666';
+                    }));
+            }));
+
+        $response = $this->get('/oauth/gitlab/callback?code=123456789&state=123456789');
+
+        $response->assertRedirect(route('home'));
+        $this->assertAuthenticatedAs($user);
+
+        $this->assertDatabaseHas('vcs_providers', [
+            'id' => $vcsProvider->id,
+            'user_id' => $user->id,
+            'provider' => 'github_v3',
+            'external_id' => $vcsProvider->externalId,
+            'nickname' => $vcsProvider->nickname,
+            'key' => null,
+            'secret' => null,
+        ]);
+
+        $this->assertDatabaseHas('vcs_providers', [
+            'user_id' => $user->id,
+            'provider' => 'gitlab_v4',
+            'external_id' => '321',
+            'nickname' => 'Hyde',
+            'key' => null,
+            'secret' => null,
+        ]);
+
+        $token = $vcsProvider->token;
+
+        $vcsProvider->refresh();
+
+        $this->assertEquals($token, $vcsProvider->token);
+        $this->assertNull($vcsProvider->key);
+        $this->assertNull($vcsProvider->secret);
+
+        /** @var VcsProvider $vcsProviderTwo */
+        $vcsProviderTwo = $user->vcsProviders()->firstWhere('provider', 'gitlab_v4');
+
+        $this->assertNotNull($vcsProviderTwo);
+
+        $this->assertEquals('666666', $vcsProviderTwo->token);
+        $this->assertNull($vcsProviderTwo->key);
+        $this->assertNull($vcsProviderTwo->secret);
+    }
 }
