@@ -5,7 +5,11 @@ namespace App\Services;
 use App\Services\Traits\HasConfig;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 
 abstract class AbstractProvider
 {
@@ -54,6 +58,18 @@ abstract class AbstractProvider
         return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
     }
 
+    /** Create a pending request with caching configured. */
+    private function requestWithCaching(): PendingRequest
+    {
+        return $this->request()->withMiddleware(new CacheMiddleware(
+            new PrivateCacheStrategy(
+                new LaravelCacheStorage(
+                    Cache::store()
+                )
+            )
+        ));
+    }
+
     /**
      * Send a GET request to a relative path with provided parameters.
      *
@@ -63,7 +79,7 @@ abstract class AbstractProvider
      */
     protected function get(string $path, array $query = [], callable $closure = null, mixed $initial = null): mixed
     {
-        $response = $this->request()
+        $response = $this->requestWithCaching()
             ->baseUrl($this->basePath)
             ->get($path, $query)
             ->throw();
@@ -75,7 +91,7 @@ abstract class AbstractProvider
         $next = $response->nextUrl();
 
         while (! is_null($next)) {
-            $response = $this->request()->get($next)->throw();
+            $response = $this->requestWithCaching()->get($next)->throw();
 
             $carry = $closure($carry, $this->decodeJson($response->body()));
             $next = $response->nextUrl();
