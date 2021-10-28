@@ -12,13 +12,10 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 /*
- * TODO: CRITICAL! I should also handle the "scope". A user can change permissions given to us in the GitHub UI.
+ * TODO: IMPORTANT! I should also handle the "scope". A user can change permissions given to us in the GitHub UI.
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
  *       a button to repair permissions.
  */
-
-// TODO: CRITICAL! Cover with tests. Make sure everything is test-covered. Cover the webhook stuff I've added, for example.
-//       https://laravel.com/docs/8.x/http-client#testing
 
 class GitHubV3 extends AbstractVcsProvider
 {
@@ -141,6 +138,7 @@ class GitHubV3 extends AbstractVcsProvider
         return "git@github.com:{$repo}.git";
     }
 
+    /** https://docs.github.com/en/rest/reference/repos#list-repository-webhooks */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
         return $this->get("/repos/{$repo}/hooks", [],
@@ -155,6 +153,7 @@ class GitHubV3 extends AbstractVcsProvider
             new WebhookDataCollection);
     }
 
+    /** https://docs.github.com/en/rest/reference/repos#get-a-repository-webhook */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
         $response = $this->get("/repos/{$repo}/hooks/{$webhookExternalId}");
@@ -163,6 +162,7 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->webhookDataFromResponseData($data);
     }
 
+    /** https://docs.github.com/en/rest/reference/repos#create-a-repository-webhook */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
         $response = $this->post("/repos/{$repo}/hooks", [
@@ -201,6 +201,7 @@ class GitHubV3 extends AbstractVcsProvider
         return null;
     }
 
+    /** https://docs.github.com/en/rest/reference/repos#update-a-repository-webhook */
     public function updateWebhookPush(
         string $repo,
         string $webhookExternalId,
@@ -215,6 +216,7 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->webhookDataFromResponseData($data);
     }
 
+    /** https://docs.github.com/en/rest/reference/repos#delete-a-repository-webhook */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
         $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
