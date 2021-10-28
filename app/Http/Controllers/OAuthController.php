@@ -18,6 +18,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Contracts\User as OauthUser;
 
+/*
+ * TODO: IMPORTANT! Will have to figure out how to revoke tokens in case of a breach.
+ *       Users will probably have to re-authorize, so I'll have to prepare a plan for such scenario.
+ */
+
 class OAuthController extends AbstractController
 {
     public function __construct(
@@ -44,14 +49,12 @@ class OAuthController extends AbstractController
     {
         // TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
         //       Like, show a separate dialog after registration with accepting terms?
+        // TODO: CRITICAL! Don't forget to write these terms, btw.
 
         /*
-         * TODO: CRITICAL! If I want to access user's repositories I will need specific OAuth "scopes" for it:
-         *       https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
-         *       https://laravel.com/docs/8.x/socialite
-         *       I think I should just add scopes in the first auth redirect here,
-         *       but also check that we have the necessary scopes while performing specific actions
-         *       and request additional permissions if we don't have it.
+         * TODO: IMPORTANT! Figure out what to do if a user changes out permissions in the GitHub UI, for example.
+         *       Will have to catch that error and notify the user - ask to re-authorize us immediately,
+         *       if it happened in out UI, or send a link in an email otherwise.
          */
 
         /*
