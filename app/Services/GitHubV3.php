@@ -8,6 +8,7 @@ use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 /*
@@ -55,7 +56,11 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function credentialsAreValid(): bool
     {
-        $response = $this->get('/user');
+        try {
+            $response = $this->get('/user');
+        } catch (RequestException) {
+            return false;
+        }
 
         return $response->successful();
     }
@@ -105,9 +110,10 @@ class GitHubV3 extends AbstractVcsProvider
         $this->delete("/user/keys/{$id}");
     }
 
+    /** https://docs.github.com/en/rest/reference/repos#get-a-commit */
     public function getLatestCommitHash(string|null $fullRepoName, string $branch, string $username = null, string $repo = null): string
     {
-        $fullRepoName ??= "{$username}/{$branch}";
+        $fullRepoName ??= "{$username}/{$repo}";
 
         $response = $this->get("/repos/{$fullRepoName}/commits/{$branch}");
         $data = $this->decodeJson($response->body());
