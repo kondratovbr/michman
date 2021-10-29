@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DataTransferObjects\SshKeyDto;
+use phpseclib3\Crypt\PublicKeyLoader;
 use RuntimeException;
 
 abstract class AbstractVcsProvider extends AbstractProvider implements VcsProviderInterface
@@ -22,10 +23,7 @@ abstract class AbstractVcsProvider extends AbstractProvider implements VcsProvid
 
     public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
     {
-        $addedKeys = $this->getAllSshKeys();
-
-        /** @var SshKeyDto $duplicatedAddedKey */
-        $duplicatedAddedKey = $addedKeys->firstWhere('publicKey', $publicKey);
+        $duplicatedAddedKey = $this->findDuplicatedKey($publicKey);
 
         if ($duplicatedAddedKey !== null) {
             if ($duplicatedAddedKey->name === $name)
@@ -39,5 +37,28 @@ abstract class AbstractVcsProvider extends AbstractProvider implements VcsProvid
         }
 
         return $this->addSshKey($name, $publicKey);
+    }
+
+    private function findDuplicatedKey(string $publicKey): SshKeyDto|null
+    {
+        $publicKey = $this->cleanPublicKeyString($publicKey);
+
+        $addedKeys = $this->getAllSshKeys();
+
+        /** @var SshKeyDto $key */
+        foreach ($addedKeys as $key) {
+            if ($this->cleanPublicKeyString($key->publicKey) == $publicKey) {
+                $duplicatedAddedKey = $key;
+                break;
+            }
+        }
+
+        return $duplicatedAddedKey ?? null;
+    }
+
+    /** Load public key from a string and re-format in a consistent way. */
+    private function cleanPublicKeyString(string $publicKey): string
+    {
+        return PublicKeyLoader::load($publicKey)->toString('OpenSSH', ['comment' => '']);
     }
 }
