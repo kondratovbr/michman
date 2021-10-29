@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
+use App\DataTransferObjects\OAuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 /*
  * TODO: IMPORTANT! I should also handle the "scope". A user can change permissions given to us in the GitHub UI.
@@ -230,6 +232,15 @@ class GitHubV3 extends AbstractVcsProvider
             return;
 
         $this->deleteWebhook($repo, $hook->id);
+    }
+
+    public function refreshToken(string $refreshToken): OAuthTokenDto
+    {
+        // GitHub's tokens don't expire, so we don't have to refresh it at all.
+        // Consequentially, this method should never be called.
+        Log::warning("GitHubV3::refreshToken() method was called, but GitHub's tokens don't expire, so it shouldn't have been called at all.");
+
+        return new OAuthTokenDto($this->token);
     }
 
     /** Convert webhook data from response format into the internal format. */

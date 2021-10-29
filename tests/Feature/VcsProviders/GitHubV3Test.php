@@ -10,6 +10,7 @@ use App\Services\VcsProviderInterface;
 use App\Support\Arr;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Tests\AbstractFeatureTest;
 
 class GitHubV3Test extends AbstractFeatureTest
@@ -1110,6 +1111,15 @@ class GitHubV3Test extends AbstractFeatureTest
         Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'repos/user/repo/hooks'));
 
         Http::assertNotSent(fn(Request $request) => $this->checkRequest($request, 'DELETE', 'repos/user/repo/hooks/123'));
+    }
+
+    public function test_refreshToken_method()
+    {
+        $result = $this->api()->refreshToken('1234567890');
+
+        $this->assertEquals([
+            'token' => static::TOKEN,
+        ], $result->toArray());
     }
 
     protected function checkRequest(Request $request, string $method, string $url): bool

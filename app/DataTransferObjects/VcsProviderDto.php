@@ -12,10 +12,21 @@ class VcsProviderDto extends AbstractDto
         public string $provider,
         public string $external_id,
         public string $nickname,
-        public string|null $token = null,
+        public OAuthTokenDto|null $token = null,
         public string|null $key = null,
         public string|null $secret = null,
     ) {}
+
+    /** Convert this DTO to VcsProvider model attributes. */
+    public function toAttributes(): array
+    {
+        $attrs = $this->except('token')->toArray();
+
+        if (! is_null($this->token))
+            $attrs = Arr::merge($attrs, $this->token->toArray());
+
+        return $attrs;
+    }
 
     public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName): static
     {
@@ -33,7 +44,7 @@ class VcsProviderDto extends AbstractDto
             provider: 'github_v3',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
-            token: (string) $oauthUser->token,
+            token: OAuthTokenDto::fromData($oauthUser->token),
         );
     }
 
@@ -43,7 +54,11 @@ class VcsProviderDto extends AbstractDto
             provider: 'gitlab_v4',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
-            token: (string) $oauthUser->token,
+            token: OAuthTokenDto::fromData(
+                $oauthUser->token,
+                $oauthUser->refreshToken,
+                $oauthUser->expiresIn,
+            ),
         );
     }
 
@@ -53,7 +68,7 @@ class VcsProviderDto extends AbstractDto
             provider: 'bitbucket',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
-            token: (string) $oauthUser->token,
+            token: OAuthTokenDto::fromData($oauthUser->token),
         );
     }
 }

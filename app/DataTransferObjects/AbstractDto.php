@@ -44,6 +44,12 @@ abstract class AbstractDto implements Arrayable, Castable
         return Arr::merge($array, $add);
     }
 
+    /** Convert this DTO to Eloquent model attributes array. */
+    public function toAttributes(): array
+    {
+        return $this->toArray();
+    }
+
     public function only(string ...$keys): static
     {
         $dataTransferObject = clone $this;

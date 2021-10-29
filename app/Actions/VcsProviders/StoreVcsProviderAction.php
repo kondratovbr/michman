@@ -16,7 +16,7 @@ class StoreVcsProviderAction
          */
         
         /** @var VcsProvider $vcsProvider */
-        $vcsProvider = $user->vcsProviders()->create($data->toArray());
+        $vcsProvider = $user->vcsProviders()->create($data->toAttributes());
 
         return $vcsProvider;
     }

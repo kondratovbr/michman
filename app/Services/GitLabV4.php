@@ -4,22 +4,22 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
+use App\DataTransferObjects\OAuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
-/*
- * TODO: CRITICAL! CONTINUE. Figure out pagination and error handling for GitHub first.
- */
+// TODO: CRITICAL! CONTINUE. Unfinished.
 
 // TODO: CRITICAL! Test this. Create a repo on GitLab and try to deploy a project from it.
 
-// TODO: CRITICAL! Should I handle possible redirects here? Does Laravel do it automatically?
 // TODO: CRITICAL! Have I entirely forgot about pagination in responses?
 
 /*
- * TODO: CRITICAL! I should also handle the "scope".
+ * TODO: IMPORTANT! I should also handle the "scope".
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
  *       a button to repair permissions.
  */
@@ -60,17 +60,16 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function getAllSshKeys(): SshKeyDataCollection
     {
-        $response = $this->get('/user/keys');
-        $data = $this->decodeJson($response->body());
+        return $this->get('/user/keys', [],
+            function (SshKeyDataCollection $carry, array $data) {
+                /** @var object $key */
+                foreach ($data as $key) {
+                    $carry->push($this->sshKeyDataFromResponseData($key));
+                }
 
-        $collection = new SshKeyDataCollection;
-
-        /** @var object $key */
-        foreach ($data as $key) {
-            $collection->push($this->sshKeyDataFromResponseData($key));
-        }
-
-        return $collection;
+                return $carry;
+            },
+            new SshKeyDataCollection);
     }
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
@@ -164,6 +163,32 @@ class GitLabV4 extends AbstractVcsProvider
     public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void
     {
         // TODO: Implement deleteWebhookIfExistsPush() method.
+    }
+
+    /** https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow */
+    public function refreshToken(string $refreshToken): OAuthTokenDto
+    {
+        $redirect = config('services.gitlab.redirect');
+
+        $requestData = [
+            'client_id' => config('services.gitlab.client_id'),
+            'client_secret' => config('services.gitlab.client_secret'),
+            'refresh_token' => $refreshToken,
+            'grant_type' => 'refresh_token',
+            'redirect_uri' => Str::startsWith($redirect, '/')
+                ? URL::to($redirect)
+                : $redirect,
+        ];
+
+        $response = $this->request()->post('https://gitlab.com/oauth/token', $requestData)->throw();
+
+        $data = $this->decodeJson($response->body());
+
+        return OAuthTokenDto::fromData(
+            $data->access_token,
+            $data->refresh_token,
+            $data->expires_in,
+        );
     }
 
     /** Convert SSH key object from response format to internal format. */

@@ -15,7 +15,7 @@ class UpdateVcsProviderAction
                 ->lockForUpdate()
                 ->findOrFail($vcsProvider->getKey());
 
-            $vcsProvider->update($data->toArray());
+            $vcsProvider->update($data->toAttributes());
 
             return $vcsProvider;
         }, 5);

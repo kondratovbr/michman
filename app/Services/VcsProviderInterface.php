@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
+use App\DataTransferObjects\OAuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 
@@ -101,4 +102,7 @@ interface VcsProviderInterface
      * not throwing any errors if it doesn't exist.
      */
     public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void;
+
+    /** @return array */
+    public function refreshToken(string $refreshToken): OAuthTokenDto;
 }
