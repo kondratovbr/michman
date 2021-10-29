@@ -8,7 +8,7 @@ use phpseclib3\Crypt\Common\PublicKey;
 class SshKeyFormatter
 {
     /**
-     * Convert any SSH key from phpseclib3 to a properly formatter string.
+     * Convert any SSH key from phpseclib3 to a properly formatted string.
      *
      * Handles all the weird quirks of phpseclib3 built-in toString methods.
      */
@@ -27,7 +27,7 @@ class SshKeyFormatter
         // if the comment provided is an empty string so better trim the result just in case.
         $string = trim($string, ' ');
 
-        // For some reason phpseclib3 uses DOS "\r\n" characters for newlines while outputting keys to strings,
+        // For some reason phpseclib3 uses DOS "\r\n" characters for newlines while outputting keys to string,
         // so we have to convert that to Unix "\n" character or else OpenSSH on Linux won't understand it.
         // (Though third-party APIs seem to have no problems with it.)
         $string = Str::replace("\r\n", "\n", $string);
