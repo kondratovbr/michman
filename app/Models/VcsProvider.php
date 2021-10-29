@@ -75,19 +75,19 @@ class VcsProvider extends AbstractModel
     ];
 
     /** An interface to interact with the API. */
-    private VcsProviderInterface $api;
+    private VcsProviderInterface $providerApi;
 
     /** Get an instance of VcsProviderInterface to interact with the VCS provider API. */
     public function api(): VcsProviderInterface
     {
         // We're caching an instance of ServerProviderInterface for this model,
         // so it doesn't get made multiple times.
-        if (isset($this->api))
-            return $this->api;
+        if (isset($this->providerApi))
+            return $this->providerApi;
 
         // TODO: CRITICAL! CONTINUE. Figure out refreshing tokens.
 
-        $this->api = App::make(
+        $this->providerApi = App::make(
             "{$this->provider}_vcs",
             isset($this->token)
                 ? [
@@ -103,7 +103,7 @@ class VcsProvider extends AbstractModel
 
         return isset($this->expiresAt)
             ? $this->ensureFreshToken()
-            : $this->api;
+            : $this->providerApi;
     }
 
     /** Ensure the stored API token is still valid, refresh if needed. */
@@ -113,13 +113,13 @@ class VcsProvider extends AbstractModel
             $model = $this->freshLockForUpdate();
 
             if ($this->expiresAt->greaterThan(now()))
-                return $this->api;
+                return $this->providerApi;
 
-            $this->fill($this->api->refreshToken($this->refreshToken)->toAttributes());
+            $this->fill($this->providerApi->refreshToken($this->refreshToken)->toAttributes());
             $this->save();
 
             // Remove the existing API object to reconstruct it with the new token.
-            unset($this->api);
+            unset($this->providerApi);
 
             return $this->api();
         }, 5);
