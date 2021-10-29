@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\DataTransferObjects\SshKeyDto;
+use App\DataTransferObjects\WebhookDto;
+use App\Support\Arr;
 use phpseclib3\Crypt\PublicKeyLoader;
 use RuntimeException;
 
@@ -60,5 +62,43 @@ abstract class AbstractVcsProvider extends AbstractProvider implements VcsProvid
     private function cleanPublicKeyString(string $publicKey): string
     {
         return PublicKeyLoader::load($publicKey)->toString('OpenSSH', ['comment' => '']);
+    }
+
+    public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null
+    {
+        $hooks = $this->getRepoWebhooks($repo);
+
+        /** @var WebhookDto $hook */
+        foreach ($hooks as $hook) {
+            if ($hook->url === $payloadUrl && Arr::hasValue($hook->events, 'push'))
+                return $hook;
+        }
+
+        return null;
+    }
+
+    public function addWebhookSafelyPush(string $repo, string $payloadUrl, string $secret): WebhookDto
+    {
+        $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
+
+        if (! is_null($hook))
+            return $this->updateWebhookPush(
+                $repo,
+                $hook->id,
+                $payloadUrl,
+                $secret,
+            );
+
+        return $this->addWebhookPush($repo, $payloadUrl, $secret);
+    }
+
+    public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void
+    {
+        $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
+
+        if (is_null($hook))
+            return;
+
+        $this->deleteWebhook($repo, $hook->id);
     }
 }

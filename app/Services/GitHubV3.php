@@ -175,34 +175,6 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->webhookDataFromResponseData($data);
     }
 
-    public function addWebhookSafelyPush(string $repo, string $payloadUrl, string $secret): WebhookDto
-    {
-        $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
-
-        if (! is_null($hook))
-            return $this->updateWebhookPush(
-                $repo,
-                $hook->id,
-                $payloadUrl,
-                $secret,
-            );
-
-        return $this->addWebhookPush($repo, $payloadUrl, $secret);
-    }
-
-    public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null
-    {
-        $hooks = $this->getRepoWebhooks($repo);
-
-        /** @var WebhookDto $hook */
-        foreach ($hooks as $hook) {
-            if ($hook->url === $payloadUrl && Arr::hasValue($hook->events, 'push'))
-                return $hook;
-        }
-
-        return null;
-    }
-
     /** https://docs.github.com/en/rest/reference/repos#update-a-repository-webhook */
     public function updateWebhookPush(
         string $repo,
@@ -222,16 +194,6 @@ class GitHubV3 extends AbstractVcsProvider
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
         $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
-    }
-
-    public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void
-    {
-        $hook = $this->getWebhookIfExistsPush($repo, $payloadUrl);
-
-        if (is_null($hook))
-            return;
-
-        $this->deleteWebhook($repo, $hook->id);
     }
 
     public function refreshToken(string $refreshToken): OAuthTokenDto

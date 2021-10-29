@@ -12,11 +12,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-// TODO: CRITICAL! CONTINUE. Unfinished.
-
-// TODO: CRITICAL! Test this. Create a repo on GitLab and try to deploy a project from it.
-
-// TODO: CRITICAL! Have I entirely forgot about pagination in responses?
+// TODO: CRITICAL! CONTINUE. Test this. Create a repo on GitLab and try to deploy a project from it.
+// TODO: CRITICAL! Cover with tests. Don't forget to cover stuff that I moved to AbstractVcsProvider - it should be tested for every API.
 
 /*
  * TODO: IMPORTANT! I should also handle the "scope".
@@ -48,7 +45,9 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function commitUrl(string $repo, string $commit): string
     {
-        // TODO: CRITICAL! Implement commitUrl() method.
+        // TODO: CRITICAL! Test this.
+
+        return "https://gitlab.com/{$repo}/-/commit/{$commit}";
     }
 
     public function credentialsAreValid(): bool
@@ -125,44 +124,78 @@ class GitLabV4 extends AbstractVcsProvider
         return "git@gitlab.com:{$repo}.git";
     }
 
+    /** https://docs.gitlab.com/ee/api/projects.html#get-project-hook */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        // TODO: Implement getWebhook() method.
+        // TODO: CRITICAL! Test this.
+
+        $repo = urlencode($repo);
+
+        $response = $this->get("/projects/{$repo}/hooks/{$webhookExternalId}");
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
+    /** https://docs.gitlab.com/ee/api/projects.html#list-project-hooks */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        // TODO: Implement getRepoWebhooks() method.
+        // TODO: CRITICAL! Test this.
+
+        $repo = urlencode($repo);
+
+        return $this->get("/repos/{$repo}/hooks", [],
+            function (WebhookDataCollection $carry, array $data) {
+                /** @var object $key */
+                foreach ($data as $key) {
+                    $carry->push($this->webhookDataFromResponseData($key));
+                }
+
+                return $carry;
+            },
+            new WebhookDataCollection);
     }
 
+    /** https://docs.gitlab.com/ee/api/projects.html#add-project-hook */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: Implement addWebhookPush() method.
+        // TODO: CRITICAL! Test this.
+
+        $repo = urlencode($repo);
+
+        $response = $this->post(
+            "/repos/{$repo}/hooks",
+            $this->pushWebhookRequestData($payloadUrl, $secret),
+        );
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
-    public function addWebhookSafelyPush(string $repo, string $payloadUrl, string $secret): WebhookDto
-    {
-        // TODO: Implement addWebhookSafelyPush() method.
-    }
-
-    public function getWebhookIfExistsPush(string $repo, string $payloadUrl): WebhookDto|null
-    {
-        // TODO: Implement getWebhookIfExistsPush() method.
-    }
-
+    /** https://docs.gitlab.com/ee/api/projects.html#edit-project-hook */
     public function updateWebhookPush(string $repo, string $webhookExternalId, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: Implement updateWebhookPush() method.
+        // TODO: CRITICAL! Test this.
+
+        $repo = urlencode($repo);
+
+        $response = $this->put(
+            "/repos/{$repo}/hooks",
+            $this->pushWebhookRequestData($payloadUrl, $secret),
+        );
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
+    /** https://docs.gitlab.com/ee/api/projects.html#delete-project-hook */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
-        // TODO: Implement deleteWebhook() method.
-    }
+        // TODO: CRITICAL! Test this.
 
-    public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void
-    {
-        // TODO: Implement deleteWebhookIfExistsPush() method.
+        $repo = urlencode($repo);
+
+        $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
     }
 
     /** https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow */
@@ -199,5 +232,56 @@ class GitLabV4 extends AbstractVcsProvider
             publicKey: $data->key,
             name: $data->title,
         );
+    }
+
+    /** Convert webhook data from response format into the internal format. */
+    protected function webhookDataFromResponseData(object $data): WebhookDto
+    {
+        return new WebhookDto(
+            events: $this->eventsArrayFromData($data),
+            id: (string) $data->id,
+            url: $data->config->url,
+        );
+    }
+
+    /** Convert webhook data from a response to an array of events. */
+    protected function eventsArrayFromData(object $data): array
+    {
+        // https://docs.gitlab.com/ee/api/projects.html#add-project-hook
+        $events = [
+            "push",
+            "issues",
+            "confidential_issues",
+            "merge_requests",
+            "tag_push",
+            "note",
+            "confidential_note",
+            "job",
+            "pipeline",
+            "wiki_page",
+            "deployment",
+            "releases",
+        ];
+
+        $result = [];
+        foreach ($events as $event) {
+            $name = "{$events}_events";
+
+            if ($data->$name)
+                $result[] = $event;
+        }
+
+        return $result;
+    }
+
+    /** Get a request data array for creating or updating a push webhook. */
+    protected function pushWebhookRequestData(string $payloadUrl, string $secret): array
+    {
+        return [
+            'push_events' => true,
+            'url' => $payloadUrl,
+            'token' => $secret,
+            'enable_ssl_verification' => true,
+        ];
     }
 }
