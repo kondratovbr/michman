@@ -7,10 +7,8 @@ use App\DataTransferObjects\WebhookDto;
 use App\Models\VcsProvider;
 use App\Services\GitHubV3;
 use App\Services\VcsProviderInterface;
-use App\Support\Arr;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Tests\AbstractFeatureTest;
 
 class GitHubV3Test extends AbstractFeatureTest
@@ -23,12 +21,7 @@ class GitHubV3Test extends AbstractFeatureTest
 
         $result = $this->api()->credentialsAreValid();
 
-        Http::assertSent(function (Request $request) {
-            return $request->hasHeader('Accept', 'application/vnd.github.v3+json')
-                && $request->method() == 'GET'
-                && $request->url() == 'https://api.github.com/user'
-                && $request->hasHeader('Authorization', 'Bearer ' . static::TOKEN);
-        });
+        Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'https://api.github.com/user'));
 
         $this->assertTrue($result);
     }
@@ -41,12 +34,7 @@ class GitHubV3Test extends AbstractFeatureTest
 
         $result = $this->api()->credentialsAreValid();
 
-        Http::assertSent(function (Request $request) {
-            return $request->hasHeader('Accept', 'application/vnd.github.v3+json')
-                && $request->method() == 'GET'
-                && $request->url() == 'https://api.github.com/user'
-                && $request->hasHeader('Authorization', 'Bearer ' . static::TOKEN);
-        });
+        Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'https://api.github.com/user'));
 
         $this->assertFalse($result);
     }
@@ -1119,6 +1107,8 @@ class GitHubV3Test extends AbstractFeatureTest
 
         $this->assertEquals([
             'token' => static::TOKEN,
+            'refresh_token' => null,
+            'expires_at' => null,
         ], $result->toArray());
     }
 
