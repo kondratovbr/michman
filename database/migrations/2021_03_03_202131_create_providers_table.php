@@ -15,8 +15,12 @@ class CreateProvidersTable extends Migration
 
             $table->string('provider');
 
-            // Some APIs use token-based authentication and some use key/secret.
+            // For token-based authentication (OAuth 2.0).
             $table->text('token')->nullable();
+            $table->text('refresh_token')->nullable();
+            $table->timestamp('expires_at')->nullable();
+
+            // For key/secret authentication (OAuth 1.0) in case some API still uses it.
             $table->text('key')->nullable();
             $table->text('secret')->nullable();
 
