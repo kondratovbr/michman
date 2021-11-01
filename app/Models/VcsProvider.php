@@ -85,7 +85,7 @@ class VcsProvider extends AbstractModel
         if (isset($this->providerApi))
             return $this->providerApi;
 
-        // TODO: CRITICAL! CONTINUE. Figure out refreshing tokens.
+        // TODO: CRITICAL! CONTINUE. Add the same refreshing logic (or DRY) in Models/Provider.
 
         $this->providerApi = App::make(
             "{$this->provider}_vcs",
