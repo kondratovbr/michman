@@ -293,6 +293,8 @@ class OAuthTest extends AbstractFeatureTest
                             ->once()
                             ->andReturn($user->email);
                         $mock->token = '666666';
+                        $mock->refreshToken = '616161';
+                        $mock->expiresIn = 7200;
                     }));
             }));
 
