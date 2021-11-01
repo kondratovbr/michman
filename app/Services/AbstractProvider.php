@@ -70,6 +70,12 @@ abstract class AbstractProvider
         ));
     }
 
+    /** Get the url to the next page if provided. */
+    protected function nextUrl(Response $response): string|null
+    {
+        return $response->nextUrl();
+    }
+
     /**
      * Send a GET request to a relative path with provided parameters.
      *
@@ -88,13 +94,15 @@ abstract class AbstractProvider
             return $response;
 
         $carry = $closure($initial, $this->decodeJson($response->body()));
-        $next = $response->nextUrl();
+
+        $next = $this->nextUrl($response);
 
         while (! is_null($next)) {
             $response = $this->requestWithCaching()->get($next)->throw();
 
             $carry = $closure($carry, $this->decodeJson($response->body()));
-            $next = $response->nextUrl();
+
+            $next = $this->nextUrl($response);
         }
 
         return $carry;
