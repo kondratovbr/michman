@@ -14,17 +14,12 @@ use App\DataTransferObjects\SshKeyDto;
 use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-
-// TODO: IMPORTANT! Cover the thing with tests.
 
 // TODO: CRITICAL! We should somehow gracefully fail if the API returns something unexpected or doesn't respond at all.
 
-// TODO: CRITICAL! Should I handle possible redirects here? Does Laravel do it automatically?
-
 // TODO: CRITICAL! Have I entirely forgot about pagination in responses?
-
-// TODO: IMPORTANT! Should I add some reasonable timeouts here?
 
 class DigitalOceanV2 extends AbstractServerProvider
 {
@@ -46,6 +41,19 @@ class DigitalOceanV2 extends AbstractServerProvider
     protected function request(): PendingRequest
     {
         return Http::withToken($this->token)->acceptJson();
+    }
+
+    /** Override the standard nextUrl method - DigitalOcean returns links in the body instead of a header. */
+    protected function nextUrl(Response $response): string|null
+    {
+        // TODO: CRITICAL! CONTINUE. Test this and proceed with the new DigitalOcean API test coverage in DigitalOceanV2ApiNewTest.
+
+        $links = $this->decodeJson($response->body())->links ?? null;
+
+        if (is_null($links))
+            return null;
+
+        return $links->pages->next ?? null;
     }
 
     public function credentialsAreValid(): bool
