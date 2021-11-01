@@ -11,6 +11,7 @@ class GuzzleServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        /** Parse response's "Link" header. */
         Response::macro('links', function (): array|null {
             /** @var Response $this */
 
@@ -34,6 +35,7 @@ class GuzzleServiceProvider extends ServiceProvider
             });
         });
 
+        /** Get a "next" property from a response's "Link" header. */
         Response::macro('nextUrl', function (): string|null {
             /** @var Response $this */
 
