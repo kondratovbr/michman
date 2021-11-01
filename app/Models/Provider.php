@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\App;
  * @property string $provider
  * @property string|null $name
  * @property string|null $token
+ * @property string|null $refreshToken
+ * @property CarbonInterface|null $expiresAt
  * @property string|null $key
  * @property string|null $secret
  * @property CarbonInterface $createdAt
@@ -57,6 +59,8 @@ class Provider extends AbstractModel
     /** @var string[] The attributes that should be cast. */
     protected $casts = [
         'token' => 'encrypted',
+        'refresh_token' => 'encrypted',
+        'expires_at' => 'datetime',
         'key' => 'encrypted',
         'secret' => 'encrypted',
     ];
