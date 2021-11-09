@@ -8,8 +8,8 @@ use Laravel\Jetstream\Membership as JetstreamMembership;
 
 class Membership extends JetstreamMembership
 {
-    use UsesCamelCaseAttributes,
-        HasModelHelpers;
+    use UsesCamelCaseAttributes;
+    use HasModelHelpers;
 
     /** @var bool Indicates if the IDs are auto-incrementing. */
     public $incrementing = true;

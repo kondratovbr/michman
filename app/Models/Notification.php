@@ -22,8 +22,8 @@ use Illuminate\Notifications\DatabaseNotification;
  */
 class Notification extends DatabaseNotification
 {
-    use UsesCamelCaseAttributes,
-        HasModelHelpers;
+    use UsesCamelCaseAttributes;
+    use HasModelHelpers;
 
     /** Get the message to show in the UI. */
     public function getMessageAttribute(): string

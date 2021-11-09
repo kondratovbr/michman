@@ -10,8 +10,8 @@ use Laravel\Jetstream\TeamInvitation as JetstreamTeamInvitation;
 
 class TeamInvitation extends JetstreamTeamInvitation
 {
-    use UsesCamelCaseAttributes,
-        HasModelHelpers;
+    use UsesCamelCaseAttributes;
+    use HasModelHelpers;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

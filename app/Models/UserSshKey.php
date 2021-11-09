@@ -33,8 +33,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class UserSshKey extends AbstractModel implements SshKeyInterface
 {
-    use HasFactory,
-        IsSshKey;
+    use HasFactory;
+    use IsSshKey;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

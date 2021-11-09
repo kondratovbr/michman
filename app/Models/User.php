@@ -51,14 +51,14 @@ use App\Facades\QrCode;
  */
 class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
-    use HasApiTokens,
-        HasFactory,
-        HasProfilePhoto,
-        HasTeams,
-        Notifiable,
-        TwoFactorAuthenticatable,
-        UsesCamelCaseAttributes,
-        HasModelHelpers;
+    use HasApiTokens;
+    use HasFactory;
+    use HasProfilePhoto;
+    use HasTeams;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
+    use UsesCamelCaseAttributes;
+    use HasModelHelpers;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

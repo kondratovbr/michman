@@ -26,8 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class ServerSshKey extends AbstractModel implements SshKeyInterface
 {
-    use HasFactory,
-        IsSshKey;
+    use HasFactory;
+    use IsSshKey;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

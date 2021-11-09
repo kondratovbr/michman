@@ -31,8 +31,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class FirewallRule extends AbstractModel
 {
-    use HasFactory,
-        HasStatus;
+    use HasFactory;
+    use HasStatus;
 
     public const STATUS_ADDED = 'added';
     public const STATUS_ADDING = 'adding';
