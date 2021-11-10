@@ -15,6 +15,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
+// TODO: CRITICAL! Implement DigitalOcean OAuth instead of these tokens - they are old tech.
+// TODO: CRITICAL! I removed support for key/secret auth for providers. Should remove it from here. Will re-implement later if encounter it.
+
 class CreateProviderForm extends Component
 {
     use AuthorizesRequests;
