@@ -3,7 +3,7 @@
 namespace Tests\Feature\VcsProviders;
 
 use App\Actions\VcsProviders\UpdateVcsProviderAction;
-use App\DataTransferObjects\OAuthTokenDto;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\VcsProviderDto;
 use App\Events\VcsProviders\VcsProviderUpdatedEvent;
 use App\Models\VcsProvider;
@@ -22,7 +22,7 @@ class UpdateVcsProviderActionTest extends AbstractFeatureTest
 
         $data = new VcsProviderDto(
             'github_v3', '123', 'TheOtherName',
-            new OAuthTokenDto('98765'),
+            new AuthTokenDto('123', '98765'),
         );
 
         Event::fake();
@@ -39,7 +39,7 @@ class UpdateVcsProviderActionTest extends AbstractFeatureTest
 
         $vcs->refresh();
 
-        $this->assertEquals('98765', $vcs->token);
+        $this->assertEquals('98765', $vcs->token->token);
 
         Event::assertDispatched(VcsProviderUpdatedEvent::class);
     }

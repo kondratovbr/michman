@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Services\DigitalOceanV2;
 use App\Services\ServerProviderInterface;
 use Illuminate\Http\Client\Request;
@@ -45,7 +46,9 @@ class DigitalOceanV2ApiNewTest extends AbstractFeatureTest
     protected function api(): DigitalOceanV2
     {
         /** @var ServerProviderInterface $api */
-        $api = App::make('digital_ocean_v2_servers', ['token' => static::TOKEN]);
+        $api = App::make('digital_ocean_v2_servers', [
+            'token' => new AuthTokenDto(null, static::TOKEN),
+        ]);
 
         return $api;
     }

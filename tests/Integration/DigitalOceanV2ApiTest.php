@@ -27,16 +27,21 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         string $method,
         string $path,
         array $parameters,
-        string|array|Closure $response
+        string|array|Closure $response,
+        bool $caching = false,
     ): void {
         Http::shouldReceive('withToken')
             ->with($token)
             ->once()
             ->andReturn(Mockery::mock(PendingRequest::class,
-                function (MockInterface $mock) use ($method, $path, $parameters, $response) {
+                function (MockInterface $mock) use ($method, $path, $parameters, $response, $caching) {
                     $mock->shouldReceive('acceptJson')
                         ->once()
                         ->andReturnSelf();
+
+                    if ($caching)
+                        $mock->shouldReceive('withMiddleware')->once();
+
                     $mock->shouldReceive('baseUrl')
                         ->with(self::BASE_PATH)
                         ->once()
@@ -532,8 +537,8 @@ class DigitalOceanV2ApiTest extends AbstractIntegrationTest
         $publicKey = 'ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example';
 
         $this->mockRequest($token, 'get', '/account/keys', [],
-            '{"ssh_keys": [{"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "Old SSH Key Name"},{"id": 222,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fb","public_key": "ssh-rsa BEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example2","name": "My SSH Public Key 2"}],"links": {},"meta": {"total": 2}}'
-        );
+            '{"ssh_keys": [{"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "Old SSH Key Name"},{"id": 222,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fb","public_key": "ssh-rsa BEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example2","name": "My SSH Public Key 2"}],"links": {},"meta": {"total": 2}}',
+        true);
 
         $this->mockRequest($token, 'put', '/account/keys/111', ['name' => $name],
             '{"ssh_key": {"id": 111,"fingerprint": "3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa","public_key": "ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example","name": "New SSH Key Name"}}'

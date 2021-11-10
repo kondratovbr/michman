@@ -30,9 +30,7 @@ class VcsProviderDtoTest extends AbstractUnitTest
         $this->assertEquals('github_v3', $dto->provider);
         $this->assertEquals('123', $dto->external_id);
         $this->assertEquals('FreeGuy', $dto->nickname);
-        $this->assertEquals('1234567890', $dto->token);
-        $this->assertNull($dto->key);
-        $this->assertNull($dto->secret);
+        $this->assertEquals('1234567890', $dto->token->token);
     }
 
     public function test_gitlab()
@@ -57,9 +55,7 @@ class VcsProviderDtoTest extends AbstractUnitTest
         $this->assertEquals('gitlab_v4', $dto->provider);
         $this->assertEquals('123', $dto->external_id);
         $this->assertEquals('FreeGuy', $dto->nickname);
-        $this->assertEquals('1234567890', $dto->token);
-        $this->assertNull($dto->key);
-        $this->assertNull($dto->secret);
+        $this->assertEquals('1234567890', $dto->token->token);
     }
 
     public function test_bitbucket()
@@ -84,8 +80,6 @@ class VcsProviderDtoTest extends AbstractUnitTest
         $this->assertEquals('bitbucket', $dto->provider);
         $this->assertEquals('{123}', $dto->external_id);
         $this->assertEquals('FreeGuy', $dto->nickname);
-        $this->assertEquals('1234567890', $dto->token);
-        $this->assertNull($dto->key);
-        $this->assertNull($dto->secret);
+        $this->assertEquals('1234567890', $dto->token->token);
     }
 }

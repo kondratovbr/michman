@@ -57,7 +57,7 @@ class OAuthTest extends AbstractFeatureTest
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
-                            ->times(3)
+                            ->times(4)
                             ->andReturn('123456789');
                         $mock->shouldReceive('getEmail')
                             ->twice()
@@ -99,7 +99,7 @@ class OAuthTest extends AbstractFeatureTest
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
-                            ->times(3)
+                            ->times(4)
                             ->andReturn('123456789');
                         $mock->shouldReceive('getEmail')
                             ->twice()
@@ -123,8 +123,6 @@ class OAuthTest extends AbstractFeatureTest
             'provider' => 'github_v3',
             'external_id' => '123456789',
             'nickname' => 'foobar',
-            'key' => null,
-            'secret' => null,
         ]);
 
         $this->assertCount(1, $user->vcsProviders);
@@ -132,7 +130,7 @@ class OAuthTest extends AbstractFeatureTest
 
         $vcsProvider = $user->vcs('github_v3');
 
-        $this->assertEquals('foobarbaz', $vcsProvider->token);
+        $this->assertEquals('foobarbaz', $vcsProvider->token->token);
     }
 
     public function test_previously_oauthed_user_can_login_via_oauth()
@@ -161,7 +159,7 @@ class OAuthTest extends AbstractFeatureTest
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) use ($user, $vcsProvider) {
                         $mock->shouldReceive('getId')
                             ->withNoArgs()
-                            ->times(3)
+                            ->times(4)
                             ->andReturn($vcsProvider->externalId);
                         $mock->shouldReceive('getNickname')
                             ->withNoArgs()
@@ -185,15 +183,11 @@ class OAuthTest extends AbstractFeatureTest
             'provider' => 'github_v3',
             'external_id' => $vcsProvider->externalId,
             'nickname' => $vcsProvider->nickname,
-            'key' => null,
-            'secret' => null,
         ]);
 
         $vcsProvider->refresh();
 
-        $this->assertEquals('987654321', $vcsProvider->token);
-        $this->assertNull($vcsProvider->key);
-        $this->assertNull($vcsProvider->secret);
+        $this->assertEquals('987654321', $vcsProvider->token->token);
     }
 
     public function test_existing_user_can_enable_oauth_by_logging_in()
@@ -213,7 +207,7 @@ class OAuthTest extends AbstractFeatureTest
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
-                            ->times(3)
+                            ->times(4)
                             ->andReturn('12345');
                         $mock->shouldReceive('getEmail')
                             ->once()
@@ -242,16 +236,12 @@ class OAuthTest extends AbstractFeatureTest
             'provider' => 'github_v3',
             'external_id' =>'12345',
             'nickname' => 'theuser',
-            'key' => null,
-            'secret' => null,
         ]);
 
         /** @var VcsProvider $vcsProvider */
         $vcsProvider = $user->vcsProviders()->first();
 
-        $this->assertEquals('987654321', $vcsProvider->token);
-        $this->assertNull($vcsProvider->key);
-        $this->assertNull($vcsProvider->secret);
+        $this->assertEquals('987654321', $vcsProvider->token->token);
     }
 
     public function test_multiple_vcs_providers_can_be_created()
@@ -282,7 +272,7 @@ class OAuthTest extends AbstractFeatureTest
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) use ($user, $vcsProvider) {
                         $mock->shouldReceive('getId')
                             ->withNoArgs()
-                            ->times(3)
+                            ->times(4)
                             ->andReturn('321');
                         $mock->shouldReceive('getNickname')
                             ->withNoArgs()
@@ -309,8 +299,6 @@ class OAuthTest extends AbstractFeatureTest
             'provider' => 'github_v3',
             'external_id' => $vcsProvider->externalId,
             'nickname' => $vcsProvider->nickname,
-            'key' => null,
-            'secret' => null,
         ]);
 
         $this->assertDatabaseHas('vcs_providers', [
@@ -318,25 +306,19 @@ class OAuthTest extends AbstractFeatureTest
             'provider' => 'gitlab_v4',
             'external_id' => '321',
             'nickname' => 'Hyde',
-            'key' => null,
-            'secret' => null,
         ]);
 
-        $token = $vcsProvider->token;
+        $token = $vcsProvider->token->token;
 
         $vcsProvider->refresh();
 
-        $this->assertEquals($token, $vcsProvider->token);
-        $this->assertNull($vcsProvider->key);
-        $this->assertNull($vcsProvider->secret);
+        $this->assertEquals($token, $vcsProvider->token->token);
 
         /** @var VcsProvider $vcsProviderTwo */
         $vcsProviderTwo = $user->vcsProviders()->firstWhere('provider', 'gitlab_v4');
 
         $this->assertNotNull($vcsProviderTwo);
 
-        $this->assertEquals('666666', $vcsProviderTwo->token);
-        $this->assertNull($vcsProviderTwo->key);
-        $this->assertNull($vcsProviderTwo->secret);
+        $this->assertEquals('666666', $vcsProviderTwo->token->token);
     }
 }

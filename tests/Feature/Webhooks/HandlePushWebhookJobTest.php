@@ -15,15 +15,22 @@ class HandlePushWebhookJobTest extends AbstractFeatureTest
 {
     public function test_action_gets_executed()
     {
+        /** @var Project $project */
+        $project = Project::factory()
+            ->withUserAndServers()
+            ->repoInstalled()
+            ->create();
+
         /** @var WebhookCall $call */
         $call = WebhookCall::factory([
             'type' => 'push',
             'processed' => false,
             'payload' => [
                 'after' => '1234567890',
+                'ref' => "refs/heads/{$project->branch}",
             ],
         ])
-            ->withWebhook()
+            ->for(Webhook::factory()->for($project))
             ->create();
 
         $job = new HandlePushWebhookJob($call);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\VcsProviders;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use App\Models\VcsProvider;
@@ -21,7 +22,7 @@ class GitHubV3Test extends AbstractFeatureTest
 
         $result = $this->api()->credentialsAreValid();
 
-        Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'https://api.github.com/user'));
+        Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'user'));
 
         $this->assertTrue($result);
     }
@@ -34,7 +35,7 @@ class GitHubV3Test extends AbstractFeatureTest
 
         $result = $this->api()->credentialsAreValid();
 
-        Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'https://api.github.com/user'));
+        Http::assertSent(fn(Request $request) => $this->checkRequest($request, 'GET', 'user'));
 
         $this->assertFalse($result);
     }
@@ -1109,6 +1110,7 @@ class GitHubV3Test extends AbstractFeatureTest
             'token' => static::TOKEN,
             'refresh_token' => null,
             'expires_at' => null,
+            'id' => null,
         ], $result->toArray());
     }
 
@@ -1127,7 +1129,7 @@ class GitHubV3Test extends AbstractFeatureTest
             'provider' => 'github_v3',
         ])->withUser()->create();
 
-        $vcs->token = static::TOKEN;
+        $vcs->token = new AuthTokenDto(null, static::TOKEN);
         $vcs->save();
 
         return $vcs->api();

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Actions\Providers\StoreProviderAction;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\ProviderDto;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
@@ -17,9 +18,10 @@ class StoreProviderActionTest extends AbstractFeatureTest
 
         $data = new ProviderDto(
             provider: 'digital_ocean_v2',
-            token: 'foobar',
-            key: null,
-            secret: null,
+            token: new AuthTokenDto(
+                null,
+                'foobar',
+            ),
             name: 'New Provider',
         );
 
@@ -33,7 +35,7 @@ class StoreProviderActionTest extends AbstractFeatureTest
         $this->assertCount(1, $user->providers);
         $this->assertEquals('digital_ocean_v2', $provider->provider);
         $this->assertEquals('New Provider', $provider->name);
-        $this->assertEquals('foobar', $provider->token);
+        $this->assertEquals('foobar', $provider->token->token);
         $this->assertNull($provider->key);
         $this->assertNull($provider->secret);
         // We don't assert for token here because token is stored encrypted,
@@ -42,53 +44,10 @@ class StoreProviderActionTest extends AbstractFeatureTest
             'user_id' => $user->id,
             'provider' => 'digital_ocean_v2',
             'name' => 'New Provider',
-            'key' => null,
-            'secret' => null,
         ]);
 
         $provider->refresh();
 
-        $this->assertEquals('foobar', $provider->token);
-    }
-
-    public function test_provider_with_key_and_secret_gets_created()
-    {
-        /** @var User $user */
-        $user = User::factory()->withPersonalTeam()->create();
-
-        $data = new ProviderDto(
-            provider: 'aws',
-            token: null,
-            key: 'login',
-            secret: 'password',
-            name: 'New Provider',
-        );
-
-        /** @var StoreProviderAction $action */
-        $action = App::make(StoreProviderAction::class);
-
-        $provider = $action->execute($data, $user);
-
-        $this->assertNotNull($provider);
-        $this->assertNotNull($provider->id);
-        $this->assertCount(1, $user->providers);
-        $this->assertEquals('aws', $provider->provider);
-        $this->assertEquals('New Provider', $provider->name);
-        $this->assertNull($provider->token);
-        $this->assertEquals('login', $provider->key);
-        $this->assertEquals('password', $provider->secret);
-        // We don't assert for key/secret here because they're stored encrypted,
-        // so we cannot easily check them.
-        $this->assertDatabaseHas('providers', [
-            'user_id' => $user->id,
-            'provider' => 'aws',
-            'name' => 'New Provider',
-            'token' => null,
-        ]);
-
-        $provider->refresh();
-
-        $this->assertEquals('login', $provider->key);
-        $this->assertEquals('password', $provider->secret);
+        $this->assertEquals('foobar', $provider->token->token);
     }
 }

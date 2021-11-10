@@ -17,7 +17,7 @@ class NullableDtoCastTest extends AbstractUnitTest
             'n' => 6,
             'arr' => ['foo', 'bar', 'baz'],
         ];
-        $value = json_encode($data);
+        $value = serialize(DummyDto::fromArray($data));
 
         $model = new class extends AbstractModel {};
 
@@ -76,7 +76,7 @@ class NullableDtoCastTest extends AbstractUnitTest
             [],
         );
 
-        $this->assertEquals(json_encode($data), $value);
+        $this->assertEquals(serialize($dto), $value);
     }
 
     public function test_null_set()

@@ -18,7 +18,10 @@ class VcsProviderControllerTest extends AbstractFeatureTest
 {
     public function test_github_redirect()
     {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        /** @var User $user */
+        $user = User::factory()->withPersonalTeam()->create();
+
+        $this->actingAs($user);
 
         Socialite::shouldReceive('driver')
             ->once()
@@ -55,7 +58,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
-                            ->once()
+                            ->twice()
                             ->andReturn('123456789');
                         $mock->shouldReceive('getNickname')
                             ->once()
@@ -74,12 +77,10 @@ class VcsProviderControllerTest extends AbstractFeatureTest
             'provider' => 'github_v3',
             'external_id' => '123456789',
             'nickname' => 'theuser',
-            'key' => null,
-            'secret' => null,
         ]);
         $this->assertCount(1, $user->vcsProviders);
         $this->assertNotNull($user->vcs('github_v3'));
-        $this->assertEquals('foobar', $user->vcs('github_v3')->token);
+        $this->assertEquals('foobar', $user->vcs('github_v3')->token->token);
 
         Event::assertDispatched(FlashMessageEvent::class);
     }
@@ -103,7 +104,7 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
-                            ->twice()
+                            ->times(3)
                             ->andReturn('123456789');
                         $mock->shouldReceive('getNickname')
                             ->once()
@@ -124,12 +125,10 @@ class VcsProviderControllerTest extends AbstractFeatureTest
             'user_id' => $user->id,
             'provider' => 'github_v3',
             'external_id' => '123456789',
-            'key' => null,
-            'secret' => null,
         ]);
         $this->assertCount(1, $user->vcsProviders);
         $this->assertNotNull($user->vcs('github_v3'));
-        $this->assertEquals('foobar', $user->vcs('github_v3')->token);
+        $this->assertEquals('foobar', $user->vcs('github_v3')->token->token);
 
         Event::assertDispatched(FlashMessageEvent::class);
     }
