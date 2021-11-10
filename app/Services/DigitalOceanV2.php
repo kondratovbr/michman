@@ -36,8 +36,6 @@ class DigitalOceanV2 extends AbstractServerProvider
     /** Override the standard nextUrl method - DigitalOcean returns links in the body instead of a header. */
     protected function nextUrl(Response $response): string|null
     {
-        // TODO: CRITICAL! CONTINUE. Test this and proceed with the new DigitalOcean API test coverage in DigitalOceanV2ApiNewTest.
-
         $links = $this->decodeJson($response->body())->links ?? null;
 
         if (is_null($links))
