@@ -4,13 +4,14 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
-use App\DataTransferObjects\OAuthTokenDto;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 // TODO: CRITICAL! CONTINUE. Test this. Create a repo on GitLab and try to deploy a project from it.
 // TODO: CRITICAL! Cover with tests. Don't forget to cover stuff that I moved to AbstractVcsProvider - it should be tested for every API.
@@ -23,16 +24,6 @@ use Illuminate\Support\Str;
 
 class GitLabV4 extends AbstractVcsProvider
 {
-    /** @var string Bearer token used for authentication. */
-    private string $token;
-
-    public function __construct(string $token, int $identifier = null)
-    {
-        parent::__construct($identifier);
-
-        $this->token = $token;
-    }
-
     protected function getConfigPrefix(): string
     {
         return 'vcs.list.gitlab_v4';
@@ -40,7 +31,7 @@ class GitLabV4 extends AbstractVcsProvider
 
     protected function request(): PendingRequest
     {
-        return Http::withToken($this->token);
+        return Http::withToken($this->token->token);
     }
 
     public function commitUrl(string $repo, string $commit): string
@@ -68,7 +59,8 @@ class GitLabV4 extends AbstractVcsProvider
 
                 return $carry;
             },
-            new SshKeyDataCollection);
+            new SshKeyDataCollection,
+        );
     }
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
@@ -199,14 +191,17 @@ class GitLabV4 extends AbstractVcsProvider
     }
 
     /** https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow */
-    public function refreshToken(string $refreshToken): OAuthTokenDto
+    public function refreshToken(): AuthTokenDto
     {
+        if (empty($this->token->refresh_token))
+            throw new RuntimeException('No refresh token provided in the token data.');
+
         $redirect = config('services.gitlab.redirect');
 
         $requestData = [
             'client_id' => config('services.gitlab.client_id'),
             'client_secret' => config('services.gitlab.client_secret'),
-            'refresh_token' => $refreshToken,
+            'refresh_token' => $this->token->refresh_token,
             'grant_type' => 'refresh_token',
             'redirect_uri' => Str::startsWith($redirect, '/')
                 ? URL::to($redirect)
@@ -217,7 +212,8 @@ class GitLabV4 extends AbstractVcsProvider
 
         $data = $this->decodeJson($response->body());
 
-        return OAuthTokenDto::fromData(
+        return AuthTokenDto::fromData(
+            $data->id,
             $data->access_token,
             $data->refresh_token,
             $data->expires_in,

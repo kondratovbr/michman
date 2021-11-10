@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\IsApiProvider;
 use App\Services\ServerProviderInterface;
 use Carbon\CarbonInterface;
 use Database\Factories\ProviderFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\App;
+use RuntimeException;
 
 /**
  * Server Provider Eloquent model
@@ -20,11 +21,6 @@ use Illuminate\Support\Facades\App;
  * @property int $id
  * @property string $provider
  * @property string|null $name
- * @property string|null $token
- * @property string|null $refreshToken
- * @property CarbonInterface|null $expiresAt
- * @property string|null $key
- * @property string|null $secret
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -38,6 +34,7 @@ use Illuminate\Support\Facades\App;
 class Provider extends AbstractModel
 {
     use HasFactory;
+    use IsApiProvider;
 
     public const STATUS_PENDING = 'pending';
     public const STATUS_ERROR = 'error';
@@ -47,9 +44,6 @@ class Provider extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'provider',
-        'token',
-        'key',
-        'secret',
         'name',
     ];
 
@@ -57,13 +51,7 @@ class Provider extends AbstractModel
     protected $visible = [];
 
     /** @var string[] The attributes that should be cast. */
-    protected $casts = [
-        'token' => 'encrypted',
-        'refresh_token' => 'encrypted',
-        'expires_at' => 'datetime',
-        'key' => 'encrypted',
-        'secret' => 'encrypted',
-    ];
+    protected $casts = [];
 
     /** An interface to interact with the API. */
     private ServerProviderInterface $api;
@@ -85,22 +73,20 @@ class Provider extends AbstractModel
         return $this->status = static::STATUS_READY;
     }
 
+    protected function diTargetName(): string
+    {
+        return "{$this->provider}_servers";
+    }
+
     /** Get an instance of ServerProviderInterface to interact with the server provider API. */
     public function api(): ServerProviderInterface
     {
-        // TODO: CRITICAL! Cover with tests. Other similar methods as well (Models/VcsProvider). Make sure to cover caching as well.
-        // We're caching an instance of ServerProviderInterface for this model,
-        // so it doesn't get made multiple times.
-        if (! isset($this->api)) {
-            $this->api = App::make(
-                "{$this->provider}_servers",
-                isset($this->token)
-                    ? ['token' => $this->token, 'identifier' => $this->id]
-                    : ['key' => $this->key, 'secret' => $this->secret, 'identifier' => $this->id]
-            );
-        }
+        $api = $this->getApi();
 
-        return $this->api;
+        if (! $api instanceof ServerProviderInterface)
+            throw new RuntimeException('API instance created for Models/Provider is not an instance of ServerProviderInterface.');
+
+        return $api;
     }
 
     /** Get a relation to the user who owns this provider account. */

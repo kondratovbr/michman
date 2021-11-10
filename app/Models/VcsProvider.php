@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\VcsProviders\VcsProviderCreatedEvent;
 use App\Events\VcsProviders\VcsProviderDeletedEvent;
 use App\Events\VcsProviders\VcsProviderUpdatedEvent;
+use App\Models\Traits\IsApiProvider;
 use App\Services\VcsProviderInterface;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
@@ -12,8 +13,7 @@ use Database\Factories\VcsProviderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 /**
  * VcsProvider Eloquent model
@@ -25,11 +25,6 @@ use Illuminate\Support\Facades\DB;
  * @property string $provider
  * @property string $externalId
  * @property string $nickname
- * @property string|null $token
- * @property string|null $refreshToken
- * @property CarbonInterface $expiresAt
- * @property string|null $key
- * @property string|null $secret
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -42,30 +37,20 @@ use Illuminate\Support\Facades\DB;
 class VcsProvider extends AbstractModel
 {
     use HasFactory;
+    use IsApiProvider;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'provider',
         'external_id',
         'nickname',
-        'token',
-        'refresh_token',
-        'expires_at',
-        'key',
-        'secret',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
-    protected $casts = [
-        'token' => 'encrypted',
-        'refresh_token' => 'encrypted',
-        'expires_at' => 'datetime',
-        'key' => 'encrypted',
-        'secret' => 'encrypted',
-    ];
+    protected $casts = [];
 
     /** @var string[] The event map for the model. */
     protected $dispatchesEvents = [
@@ -74,55 +59,20 @@ class VcsProvider extends AbstractModel
         'deleted' => VcsProviderDeletedEvent::class,
     ];
 
-    /** An interface to interact with the API. */
-    private VcsProviderInterface $providerApi;
+    protected function diTargetName(): string
+    {
+        return "{$this->provider}_vcs";
+    }
 
     /** Get an instance of VcsProviderInterface to interact with the VCS provider API. */
     public function api(): VcsProviderInterface
     {
-        // We're caching an instance of ServerProviderInterface for this model,
-        // so it doesn't get made multiple times.
-        if (isset($this->providerApi))
-            return $this->providerApi;
+        $api = $this->getApi();
 
-        // TODO: CRITICAL! CONTINUE. Add the same refreshing logic (or DRY) in Models/Provider.
+        if (! $api instanceof VcsProviderInterface)
+            throw new RuntimeException('API instance created for Models/VcsProvider is not an instance of VcsProviderInterface.');
 
-        $this->providerApi = App::make(
-            "{$this->provider}_vcs",
-            isset($this->token)
-                ? [
-                    'token' => $this->token,
-                    'identifier' => $this->id,
-                ]
-                : [
-                    'key' => $this->key,
-                    'secret' => $this->secret,
-                    'identifier' => $this->id,
-                ]
-        );
-
-        return isset($this->expiresAt)
-            ? $this->ensureFreshToken()
-            : $this->providerApi;
-    }
-
-    /** Ensure the stored API token is still valid, refresh if needed. */
-    protected function ensureFreshToken(): VcsProviderInterface
-    {
-        return DB::transaction(function (): VcsProviderInterface {
-            $model = $this->freshLockForUpdate();
-
-            if ($this->expiresAt->greaterThan(now()))
-                return $this->providerApi;
-
-            $this->fill($this->providerApi->refreshToken($this->refreshToken)->toAttributes());
-            $this->save();
-
-            // Remove the existing API object to reconstruct it with the new token.
-            unset($this->providerApi);
-
-            return $this->api();
-        }, 5);
+        return $api;
     }
 
     /** Get the name of the webhook provider corresponding to this VCS provider. */

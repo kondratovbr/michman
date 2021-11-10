@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Models\Provider;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -16,7 +17,10 @@ class ProviderSeeder extends Seeder
         // Seed an actual dev token from config.
         Provider::factory([
             'provider' => 'digital_ocean_v2',
-            'token' => (string) config('providers.do_dev_token'),
+            'token' => new AuthTokenDto(
+                '123456',
+                (string) config('providers.do_dev_token'),
+            ),
             'name' => 'Dev Token',
         ])
             ->for(

@@ -7,6 +7,7 @@ use App\Collections\ServerDataCollection;
 use App\Collections\SizeDataCollection;
 use App\Collections\SshKeyDataCollection;
 use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\RegionDto;
 use App\DataTransferObjects\ServerDto;
 use App\DataTransferObjects\SizeDto;
@@ -16,23 +17,12 @@ use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
-// TODO: CRITICAL! We should somehow gracefully fail if the API returns something unexpected or doesn't respond at all.
-
-// TODO: CRITICAL! Have I entirely forgot about pagination in responses?
+// TODO: IMPORTANT! DigitalOcean's API doesn't supply any cache guidance in responses. I may need to cache them manually sometime after.
 
 class DigitalOceanV2 extends AbstractServerProvider
 {
-    /** @var string Bearer token used for authentication. */
-    private string $token;
-
-    public function __construct(string $token, int $identifier = null)
-    {
-        parent::__construct($identifier);
-
-        $this->token = $token;
-    }
-
     protected function getConfigPrefix(): string
     {
         return 'providers.list.digital_ocean_v2';
@@ -40,7 +30,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     protected function request(): PendingRequest
     {
-        return Http::withToken($this->token)->acceptJson();
+        return Http::withToken($this->token->token)->acceptJson();
     }
 
     /** Override the standard nextUrl method - DigitalOcean returns links in the body instead of a header. */
@@ -65,46 +55,46 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     protected function getAllRegionsFromApi(): RegionDataCollection
     {
-        $response = $this->get('/regions');
-        $data = $this->decodeJson(($response->body()));
+        return $this->get('/regions', ['per_page' => 5],
+            function (RegionDataCollection $carry, object $data) {
+                /** @var object $region */
+                foreach ($data->regions as $region) {
+                    $carry->push(new RegionDto(
+                        name: $region->name,
+                        slug: $region->slug,
+                        sizes: $region->sizes,
+                        available: $region->available,
+                    ));
+                }
 
-        $collection = new RegionDataCollection;
-
-        /** @var object $region */
-        foreach ($data->regions as $region) {
-            $collection->push(new RegionDto(
-                name: $region->name,
-                slug: $region->slug,
-                sizes: $region->sizes,
-                available: $region->available,
-            ));
-        }
-
-        return $collection;
+                return $carry;
+            },
+        new RegionDataCollection,
+        );
     }
 
     protected function getAllSizesFromApi(): SizeDataCollection
     {
-        $response = $this->get('/sizes');
-        $data = $this->decodeJson($response->body());
+        return $this->get('/sizes', [],
+            function (SizeDataCollection $carry, object $data) {
+                /** @var object $size */
+                foreach ($data->sizes as $size) {
+                    $carry->push(new SizeDto(
+                        slug: $size->slug,
+                        transfer: $size->transfer,
+                        priceMonthly: $size->price_monthly,
+                        memoryMb: $size->memory,
+                        cpus: $size->vcpus,
+                        diskGb: $size->disk,
+                        regions: $size->regions,
+                        available: $size->available,
+                    ));
+                }
 
-        $collection = new SizeDataCollection;
-
-        /** @var object $size */
-        foreach ($data->sizes as $size) {
-            $collection->push(new SizeDto(
-                slug: $size->slug,
-                transfer: $size->transfer,
-                priceMonthly: $size->price_monthly,
-                memoryMb: $size->memory,
-                cpus: $size->vcpus,
-                diskGb: $size->disk,
-                regions: $size->regions,
-                available: $size->available,
-            ));
-        }
-
-        return $collection;
+                return $carry;
+            },
+            new SizeDataCollection,
+        );
     }
 
     public function getServer(string $serverId): ServerDto
@@ -117,16 +107,16 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function getAllServers(): ServerDataCollection
     {
-        $response = $this->get('/droplets');
-        $data = $this->decodeJson($response->body());
+        return $this->get('/droplets', [],
+            function (ServerDataCollection $carry, object $data) {
+                foreach ($data->droplets as $droplet) {
+                    $carry->push($this->serverDataFromResponseData($droplet));
+                }
 
-        $servers = new ServerDataCollection;
-
-        foreach ($data->droplets as $droplet) {
-            $servers->push($this->serverDataFromResponseData($droplet));
-        }
-
-        return $servers;
+                return $carry;
+            },
+            new ServerDataCollection,
+        );
     }
 
     public function getServerPublicIp4(string $serverId): string|null
@@ -203,17 +193,17 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function getAllSshKeys(): SshKeyDataCollection
     {
-        $response = $this->get('/account/keys');
-        $data = $this->decodeJson(($response->body()));
+        return $this->get('/account/keys', [],
+            function (SshKeyDataCollection $carry, object $data) {
+                /** @var object $key */
+                foreach ($data->ssh_keys as $key) {
+                    $carry->push($this->sshKeyDataFromResponseData($key));
+                }
 
-        $collection = new SshKeyDataCollection;
-
-        /** @var object $key */
-        foreach ($data->ssh_keys as $key) {
-            $collection->push($this->sshKeyDataFromResponseData($key));
-        }
-
-        return $collection;
+                return $carry;
+            },
+            new SshKeyDataCollection,
+        );
     }
 
     public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
@@ -251,9 +241,14 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->sshKeyDataFromResponseData($data->ssh_key);
     }
 
-    /**
-     * Convert SSH key object from response format to internal format.
-     */
+    public function refreshToken(): AuthTokenDto
+    {
+        Log::warning("DigitalOceanV2::refreshToken() method was called, but DO's tokens don't expire, so it shouldn't have been called at all.");
+
+        return $this->token;
+    }
+
+    /** Convert SSH key object from response format to internal format. */
     protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
         return new SshKeyDto(
@@ -264,9 +259,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         );
     }
 
-    /**
-     * Convert server object from response format to internal format.
-     */
+    /** Convert server object from response format to internal format. */
     protected function serverDataFromResponseData(object $data): ServerDto
     {
         return new ServerDto(
@@ -276,9 +269,7 @@ class DigitalOceanV2 extends AbstractServerProvider
         );
     }
 
-    /**
-     * Extract a public IP address from a list of networks attached to a server.
-     */
+    /** Extract a public IP address from a list of networks attached to a server. */
     protected function publicIpFromNetworks(array $networks): string|null
     {
         foreach ($networks as $network) {

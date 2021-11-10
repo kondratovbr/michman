@@ -14,7 +14,7 @@ class NullableDtoCast implements CastsAttributes
     ) {}
 
     /**
-     * Cast the given value.
+     * Cast the given value retrieved from storage.
      *
      * @param Model $model
      * @param string|null $value
@@ -27,7 +27,12 @@ class NullableDtoCast implements CastsAttributes
         if (! is_string($value))
             throw new RuntimeException('Value received for NullableDtoCast::get() should be either a string or null.');
 
-        return $this->dtoClass::fromArray(json_decode($value, true));
+        $result = unserialize($value);
+
+        if (! $result instanceof AbstractDto)
+            throw new RuntimeException('Object unserialized by NullableDtoCast::get() is not an instance of AbstractDto.');
+
+        return $result;
     }
 
     /**
@@ -47,6 +52,6 @@ class NullableDtoCast implements CastsAttributes
         if (! $value instanceof AbstractDto)
             throw new RuntimeException('Value provided for NullableDtoCast::set() should be either an instance of AbstractDto, or an array or null.');
 
-        return json_encode($value->toArray());
+        return serialize($value);
     }
 }

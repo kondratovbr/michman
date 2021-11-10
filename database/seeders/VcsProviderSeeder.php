@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Models\User;
 use App\Models\VcsProvider;
 use Illuminate\Database\Seeder;
@@ -16,7 +17,7 @@ class VcsProviderSeeder extends Seeder
         // Seed an actual dev token from config.
         VcsProvider::factory([
             'provider' => 'github_v3',
-            'token' => (string) config('vcs.github_dev_token'),
+            'token' => new AuthTokenDto('5469212', (string) config('vcs.github_dev_token')),
             'external_id' => '5469212',
             'nickname' => 'KondorB',
         ])

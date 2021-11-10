@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Services\Traits\HasConfig;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
@@ -15,15 +15,15 @@ abstract class AbstractProvider
 {
     use HasConfig;
 
+    protected AuthTokenDto $token;
     private string $basePath;
     protected string $cachePrefix;
-    protected int|null $identifier;
 
-    public function __construct(int $identifier = null)
+    public function __construct(AuthTokenDto $token)
     {
         $this->setConfigPrefix($this->getConfigPrefix());
         $this->basePath = $this->config('base_path');
-        $this->identifier = $identifier;
+        $this->token = $token;
     }
 
     /** Get an internal config name for this server provider. */
@@ -31,26 +31,9 @@ abstract class AbstractProvider
 
     /** Create a pending request with authentication configured. */
     abstract protected function request(): PendingRequest;
-
-    /** Get a cache prefix for this specific server provider API credentials. */
-    abstract protected function getCachePrefix(): string;
-
-    /** Determine if we can even use cache to store some data for this API credentials. */
-    protected function canUseCache(): bool
-    {
-        if (! isset($this->identifier)) {
-            Log::warning(static::class . ': This instance is unable to cache data, because it doesn\'t have a cache identifier set for some reason.');
-            return false;
-        }
-
-        return true;
-    }
-
-    /** Get a properly prefixed cache key for some parameter related to this specific server provider API credentials. */
-    protected function cacheKey(string $key): string
-    {
-        return $this->getCachePrefix() . '.' . $key;
-    }
+    
+    /** Refresh the authentication token if applicable. */
+    abstract public function refreshToken(): AuthTokenDto;
 
     /** Decode JSON response throwing en exceptions on failure. */
     protected function decodeJson(string $json): array|object

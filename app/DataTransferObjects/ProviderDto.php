@@ -6,9 +6,7 @@ class ProviderDto extends AbstractDto
 {
     public function __construct(
         public string $provider,
-        public string|null $token,
-        public string|null $key,
-        public string|null $secret,
         public string|null $name,
+        public AuthTokenDto|null $token,
     ) {}
 }

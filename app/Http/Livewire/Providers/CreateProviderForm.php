@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Providers;
 
 use App\Actions\Providers\StoreProviderAction;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\ProviderDto;
 use App\Facades\Auth;
 use App\Models\Provider;
@@ -87,7 +88,17 @@ class CreateProviderForm extends Component
 
         $validated = $this->validate();
 
-        $action->execute(ProviderDto::fromArray($validated), Auth::user());
+        $action->execute(
+            new ProviderDto(
+                provider: $validated['provider'],
+                name: $validated['name'],
+                token: new AuthTokenDto(
+                    id: null,
+                    token: $validated['token'],
+                ),
+            ),
+            Auth::user(),
+        );
 
         $this->reset();
 

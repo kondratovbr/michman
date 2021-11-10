@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Models\User;
 use App\Models\VcsProvider;
 use App\Support\Str;
@@ -14,12 +15,14 @@ class VcsProviderFactory extends Factory
 
     public function definition(): array
     {
+        $id = Str::random(6);
+
         return [
             // TODO: Seed other providers as well after implementing them.
             'provider' => 'github_v3',
-            'external_id' => Str::random(8),
+            'external_id' => $id,
             'nickname' => $this->faker->userName,
-            'token' => Str::random(),
+            'token' => new AuthTokenDto($id, Str::random()),
         ];
     }
 

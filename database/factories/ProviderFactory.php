@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Models\Provider;
 use App\Models\User;
 use App\Support\Str;
@@ -17,9 +18,10 @@ class ProviderFactory extends Factory
         return [
             // TODO: Seed some others as well, but keep this as default.
             'provider' => 'digital_ocean_v2',
-            'token' => Str::random(32),
-            'key' => null,
-            'secret' => null,
+            'token' => new AuthTokenDto(
+                Str::random(6),
+                Str::random(32),
+            ),
             'name' => $this->faker->domainName,
         ];
     }
@@ -45,9 +47,6 @@ class ProviderFactory extends Factory
     {
         return $this->state([
             'provider' => 'digital_ocean_v2',
-            'token' => Str::random(32),
-            'key' => null,
-            'secret' => null,
         ]);
     }
 

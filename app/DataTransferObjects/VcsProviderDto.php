@@ -2,7 +2,6 @@
 
 namespace App\DataTransferObjects;
 
-use App\Support\Arr;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
 
@@ -12,20 +11,15 @@ class VcsProviderDto extends AbstractDto
         public string $provider,
         public string $external_id,
         public string $nickname,
-        public OAuthTokenDto|null $token = null,
-        public string|null $key = null,
-        public string|null $secret = null,
+        public AuthTokenDto|null $token,
     ) {}
 
     /** Convert this DTO to VcsProvider model attributes. */
     public function toAttributes(): array
     {
-        $attrs = $this->except('token')->toArray();
-
-        if (! is_null($this->token))
-            $attrs = Arr::merge($attrs, $this->token->toArray());
-
-        return $attrs;
+        return $this->except('token')->toArray([
+            'token' => $this->token,
+        ]);
     }
 
     public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName): static
@@ -44,7 +38,10 @@ class VcsProviderDto extends AbstractDto
             provider: 'github_v3',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
-            token: OAuthTokenDto::fromData($oauthUser->token),
+            token: AuthTokenDto::fromData(
+                (string) $oauthUser->getId(),
+                $oauthUser->token,
+            ),
         );
     }
 
@@ -54,7 +51,8 @@ class VcsProviderDto extends AbstractDto
             provider: 'gitlab_v4',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
-            token: OAuthTokenDto::fromData(
+            token: AuthTokenDto::fromData(
+                (string) $oauthUser->getId(),
                 $oauthUser->token,
                 $oauthUser->refreshToken,
                 $oauthUser->expiresIn,
@@ -68,7 +66,10 @@ class VcsProviderDto extends AbstractDto
             provider: 'bitbucket',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
-            token: OAuthTokenDto::fromData($oauthUser->token),
+            token: AuthTokenDto::fromData(
+                (string) $oauthUser->getId(),
+                $oauthUser->token,
+            ),
         );
     }
 }

@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
-use App\DataTransferObjects\OAuthTokenDto;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use App\Support\Arr;
@@ -12,12 +12,15 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 /*
  * TODO: IMPORTANT! I should also handle the "scope". A user can change permissions given to us in the GitHub UI.
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
  *       a button to repair permissions.
  */
+
+// TODO: CRITICAL! I had a problem with GitHub credentials - should verify that the tokens stay valid over long periods of time. Like, login to the app and then leave it be for a couple of days and try accessing GitHub with the stored credentials.
 
 class GitHubV3 extends AbstractVcsProvider
 {
@@ -28,19 +31,9 @@ class GitHubV3 extends AbstractVcsProvider
      */
     private const ACCEPT = 'application/vnd.github.v3+json';
 
-    /** @var string Bearer token used for authentication. */
-    private string $token;
-
-    public function __construct(string $token, int $identifier = null)
-    {
-        parent::__construct($identifier);
-
-        $this->token = $token;
-    }
-
     protected function request(): PendingRequest
     {
-        return Http::withToken($this->token)->accept(static::ACCEPT);
+        return Http::withToken($this->token->token)->accept(static::ACCEPT);
     }
 
     protected function getConfigPrefix(): string
@@ -57,7 +50,8 @@ class GitHubV3 extends AbstractVcsProvider
     {
         try {
             $response = $this->get('/user');
-        } catch (RequestException) {
+        } catch (RequestException $e) {
+            ray($e);
             return false;
         }
 
@@ -196,13 +190,11 @@ class GitHubV3 extends AbstractVcsProvider
         $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
     }
 
-    public function refreshToken(string $refreshToken): OAuthTokenDto
+    public function refreshToken(): AuthTokenDto
     {
-        // GitHub's tokens don't expire, so we don't have to refresh it at all.
-        // Consequentially, this method should never be called.
         Log::warning("GitHubV3::refreshToken() method was called, but GitHub's tokens don't expire, so it shouldn't have been called at all.");
 
-        return new OAuthTokenDto($this->token);
+        return $this->token;
     }
 
     /** Convert webhook data from response format into the internal format. */

@@ -11,7 +11,7 @@ class StoreProviderAction
     public function execute(ProviderDto $data, User $user): Provider
     {
         /** @var Provider $provider */
-        $provider = $user->providers()->create($data->toArray());
+        $provider = $user->providers()->create($data->toAttributes());
 
         return $provider;
     }

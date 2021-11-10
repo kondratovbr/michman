@@ -6,23 +6,9 @@ use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use App\Support\Arr;
 use phpseclib3\Crypt\PublicKeyLoader;
-use RuntimeException;
 
 abstract class AbstractVcsProvider extends AbstractProvider implements VcsProviderInterface
 {
-    protected function getCachePrefix(): string
-    {
-        // If we don't have an internal provider ID we cannot use cache at all -
-        // we have nothing to use as a unique reproducible identifier.
-        if (! isset($this->identifier))
-            throw new RuntimeException('Cannot use caching for this VCS provider - no unique identifier provided.');
-
-        if (! isset($this->cachePrefix))
-            $this->cachePrefix = 'vcs.' . $this->identifier;
-
-        return $this->cachePrefix;
-    }
-
     public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
     {
         $duplicatedAddedKey = $this->findDuplicatedKey($publicKey);

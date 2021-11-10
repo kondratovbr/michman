@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Collections\SshKeyDataCollection;
 use App\Collections\WebhookDataCollection;
-use App\DataTransferObjects\OAuthTokenDto;
+use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 
@@ -21,6 +21,8 @@ use App\DataTransferObjects\WebhookDto;
 
 interface VcsProviderInterface
 {
+    public function __construct(AuthTokenDto $token);
+
     /** Get a URL to the page with the specified commit on the VCS site. */
     public function commitUrl(string $repo, string $commit): string;
 
@@ -102,7 +104,4 @@ interface VcsProviderInterface
      * not throwing any errors if it doesn't exist.
      */
     public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void;
-
-    /** @return array */
-    public function refreshToken(string $refreshToken): OAuthTokenDto;
 }
