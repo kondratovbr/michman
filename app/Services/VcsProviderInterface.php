@@ -19,7 +19,7 @@ use App\DataTransferObjects\WebhookDto;
 
 // TODO: IMPORTANT! Figure out what to do with account statuses. I.e. a provider may lock the account if a payment failed or something. Have to handle it gracefully as well.
 
-interface VcsProviderInterface
+interface VcsProviderInterface extends ProviderInterface
 {
     public function __construct(AuthTokenDto $token);
 

@@ -11,13 +11,12 @@ use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 
-abstract class AbstractProvider
+abstract class AbstractProvider implements ProviderInterface
 {
     use HasConfig;
 
     protected AuthTokenDto $token;
     private string $basePath;
-    protected string $cachePrefix;
 
     public function __construct(AuthTokenDto $token)
     {
@@ -31,9 +30,6 @@ abstract class AbstractProvider
 
     /** Create a pending request with authentication configured. */
     abstract protected function request(): PendingRequest;
-    
-    /** Refresh the authentication token if applicable. */
-    abstract public function refreshToken(): AuthTokenDto;
 
     /** Decode JSON response throwing en exceptions on failure. */
     protected function decodeJson(string $json): array|object

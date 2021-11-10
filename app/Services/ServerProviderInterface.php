@@ -23,7 +23,7 @@ use App\DataTransferObjects\RegionDto;
 use App\DataTransferObjects\ServerDto;
 use App\DataTransferObjects\SshKeyDto;
 
-interface ServerProviderInterface
+interface ServerProviderInterface extends ProviderInterface
 {
     /**
      * Check if provided credentials are valid by trying some auth-protected GET request.

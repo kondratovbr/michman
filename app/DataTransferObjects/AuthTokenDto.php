@@ -4,10 +4,6 @@ namespace App\DataTransferObjects;
 
 use Carbon\CarbonInterface;
 
-/*
- * TODO: CRITICAL! CONTINUE. Finish implementing storing and retrieving encrypted token for VcsProvider DTOs, finish IsApiProvider trait and test VCS on GitHub3. Then - update GitLabV4. Then - update Provider and DigitalOceanV2.
- */
-
 class AuthTokenDto extends AbstractDto
 {
     public function __construct(
@@ -21,13 +17,13 @@ class AuthTokenDto extends AbstractDto
         string|null $id,
         string $token,
         string|null $refreshToken = null,
-        int|null $expiresInSecs = null,
+        int|string|null $expiresInSecs = null,
     ): static {
         return new static(
             id: $id,
             token: $token,
             refresh_token: $refreshToken,
-            expires_at: now()->addSeconds((int) floor($expiresInSecs * 0.9)),
+            expires_at: now()->addSeconds((int) floor((int) $expiresInSecs * 0.9)),
         );
     }
 }

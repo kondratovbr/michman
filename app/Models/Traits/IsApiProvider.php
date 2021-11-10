@@ -5,7 +5,7 @@ namespace App\Models\Traits;
 use App\Casts\EncryptedDtoCast;
 use App\DataTransferObjects\AuthTokenDto;
 use App\Models\AbstractModel;
-use App\Services\AbstractProvider;
+use App\Services\ProviderInterface;
 use App\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 trait IsApiProvider
 {
     /** Interface object to interact with the API. */
-    private AbstractProvider $apiInstance;
+    private ProviderInterface $apiInstance;
 
     public function initializeIsApiProvider(): void
     {
@@ -31,7 +31,7 @@ trait IsApiProvider
     abstract protected function diTargetName(): string;
 
     /** Get an instance of provider interface to interact with the provider's API. */
-    protected function getApi(): AbstractProvider
+    protected function getApi(): ProviderInterface
     {
         // We're caching an instance of ServerProviderInterface for this model,
         // so it doesn't get made multiple times.
@@ -46,9 +46,9 @@ trait IsApiProvider
     }
 
     /** Ensure the stored API token is still valid, refresh if needed. */
-    protected function ensureFreshToken(): AbstractProvider
+    protected function ensureFreshToken(): ProviderInterface
     {
-        return DB::transaction(function (): AbstractProvider {
+        return DB::transaction(function (): ProviderInterface {
             $model = $this->freshLockForUpdate();
             $this->refresh();
 

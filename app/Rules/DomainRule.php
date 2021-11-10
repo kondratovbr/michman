@@ -12,10 +12,10 @@ class DomainRule implements Rule
         if (! is_string($value))
             return false;
 
-        if (Str::contains(' ', $value))
+        if (Str::contains($value, ' '))
             return false;
 
-        if (Str::contains(',', $value))
+        if (Str::contains($value, ','))
             return false;
 
         // https://regexr.com/3g5j0
