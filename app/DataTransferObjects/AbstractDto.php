@@ -46,9 +46,9 @@ abstract class AbstractDto implements Arrayable, Castable
     }
 
     /** Convert this DTO to Eloquent model attributes array. */
-    public function toAttributes(): array
+    public function toAttributes(array $add = []): array
     {
-        return $this->toArray();
+        return $this->toArray($add);
     }
 
     public function only(string ...$keys): static
