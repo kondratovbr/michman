@@ -10,7 +10,6 @@ use App\Support\Str;
 use BaconQrCode\Renderer\Color\Rgb;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Collection;
@@ -46,6 +45,7 @@ use App\Facades\QrCode;
  * @property-read Collection $userSshKeys
  * @property-read Collection $vcsProviders
  * @property-read Collection $projects
+ * @property-read Collection $oauthUsers
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -204,5 +204,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    /** Get a relation with the OAuth accounts linked to this user. */
+    public function oauthUsers(): HasMany
+    {
+        return $this->hasMany(OAuthUser::class);
     }
 }
