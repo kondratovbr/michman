@@ -118,7 +118,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
     Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store'])
         ->middleware(['auth']);
 
-    // Two Factor Authentication
+    // Two-Factor Authentication
     if (Features::enabled(Features::twoFactorAuthentication())) {
         if ($enableViews) {
             Route::get('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])
