@@ -50,7 +50,6 @@ class GitHubV3 extends AbstractVcsProvider
         try {
             $response = $this->get('/user');
         } catch (RequestException $e) {
-            ray($e);
             return false;
         }
 
