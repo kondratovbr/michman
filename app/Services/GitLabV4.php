@@ -8,6 +8,7 @@ use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -43,7 +44,11 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function credentialsAreValid(): bool
     {
-        $response = $this->get('/user');
+        try {
+            $response = $this->get('/user');
+        } catch (RequestException) {
+            return false;
+        }
 
         return $response->successful();
     }

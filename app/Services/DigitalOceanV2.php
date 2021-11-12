@@ -15,6 +15,7 @@ use App\DataTransferObjects\SshKeyDto;
 use App\Services\Exceptions\ExternalApiException;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -46,14 +47,18 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function credentialsAreValid(): bool
     {
-        $response = $this->get('/account');
+        try {
+            $response = $this->get('/account');
+        } catch (RequestException) {
+            return false;
+        }
 
         return $response->successful();
     }
 
     protected function getAllRegionsFromApi(): RegionDataCollection
     {
-        return $this->get('/regions', ['per_page' => 5],
+        return $this->get('/regions', [],
             function (RegionDataCollection $carry, object $data) {
                 /** @var object $region */
                 foreach ($data->regions as $region) {
@@ -86,6 +91,7 @@ class DigitalOceanV2 extends AbstractServerProvider
                         diskGb: $size->disk,
                         regions: $size->regions,
                         available: $size->available,
+                        description: $size->description ?? '',
                     ));
                 }
 
