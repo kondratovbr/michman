@@ -2,6 +2,7 @@
 
 namespace App\DataTransferObjects;
 
+use App\Support\Arr;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use RuntimeException;
 
@@ -15,11 +16,11 @@ class VcsProviderDto extends AbstractDto
     ) {}
 
     /** Convert this DTO to VcsProvider model attributes. */
-    public function toAttributes(): array
+    public function toAttributes(array $add = []): array
     {
-        return $this->except('token')->toArray([
+        return $this->except('token')->toArray(Arr::merge($add, [
             'token' => $this->token,
-        ]);
+        ]));
     }
 
     public static function fromOauth(OAuthUser $oauthUser, string $vcsProviderName): static
