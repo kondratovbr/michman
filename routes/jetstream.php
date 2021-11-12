@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-use App\Http\Livewire\AccountView;
-use App\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
 use Laravel\Jetstream\Http\Controllers\Livewire\ApiTokenController;
