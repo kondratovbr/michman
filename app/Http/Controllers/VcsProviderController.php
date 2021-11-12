@@ -15,6 +15,12 @@ use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 
+/*
+ * TODO: CRITICAL! This needs to be completely rebuild. I already have this logic in the OAuth, should use that.
+ *       Have to, actually, providers expect strictly matching callback URLs.
+ *       Also, have to re-implement OAuth anyway to allow to link existing accounts with OAuth accounts based on email.
+ */
+
 class VcsProviderController extends AbstractController
 {
     public function __construct(
@@ -22,7 +28,7 @@ class VcsProviderController extends AbstractController
         private UpdateVcsProviderAction $updateVcsProvider,
     ) {}
 
-    /** Get a redirect to link a third-party VCS provider account to the current user's account as a VCS provider. */
+    /** Get a redirect to link a third-party VCS provider account to the current user's account. */
     public function redirect(string $vcsProviderOauthName): SymfonyRedirect
     {
         $vcsProviderName = $this->getVcsProviderName($vcsProviderOauthName);
