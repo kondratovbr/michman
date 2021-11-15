@@ -1,7 +1,3 @@
-{{--TODO: IMPORTANT! Needs a "Register" link/button.--}}
-{{--TODO: IMPORTANT! Needs OAuth buttons as well.--}}
-{{--TODO: Also need a title somewhere here. Like on GitHub: "Sing in to GitHub".--}}
-
 <x-layouts.guest>
     <x-auth-box>
 
