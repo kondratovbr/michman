@@ -15,9 +15,6 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
-    /**
-     * Create a newly registered user.
-     */
     public function create(array $input): User
     {
         $validated = Validator::make($input, [
@@ -52,9 +49,7 @@ class CreateNewUser implements CreatesNewUsers
         });
     }
 
-    /**
-     * Create a personal team for the user.
-     */
+    /** Create a personal team for the user. */
     protected function createTeam(User $user): void
     {
         $user->ownedTeams()->save(Team::forceCreate([

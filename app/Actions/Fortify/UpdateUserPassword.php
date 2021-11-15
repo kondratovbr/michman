@@ -10,9 +10,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
 {
     use PasswordValidationRules;
 
-    /**
-     * Validate and update the user's password.
-     */
+    /** Validate and update the user's password. */
     public function update($user, array $input): void
     {
         Validator::make($input, [
