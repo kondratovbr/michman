@@ -10,6 +10,10 @@ class CreateOauthUsersTable extends Migration
     {
         Schema::create('oauth_users', function (Blueprint $table) {
             $table->id();
+
+            $table->string('provider');
+            $table->string('external_id');
+
             $table->timestamps();
         });
     }
