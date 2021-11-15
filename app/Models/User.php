@@ -32,8 +32,6 @@ use App\Facades\QrCode;
  * @property string $email
  * @property string|null $password
  * @property CarbonInterface $emailVerifiedAt
- * @property string $oauthProvider
- * @property string $oauthId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
