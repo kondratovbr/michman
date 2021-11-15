@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property string $provider
+ * @property string $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -29,21 +30,15 @@ class OAuthUser extends AbstractModel
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
-        //
+        'provider',
+        'external_id',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
-    protected $visible = [
-        //
-    ];
+    protected $visible = [];
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        //
-    ];
-
-    /** @var string[] The accessors to append to the model's array form. */
-    protected $appends = [
         //
     ];
 
