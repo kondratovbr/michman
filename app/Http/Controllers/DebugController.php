@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 class DebugController extends AbstractController
@@ -13,9 +12,7 @@ class DebugController extends AbstractController
         $this->middleware('debug');
     }
 
-    /**
-     * Show the list of registered routes of the application.
-     */
+    /** Show the list of registered routes of the application. */
     public function routes(): View
     {
         $routes = Route::getRoutes();
@@ -25,33 +22,25 @@ class DebugController extends AbstractController
         ]);
     }
 
-    /**
-     * Show a standard phpinfo page.
-     */
+    /** Show a standard phpinfo page. */
     public function phpInfo(): void
     {
         phpinfo();
     }
 
-    /**
-     * Show a completely empty HTML page.
-     */
+    /** Show a completely empty HTML page. */
     public function empty(): View
     {
         return view('debug.empty');
     }
 
-    /**
-     * Show a blank page.
-     */
+    /** Show a blank page. */
     public function blank(): View
     {
         return view('debug.blank');
     }
 
-    /**
-     * Show a Pusher test page.
-     */
+    /** Show a Pusher test page. */
     public function pusher(): View
     {
         return view('debug.pusher');

@@ -23,7 +23,7 @@
                     required
                     autofocus
                     {{-- Laravel Fortify returns an error tied to "email" field on failed login attempt (for some reason),
-                    which we don't want to show here - it will be showed on the top block instead. --}}
+                    which we don't want to show here - it will be shown on the top block instead. --}}
                     :showErrors="false"
                 />
             </x-field>

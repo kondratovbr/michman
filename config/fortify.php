@@ -135,8 +135,7 @@ return [
         Features::registration(),
         Features::resetPasswords(),
         Features::emailVerification(),
-        // We have our own logic for this.
-        // We only update emails anyway.
+        // We have our own logic for this. We only update emails anyway.
         // Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([
