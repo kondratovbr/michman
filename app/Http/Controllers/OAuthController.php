@@ -11,6 +11,7 @@ use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
 use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
 use App\Http\Exceptions\OAuth\OauthException;
 use App\Models\User;
+use App\Models\OAuthUser as OauthModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,8 @@ use Laravel\Socialite\Contracts\User as OauthUser;
  * TODO: IMPORTANT! Will have to figure out how to revoke tokens in case of a breach.
  *       Users will probably have to re-authorize, so I'll have to prepare a plan for such scenario.
  */
+
+// TODO: CRITICAL! Update tests to reflect the new logic.
 
 class OAuthController extends AbstractController
 {
@@ -65,16 +68,30 @@ class OAuthController extends AbstractController
 
         $oauthUser = Socialite::driver($oauthProvider)->user();
 
-        // If user previously registered via OAuth.
+        // Check if user previously registered via OAuth.
         $user = $this->findUserByOauthId($oauthProvider, $oauthUser);
 
-        // If user registered normally but tries to log in viw OAuth with the same email.
-        if (is_null($user))
-            $user = $this->findUserByEmail($oauthProvider, $oauthUser);
+        // Check if user registered normally but tries to log in via OAuth with the same email.
+        if (is_null($user)) {
+            $user = $this->findUserByEmail($oauthUser);
 
-        // If this is a new user trying to register via OAuth.
+            /*
+             * In this case the user was previously registered with via email:password or a different OAuth provider
+             * and now tries to log in via oauth with the same email,
+             * so we will tell them to login normally and link accounts in settings.
+             * TODO: CRITICAL! Implement that linking. It's currently only works for VCS providers.
+             */
+            if (! is_null($user)) {
+                session()->flash('status', __('flash.oauth-failed-email-taken', [
+                    'oauth_provider' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                ]));
+                return redirect()->route('login');
+            }
+        }
+
+        // If this is a new user trying to register via OAuth - create a new account for them.
         if (is_null($user))
-            $user = $this->registerUserByOauth($oauthProvider, $oauthUser);
+            $user = $this->registerUserViaOauth($oauthProvider, $oauthUser);
 
         $this->updateVcs($oauthProvider, $oauthUser, $user);
 
@@ -109,59 +126,40 @@ class OAuthController extends AbstractController
     /** Try to find a user previously registered via OAuth by their OAuth ID returned from an OAuth provider. */
     private function findUserByOauthId(string $oauthProvider, OauthUser $oauthUser): User|null
     {
+        /** @var OauthModel|null $oauth */
+        $oauth = OauthModel::query()
+            ->where('provider', $oauthProvider)
+            ->where('oauth_id', $oauthUser->getId())
+            ->first();
+
+        return optional($oauth)->user;
+    }
+
+    /** Try to find a user by an email returned from an OAuth provider. */
+    private function findUserByEmail(OauthUser $oauthUser): User|null
+    {
         /** @var User|null $user */
         $user = User::query()
-            ->where('oauth_provider', $oauthProvider)
-            ->where('oauth_id', $oauthUser->getId())
+            ->where('email', $oauthUser->getEmail())
             ->first();
 
         return $user;
     }
 
-    /** Try to find a user by an email returned from an OAuth provider. */
-    private function findUserByEmail(string $oauthProvider, OauthUser $oauthUser): User|null
-    {
-        return DB::transaction(function () use ($oauthProvider, $oauthUser) {
-            /** @var User|null $user */
-            $user = User::query()
-                ->where('email', $oauthUser->getEmail())
-                ->lockForUpdate()
-                ->first();
-
-            if (! is_null($user)) {
-                $user->oauthProvider = $oauthProvider;
-                $user->oauthId = $oauthUser->getId();
-
-                if (is_null($user->emailVerifiedAt))
-                    $user->emailVerifiedAt = now();
-
-                $user->save();
-            }
-
-            return $user;
-        }, 5);
-    }
-
     /** Register a new user using data returned from an OAuth provider. */
-    private function registerUserByOauth(string $oauthProvider, OauthUser $oauthUser): User
+    private function registerUserViaOauth(string $oauthProvider, OauthUser $oauthUser): User
     {
         /*
          * TODO: IMPORTANT! Don't forget to figure out the rest of the stuff I may want to do here,
          *       like greet the user, send an email or whatever. It should be DRY.
          */
 
-        return DB::transaction(function () use ($oauthUser, $oauthProvider) {
-            $user = $this->createNewUser->create([
-                'email' => $oauthUser->getEmail(),
-                'oauth_provider' => $oauthProvider,
-                'oauth_id' => (string) $oauthUser->getId(),
-                'terms' => true,
-            ]);
-            $user->emailVerifiedAt = now();
-            $user->save();
-
-            return $user;
-        });
+        return $this->createNewUser->create([
+            'email' => $oauthUser->getEmail(),
+            'oauth_provider' => $oauthProvider,
+            'oauth_id' => (string) $oauthUser->getId(),
+            'terms' => true,
+        ]);
     }
 
     /** Create or update a VCS provider for the authenticated user corresponding with the OAuth provider used. */

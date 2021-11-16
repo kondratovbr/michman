@@ -7,11 +7,10 @@
 
         <x-validation-errors class="mb-4" />
 
-{{--        TODO: CRITICAL! What is this here for? Is it even used? Does it look OK? Check other auth pages as well.--}}
         @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
+            <x-message class="mb-4" colors="info">
                 {{ session('status') }}
-            </div>
+            </x-message>
         @endif
 
         <x-forms.vertical method="POST" action="{{ route('login') }}">

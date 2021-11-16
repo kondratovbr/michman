@@ -12,7 +12,9 @@ class CreateOauthUsersTable extends Migration
             $table->id();
 
             $table->string('provider');
-            $table->string('external_id');
+            $table->string('oauth_id');
+
+            $table->foreignId('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

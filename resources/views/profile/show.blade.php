@@ -1,9 +1,10 @@
 <x-sub-page name="profile">
 
-    @if(user()->usesOauth())
-        @include('profile._oauth-info', ['oauthProvider' => user()->oauthProvider])
-        <x-section-separator/>
-    @endif
+{{--    TODO: CRITICAL! Users can now have multiple OAuth accounts linked, so this is not correct. Reimplement.--}}
+{{--    @if(user()->usesOauth())--}}
+{{--        @include('profile._oauth-info', ['oauthProvider' => user()->oauthProvider])--}}
+{{--        <x-section-separator/>--}}
+{{--    @endif--}}
 
     @if(user()->canAny(['enableTfa', 'disableTfa'], user()) && Laravel\Fortify\Features::canManageTwoFactorAuthentication())
         <livewire:profile.tfa-form/>

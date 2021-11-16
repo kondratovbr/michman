@@ -62,8 +62,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     protected $fillable = [
         'email',
         'password',
-        'oauth_provider',
-        'oauth_id',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -136,7 +134,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     /** Determine if this user authenticates using OAuth. */
     public function usesOauth(): bool
     {
-        return ! empty($this->oauthProvider) && ! empty($this->oauthId);
+        return $this->oauthUsers()->count() > 0;
     }
 
     /** Determine if this user uses email+password authentication. */

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property string $provider
- * @property string $externalId
+ * @property string $oauthId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -28,10 +28,13 @@ class OAuthUser extends AbstractModel
 {
     use HasFactory;
 
+    /** @var string The database table associated with the model. */
+    protected $table = 'oauth_users';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'provider',
-        'external_id',
+        'oauth_id',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */

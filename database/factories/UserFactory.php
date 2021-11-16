@@ -99,10 +99,13 @@ class UserFactory extends Factory
      */
     public function viaGithub(): static
     {
-        return $this->state([
-            'password' => null,
-            'oauth_provider' => 'github',
-            'oauth_id' => '1234567890',
-        ]);
+        return $this
+            ->state(['password' => null])
+            ->afterCreating(function (User $user) {
+                $user->oauthUsers()->create([
+                    'provider' => 'github',
+                    'oauth_id' => random_int(1, 1000),
+                ]);
+            });
     }
 }
