@@ -49,7 +49,7 @@
     </x-slot>
 
     <x-slot name="actions">
-        <x-buttons>
+        <div class="space-x-3">
             <x-buttons.primary
                 wire:click.prevent="store"
                 wire:loading.attr="disabled"
@@ -58,7 +58,7 @@
                 wire:click.prevent="cancel"
                 wire:loading.attr="disabled"
             >{{ __('buttons.cancel') }}</x-buttons.secondary>
-        </x-buttons>
+        </div>
     </x-slot>
 
 </x-form-section>
