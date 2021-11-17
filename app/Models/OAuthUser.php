@@ -7,8 +7,6 @@ use Database\Factories\OAuthUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-// TODO: CRITICAL! CONTINUE.
-
 /**
  * OAuthUser Eloquent model
  *
