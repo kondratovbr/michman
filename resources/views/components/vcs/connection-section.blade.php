@@ -26,7 +26,7 @@
                     {{ __('account.vcs.connected', ['username' => user()->vcs($vcsProvider)->nickname]) }}
                 </span>
             </p>
-            <x-buttons class="mt-3">
+            <div class="mt-3 flex space-x-3">
                 <x-buttons.primary
                     :link="true"
                     href="{{ route('vcs.redirect', $oauthProvider) }}"
@@ -39,7 +39,7 @@
                 >
                     {{ __('account.vcs.unlink-button') }}
                 </x-buttons.secondary>
-            </x-buttons>
+            </div>
 
         @endisset
     </x-slot>
