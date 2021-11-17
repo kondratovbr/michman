@@ -15,13 +15,12 @@ class ServerSeeder extends Seeder
     public function run(): void
     {
         // Make sure the dev user has a server seeded.
-        Server::factory()
-            ->for(
-                User::query()
-                    ->firstWhere('email', (string) config('app.dev_email'))
-                    ->providers()->first()
-            )
-            ->create();
+        $dev = User::query()->firstWhere('email', (string) config('app.dev_email'));
+        if (! is_null($dev)) {
+            Server::factory()
+                ->for($dev->providers()->first())
+                ->create();
+        }
 
         // Seed the rest of the servers.
         Server::factory()

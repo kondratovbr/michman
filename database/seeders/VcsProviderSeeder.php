@@ -15,17 +15,17 @@ class VcsProviderSeeder extends Seeder
     public function run(): void
     {
         // Seed an actual dev token from config.
-        VcsProvider::factory([
-            'provider' => 'github_v3',
-            'token' => new AuthTokenDto('5469212', (string) config('vcs.github_dev_token')),
-            'external_id' => '5469212',
-            'nickname' => 'KondorB',
-        ])
-            ->for(
-                User::query()->firstWhere('email', (string) config('app.dev_email')),
-                'user'
-            )
-            ->create();
+        $dev = User::query()->firstWhere('email', (string) config('app.dev_email'));
+        if (! is_null($dev)) {
+            VcsProvider::factory([
+                'provider' => 'github_v3',
+                'token' => new AuthTokenDto('5469212', (string) config('vcs.github_dev_token')),
+                'external_id' => '5469212',
+                'nickname' => 'KondorB',
+            ])
+                ->for($dev, 'user')
+                ->create();
+        }
 
         // Seed fake tokens.
         VcsProvider::factory()

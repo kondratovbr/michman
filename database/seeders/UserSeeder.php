@@ -10,6 +10,8 @@ class UserSeeder extends Seeder
     /** @var int Number of generic users to seed. */
     private const NUM_USERS = 10;
 
+    private const SEED_DEV_USER = true;
+
     public function run(): void
     {
         // Seed admin user.
@@ -18,18 +20,20 @@ class UserSeeder extends Seeder
         // Seed a predefined generic user useful for development.
         User::factory()->theUser()->withPersonalTeam()->create();
 
-        // Seed a user with an actual email that will have actual API tokens and everything.
-        /** @var User $user */
-        $user = User::factory([
-            'email' => 'kondratovbr@gmail.com',
-            'password' => null,
-        ])
-            ->withPersonalTeam()
-            ->create();
-        $user->oauthUsers()->create([
-            'provider' => 'github',
-            'oauth_id' => '5469212',
-        ]);
+        if (static::SEED_DEV_USER) {
+            // Seed a user with an actual email that will have actual API tokens and everything.
+            /** @var User $user */
+            $user = User::factory([
+                'email' => 'kondratovbr@gmail.com',
+                'password' => null,
+            ])
+                ->withPersonalTeam()
+                ->create();
+            $user->oauthUsers()->create([
+                'provider' => 'github',
+                'oauth_id' => '5469212',
+            ]);
+        }
 
         // Seed generic users.
         User::factory()->withPersonalTeam()->times(self::NUM_USERS)->create();
