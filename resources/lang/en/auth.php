@@ -33,7 +33,7 @@ return [
         'providers' => [
             'github' => [
                 'label' => 'GitHub',
-                // TODO: CRITICAL! Don't forget to add this for every provider and check that the link actually works for every provider.
+                // TODO: Do I even use this now? Should I?
                 'review-page-link' => 'GitHub OAuth Apps Settings',
             ],
             'gitlab' => [
