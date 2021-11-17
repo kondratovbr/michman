@@ -38,7 +38,7 @@ class CreateNewUser implements CreatesNewUsers
             /** @var User $user */
             $user = User::create([
                 'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
+                'password' => empty($validated['password']) ? null : Hash::make($validated['password']),
             ]);
 
             if (! empty($validated['oauth_provider'])) {

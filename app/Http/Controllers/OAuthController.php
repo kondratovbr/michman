@@ -12,6 +12,7 @@ use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
 use App\Http\Exceptions\OAuth\OauthException;
 use App\Models\User;
 use App\Models\OAuthUser as OauthModel;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -154,12 +155,18 @@ class OAuthController extends AbstractController
          *       like greet the user, send an email or whatever. It should be DRY.
          */
 
-        return $this->createNewUser->create([
-            'email' => $oauthUser->getEmail(),
-            'oauth_provider' => $oauthProvider,
-            'oauth_id' => (string) $oauthUser->getId(),
-            'terms' => true,
-        ]);
+        return DB::transaction(function () use ($oauthProvider, $oauthUser): User {
+            $user = $this->createNewUser->create([
+                'email' => $oauthUser->getEmail(),
+                'oauth_provider' => $oauthProvider,
+                'oauth_id' => (string) $oauthUser->getId(),
+                'terms' => true,
+            ]);
+
+            event(new Registered($user));
+
+            return $user;
+        }, 5);
     }
 
     /** Create or update a VCS provider for the authenticated user corresponding with the OAuth provider used. */
