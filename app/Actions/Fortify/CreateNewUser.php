@@ -31,6 +31,7 @@ class CreateNewUser implements CreatesNewUsers
             // TODO: IMPORTANT! I should update these OAuth rules and make sure I notify myself if they fail - they shouldn't.
             'oauth_provider' => Rules::string(1, 255),
             'oauth_id' => Rules::string(1, 255),
+            'oauth_nickname' => Rules::string(1, 255),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
@@ -45,6 +46,7 @@ class CreateNewUser implements CreatesNewUsers
                 $this->createOAuthUserAction->execute(
                     $validated['oauth_provider'],
                     $validated['oauth_id'],
+                    $validated['oauth_nickname'],
                     $user,
                 );
             }

@@ -13,6 +13,7 @@ class CreateOauthUsersTable extends Migration
 
             $table->string('provider');
             $table->string('oauth_id');
+            $table->string('nickname');
 
             $table->foreignId('user_id')->references('id')->on('users');
 

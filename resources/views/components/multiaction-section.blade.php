@@ -9,7 +9,7 @@
         </x-section-title>
     @endisset
 
-    <div class="flex items-center space-x-4 mx-4 sm:mx-0">
+    <div class="flex items-stretch space-x-4 mx-4 sm:mx-0">
         {{ $content ?? $slot }}
     </div>
 

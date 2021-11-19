@@ -17,6 +17,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/servers')->name('home');
 
+/*
+ * OAuth routes
+ *
+ * OAuth can be used by guests to login/register and by
+ * authed users to link new login methods and VCS providers.
+ */
+Route::prefix('oauth/{oauthService}')
+    ->name('oauth.')
+    ->group(function () {
+        Route::get('redirect', [OAuthController::class, 'redirect'])->name('redirect');
+        Route::get('callback/{target}', [OAuthController::class, 'callback'])
+            ->where(['target' => implode('|', OAuthController::TARGETS)])
+            ->name('callback');
+    });
+
 // URL configured as a default callback route on third-party OAuth services.
 // Unsuccessful OAuth attempts will redirect user to this route as a callback.
 Route::get('oauth/{oauthService}', [OAuthController::class, 'defaultCallback'])

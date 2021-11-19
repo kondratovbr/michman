@@ -18,7 +18,6 @@ use Laravel\Socialite\Contracts\User as OAuthUser;
 /*
  * TODO: CRITICAL! This needs to be completely rebuild. I already have this logic in the OAuth, should use that.
  *       Have to, actually, providers expect strictly matching callback URLs.
- *       Also, have to re-implement OAuth anyway to allow to link existing accounts with OAuth accounts based on email.
  */
 
 class VcsProviderController extends AbstractController

@@ -2,9 +2,9 @@
 
 namespace App\Http\Exceptions\OAuth;
 
-use App\Http\Exceptions\OAuth\OauthException;
+use App\Http\Exceptions\OAuth\OAuthException;
 
-class ApplicationSuspendedException extends OauthException
+class ApplicationSuspendedException extends OAuthException
 {
     //
 }

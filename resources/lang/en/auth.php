@@ -21,6 +21,9 @@ return [
     'resend-verification-link-button' => 'Resend verification email',
     'forgot-your-password' => 'Forgot your password?',
     'restore-password' => 'Restore Password',
+    'oauth-linked-to' => "Linked to",
+    'link-button' => 'Link',
+    'unlink-button' => 'Unlink',
 
     'tfa' => [
         'please-confirm' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',

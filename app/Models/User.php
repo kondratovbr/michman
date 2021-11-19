@@ -172,6 +172,23 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $vcsProvider;
     }
 
+    /**
+     * Get the OAuth model for a linked account from a requested provider for this user
+     * or null, if the provider isn't linked.
+     */
+    public function oauth(string|null $provider): OAuthUser|null
+    {
+        if (is_null($provider)) {
+            /** @var OAuthUser $oauth */
+            $oauth = $this->oauthUsers()->oldest()->first();
+            return $oauth;
+        }
+
+        /** @var OAuthUser $oauth */
+        $oauth = $this->oauthUsers()->latest()->firstWhere('provider', $provider);
+        return $oauth;
+    }
+
     /** Get a relation with server providers owned by this user. */
     public function providers(): HasMany
     {

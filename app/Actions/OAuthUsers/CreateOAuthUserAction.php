@@ -7,12 +7,17 @@ use App\Models\User;
 
 class CreateOAuthUserAction
 {
-    public function execute(string $oauthProvider, string|int $oauthId, User $user): OAuthUser
-    {
+    public function execute(
+        string $oauthProvider,
+        string|int $oauthId,
+        string $nickname,
+        User $user,
+    ): OAuthUser {
         /** @var OAuthUser $oauthUser */
         $oauthUser = $user->oauthUsers()->create([
             'provider' => $oauthProvider,
             'oauth_id' => $oauthId,
+            'nickname' => $nickname,
         ]);
 
         return $oauthUser;

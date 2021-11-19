@@ -2,9 +2,9 @@
 
 namespace App\Http\Exceptions\OAuth;
 
-use App\Http\Exceptions\OAuth\OauthException;
+use App\Http\Exceptions\OAuth\OAuthException;
 
-class RedirectUriMismatchException extends OauthException
+class RedirectUriMismatchException extends OAuthException
 {
     //
 }

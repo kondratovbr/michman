@@ -8,7 +8,7 @@
     @endisset
 
     @isset($content)
-        <div class="px-2 py-3 sm:p-3">
+        <div class="px-2 py-3 sm:p-3 h-full w-full">
             {{ $content }}
         </div>
     @endisset

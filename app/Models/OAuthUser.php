@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $provider
  * @property string $oauthId
+ * @property string $nickname
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -33,6 +34,7 @@ class OAuthUser extends AbstractModel
     protected $fillable = [
         'provider',
         'oauth_id',
+        'nickname',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
