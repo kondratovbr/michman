@@ -77,7 +77,7 @@ class OAuthController extends AbstractController
     }
 
     /** Handle an OAuth callback if user is trying to register or login. */
-    protected function auth(Request $request, string $oauthProvider): RedirectResponse
+    public function auth(Request $request, string $oauthProvider): RedirectResponse
     {
         return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
             $oauthUser = Socialite::driver($oauthProvider)
@@ -116,10 +116,10 @@ class OAuthController extends AbstractController
     }
 
     /** Handle an OAuth callback if user is already authenticated and trying to link a new OAuth method. */
-    protected function link(Request $request, string $oauthProvider): RedirectResponse
+    public function link(Request $request, string $oauthProvider): RedirectResponse
     {
         return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
-            $user = Auth::user();
+            $user = Auth::user()->freshLockForUpdate();
 
             $oauthModel = $user->oauth($oauthProvider);
 
@@ -143,6 +143,15 @@ class OAuthController extends AbstractController
                 $user,
             );
 
+            /*
+             * TODO: IMPORTANT! This doesn't really work because these flashes use broadcasting,
+             *       which happens immediately (if the queue workers aren't too loaded),
+             *       but nobody is listening at the moment (the user's page is being reloaded after a redirect).
+             *       Other flashes in this OAuth logic may not work as well. Need to figure out a different way
+             *       to communicate with the user.
+             *       Probably make the front-end part for the Laravel's session status flashes and use it here.
+             *       Same thing in VcsProviderController.
+             */
             flash(__('flash.oauth-linked', [
                 'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
             ]), FlashMessageEvent::STYLE_SUCCESS);
@@ -151,57 +160,43 @@ class OAuthController extends AbstractController
         }, 5);
     }
 
-    /** Handle an OAuth callback if user is authenticated and trying to link a VCS provider. */
-    protected function vcs(Request $request, string $oauthProvider): RedirectResponse
+    /** Unlink the current user's account from an OAuth account. */
+    public function unlink(string $oauthProvider): RedirectResponse
     {
-        return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
-            $user = Auth::user();
+        DB::transaction(function () use ($oauthProvider) {
+            $user = Auth::user()->freshLockForUpdate();
 
-            $oauthUser = Socialite::driver($oauthProvider)
-                ->redirectUrl(route('vcs.link-callback', $oauthProvider))
-                ->user();
+            $oauthModel = $user->oauth($oauthProvider);
 
-            $vcs = $user->vcs($this->vcsProviderHandler->getVcsProviderName($oauthProvider));
+            if (is_null($oauthModel))
+                return;
 
-            if (is_null($vcs)) {
-                $vcs = $this->vcsProviderHandler->create($oauthProvider, $oauthUser, $user);
-
-                flash(__('flash.vcs-provider-linked', [
-                    'vcs' => __("projects.repo.providers.{$vcs->provider}"),
-                ]), FlashMessageEvent::STYLE_SUCCESS);
-            } else {
-                $this->vcsProviderHandler->update($oauthProvider, $oauthUser, $user);
-
-                flash(__('flash.vcs-provider-updated', [
-                    'vcs' => __("projects.repo.providers.{$vcs->provider}"),
-                ]), FlashMessageEvent::STYLE_SUCCESS);
+            if ($user->oauthUsers()->count() == 1 && ! $user->usesPassword()) {
+                flash(__('flash.set-up-password-to-disable-oauth'), FlashMessageEvent::STYLE_WARNING);
+                return;
             }
 
-            return redirect()->route('account.show', 'vcs');
+            $oauthModel->delete();
+
+            $vcsProviderName = $this->vcsProviderHandler->getVcsProviderName($oauthProvider);
+
+            if (is_null($vcsProviderName))
+                return;
+
+            $vcsProvider = $user->vcs($vcsProviderName);
+
+            if (is_null($vcsProvider)) {
+                flash(__('flash.oauth-unlinked', [
+                    'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                ]));
+            } else {
+                flash(__('flash.oauth-unlinked-vcs-kept', [
+                    'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                ]));
+            }
         }, 5);
-    }
 
-    /**
-     * Handle a callback from an OAuth provider in case of an error during authentication.
-     *
-     * https://docs.github.com/en/developers/apps/managing-oauth-apps/troubleshooting-authorization-request-errors
-     */
-    public function defaultCallback(string $oauthProvider, Request $request): RedirectResponse
-    {
-        $error = $request->get('error');
-
-        // User declined access on the OAuth provider side so we will just redirect to
-        // the beginning for now.
-        // TODO: Maybe show some message for the user in this case.
-        if ($error === 'access_denied')
-            return redirect()->home();
-
-        throw match ($error) {
-            // TODO: CRITICAL! If any of these OAuthExceptions is thrown I should immediately notify myself on the emergency channel.
-            'application_suspended' => new ApplicationSuspendedException($oauthProvider, $request->fullUrl()),
-            'redirect_uri_mismatch' => new RedirectUriMismatchException($oauthProvider, $request->fullUrl()),
-            default => new OAuthException($oauthProvider, $request->fullUrl())
-        };
+        return redirect()->route('account.show', 'profile');
     }
 
     /** Try to find a user previously registered via OAuth by their OAuth ID returned from an OAuth provider. */
@@ -250,5 +245,28 @@ class OAuthController extends AbstractController
 
             return $user;
         }, 5);
+    }
+
+    /**
+     * Handle a callback from an OAuth provider in case of an error during authentication.
+     *
+     * https://docs.github.com/en/developers/apps/managing-oauth-apps/troubleshooting-authorization-request-errors
+     */
+    public function defaultCallback(string $oauthProvider, Request $request): RedirectResponse
+    {
+        $error = $request->get('error');
+
+        // User declined access on the OAuth provider side so we will just redirect to
+        // the beginning for now.
+        // TODO: Maybe show some message for the user in this case.
+        if ($error === 'access_denied')
+            return redirect()->home();
+
+        throw match ($error) {
+            // TODO: CRITICAL! If any of these OAuthExceptions is thrown I should immediately notify myself on the emergency channel.
+            'application_suspended' => new ApplicationSuspendedException($oauthProvider, $request->fullUrl()),
+            'redirect_uri_mismatch' => new RedirectUriMismatchException($oauthProvider, $request->fullUrl()),
+            default => new OAuthException($oauthProvider, $request->fullUrl())
+        };
     }
 }

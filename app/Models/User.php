@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Broadcasting\UserChannel;
 use App\Models\Traits\HasModelHelpers;
+use App\Models\Traits\IsLockable;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use App\Notifications\VerifyEmailNotification;
 use App\Support\Str;
@@ -57,6 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     use TwoFactorAuthenticatable;
     use UsesCamelCaseAttributes;
     use HasModelHelpers;
+    use IsLockable;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

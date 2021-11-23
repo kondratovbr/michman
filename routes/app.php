@@ -45,6 +45,8 @@ Route::name('oauth.')
             ->name('link');
         Route::get('callback/link', [OAuthController::class, 'link'])
             ->name('link-callback');
+        Route::get('oauth/unlink', [OAuthController::class, 'unlink'])
+            ->name('unlink');
     });
 
 /*

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Collections\EloquentCollection;
 use App\Models\Traits\HasModelHelpers;
+use App\Models\Traits\IsLockable;
 use App\Models\Traits\UsesCamelCaseAttributes;
-use App\Support\Arr;
 use App\Validation\Rules;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -19,8 +19,9 @@ use RuntimeException;
  */
 abstract class AbstractModel extends Model
 {
-    use UsesCamelCaseAttributes,
-        HasModelHelpers;
+    use UsesCamelCaseAttributes;
+    use HasModelHelpers;
+    use IsLockable;
 
     /**
      * Check that model key is inside the collection provided
@@ -43,34 +44,6 @@ abstract class AbstractModel extends Model
 
         /** @var static $model */
         $model = static::query()->findOrFail($key);
-
-        return $model;
-    }
-
-    /** Retrieve a new instance of this model from the database and apply an UPDATE LOCK on it. */
-    public function freshLockForUpdate(array|string $with = []): static
-    {
-        $query = $this->newQuery();
-
-        if (! empty($with))
-            $query->with(Arr::wrap($with));
-
-        /** @var static $model */
-        $model = $query->lockForUpdate()->findOrFail($this->getKey());
-
-        return $model;
-    }
-
-    /** Retrieve a new instance of this model from the database and apply a SHARED LOCK on it. */
-    public function freshSharedLock(array|string $with = []): static
-    {
-        $query = $this->newQuery();
-
-        if (! empty($with))
-            $query->with(Arr::wrap($with));
-
-        /** @var static $model */
-        $model = $query->sharedLock()->findOrFail($this->getKey());
 
         return $model;
     }

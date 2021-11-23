@@ -18,7 +18,10 @@
                         {{ Auth::user()->oauth($provider)->nickname }}
                     </span>
                 </div>
-                <x-buttons.secondary>
+                <x-buttons.secondary
+                    :link="true"
+                    href="{{ route('oauth.unlink', $provider) }}"
+                >
                     {{ __('auth.unlink-button') }}
                 </x-buttons.secondary>
             @else
