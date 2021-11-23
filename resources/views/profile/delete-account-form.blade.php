@@ -25,7 +25,7 @@
 
 {{--        TODO: Actually implement the feature. It isn't that simple.--}}
         {{-- Temorary Sorry Modal --}}
-        <x-modals.dialog wireModel="confirmingUserDeletion">
+        <x-modals.dialog wire:model="confirmingUserDeletion">
             <x-slot name="header">
                 {{ __('account.profile.delete.sorry.title') }}
             </x-slot>
@@ -56,7 +56,7 @@
 
         {{-- Actual Delete User Confirmation Modal --}}
         {{--
-        <x-modals.dialog wireModel="confirmingUserDeletion">
+        <x-modals.dialog wire:model="confirmingUserDeletion">
             <x-slot name="header">
                 {{ __('account.profile.delete.modal-title') }}
             </x-slot>

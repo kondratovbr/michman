@@ -1,4 +1,4 @@
-<x-modals.small wireModel="modalOpen" modalId="updateDatabaseUserModal">
+<x-modals.small wire:model="modalOpen" modalId="updateDatabaseUserModal">
     @if(! is_null($updatingUser ?? null))
 
         <x-slot name="header">

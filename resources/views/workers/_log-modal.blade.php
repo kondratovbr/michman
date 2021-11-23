@@ -1,6 +1,6 @@
 {{--TODO: This modal needs an "X" button in the corner, like Forge does. Just in case.--}}
 
-<x-modals.dialog wireModel="modalOpen" modalId="viewWorkerLogModal">
+<x-modals.dialog wire:model="modalOpen" modalId="viewWorkerLogModal">
 
     <x-slot name="header">
         <h3>{{ __('projects.queue.log-modal-title') }}</h3>

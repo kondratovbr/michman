@@ -1,8 +1,8 @@
-@props(['wireModel', 'modalId'])
+@props(['modalId'])
 
 <x-modal-new
-    wire:model="{{ $wireModel }}"
     id="{{ $modalId ?? md5($attributes->wire('model')) }}"
+    {{ $attributes }}
 >
 
 {{--    TODO: IMPORTANT! Make sure it works on touch as intended. Check multiple browsers.--}}

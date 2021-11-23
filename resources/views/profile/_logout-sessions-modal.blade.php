@@ -1,6 +1,6 @@
 {{--TODO: Figure out how to put small modals (like this one) on the middle of the screen (vertically), when the screen allows for it.--}}
 
-<x-modals.small wireModel="modalOpened" modalId="logoutSessionsModal">
+<x-modals.small wire:model="modalOpened" modalId="logoutSessionsModal">
 
     <x-slot name="header">
         <h3 class="text-lg font-medium">

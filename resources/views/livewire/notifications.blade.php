@@ -43,7 +43,7 @@
 
             @if($modalOpen)
                 <x-slot name="modal">
-                    <x-modals.dialog wireModel="modalOpen" modalId="notificationDetailsModal">
+                    <x-modals.dialog wire:model="modalOpen" modalId="notificationDetailsModal">
                         <x-slot name="header">
                             <h3>{{ __('notifications.details-title') }}</h3>
                         </x-slot>
