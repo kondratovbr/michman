@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
 use App\Collections\EloquentCollection;
+use App\Events\Users\FlashMessageEvent;
+use App\Facades\Auth;
+use App\Models\User;
 use App\Support\Arr;
 use App\Support\Str;
 
@@ -119,5 +122,17 @@ if (! function_exists('trans_try')) {
         }
 
         return null;
+    }
+}
+
+if (! function_exists('flash')) {
+    /** Flash a message for the user using a FlashMessageEvent. */
+    function flash(string $message, string $style = null, User $user = null): void
+    {
+        event(new FlashMessageEvent(
+            $user ?? Auth::user(),
+            $message,
+            $style,
+        ));
     }
 }

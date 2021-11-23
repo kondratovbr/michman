@@ -22,7 +22,11 @@
                     {{ __('auth.unlink-button') }}
                 </x-buttons.secondary>
             @else
-                <x-buttons.primary class="mt-auto">
+                <x-buttons.primary
+                    class="mt-auto"
+                    :link="true"
+                    href="{{ route('oauth.link', $provider) }}"
+                >
                     {{ __('auth.link-button') }}
                 </x-buttons.primary>
             @endif

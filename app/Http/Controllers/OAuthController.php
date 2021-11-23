@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\OAuthUsers\CreateOAuthUserAction;
-use App\Actions\VcsProviders\StoreVcsProviderAction;
-use App\Actions\VcsProviders\UpdateVcsProviderAction;
-use App\DataTransferObjects\VcsProviderDto;
+use App\Events\Users\FlashMessageEvent;
 use App\Facades\Auth;
+use App\Handlers\VcsProviderHandler;
 use App\Http\Exceptions\OAuth\ApplicationSuspendedException;
-use App\Http\Exceptions\OAuth\InvalidOAuthCallbackException;
 use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
 use App\Http\Exceptions\OAuth\OAuthException;
 use App\Models\User;
 use App\Models\OAuthUser as OauthModel;
-use App\Validation\Rules;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,6 +27,22 @@ use Laravel\Socialite\Contracts\User as OauthUser;
 
 // TODO: CRITICAL! Update tests to reflect the new logic.
 
+// TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
+//       Like, show a separate dialog after registration with accepting terms?
+// TODO: CRITICAL! Don't forget to write these terms, btw.
+
+/*
+ * TODO: IMPORTANT! Figure out what to do if a user changes out permissions in the GitHub UI, for example.
+ *       Will have to catch that error and notify the user - ask to re-authorize us immediately,
+ *       if it happened in out UI, or send a link in an email otherwise.
+ */
+
+/*
+ * TODO: IMPORTANT! Also handle user avatars provided by OAuth providers. I mean, implement user avatars in general.
+ *       Don't store any avatars at all - use an OAuth provided avatar (by its URL)
+ *       or use an external service to generate an avatar when OAuth gives nothing or isn't even used.
+ */
+
 class OAuthController extends AbstractController
 {
     /** Possible OAuth targets. */
@@ -38,73 +51,40 @@ class OAuthController extends AbstractController
     public function __construct(
         private CreateNewUser $createNewUser,
         private CreateOAuthUserAction $createOAuthUser,
-        private StoreVcsProviderAction $storeVcsProvider,
-        private UpdateVcsProviderAction $updateVcsProvider,
+        private VcsProviderHandler $vcsProviderHandler,
     ) {}
 
-    /** Redirect the user to an external authentication page of an OAuth provider. */
-    public function redirect(Request $request, string $oauthProvider): SymfonyRedirect
+    /** Redirect the user to an external authentication page of an OAuth provider for auth purposes. */
+    public function redirectAuth(string $oauthProvider): SymfonyRedirect
     {
-        $target = $request->validate([
-            'target' => Rules::string(1, 255)->in(static::TARGETS),
-        ])['target'];
-
         $socialite = Socialite::driver($oauthProvider);
 
-        // We will add VCS-related scopes only if the target implies possible VCS provider linking.
-        if (in_array($target, ['auth', 'vcs'])) {
-            $vcsProviderName = $this->getVcsProviderName($oauthProvider);
+        $vcsProviderName = $this->vcsProviderHandler->getVcsProviderName($oauthProvider);
 
-            if (! is_null($vcsProviderName))
-                $socialite->scopes(config("vcs.list.{$vcsProviderName}.oauth_scopes"));
-        }
+        if (! is_null($vcsProviderName))
+            $socialite->scopes(config("vcs.list.{$vcsProviderName}.oauth_scopes"));
 
         return $socialite
-            ->redirectUrl(route('oauth.callback', [$oauthProvider, $target]))
+            ->redirectUrl(route('oauth.auth-callback', $oauthProvider))
             ->redirect();
     }
 
-    /** Handle a callback from an OAuth provider. */
-    public function callback(Request $request, string $oauthProvider, string $target = ''): RedirectResponse
+    /** Redirect the user to an external authentication page of an OAuth provider for linking purposes. */
+    public function redirectLink(string $oauthProvider): SymfonyRedirect
     {
-        /*
-         * TODO: CRITICAL! CONTINUE. Now, implement linking for auth and for VCS.
-         *       Consolidate all OAuth callback logic here. Remove VcsProviderController. Maybe.
-         */
+        $socialite = Socialite::driver($oauthProvider);
 
-        // TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
-        //       Like, show a separate dialog after registration with accepting terms?
-        // TODO: CRITICAL! Don't forget to write these terms, btw.
-
-        /*
-         * TODO: IMPORTANT! Figure out what to do if a user changes out permissions in the GitHub UI, for example.
-         *       Will have to catch that error and notify the user - ask to re-authorize us immediately,
-         *       if it happened in out UI, or send a link in an email otherwise.
-         */
-
-        /*
-         * TODO: IMPORTANT! Also handle user avatars provided by OAuth providers. I mean, implement user avatars in general.
-         *       Don't store any avatars at all - use an OAuth provided avatar (by its URL)
-         *       or use an external service to generate an avatar when OAuth gives nothing or isn't even used.
-         */
-
-        return match ($target) {
-            'auth' => $this->handleAuthCallback($request, $oauthProvider, $target),
-            'link' => $this->handleLinkCallback($request, $oauthProvider, $target),
-            'vcs' => $this->handleVcsCallback($request, $oauthProvider, $target),
-            default => throw new InvalidOAuthCallbackException($oauthProvider, $request->fullUrl()),
-        };
+        return $socialite
+            ->redirectUrl(route('oauth.link-callback', $oauthProvider))
+            ->redirect();
     }
 
     /** Handle an OAuth callback if user is trying to register or login. */
-    protected function handleAuthCallback(Request $request, string $oauthProvider, string $target): RedirectResponse
+    protected function auth(Request $request, string $oauthProvider): RedirectResponse
     {
-        if (! Auth::guest())
-            return redirect()->home();
-
-        return DB::transaction(function () use ($request, $oauthProvider, $target): RedirectResponse {
+        return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
             $oauthUser = Socialite::driver($oauthProvider)
-                ->redirectUrl(route('oauth.callback', [$oauthProvider, $target]))
+                ->redirectUrl(route('oauth.auth-callback', $oauthProvider))
                 ->user();
 
             // Check if user previously registered via OAuth with this provider.
@@ -117,7 +97,6 @@ class OAuthController extends AbstractController
                  * In this case the user was previously registered with via email:password or a different OAuth provider
                  * and now tries to log in via OAuth with the same email,
                  * so we will tell them to login normally and link accounts in settings.
-                 * TODO: CRITICAL! Implement that linking. It's currently only works for VCS providers.
                  */
                 if (! is_null($user)) {
                     session()->flash('status', __('flash.oauth-failed-email-taken', [
@@ -133,71 +112,76 @@ class OAuthController extends AbstractController
 
             Auth::login($user);
 
-            $this->updateVcsProvider($oauthProvider, $oauthUser, $user);
+            $this->vcsProviderHandler->update($oauthProvider, $oauthUser, $user);
 
             return redirect()->intended(route('home'));
         }, 5);
     }
 
     /** Handle an OAuth callback if user is already authenticated and trying to link a new OAuth method. */
-    protected function handleLinkCallback(Request $request, string $oauthProvider, string $target): RedirectResponse
+    protected function link(Request $request, string $oauthProvider): RedirectResponse
     {
-        if (Auth::guest())
-            return redirect()->route('login');
+        return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
+            $user = Auth::user();
 
-        $user = Auth::user();
+            $oauthModel = $user->oauth($oauthProvider);
 
-        $oauthModel = $user->oauth($oauthProvider);
+            // This provider is already linked to this user, something surely went wrong.
+            if (! is_null($oauthModel)) {
+                throw new OAuthException(
+                    $oauthProvider,
+                    $request->fullUrl(),
+                    'Tried to link user to an OAuth provider that is already linked.',
+                );
+            }
 
-        // This provider is already linked to this user, something surely went wrong.
-        if (! is_null($oauthModel)) {
-            throw new OAuthException(
+            $oauthUser = Socialite::driver($oauthProvider)
+                ->redirectUrl(route('oauth.link-callback', $oauthProvider))
+                ->user();
+
+            $this->createOAuthUser->execute(
                 $oauthProvider,
-                $request->fullUrl(),
-                'Tried to link user to an OAuth provider that is already linked.',
+                $oauthUser->getId(),
+                $oauthUser->getNickname(),
+                $user,
             );
-        }
 
-        $oauthUser = Socialite::driver($oauthProvider)
-            ->redirectUrl(route('oauth.callback', [$oauthProvider, $target]))
-            ->user();
+            flash(__('flash.oauth-linked', [
+                'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
+            ]), FlashMessageEvent::STYLE_SUCCESS);
 
-        $this->createOAuthUser->execute(
-            $oauthProvider,
-            $oauthUser->getId(),
-            $oauthUser->getNickname(),
-            $user,
-        );
-
-        return redirect()->route('account.show', 'profile');
+            return redirect()->route('account.show', 'profile');
+        }, 5);
     }
 
     /** Handle an OAuth callback if user is authenticated and trying to link a VCS provider. */
-    protected function handleVcsCallback(Request $request, string $oauthProvider, string $target): RedirectResponse
+    protected function vcs(Request $request, string $oauthProvider): RedirectResponse
     {
-        if (Auth::guest())
-            return redirect()->route('login');
+        return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
+            $user = Auth::user();
 
-        $user = Auth::user();
+            $oauthUser = Socialite::driver($oauthProvider)
+                ->redirectUrl(route('vcs.link-callback', $oauthProvider))
+                ->user();
 
-        $vcs = $user->vcs($this->getVcsProviderName($oauthProvider));
+            $vcs = $user->vcs($this->vcsProviderHandler->getVcsProviderName($oauthProvider));
 
-        // This VCS provider is already linked to this user, something surely went wrong.
-        if (! is_null($vcs)) {
-            throw new OAuthException(
-                $oauthProvider,
-                $request->fullUrl(),
-                'Tried to link user to a VCS provider via OAuth, but this VCS service is already linked to this user.',
-            );
-        }
+            if (is_null($vcs)) {
+                $vcs = $this->vcsProviderHandler->create($oauthProvider, $oauthUser, $user);
 
-        $oauthUser = Socialite::driver($oauthProvider)
-            ->redirectUrl(route('oauth.callback', [$oauthProvider, $target]))
-            ->user();
+                flash(__('flash.vcs-provider-linked', [
+                    'vcs' => __("projects.repo.providers.{$vcs->provider}"),
+                ]), FlashMessageEvent::STYLE_SUCCESS);
+            } else {
+                $this->vcsProviderHandler->update($oauthProvider, $oauthUser, $user);
 
-        $this->createVcsProvider($oauthProvider, $oauthUser, $user);
+                flash(__('flash.vcs-provider-updated', [
+                    'vcs' => __("projects.repo.providers.{$vcs->provider}"),
+                ]), FlashMessageEvent::STYLE_SUCCESS);
+            }
 
-        return redirect()->route('account.show', 'vcs');
+            return redirect()->route('account.show', 'vcs');
+        }, 5);
     }
 
     /**
@@ -263,62 +247,11 @@ class OAuthController extends AbstractController
                 'terms' => true,
             ]);
 
-            $this->createVcsProvider($oauthProvider, $oauthUser, $user);
+            $this->vcsProviderHandler->create($oauthProvider, $oauthUser, $user);
 
             event(new Registered($user));
 
             return $user;
         }, 5);
-    }
-
-    /** Create a new VcsProvider for a newly registered user. */
-    private function createVcsProvider(string $oauthProvider, OauthUser $oauthUser, User $user): void
-    {
-        $vcsProviderName = $this->getVcsProviderName($oauthProvider);
-
-        // This OAuth provider is not configured to be used as a VCS provider.
-        if (is_null($vcsProviderName))
-            return;
-
-        $vcsProviderData = VcsProviderDto::fromOauth(
-            $oauthUser,
-            $vcsProviderName,
-        );
-
-        $this->storeVcsProvider->execute($vcsProviderData, $user);
-    }
-
-    /** Update existing VcsProvider for an existing user. */
-    private function updateVcsProvider(string $oauthProvider, OauthUser $oauthUser, User $user): void
-    {
-        $vcsProviderName = $this->getVcsProviderName($oauthProvider);
-
-        // This OAuth provider is not configured to be used as a VCS provider.
-        if (is_null($vcsProviderName))
-            return;
-
-        $vcsProviderData = VcsProviderDto::fromOauth(
-            $oauthUser,
-            $vcsProviderName,
-        );
-
-        $vcsProvider = $user->vcs($vcsProviderName, true);
-
-        if (is_null($vcsProvider))
-            return;
-
-        /*
-         * If the user has a VcsProvider configured we will update the token,
-         * but only if it is associated with the same account,
-         * otherwise don't touch it.
-         */
-        if ($vcsProvider->externalId === $vcsProviderData->external_id)
-            $this->updateVcsProvider->execute($vcsProvider,$vcsProviderData);
-    }
-
-    /** Get a VCS provider name from config by its OAuth provider name. */
-    private function getVcsProviderName(string $vcsProviderOauthName): string|null
-    {
-        return config("auth.oauth_providers.{$vcsProviderOauthName}.vcs_provider");
     }
 }

@@ -14,4 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//
+/*
+ * OAuth routes
+ */
+Route::name('oauth.')
+    ->prefix('oauth/{oauthService}')
+    ->group(function () {
+        Route::get('auth', [OAuthController::class, 'redirectAuth'])
+            ->name('auth');
+        Route::get('callback/auth', [OAuthController::class, 'auth'])
+            ->name('auth-callback');
+    });

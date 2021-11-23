@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\VcsProviderController;
 use App\Http\Controllers\ServerController;
 use App\Http\Livewire\AccountView;
@@ -35,13 +36,25 @@ Route::get('servers/{server}/{show?}', ServerView::class)
     ->name('servers.show');
 
 /*
+ * OAuthUsers routes
+ */
+Route::name('oauth.')
+    ->prefix('oauth/{oauthService}')
+    ->group(function () {
+        Route::get('link', [OAuthController::class, 'redirectLink'])
+            ->name('link');
+        Route::get('callback/link', [OAuthController::class, 'link'])
+            ->name('link-callback');
+    });
+
+/*
  * VcsProviders routes
  */
 Route::name('vcs.')->group(function () {
-    Route::get('vcs/link/{vcsProviderOauthName}', [VcsProviderController::class, 'redirect'])
-        ->name('redirect');
-    Route::get('oauth/{vcsProviderOauthName}/vcs-callback', [VcsProviderController::class, 'callback'])
-        ->name('callback');
+    Route::get('vcs/{vcsProviderOauthName}/link', [VcsProviderController::class, 'redirect'])
+        ->name('link');
+    Route::get('oauth/{vcsProviderOauthName}/callback/vcs', [VcsProviderController::class, 'link'])
+        ->name('link-callback');
     Route::get('vcs/{vcsProviderOauthName}/unlink', [VcsProviderController::class, 'unlink'])
         ->name('unlink');
 });

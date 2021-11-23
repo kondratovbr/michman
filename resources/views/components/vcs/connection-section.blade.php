@@ -13,7 +13,7 @@
             <x-buttons.primary
                 class="mt-3"
                 :link="true"
-                href="{{ route('vcs.redirect', $oauthProvider) }}"
+                href="{{ route('vcs.link', $oauthProvider) }}"
             >
                 {{ __('account.vcs.connect-to-button', ['provider' => __("auth.oauth.providers.{$oauthProvider}.label")]) }}
             </x-buttons.primary>
@@ -29,7 +29,7 @@
             <div class="mt-3 flex space-x-3">
                 <x-buttons.primary
                     :link="true"
-                    href="{{ route('vcs.redirect', $oauthProvider) }}"
+                    href="{{ route('vcs.link', $oauthProvider) }}"
                 >
                     {{ __('account.vcs.refresh-button') }}
                 </x-buttons.primary>
