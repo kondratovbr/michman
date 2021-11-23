@@ -23,6 +23,6 @@ class VcsProviderPolicy
 
     public function delete(User $user, VcsProvider $vcsProvider): bool
     {
-        return false;
+        return $user->is($vcsProvider->user);
     }
 }

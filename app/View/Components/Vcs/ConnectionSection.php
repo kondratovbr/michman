@@ -2,18 +2,37 @@
 
 namespace App\View\Components\Vcs;
 
+use App\Facades\Auth;
+use App\Models\VcsProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class ConnectionSection extends Component
 {
-    public string $vcsProvider;
+    public string $vcsProviderName;
     public string $oauthProvider;
+    public VcsProvider|null $vcsProvider;
 
     public function __construct(string $oauthProvider)
     {
         $this->oauthProvider = $oauthProvider;
-        $this->vcsProvider = (string) config("auth.oauth_providers.{$oauthProvider}.vcs_provider");
+        $this->vcsProviderName = (string) config("auth.oauth_providers.{$oauthProvider}.vcs_provider");
+        $this->vcsProvider = Auth::user()->vcsProviders()
+            ->where('provider', $this->vcsProviderName)
+            ->with('projects')
+            ->first();
+    }
+
+    /** Check if this VcsProvider can be safely unlinked. */
+    public function canUnlink(): bool
+    {
+        return $this->vcsProvider->projects->count() == 0;
+    }
+
+    /** Check is this VcsProvider is in use by some projects. */
+    public function inUse(): bool
+    {
+        return $this->vcsProvider->projects->count() > 0;
     }
 
     public function render(): View

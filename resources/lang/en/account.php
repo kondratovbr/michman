@@ -173,6 +173,8 @@ return [
         'unlink-button' => 'Unlink',
         'connect-to-button' => 'Connect to :provider',
         'connected' => 'Connected to :username',
+        'used-by-project' => 'Used by :project project',
+        'used-by-n-projects' => 'Used by :count project|Used by :count projects',
 
     ],
 

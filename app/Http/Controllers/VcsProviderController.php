@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\Users\FlashMessageEvent;
-use App\Exceptions\NotImplementedException;
 use App\Facades\Auth;
 use App\Handlers\VcsProviderHandler;
 use App\Models\VcsProvider;
@@ -70,19 +69,22 @@ class VcsProviderController extends AbstractController
     {
         $vcsProviderName = $this->handler->getVcsProviderName($vcsProviderOauthName);
 
-        /** @var VcsProvider $vcsProvider */
-        $vcsProvider = Auth::user()->vcsProviders()
-            ->where('provider', $vcsProviderName)
-            ->latest()
-            ->lockForUpdate()
-            ->firstOrFail();
+        DB::transaction(function () use ($vcsProviderName) {
+            /** @var VcsProvider $vcs */
+            $vcs = Auth::user()->vcsProviders()
+                ->where('provider', $vcsProviderName)
+                ->latest()
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        $this->authorize('delete', $vcsProvider);
+            if ($vcs->projects()->count() > 0)
+                return;
 
-        // TODO: CRITICAL! Implement!
+            $this->authorize('delete', $vcs);
 
-        throw new NotImplementedException;
+            $vcs->delete();
+        }, 5);
 
-        //
+        return redirect()->route('account.show', 'vcs');
     }
 }
