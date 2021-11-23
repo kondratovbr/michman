@@ -46,6 +46,9 @@ return [
                 'label' => 'Bitbucket',
             ],
         ],
+        'unlink-provider-oauth' => 'Unlink :provider OAuth',
+        'unlink-provider-button' => 'Unlink :provider',
+        'are-you-sure' => 'Are you sure you want to disable OAuth via :provider? You won\'t be able to log in using :provider next time!',
     ],
 
     'verification-email' => [

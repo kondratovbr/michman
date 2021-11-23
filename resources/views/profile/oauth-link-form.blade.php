@@ -4,7 +4,7 @@
         <div class="h-full w-full flex flex-col items-center">
 
             <div class="flex flex-col items-center">
-                <span>{{ __("auth.oauth.providers.{$provider}.label") }}</span>
+                <span>{{ $this->providerLabel }}</span>
                 <x-icon class="mt-1 mb-3" size="16">
                     <i class="{{ config("auth.oauth_providers.{$provider}.icon") }} fa-4x"></i>
                 </x-icon>
@@ -18,10 +18,7 @@
                         {{ Auth::user()->oauth($provider)->nickname }}
                     </span>
                 </div>
-                <x-buttons.secondary
-                    :link="true"
-                    href="{{ route('oauth.unlink', $provider) }}"
-                >
+                <x-buttons.secondary wire:click="$toggle('confirmationModalOpen')" :disabled="! $this->canUnlink">
                     {{ __('auth.unlink-button') }}
                 </x-buttons.secondary>
             @else
@@ -35,5 +32,31 @@
             @endif
 
         </div>
+
+        <x-modals.small wire:model="confirmationModalOpen">
+            <x-slot name="header">
+                {{ __('auth.oauth.unlink-provider-oauth', ['provider' => $this->providerLabel]) }}
+            </x-slot>
+
+            <x-slot name="content">
+                {{ __('auth.oauth.are-you-sure', ['provider' => $this->providerLabel]) }}
+            </x-slot>
+
+            <x-slot name="actions">
+                <div class="flex-grow flex justify-between">
+                    <x-buttons.secondary
+                        wire:click="$toggle('confirmationModalOpen')"
+                        wire:loading.attr="disabled"
+                    >
+                        {{ __('buttons.cancel') }}
+                    </x-buttons.secondary>
+
+                    <x-buttons.danger :link="true" href="{{ route('oauth.unlink', $provider) }}">
+                        {{ __('auth.oauth.unlink-provider-button', ['provider' => $this->providerLabel]) }}
+                    </x-buttons.danger>
+                </div>
+            </x-slot>
+        </x-modals.small>
+
     </x-slot>
 </x-smallbox>
