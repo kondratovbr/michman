@@ -45,9 +45,6 @@ use Laravel\Socialite\Contracts\User as OauthUser;
 
 class OAuthController extends AbstractController
 {
-    /** Possible OAuth targets. */
-    public const TARGETS = ['auth', 'link', 'vcs'];
-
     public function __construct(
         private CreateNewUser $createNewUser,
         private CreateOAuthUserAction $createOAuthUser,
