@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Team;
 use App\Models\User;
+use App\Support\Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -97,15 +98,16 @@ class UserFactory extends Factory
      *
      * @return $this
      */
-    public function viaGithub(): static
+    public function viaGithub(array $oauthUserAttributes = []): static
     {
         return $this
             ->state(['password' => null])
-            ->afterCreating(function (User $user) {
-                $user->oauthUsers()->create([
+            ->afterCreating(function (User $user) use ($oauthUserAttributes) {
+                $user->oauthUsers()->create(Arr::merge([
                     'provider' => 'github',
                     'oauth_id' => random_int(1, 1000),
-                ]);
+                    'nickname' => $this->faker->userName,
+                ], $oauthUserAttributes));
             });
     }
 }
