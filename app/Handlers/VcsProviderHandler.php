@@ -17,15 +17,17 @@ class VcsProviderHandler extends AbstractHandler
         private UpdateVcsProviderAction $updateVcsProvider,
     ) {}
 
-    /** Create a new VcsProvider for a newly registered user. */
-    public function create(string $oauthProvider, OAuthUser $oauthUser, User $user): VcsProvider|null
+    /** Create a new VcsProvider for a user if possible. */
+    public function createViaOAuth(string $oauthProvider, OAuthUser $oauthUser, User $user): VcsProvider|null
     {
         $vcsProviderName = $this->getVcsProviderName($oauthProvider);
 
-        $this->authorize('create', [VcsProvider::class, $vcsProviderName]);
-
         // This OAuth provider is not configured to be used as a VCS provider.
         if (is_null($vcsProviderName))
+            return null;
+
+        // The user already has this VCS service connected.
+        if ($user->vcs($vcsProviderName))
             return null;
 
         $vcsProviderData = VcsProviderDto::fromOauth(
@@ -37,7 +39,7 @@ class VcsProviderHandler extends AbstractHandler
     }
 
     /** Update existing VcsProvider for an existing user. */
-    public function update(string $oauthProvider, OAuthUser $oauthUser, User $user): void
+    public function updateViaOAuth(string $oauthProvider, OAuthUser $oauthUser, User $user): void
     {
         $vcsProviderName = $this->getVcsProviderName($oauthProvider);
 
@@ -55,12 +57,10 @@ class VcsProviderHandler extends AbstractHandler
         if (is_null($vcsProvider))
             return;
 
-        $this->authorize('update', $vcsProvider);
-
         if ($vcsProvider->externalId != $vcsProviderData->external_id) {
             flash(__('flash.vcs-provider-link-failed-different-account', [
                 'vcs' => __("projects.repo.providers.{$vcsProvider->provider}"),
-            ]), FlashMessageEvent::STYLE_DANGER);
+            ]));
             return;
         }
 

@@ -47,13 +47,13 @@ class VcsProviderController extends AbstractController
             $vcs = $user->vcs($this->handler->getVcsProviderName($vcsProviderOauthName));
 
             if (is_null($vcs)) {
-                $vcs = $this->handler->create($vcsProviderOauthName, $oauthUser, $user);
+                $vcs = $this->handler->createViaOAuth($vcsProviderOauthName, $oauthUser, $user);
 
                 flash(__('flash.vcs-provider-linked', [
                     'vcs' => __("projects.repo.providers.{$vcs->provider}"),
                 ]), FlashMessageEvent::STYLE_SUCCESS);
             } else {
-                $this->handler->update($vcsProviderOauthName, $oauthUser, $user);
+                $this->handler->updateViaOAuth($vcsProviderOauthName, $oauthUser, $user);
 
                 flash(__('flash.vcs-provider-updated', [
                     'vcs' => __("projects.repo.providers.{$vcs->provider}"),

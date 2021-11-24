@@ -109,7 +109,7 @@ class OAuthController extends AbstractController
 
             Auth::login($user);
 
-            $this->vcsProviderHandler->update($oauthProvider, $oauthUser, $user);
+            $this->vcsProviderHandler->updateViaOAuth($oauthProvider, $oauthUser, $user);
 
             return redirect()->intended(route('home'));
         }, 5);
@@ -239,7 +239,7 @@ class OAuthController extends AbstractController
                 'terms' => true,
             ]);
 
-            $this->vcsProviderHandler->create($oauthProvider, $oauthUser, $user);
+            $this->vcsProviderHandler->createViaOAuth($oauthProvider, $oauthUser, $user);
 
             event(new Registered($user));
 
