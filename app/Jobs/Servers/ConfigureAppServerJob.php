@@ -48,9 +48,6 @@ class ConfigureAppServerJob extends AbstractJob
                 new InstallCacheJob($server, $this->data->cache),
                 new CreatePythonJob($server, $this->data->python_version),
                 new InstallNginxJob($server),
-
-                // TODO: CRITICAL! Don't forget the rest of the stuff I maybe should do here!
-
             ])->dispatch();
 
         }, 5);
