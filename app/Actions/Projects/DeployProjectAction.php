@@ -7,7 +7,7 @@ use App\DataTransferObjects\DeploymentDto;
 use App\Models\Deployment;
 use App\Models\Project;
 
-// TODO: CRITICAL! Figure out how to fail gracefully here if we can't get the commit hash and how to communicate this to the user.
+// TODO: IMPORTANT! Figure out how to fail gracefully here if we can't get the commit hash and how to communicate this to the user.
 
 // TODO: CRITICAL! Cover with tests!
 
