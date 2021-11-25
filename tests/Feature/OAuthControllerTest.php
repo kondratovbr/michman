@@ -14,6 +14,8 @@ use Laravel\Socialite\Contracts\Provider as OAuthDriver;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 
+// TODO: CRITICAL! Forgot to test unlinking.
+
 class OAuthControllerTest extends AbstractFeatureTest
 {
     public function test_guest_can_be_redirected_to_github_oauth()
@@ -394,14 +396,14 @@ class OAuthControllerTest extends AbstractFeatureTest
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
                             ->zeroOrMoreTimes()
-                            ->andReturn('123456789');
+                            ->andReturn('66666');
                         $mock->shouldReceive('getEmail')
                             ->zeroOrMoreTimes()
-                            ->andReturn('foo@bar.com');
+                            ->andReturn('foo@bar.biz');
                         $mock->shouldReceive('getNickname')
                             ->zeroOrMoreTimes()
-                            ->andReturn('foobar');
-                        $mock->token = 'foobarbaz';
+                            ->andReturn('foofoo');
+                        $mock->token = 'foofoofoo';
                     }));
             }));
 
@@ -411,11 +413,42 @@ class OAuthControllerTest extends AbstractFeatureTest
 
         $this->assertEquals(2, $user->oauthUsers()->count());
 
-        //
+        $oauth = $user->oauth('gitlab');
+
+        $this->assertEquals('gitlab', $oauth->provider);
+        $this->assertEquals('66666', $oauth->oauthId);
+        $this->assertEquals('foofoo', $oauth->nickname);
     }
 
     public function test_user_cannot_link_the_same_oauth_provider()
     {
-        //
+        /** @var User $user */
+        $user = User::factory()
+            ->viaGithub([
+                'oauth_id' => '123456789',
+            ])
+            ->withPersonalTeam()
+            ->create();
+
+        /** @var VcsProvider $vcsProvider */
+        $vcsProvider = VcsProvider::factory([
+            'provider' => 'github_v3',
+            'external_id' => '123456789',
+        ])
+            ->for($user)
+            ->create();
+
+        Socialite::shouldReceive('driver')->never();
+
+        $response = $this->actingAs($user)->get('/oauth/github/callback/link?code=123456789&state=123456789');
+
+        $response->assertStatus(500);
+
+        $this->assertEquals(1, $user->oauthUsers()->count());
+
+        $oauth = $user->oauth('github');
+
+        $this->assertEquals('github', $oauth->provider);
+        $this->assertEquals('123456789', $oauth->oauthId);
     }
 }

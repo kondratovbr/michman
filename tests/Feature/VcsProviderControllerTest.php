@@ -14,14 +14,14 @@ use Laravel\Socialite\Contracts\Provider as OAuthDriver;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 
+// TODO: CRITICAL! Forgot to test unlinking.
+
 class VcsProviderControllerTest extends AbstractFeatureTest
 {
     public function test_github_redirect()
     {
         /** @var User $user */
         $user = User::factory()->withPersonalTeam()->create();
-
-        $this->actingAs($user);
 
         Socialite::shouldReceive('driver')
             ->once()
@@ -31,8 +31,8 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                     ->with(['user', 'repo', 'admin:public_key'])
                     ->once()
                     ->andReturnSelf();
-                $mock->shouldReceive('with')
-                    ->with(['redirect_uri' => 'http://localhost/oauth/github/vcs-callback'])
+                $mock->shouldReceive('redirectUrl')
+                    ->with('http://localhost/oauth/github/callback/vcs')
                     ->once()
                     ->andReturnSelf();
                 $mock->shouldReceive('redirect')
@@ -40,9 +40,18 @@ class VcsProviderControllerTest extends AbstractFeatureTest
                     ->andReturn(new SymfonyRedirect('https://oauth.github.com/'));
             }));
 
-        $response = $this->get('/vcs/link/github');
+        $response = $this->actingAs($user)->get('/vcs/github/link');
 
-        $response->assertRedirect();
+        $response->assertRedirect('https://oauth.github.com/');
+    }
+
+    public function test_github_redirect_for_guest()
+    {
+        Socialite::shouldReceive('driver')->never();
+
+        $response = $this->get('/vcs/github/link');
+
+        $response->assertRedirect(route('login'));
     }
 
     public function test_github_link()
@@ -54,6 +63,10 @@ class VcsProviderControllerTest extends AbstractFeatureTest
             ->once()
             ->with('github')
             ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
+                $mock->shouldReceive('redirectUrl')
+                    ->with('http://localhost/oauth/github/callback/vcs')
+                    ->once()
+                    ->andReturnSelf();
                 $mock->shouldReceive('user')
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
@@ -69,9 +82,9 @@ class VcsProviderControllerTest extends AbstractFeatureTest
 
         Event::fake();
 
-        $response = $this->actingAs($user)->get('/oauth/github/vcs-callback?code=123456789&state=123456789');
+        $response = $this->actingAs($user)->get('/oauth/github/callback/vcs?code=123456789&state=123456789');
 
-        $response->assertRedirect();
+        $response->assertRedirect(route('account.show', 'vcs'));
         $this->assertDatabaseHas('vcs_providers', [
             'user_id' => $user->id,
             'provider' => 'github_v3',
@@ -100,11 +113,15 @@ class VcsProviderControllerTest extends AbstractFeatureTest
             ->once()
             ->with('github')
             ->andReturn(Mockery::mock(OAuthDriver::class, function (MockInterface $mock) {
+                $mock->shouldReceive('redirectUrl')
+                    ->with('http://localhost/oauth/github/callback/vcs')
+                    ->once()
+                    ->andReturnSelf();
                 $mock->shouldReceive('user')
                     ->once()
                     ->andReturn(Mockery::mock(OAuthUser::class, function (MockInterface $mock) {
                         $mock->shouldReceive('getId')
-                            ->times(3)
+                            ->twice()
                             ->andReturn('123456789');
                         $mock->shouldReceive('getNickname')
                             ->once()
@@ -115,16 +132,14 @@ class VcsProviderControllerTest extends AbstractFeatureTest
 
         Event::fake();
 
-        $response = $this->actingAs($user)->get('/oauth/github/vcs-callback?code=123456789&state=123456789');
+        $response = $this->actingAs($user)->get('/oauth/github/callback/vcs?code=123456789&state=123456789');
 
-        $user->refresh();
-        $vcsProvider->refresh();
-
-        $response->assertRedirect();
+        $response->assertRedirect(route('account.show', 'vcs'));
         $this->assertDatabaseHas('vcs_providers', [
             'user_id' => $user->id,
             'provider' => 'github_v3',
             'external_id' => '123456789',
+            'nickname' => 'theuser',
         ]);
         $this->assertCount(1, $user->vcsProviders);
         $this->assertNotNull($user->vcs('github_v3'));
