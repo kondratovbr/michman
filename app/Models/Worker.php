@@ -155,7 +155,7 @@ class Worker extends AbstractModel
     {
         $app = $this->app ?? $this->project->package;
 
-        // TODO: CRITICAL! Make sure to support other Python queue packages in here.
+        // TODO: IMPORTANT! Make sure to support other Python queue packages in here.
         if ($this->type === 'celery') {
             $concurrency = is_null($this->processes) ? null : "--concurrency={$this->processes}";
             $queues = empty($this->queues) ? null : '-Q=' . implode(',', $this->queues);

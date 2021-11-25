@@ -25,8 +25,6 @@ use Laravel\Socialite\Contracts\User as OauthUser;
  *       Users will probably have to re-authorize, so I'll have to prepare a plan for such scenario.
  */
 
-// TODO: CRITICAL! Update tests to reflect the new logic.
-
 // TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
 //       Like, show a separate dialog after registration with accepting terms?
 // TODO: CRITICAL! Don't forget to write these terms, btw.
