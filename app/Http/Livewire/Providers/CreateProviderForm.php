@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Providers;
 use App\Actions\Providers\StoreProviderAction;
 use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\ProviderDto;
+use App\Exceptions\NotSupportedException;
 use App\Facades\Auth;
 use App\Models\Provider;
 use App\Rules\Providers\ProviderKeyValid;
@@ -15,8 +16,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
-// TODO: CRITICAL! Implement DigitalOcean OAuth instead of these tokens - they are old tech.
-// TODO: CRITICAL! I removed support for key/secret auth for providers. Should remove it from here. Will re-implement later if encounter it.
+// TODO: CRITICAL! Implement DigitalOcean OAuth instead of these tokens - they are old tech. I should probably keep the support as an option - in case someone needs to connect an account they don't have direct access to.
 
 class CreateProviderForm extends Component
 {
@@ -24,8 +24,6 @@ class CreateProviderForm extends Component
 
     public string $provider = '';
     public string|null $token = null;
-    public string|null $key = null;
-    public string|null $secret = null;
     public string|null $name = null;
 
     public function mount(): void
@@ -42,7 +40,7 @@ class CreateProviderForm extends Component
         }
 
         if ((string) config('providers.list.' . $this->provider . '.auth_type') == 'basic') {
-            $attributes['token'] = null;
+            throw new NotSupportedException;
         }
 
         return $attributes;
