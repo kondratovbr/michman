@@ -9,6 +9,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
+/*
+ * TODO: CRITICAL! Opening the actual form here takes some stupid long time.
+ *       Better check if caching some stuff from DO is necessary after all and check what's happening there.
+ */
+
 /**
  * @property-read string $formComponent
  */
