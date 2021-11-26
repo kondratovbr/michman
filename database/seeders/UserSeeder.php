@@ -32,6 +32,7 @@ class UserSeeder extends Seeder
             $user->oauthUsers()->create([
                 'provider' => 'github',
                 'oauth_id' => '5469212',
+                'nickname' => 'kondorb',
             ]);
         }
 
