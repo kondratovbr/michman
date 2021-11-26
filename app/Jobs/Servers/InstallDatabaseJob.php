@@ -48,7 +48,7 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
                 return;
             }
 
-            $scriptClass = (string) config("servers.databases.{$this->database}.scripts_namespace") . '\InstallDatabaseScript';
+            $scriptClass = config("servers.databases.{$this->database}.scripts_namespace") . '\InstallDatabaseScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this database.');
