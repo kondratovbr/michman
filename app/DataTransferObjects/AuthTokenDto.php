@@ -26,4 +26,19 @@ class AuthTokenDto extends AbstractDto
             expires_at: now()->addSeconds((int) floor((int) $expiresInSecs * 0.9)),
         );
     }
+
+    /** Check if this token can expire (has expiration time set). */
+    public function canExpire(): bool
+    {
+        return isset($this->expires_at);
+    }
+
+    /** Check if this token has expired. */
+    public function expired(): bool
+    {
+        if (is_null($this->expires_at))
+            return false;
+
+        return $this->expires_at->lessThanOrEqualTo(now());
+    }
 }
