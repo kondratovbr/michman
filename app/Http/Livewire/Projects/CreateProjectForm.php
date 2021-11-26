@@ -76,6 +76,8 @@ class CreateProjectForm extends LivewireComponent
             );
         }
 
+        $state['aliases'] ??= [];
+
         $attributes['state'] = $state;
 
         return $attributes;
