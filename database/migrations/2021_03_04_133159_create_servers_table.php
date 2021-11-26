@@ -29,7 +29,7 @@ class CreateServersTable extends Migration
             $table->boolean('available')->nullable();
 
             $table->string('installed_database')->nullable();
-            $table->string('database_root_password')->nullable();
+            $table->text('database_root_password')->nullable();
             $table->string('installed_cache')->nullable();
 
             $table->timestamps();
