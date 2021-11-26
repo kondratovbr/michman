@@ -218,7 +218,7 @@ class GitLabV4 extends AbstractVcsProvider
         $data = $this->decodeJson($response->body());
 
         return AuthTokenDto::fromData(
-            $data->id,
+            null,
             $data->access_token,
             $data->refresh_token,
             $data->expires_in,
