@@ -30,6 +30,13 @@ class EnableWebhookJob extends AbstractJob
             if (! $hook->state->canTransitionTo(Enabled::class))
                 return;
 
+            /*
+             * TODO: CRITICAL! CONTINUE. There's an issue with calls like this.
+             *       This call may refresh the access token, but
+             *       if the later code fails it won't be saved
+             *       due to it being run in a single transaction.
+             */
+
             $api = $hook->project->vcsProvider->api();
 
             $hookData = $api->addWebhookSafelyPush(
