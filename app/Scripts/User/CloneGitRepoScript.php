@@ -45,7 +45,7 @@ class CloneGitRepoScript extends AbstractServerScript
         // TODO: CRITICAL! Figure out file permissions here. Project files shouldn't be modifiable and directories
         //       shouldn't be writable by other users. Same thing when we pull changes during deployment.
         $this->exec(
-            "git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch main --depth 1 {$repoSshString} {$projectDir}"
+            "git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch {$project->branch} --depth 1 {$repoSshString} {$projectDir}"
         );
     }
 }
