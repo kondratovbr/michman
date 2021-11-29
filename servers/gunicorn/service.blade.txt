@@ -11,7 +11,7 @@ ExecStart=/home/{{ $project->serverUsername }}/{{ $project->domain }}/venv/bin/g
     --config /home/{{ $project->serverUsername }}/.michman/{{ $project->projectName }}_gunicorn_config.py \
     --access-logfile - \
     --bind unix:/run/{{ $project->projectName }}.sock \
-    {{ $project->projectName }}.wsgi:application
+    {{ $project->package }}.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 KillMode=mixed
 TimeoutStopSec=5
