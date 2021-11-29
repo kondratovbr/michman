@@ -37,8 +37,6 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function commitUrl(string $repo, string $commit): string
     {
-        // TODO: CRITICAL! Test this.
-
         return "https://gitlab.com/{$repo}/-/commit/{$commit}";
     }
 
