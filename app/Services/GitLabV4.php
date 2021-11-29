@@ -104,16 +104,20 @@ class GitLabV4 extends AbstractVcsProvider
         return $this->config('ssh_host_key');
     }
 
-    public function getLatestCommitHash(string|null $fullRepoName, string $branch, string $username = null, string $repo = null): string
-    {
-        // TODO: CRITICAL! UNFINISHED AND UNTESTED.
+    /** https://docs.gitlab.com/ee/api/commits.html#get-a-single-commit */
+    public function getLatestCommitHash(
+        string|null $fullRepoName,
+        string $branch,
+        string $username = null,
+        string $repo = null,
+    ): string {
 
-        $fullRepoName ??= "{$username}/{$branch}";
+        $repo = urlencode($fullRepoName ?? "{$username}/{$repo}");
 
-        $response = $this->get("/repos/{$fullRepoName}/commits/{$branch}");
+        $response = $this->get("/projects/{$repo}/repository/commits/{$branch}");
         $data = $this->decodeJson($response->body());
 
-        return $data->sha;
+        return $data->id;
     }
 
     public static function getFullSshString(string $repo): string
