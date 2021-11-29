@@ -41,7 +41,7 @@ return [
             'disabled' => false,
             'icon' => 'fab fa-gitlab',
             // TODO: CRITICAL! Don't forget to put one here. Same for Bitbucket.
-            'ssh_host_key' => null,
+            'ssh_host_key' => 'gitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=',
         ],
 
         'bitbucket' => [
