@@ -102,8 +102,12 @@ class GitHubV3 extends AbstractVcsProvider
     }
 
     /** https://docs.github.com/en/rest/reference/repos#get-a-commit */
-    public function getLatestCommitHash(string|null $fullRepoName, string $branch, string $username = null, string $repo = null): string
-    {
+    public function getLatestCommitHash(
+        string|null $fullRepoName,
+        string $branch,
+        string $username = null,
+        string $repo = null,
+    ): string {
         $fullRepoName ??= "{$username}/{$repo}";
 
         $response = $this->get("/repos/{$fullRepoName}/commits/{$branch}");
