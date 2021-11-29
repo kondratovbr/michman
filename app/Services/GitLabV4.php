@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use RuntimeException;
 
-// TODO: CRITICAL! CONTINUE. Test this. Create a repo on GitLab and try to deploy a project from it.
 // TODO: CRITICAL! Cover with tests. Don't forget to cover stuff that I moved to AbstractVcsProvider - it should be tested for every API.
+
+// TODO: CRITICAL! CONTINUE. Now test webhooks on GitLab.
 
 /*
  * TODO: IMPORTANT! I should also handle the "scope".
