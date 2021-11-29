@@ -56,9 +56,7 @@ class InstallProjectRepoAction
         }, 5);
     }
 
-    /**
-     * Create an array with the project's environment data that can be supplied to config templates.
-     */
+    /** Create an array with the project's environment data that can be supplied to config templates. */
     protected function getEnvData(Project $project, Server $server): array
     {
         $envData = [
