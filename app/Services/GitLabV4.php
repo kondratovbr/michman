@@ -180,7 +180,7 @@ class GitLabV4 extends AbstractVcsProvider
         $repo = urlencode($repo);
 
         $response = $this->put(
-            "/projects/{$repo}/hooks",
+            "/projects/{$repo}/hooks/{$webhookExternalId}",
             $this->pushWebhookRequestData($payloadUrl, $secret),
         );
         $data = $this->decodeJson($response->body());
@@ -244,7 +244,7 @@ class GitLabV4 extends AbstractVcsProvider
         return new WebhookDto(
             events: $this->eventsArrayFromData($data),
             id: (string) $data->id,
-            url: $data->config->url,
+            url: $data->url,
         );
     }
 
