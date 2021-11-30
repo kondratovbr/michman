@@ -144,7 +144,7 @@ class GitLabV4 extends AbstractVcsProvider
 
         $repo = urlencode($repo);
 
-        return $this->get("/repos/{$repo}/hooks", [],
+        return $this->get("/projects/{$repo}/hooks", [],
             function (WebhookDataCollection $carry, array $data) {
                 /** @var object $key */
                 foreach ($data as $key) {
@@ -164,7 +164,7 @@ class GitLabV4 extends AbstractVcsProvider
         $repo = urlencode($repo);
 
         $response = $this->post(
-            "/repos/{$repo}/hooks",
+            "/projects/{$repo}/hooks",
             $this->pushWebhookRequestData($payloadUrl, $secret),
         );
         $data = $this->decodeJson($response->body());
@@ -180,7 +180,7 @@ class GitLabV4 extends AbstractVcsProvider
         $repo = urlencode($repo);
 
         $response = $this->put(
-            "/repos/{$repo}/hooks",
+            "/projects/{$repo}/hooks",
             $this->pushWebhookRequestData($payloadUrl, $secret),
         );
         $data = $this->decodeJson($response->body());
@@ -195,7 +195,7 @@ class GitLabV4 extends AbstractVcsProvider
 
         $repo = urlencode($repo);
 
-        $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
+        $this->delete("/projects/{$repo}/hooks/{$webhookExternalId}");
     }
 
     /** https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow */
@@ -269,7 +269,7 @@ class GitLabV4 extends AbstractVcsProvider
 
         $result = [];
         foreach ($events as $event) {
-            $name = "{$events}_events";
+            $name = "{$event}_events";
 
             if ($data->$name)
                 $result[] = $event;
