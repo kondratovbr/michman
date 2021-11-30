@@ -4,7 +4,7 @@ namespace App\Services\Traits;
 
 trait HasConfig
 {
-    private string $configPrefix;
+    protected string $configPrefix;
 
     /** Set a prefix to be used to retrieve config values for this entity. */
     protected function setConfigPrefix(string $prefix): void
