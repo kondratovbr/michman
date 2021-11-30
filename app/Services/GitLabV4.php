@@ -127,8 +127,6 @@ class GitLabV4 extends AbstractVcsProvider
     /** https://docs.gitlab.com/ee/api/projects.html#get-project-hook */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        // TODO: CRITICAL! Test this.
-
         $repo = urlencode($repo);
 
         $response = $this->get("/projects/{$repo}/hooks/{$webhookExternalId}");
@@ -140,8 +138,6 @@ class GitLabV4 extends AbstractVcsProvider
     /** https://docs.gitlab.com/ee/api/projects.html#list-project-hooks */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        // TODO: CRITICAL! Test this.
-
         $repo = urlencode($repo);
 
         return $this->get("/projects/{$repo}/hooks", [],
@@ -159,8 +155,6 @@ class GitLabV4 extends AbstractVcsProvider
     /** https://docs.gitlab.com/ee/api/projects.html#add-project-hook */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: CRITICAL! Test this.
-
         $repo = urlencode($repo);
 
         $response = $this->post(
@@ -175,8 +169,6 @@ class GitLabV4 extends AbstractVcsProvider
     /** https://docs.gitlab.com/ee/api/projects.html#edit-project-hook */
     public function updateWebhookPush(string $repo, string $webhookExternalId, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: CRITICAL! Test this.
-
         $repo = urlencode($repo);
 
         $response = $this->put(
