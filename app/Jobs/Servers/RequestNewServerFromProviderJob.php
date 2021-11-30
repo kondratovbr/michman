@@ -27,7 +27,9 @@ class RequestNewServerFromProviderJob extends AbstractJob
 
     public function handle(): void
     {
-        DB::transaction(function () {
+        $api = $this->server->provider->api();
+
+        DB::transaction(function () use ($api) {
 
             // TODO: IMPORTANT! Make sure to handle a situation when another server with the same name already exists on this provider.
 
@@ -37,8 +39,6 @@ class RequestNewServerFromProviderJob extends AbstractJob
                 Log::warning('RequestNewServerFromProviderJob: The server already has an external_id set. Server ID: ' . $server->getKey());
                 return;
             }
-
-            $api = $server->provider->api();
 
             $createdServer = $api->createServer($this->serverData, $server->workerSshKey->externalId);
 

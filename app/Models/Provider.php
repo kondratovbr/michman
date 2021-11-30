@@ -78,7 +78,15 @@ class Provider extends AbstractModel
         return "{$this->provider}_servers";
     }
 
-    /** Get an instance of ServerProviderInterface to interact with the server provider API. */
+    /**
+     * Get an instance of ServerProviderInterface to interact with the server provider API.
+     *
+     * NOTE: This method must be called outside any DB transactions,
+     * because it may need to commit a refreshed access token to the DB.
+     *
+     * TODO: IMPORTANT! This caveat may be resolved by using a separate DB table for API access tokens and accessing it
+     *       over a separate DB connection configured in databases.php config file and the corresponding model.
+     */
     public function api(): ServerProviderInterface
     {
         $api = $this->getApi();

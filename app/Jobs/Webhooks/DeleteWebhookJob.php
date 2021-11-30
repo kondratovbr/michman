@@ -24,17 +24,16 @@ class DeleteWebhookJob extends AbstractJob
 
     public function handle(): void
     {
-        DB::transaction(function () {
+        $api = $this->hook->project->vcsProvider->api();
+
+        DB::transaction(function () use ($api) {
             $hook = $this->hook->freshLockForUpdate();
 
             if (! $hook->state->is(Deleting::class))
                 return;
 
-            if (isset($hook->externalId)) {
-                $api = $hook->project->vcsProvider->api();
-
+            if (isset($hook->externalId))
                 $api->deleteWebhookIfExistsPush($hook->repo, $hook->url);
-            }
 
             $hook->calls()->delete();
             $hook->delete();

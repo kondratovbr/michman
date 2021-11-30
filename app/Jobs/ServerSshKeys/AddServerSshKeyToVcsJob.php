@@ -27,18 +27,16 @@ class AddServerSshKeyToVcsJob extends AbstractJob
 
     public function handle(): void
     {
-        DB::transaction(function () {
+        $api = $this->vcsProvider->api();
+
+        DB::transaction(function () use ($api) {
             $server = $this->server->freshSharedLock();
+            $vcsProvider = $this->vcsProvider->freshSharedLock();
 
             /** @var ServerSshKey $serverSshKey */
             $serverSshKey = $server->serverSshKey()->lockForUpdate()->firstOrFail();
 
-            /** @var VcsProvider $vcsProvider */
-            $vcsProvider = VcsProvider::query()
-                ->lockForUpdate()
-                ->findOrFail($this->vcsProvider->getKey());
-
-            $vcsProvider->api()->addSshKeySafely(
+            $api->addSshKeySafely(
                 $serverSshKey->name,
                 $serverSshKey->getPublicKeyString(false)
             );

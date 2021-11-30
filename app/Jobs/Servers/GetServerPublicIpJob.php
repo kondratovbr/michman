@@ -25,10 +25,12 @@ class GetServerPublicIpJob extends AbstractJob
 
     public function handle(): void
     {
-        DB::transaction(function () {
+        $api = $this->server->provider->api();
+
+        DB::transaction(function () use ($api) {
             $server = $this->server->freshLockForUpdate();
 
-            $ip = $server->provider->api()->getServerPublicIp4($server->externalId);
+            $ip = $api->getServerPublicIp4($server->externalId);
 
             if (is_null($ip)) {
                 $this->release(static::SECONDS_BETWEEN_RETRIES);

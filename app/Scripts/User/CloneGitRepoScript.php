@@ -5,6 +5,7 @@ namespace App\Scripts\User;
 use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Services\VcsProviderInterface;
 use phpseclib3\Net\SFTP;
 
 class CloneGitRepoScript extends AbstractServerScript
@@ -13,8 +14,9 @@ class CloneGitRepoScript extends AbstractServerScript
         Server $server,
         Project $project,
         SFTP $ssh = null,
+        VcsProviderInterface $vcs = null,
     ): void {
-        $vcs = $project->vcsProvider->api();
+        $vcs ??= $project->vcsProvider->api();
 
         $username = $project->serverUsername;
         $repoSshString = $project->vcsProvider->api()::getFullSshString($project->repo);

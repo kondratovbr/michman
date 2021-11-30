@@ -24,20 +24,13 @@ class EnableWebhookJob extends AbstractJob
 
     public function handle(): void
     {
-        DB::transaction(function () {
+        $api = $this->hook->project->vcsProvider->api();
+
+        DB::transaction(function () use ($api) {
             $hook = $this->hook->freshLockForUpdate();
 
             if (! $hook->state->canTransitionTo(Enabled::class))
                 return;
-
-            /*
-             * TODO: CRITICAL! CONTINUE. There's an issue with calls like this.
-             *       This call may refresh the access token, but
-             *       if the later code fails it won't be saved
-             *       due to it being run in a single transaction.
-             */
-
-            $api = $hook->project->vcsProvider->api();
 
             $hookData = $api->addWebhookSafelyPush(
                 $hook->repo,

@@ -26,12 +26,12 @@ class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 
     public function handle(): void
     {
-        DB::transaction(function () {
+        $api = $this->server->provider->api();
+
+        DB::transaction(function () use ($api) {
             $server = $this->server->freshSharedLock();
             /** @var WorkerSshKey $sshKey */
             $sshKey = $server->workerSshKey()->lockForUpdate()->firstOrFail();
-
-            $api = $this->server->provider->api();
 
             $addedKey = $api->addSshKeySafely(
                 $sshKey->name,

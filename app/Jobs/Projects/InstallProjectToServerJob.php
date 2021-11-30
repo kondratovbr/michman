@@ -39,9 +39,12 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         EnablePlaceholderSiteScript $enablePlaceholderSite,
         RestartNginxScript $restartNginx,
     ): void {
+        $api = $this->project->vcsProvider->api();
+
         DB::transaction(function () use (
             $cloneRepo, $createVenv, $configureGunicorn, $uploadPlaceholderPage, $uploadPlaceholderNginxConfig,
             $enablePlaceholderSite, $restartNginx,
+            $api,
         ) {
             $project = $this->project->freshLockForUpdate();
             $server = $this->server->freshLockForUpdate();
@@ -49,7 +52,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $userSsh = $server->sftp($project->serverUsername);
             $rootSsh = $server->sftp();
 
-            $cloneRepo->execute($server, $project, $userSsh);
+            $cloneRepo->execute($server, $project, $userSsh, $api);
 
             /*
              * TODO: CRITICAL! I'm creating a venv inside the project directory.
