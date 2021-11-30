@@ -3,6 +3,7 @@
 use App\Jobs\Webhooks\HandlePingWebhookJob;
 use App\Jobs\Webhooks\HandlePushWebhookJob;
 use App\Services\Webhooks\GitHubWebhookService;
+use App\Services\Webhooks\GitLabWebhookService;
 
 return [
 
@@ -20,7 +21,7 @@ return [
         ],
         'gitlab' => [
             'vcs_provider' => 'gitlab_v4',
-            'service_class' => null,
+            'service_class' => GitLabWebhookService::class,
             'events' => [
                 'ping',
                 'push',
