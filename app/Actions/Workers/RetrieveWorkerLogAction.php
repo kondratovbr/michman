@@ -4,7 +4,7 @@ namespace App\Actions\Workers;
 
 use App\Models\Worker;
 use App\Scripts\Root\RetrieveWorkerLogScript;
-use Throwable;
+use Exception;
 
 class RetrieveWorkerLogAction
 {
@@ -20,7 +20,7 @@ class RetrieveWorkerLogAction
                 fn() => $this->script->execute($worker->server, $worker),
                 100,
             );
-        } catch (Throwable) {
+        } catch (Exception) {
             return false;
         }
     }

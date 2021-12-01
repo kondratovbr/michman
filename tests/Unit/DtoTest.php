@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Tests\AbstractUnitTest;
 use Tests\Dummies\DummyDto;
 use ArgumentCountError;
-use Throwable;
+use Exception;
 
 class DtoTest extends AbstractUnitTest
 {
@@ -56,7 +56,7 @@ class DtoTest extends AbstractUnitTest
                 'foo' => 'foo',
                 'bar' => 'bar',
             ]);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             $this->assertTrue($e instanceof ArgumentCountError);
         }
     }

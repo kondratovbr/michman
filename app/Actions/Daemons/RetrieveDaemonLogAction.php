@@ -4,7 +4,7 @@ namespace App\Actions\Daemons;
 
 use App\Models\Daemon;
 use App\Scripts\Root\RetrieveDaemonLogScript;
-use Throwable;
+use Exception;
 
 class RetrieveDaemonLogAction
 {
@@ -20,7 +20,7 @@ class RetrieveDaemonLogAction
                 fn() => $this->script->execute($daemon->server, $daemon),
                 100,
             );
-        } catch (Throwable) {
+        } catch (Exception) {
             return false;
         }
     }

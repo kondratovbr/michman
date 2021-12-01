@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
 use phpseclib3\Crypt\PublicKeyLoader;
-use Throwable;
+use Exception;
 
 class SshPublicKeyRule implements Rule
 {
@@ -17,7 +17,7 @@ class SshPublicKeyRule implements Rule
         try {
             /** @var PublicKeyInterface $publicKey */
             $publicKey = PublicKeyLoader::load($value);
-        } catch (Throwable $e) {
+        } catch (Exception) {
             return false;
         }
 
