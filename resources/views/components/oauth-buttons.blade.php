@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! Make sure to either implement all listed options or remove/disable the temporary unsupported ones.--}}
-
 <div {{ $attributes->class([
     'flex space-x-4',
 ]) }}>
