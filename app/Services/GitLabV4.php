@@ -16,8 +16,6 @@ use RuntimeException;
 
 // TODO: CRITICAL! Cover with tests. Don't forget to cover stuff that I moved to AbstractVcsProvider - it should be tested for every API.
 
-// TODO: CRITICAL! CONTINUE. Now test webhooks on GitLab.
-
 /*
  * TODO: IMPORTANT! I should also handle the "scope".
  *       I.e. if we don't have permission to perform some action we should notify the user and give them
