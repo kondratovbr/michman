@@ -4,31 +4,38 @@ namespace App\Services\Webhooks;
 
 use App\Services\Traits\HasConfig;
 use App\Support\Arr;
+use App\Support\Str;
 use Illuminate\Http\Request;
 
 class GitLabWebhookService implements WebhookServiceInterface
 {
     use HasConfig;
 
-    protected string $configPrefix = 'webhooks.providers.gitlab';
+    private const TOKEN_HEADER_NAME = 'X-Gitlab-Token';
+    private const EVENT_HEADER_NAME = 'X-Gitlab-Event';
 
-    /*
-     * TODO: CRITICAL! CONTINUE. Figure out how GitLab sings the webhooks (if at all) and implement here.
-     *       Then - test webhook delivery and subsequent deployment.
-     */
-
-    // private const SIGNATURE_HEADER_NAME = 'X-Hub-Signature-256';
-    private const EVENT_HEADER_NAME = 'x-gitlab-event';
-    // private const EXTERNAL_ID_HEADER_NAME = 'X-GitHub-Delivery';
-
-    public function signatureValid(Request $request, string $secret): bool
+    public function __construct()
     {
-        // TODO: Implement signatureValid() method.
+        $this->setConfigPrefix('webhooks.providers.gitlab');
     }
 
+    /** https://docs.gitlab.com/ee/user/project/integrations/webhooks.html#validate-payloads-by-using-a-secret-token */
+    public function signatureValid(Request $request, string $secret): bool
+    {
+        // GitLab doesn't sign webhook requests, it just adds a token we provided as a header.
+
+        if (! $request->hasHeader(self::TOKEN_HEADER_NAME))
+            return false;
+
+        return $secret === $request->header(self::TOKEN_HEADER_NAME);
+    }
+
+    /** https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#push-events */
     public function getEventName(Request $request): string|null
     {
-        // TODO: Implement getEventName() method.
+        $event = $request->input('event_name');
+
+        return $event;
     }
 
     public function eventIsSupported(Request $request): bool
@@ -41,18 +48,36 @@ class GitLabWebhookService implements WebhookServiceInterface
         return Arr::hasValue($this->config('events'), $event);
     }
 
+    /** https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#push-events */
     public function getExternalId(Request $request): string|null
     {
-        // TODO: Implement getExternalId() method.
+        /*
+         * GitLab doesn't provider webhook event ID, so we'll use the "after" hash from git.
+         * Should work, since we only use "push" event webhooks anyway.
+         */
+
+        $after = $request->input('after');
+
+        return $after;
     }
 
     public function pushedBranch(array $data): string|null
     {
-        // TODO: Implement pushedBranch() method.
+        $ref = $data['ref'] ?? null;
+
+        if (empty($ref))
+            return null;
+
+        if (! Str::contains($ref, 'heads'))
+            return null;
+
+        return Arr::last(explode('/', trim($ref)));
     }
 
     public function pushedCommitHash(array $data): string|null
     {
-        // TODO: Implement pushedCommitHash() method.
+        $hash = $data['after'] ?? null;
+
+        return empty($hash) ? null : $hash;
     }
 }
