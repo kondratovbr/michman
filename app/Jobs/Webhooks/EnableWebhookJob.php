@@ -42,8 +42,13 @@ class EnableWebhookJob extends AbstractJob
 
             $hook->save();
 
-            // We'll wait for a "ping" event to be sent and handled and then verify that it worked in a separate job.
-            VerifyWebhookEnabledJob::dispatch($hook)->delay(120);
+            if ($api->dispatchesPingWebhookCalls()) {
+                // We'll wait for a "ping" event to be sent and handled and then verify that it worked in a separate job.
+                VerifyWebhookEnabledJob::dispatch($hook)->delay(120);
+            } else {
+                // If the service doesn't dispatch "ping" calls we'll just consider webhook enabled right now and hope for the best.
+                $hook->state->transitionToIfCan(Enabled::class);
+            }
         }, 5);
     }
 
