@@ -104,4 +104,7 @@ interface VcsProviderInterface extends ProviderInterface
      * not throwing any errors if it doesn't exist.
      */
     public function deleteWebhookIfExistsPush(string $repo, string $payloadUrl): void;
+
+    /** Check if this provider tests webhook by dispatching a "ping" call after adding a new webhook. */
+    public function dispatchesPingWebhookCalls(): bool;
 }

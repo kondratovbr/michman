@@ -190,6 +190,11 @@ class GitLabV4 extends AbstractVcsProvider
         $this->delete("/projects/{$repo}/hooks/{$webhookExternalId}");
     }
 
+    public function dispatchesPingWebhookCalls(): bool
+    {
+        return false;
+    }
+
     /** https://docs.gitlab.com/ee/api/oauth2.html#authorization-code-flow */
     public function refreshToken(): AuthTokenDto
     {

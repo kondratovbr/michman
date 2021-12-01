@@ -192,6 +192,11 @@ class GitHubV3 extends AbstractVcsProvider
         $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
     }
 
+    public function dispatchesPingWebhookCalls(): bool
+    {
+        return true;
+    }
+
     public function refreshToken(): AuthTokenDto
     {
         Log::warning("GitHubV3::refreshToken() method was called, but GitHub's tokens don't expire, so it shouldn't have been called at all.");
