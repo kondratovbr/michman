@@ -23,7 +23,6 @@ return [
             'vcs_provider' => 'gitlab_v4',
             'service_class' => GitLabWebhookService::class,
             'events' => [
-                'ping',
                 'push',
             ],
         ],
@@ -31,7 +30,6 @@ return [
             'vcs_provider' => 'bitbucket',
             'service_class' => null,
             'events' => [
-                'ping',
                 'push',
             ],
         ],
