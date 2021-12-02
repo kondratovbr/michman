@@ -254,6 +254,10 @@ return [
      * Custom Project-specific Parameters
      */
 
-    'dev_email' => env('DEV_EMAIL', null),
+    // This address will be used to seed a dev user during DB seeding.
+    'dev_email' => env('DEV_EMAIL'),
+
+    // Exception alerts (and other critical notifications) will be sent on this address.
+    'alert_email' => env('ALERT_EMAIL'),
 
 ];
