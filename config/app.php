@@ -257,7 +257,10 @@ return [
     // This address will be used to seed a dev user during DB seeding.
     'dev_email' => env('DEV_EMAIL'),
 
-    // Exception alerts (and other critical notifications) will be sent on this address.
+    /*
+     * Alert emails config
+     */
     'alert_email' => env('ALERT_EMAIL'),
+    'alert_from_email' => env('ALERT_FROM_ADDRESS'),
 
 ];
