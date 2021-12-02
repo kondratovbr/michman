@@ -1,4 +1,4 @@
-{{--TODO: IMPORTANT! Terribly unfinished. Non even started.--}}
+{{--TODO: CRITICAL! Terribly unfinished. Non even started.--}}
 
 <x-layouts.guest>
     <div class="pt-4 bg-gray-100">
