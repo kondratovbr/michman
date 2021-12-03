@@ -46,6 +46,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string $michmanDir
  * @property-read bool $deployed
  * @property-read bool $webhookEnabled
+ * @property-read string|null $repoUrl
+ * @property-read string|null $vcsProviderName
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -190,6 +192,25 @@ class Project extends AbstractModel
     public function getCurrentDeployment(): Deployment|null
     {
         return $this->deployments()->successful()->latest()->first();
+    }
+
+    /** Get a public URL to the repository configured for this project. */
+    public function getRepoUrlAttribute(): string|null
+    {
+        if (empty($this->repo) || ! isset($this->vcsProvider))
+            return null;
+
+        // TODO: Creating API instance here may be slow because of token refreshing. Should probably move the URL generation logic.
+        return $this->vcsProvider->api()->repoUrl($this->repo);
+    }
+
+    /** Get a printable name of a VCS service configured for this project. */
+    public function getVcsProviderNameAttribute(): string|null
+    {
+        if (! isset($this->vcsProvider))
+            return null;
+
+        return __("projects.repo.providers.{$this->vcsProvider->provider}");
     }
 
     /** Get a relation with the user that owns this project. */

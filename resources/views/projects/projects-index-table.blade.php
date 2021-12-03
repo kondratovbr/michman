@@ -7,8 +7,8 @@
 {{--            TODO: CRITICAL! Implement the SSL itself and don' forget this badge.--}}
             <x-th>SSL</x-th>
             <x-th>{{ __('projects.index.table.domain') }}</x-th>
-{{--            TODO: CRITICAL! Don't forget to implement these as well.--}}
             <x-th>{{ __('projects.index.table.repo') }}</x-th>
+{{--            TODO: CRITICAL! CONTINUE. Don't forget to implement this as well.--}}
             <x-th>{{ __('projects.index.table.last-deployed') }}</x-th>
         </x-tr-header>
     </x-slot>
@@ -23,11 +23,16 @@
                         <x-app-link href="{{ route('projects.show', [$project, 'deployment']) }}">
                             {{ $project->fullDomainName }}
                         </x-app-link>
-{{--                        TODO: CRITICAL! Put here some additional info about the project the same way I do in servers index table.--}}
+{{--                        TODO: CRITICAL! CONTINUE. Put here some additional info about the project the same way I do in servers index table.--}}
                         <p class="text-sm">Foobar</p>
                     </div>
                 </x-td>
-                <x-td></x-td>
+                <x-td>
+                    <div class="flex flex-col">
+                        <x-app-link href="{{ $project->repoUrl }}" external :icon="false">{{ $project->repo }}</x-app-link>
+                        <p class="text-sm">{{ $project->vcsProviderName }}</p>
+                    </div>
+                </x-td>
                 <x-td></x-td>
             </x-tr>
         @endforeach

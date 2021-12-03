@@ -185,6 +185,7 @@ class Deployment extends AbstractModel
     /** Get a URL to the page with the deployed commit on the VCS site. */
     public function getCommitUrlAttribute(): string
     {
+        // TODO: Creating API instance here may be slow because of token refreshing. Should probably move the URL generation logic.
         return $this->project->vcsProvider->api()->commitUrl($this->project->repo, $this->commit);
     }
 

@@ -45,6 +45,11 @@ class GitHubV3 extends AbstractVcsProvider
         return "https://github.com/{$repo}/commit/{$commit}";
     }
 
+    public function repoUrl(string $repo): string
+    {
+        return "https://github.com/{$repo}";
+    }
+
     public function credentialsAreValid(): bool
     {
         try {

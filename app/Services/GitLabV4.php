@@ -39,6 +39,11 @@ class GitLabV4 extends AbstractVcsProvider
         return "https://gitlab.com/{$repo}/-/commit/{$commit}";
     }
 
+    public function repoUrl(string $repo): string
+    {
+        return "https://gitlab.com/{$repo}";
+    }
+
     public function credentialsAreValid(): bool
     {
         try {

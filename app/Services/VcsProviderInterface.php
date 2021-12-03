@@ -26,6 +26,9 @@ interface VcsProviderInterface extends ProviderInterface
     /** Get a URL to the page with the specified commit on the VCS site. */
     public function commitUrl(string $repo, string $commit): string;
 
+    /** Get a URL to the repo page. */
+    public function repoUrl(string $repo): string;
+
     /** Check if provided credentials are valid by trying some auth-protected GET request. */
     public function credentialsAreValid(): bool;
 
