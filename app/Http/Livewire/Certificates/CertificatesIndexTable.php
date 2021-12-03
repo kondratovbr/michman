@@ -17,13 +17,6 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: CRITICAL! Cover with tests.
 
-/*
- * TODO: CRITICAL! Don't forget to implement removal and copying,
- *       i.e. it should be possible to copy a certificate from another server.
- *       It should be automatically renewed only on the original server, of course.
- *       So make sure there IS an original server for every existing certificate at all times.
- */
-
 class CertificatesIndexTable extends LivewireComponent
 {
     use AuthorizesRequests;
@@ -56,9 +49,7 @@ class CertificatesIndexTable extends LivewireComponent
         $this->authorize('index', [Certificate::class, $this->server]);
     }
 
-    /**
-     * Delete a certificate.
-     */
+    /** Delete a certificate. */
     public function delete(string $key, DeleteCertificateAction $action): void
     {
         $cert = Certificate::validated($key, $this->certificates);
