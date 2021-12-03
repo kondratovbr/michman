@@ -8,7 +8,7 @@ use App\DataTransferObjects\DatabaseUserDto;
 use App\Events\Databases\DatabaseCreatedEvent;
 use App\Events\Databases\DatabaseDeletedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
-use App\Http\Livewire\Traits\TrimsInput;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Database;
 use App\Models\DatabaseUser;
 use App\Models\Server;
@@ -22,7 +22,7 @@ use Livewire\Component as LivewireComponent;
 class CreateDatabaseUserForm extends LivewireComponent
 {
     use AuthorizesRequests;
-    use TrimsInput;
+    use TrimsInputBeforeValidation;
     use ListensForEchoes;
 
     public Server $server;

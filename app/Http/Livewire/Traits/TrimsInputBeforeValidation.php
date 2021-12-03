@@ -57,9 +57,7 @@ trait TrimsInputBeforeValidation
         return $this->trimData($data);
     }
 
-    /**
-     * Trim the input data that should be validated later.
-     */
+    /** Trim the input data that should be validated later. */
     private function trimData(array $attributes): array
     {
         $attributes = Arr::dot($attributes);
@@ -78,9 +76,7 @@ trait TrimsInputBeforeValidation
         return $attributes;
     }
 
-    /**
-     * Trim a string and null if empty.
-     */
+    /** Trim a string and null if empty. */
     private function trimAttribute(string $attribute, mixed $value): mixed
     {
         if (! is_string($value))

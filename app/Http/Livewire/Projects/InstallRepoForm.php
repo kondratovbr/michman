@@ -10,7 +10,7 @@ use App\Events\VcsProviders\VcsProviderDeletedEvent;
 use App\Events\VcsProviders\VcsProviderUpdatedEvent;
 use App\Facades\Auth;
 use App\Http\Livewire\Traits\ListensForEchoes;
-use App\Http\Livewire\Traits\TrimsInput;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
 use App\Models\Server;
 use App\Support\Str;
@@ -25,7 +25,7 @@ use Livewire\Component as LivewireComponent;
 class InstallRepoForm extends LivewireComponent
 {
     use AuthorizesRequests;
-    use TrimsInput;
+    use TrimsInputBeforeValidation;
     use ListensForEchoes;
 
     public Server $server;

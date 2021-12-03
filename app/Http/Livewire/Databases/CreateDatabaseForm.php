@@ -7,7 +7,7 @@ use App\Broadcasting\ServerChannel;
 use App\Events\DatabaseUsers\DatabaseUserCreatedEvent;
 use App\Events\DatabaseUsers\DatabaseUserDeletedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
-use App\Http\Livewire\Traits\TrimsInput;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Database;
 use App\Models\DatabaseUser;
 use App\Models\Server;
@@ -21,7 +21,7 @@ use Livewire\Component as LivewireComponent;
 class CreateDatabaseForm extends LivewireComponent
 {
     use AuthorizesRequests;
-    use TrimsInput;
+    use TrimsInputBeforeValidation;
     use ListensForEchoes;
 
     public Server $server;
