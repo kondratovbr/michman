@@ -261,7 +261,6 @@ class OAuthController extends AbstractController
             return redirect()->home();
 
         throw match ($error) {
-            // TODO: CRITICAL! If any of these OAuthExceptions is thrown I should immediately notify myself on the emergency channel.
             'application_suspended' => new ApplicationSuspendedException($oauthProvider, $request->fullUrl()),
             'redirect_uri_mismatch' => new RedirectUriMismatchException($oauthProvider, $request->fullUrl()),
             default => new OAuthException($oauthProvider, $request->fullUrl())
