@@ -182,6 +182,7 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
@@ -256,6 +257,9 @@ return [
 
     // This address will be used to seed a dev user during DB seeding.
     'dev_email' => env('DEV_EMAIL'),
+
+    // User with this verified email will be considered admin.
+    'admin_email' => env('ADMIN_EMAIL'),
 
     /*
      * Alert emails config

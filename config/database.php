@@ -47,6 +47,14 @@ $mainDbConfig = [
     ]) : [],
 ];
 
+// Telescope data will be stored in a separate database.
+$telescopeDbConfig = $mainDbConfig;
+$telescopeDbConfig['database'] = env('TELESCOPE_DB_DATABASE', 'telescope');
+$telescopeDbConfig['username'] = env('TELESCOPE_DB_USERNAME', 'telescope');
+$telescopeDbConfig['password'] = env('TELESCOPE_DB_PASSWORD', '');
+
+ray($mainDbConfig, $telescopeDbConfig);
+
 return [
 
     /*
@@ -80,20 +88,15 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-        ],
-
         // Main application database.
         'mysql' => $mainDbConfig,
 
         // Separate connection to store some logs in a database
         // independent of transactions on the main database.
         'db-logs' => $mainDbConfig,
+
+        // Separate database to store telescope data.
+        'telescope' => $telescopeDbConfig,
 
         // Database used during testing.
         'testing' => [
@@ -114,6 +117,14 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+        ],
+
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'url' => env('DATABASE_URL'),
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
     ],

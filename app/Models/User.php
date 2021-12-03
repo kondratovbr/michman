@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Traits\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\HtmlString;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -189,6 +190,27 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         /** @var OAuthUser $oauth */
         $oauth = $this->oauthUsers()->latest()->firstWhere('provider', $provider);
         return $oauth;
+    }
+
+    /** Check is this user is an admin. */
+    public function isAdmin(): bool
+    {
+        $adminEmail = config('app.admin_email');
+
+        if (empty($adminEmail)) {
+            Log::critical('Admin email is not configured.');
+            return false;
+        }
+
+        if ($this->isDirty(['email', 'email_verified_at'])) {
+            Log::warning('Trying to check isAdmin() on a dirty User model.');
+            return false;
+        }
+
+        if (empty($this->email))
+            return false;
+
+        return $this->email === $adminEmail && $this->hasVerifiedEmail();
     }
 
     /** Get a relation with server providers owned by this user. */
