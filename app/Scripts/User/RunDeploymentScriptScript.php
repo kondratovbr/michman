@@ -18,12 +18,16 @@ class RunDeploymentScriptScript extends AbstractServerScript
 
         $this->init($server, $ssh, $project->serverUsername);
 
-        // TODO: CRITICAL! Add some more variables here for the user's convenience and list them in docs.
+        // TODO: Maybe retrieve commit message and add it here. May be useful for some. Git tags?
         // Environment variables that will be available for the deploy script.
         $michmanVars = [
-            'PROJECT_DIR' => $project->projectDir,
-            'PROJECT_BRANCH' => $project->branch,
-            //
+            'PROJECT_ROOT' => $project->projectDir,
+            'BRANCH' => $project->branch,
+            'DOMAIN' => $project->domain,
+            'MANUAL' => $deployment->isManual(),
+            'AUTO' => $deployment->isAutomatic(),
+            'COMMIT' => $deployment->commit,
+            'USER' => $project->serverUsername,
         ];
 
         $this->exec(

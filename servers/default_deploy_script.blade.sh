@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# Available environment variables:
-# MICHMAN_PROJECT_BRANCH - git branch configured for deployment
-# ...
-
 cd /home/{{ $project->serverUsername }}/{{ $project->domain }} || exit
 
-git pull origin "$MICHMAN_PROJECT_BRANCH"
+git pull origin "$MICHMAN_BRANCH"
 
 source venv/bin/activate
 
