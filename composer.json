@@ -23,7 +23,6 @@
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "graham-campbell/digitalocean": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.0",
         "jenssegers/agent": "^2.6",
