@@ -304,21 +304,6 @@ class Arr extends IlluminateArr
     }
 
     /**
-     * Expand a dot notated array into a multi-dimensional one.
-     *
-     * Reverse of the built-in "dot" helper.
-     */
-    public static function undot(array $dotNotatedArray): array
-    {
-        $array = [];
-        foreach ($dotNotatedArray as $key => $value) {
-            static::set($array, $key, $value);
-        }
-
-        return $array;
-    }
-
-    /**
      * Get the intersection of arrays,
      * i.e. values that are present in both of them.
      *
