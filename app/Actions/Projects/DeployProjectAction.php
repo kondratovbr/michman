@@ -17,12 +17,13 @@ class DeployProjectAction
         protected StoreDeploymentAction $store,
     ) {}
 
-    public function execute(Project $project, string $commit = null): Deployment
+    public function execute(Project $project, string $commit = null, bool $auto = false): Deployment
     {
         $commit ??= $project->vcsProvider->api()
             ->getLatestCommitHash($project->repo, $project->branch);
 
         return $this->store->execute(new DeploymentDto(
+            type: $auto ? Deployment::TYPE_AUTO : Deployment::TYPE_MANUAL,
             branch: $project->branch,
             commit: $commit,
             environment: $project->environment,

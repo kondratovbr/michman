@@ -5,6 +5,7 @@ namespace App\DataTransferObjects;
 class DeploymentDto extends AbstractDto
 {
     public function __construct(
+        public string $type,
         public string $branch,
         public string $commit,
         public string $environment,

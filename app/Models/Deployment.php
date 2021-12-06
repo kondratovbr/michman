@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * DeploymentServerPivot contains information about that process on a single server.
  *
  * @property int $id
+ * @property string $type
  * @property string $branch
  * @property string|null $commit
  * @property string|null $environment
@@ -59,8 +60,12 @@ class Deployment extends AbstractModel
     public const STATUS_FAILED = 'failed';
     public const STATUS_COMPLETED = 'completed';
 
+    public const TYPE_MANUAL = 'manual';
+    public const TYPE_AUTO = 'auto';
+
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
+        'type',
         'branch',
         'commit',
         'environment',
@@ -70,9 +75,7 @@ class Deployment extends AbstractModel
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
-    protected $visible = [
-        //
-    ];
+    protected $visible = [];
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
@@ -187,6 +190,18 @@ class Deployment extends AbstractModel
     {
         // TODO: Creating API instance here may be slow because of token refreshing. Should probably move the URL generation logic.
         return $this->project->vcsProvider->api()->commitUrl($this->project->repo, $this->commit);
+    }
+
+    /** Check if this deployment was triggered manually. */
+    public function isManual(): bool
+    {
+        return $this->type === static::TYPE_MANUAL;
+    }
+
+    /** Check if this deployment was triggered automatically, i.e. by a webhook (Quick Deploy). */
+    public function isAutomatic(): bool
+    {
+        return $this->type === static::TYPE_AUTO;
     }
 
     /** Get a relation with the project that was deployed by this deployment. */
