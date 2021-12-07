@@ -53,8 +53,6 @@ $telescopeDbConfig['database'] = env('TELESCOPE_DB_DATABASE', 'telescope');
 $telescopeDbConfig['username'] = env('TELESCOPE_DB_USERNAME', 'telescope');
 $telescopeDbConfig['password'] = env('TELESCOPE_DB_PASSWORD', '');
 
-ray($mainDbConfig, $telescopeDbConfig);
-
 return [
 
     /*

@@ -10,7 +10,7 @@ use phpseclib3\Net\SFTP;
 
 class CreateProjectVenvScript extends AbstractServerScript
 {
-    // TODO: CRITICAL! Make sure to implement some feedback for the user in case of some problems here. See the notification system.
+    // TODO: IMPORTANT! Make sure to implement some feedback for the user in case of some problems here. See the notification system.
 
     public function execute(
         Server $server,
