@@ -22,10 +22,11 @@ class RecreateLocalEnvironment extends AbstractCommand
     {
         // TODO: Do I also need to run the event broadcasting worker somewhere here to handle whatever events were created during seeding?
 
-        if ($this->confirm('Do you want to refresh the database?', true)) {
-            $this->call('db:wipe');
+        if ($this->confirm('Do you want to refresh all databases?', true)) {
+            $this->call('db:wipe', ['--database' => 'mysql']);
+            $this->call('db:wipe', ['--database' => 'telescope']);
             $this->call('migrate');
-            $this->info('The database was refreshed.');
+            $this->info('All databases were refreshed.');
         }
 
         if ($this->confirm('Do you want to flush all user sessions?', true))
