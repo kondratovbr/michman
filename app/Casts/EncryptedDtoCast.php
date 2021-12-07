@@ -5,12 +5,8 @@ namespace App\Casts;
 use App\DataTransferObjects\AbstractDto;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Crypt;
+use App\Facades\Encryption;
 use RuntimeException;
-
-/*
- * TODO: CRITICAL! Figure out using custom encryption key (Laravel already has it implemented, more or less - make a custom facade and also use Model::encryptUsing thing. See Pocket notes and Google.)
- */
 
 class EncryptedDtoCast implements CastsAttributes
 {
@@ -29,9 +25,7 @@ class EncryptedDtoCast implements CastsAttributes
         if (! is_string($value))
             throw new RuntimeException('Value received for EncryptedDtoCast::get() should be a string. Non-string or null provided.');
 
-        $result = unserialize(
-            Crypt::decryptString($value)
-        );
+        $result = Encryption::decrypt($value);
 
         if (! $result instanceof AbstractDto)
             throw new RuntimeException('Object unserialized by EncryptedDtoCast::get() is not an instance of AbstractDto.');
@@ -56,8 +50,6 @@ class EncryptedDtoCast implements CastsAttributes
         if (! $value instanceof AbstractDto)
             throw new RuntimeException('Value provided for EncryptedDtoCast::set() should be either an instance of AbstractDto or an array.');
 
-        return Crypt::encryptString(
-            serialize($value)
-        );
+        return Encryption::encrypt($value);
     }
 }

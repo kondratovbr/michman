@@ -192,6 +192,7 @@ return [
         App\Providers\BladeServiceProvider::class,
         App\Providers\WebhooksServiceProvider::class,
         App\Providers\GuzzleServiceProvider::class,
+        App\Providers\EncryptionServiceProvider::class,
     ],
 
     /*
@@ -266,5 +267,9 @@ return [
      */
     'alert_email' => env('ALERT_EMAIL'),
     'alert_from_email' => env('ALERT_FROM_ADDRESS'),
+
+    // Custom encryption key to use when encrypting data for the database instead of the APP_KEY.
+    // The same cipher as configured with the APP_KEY will be used. ('app.cipher' config value)
+    'encryption_key' => env('ENCRYPTION_KEY'),
 
 ];

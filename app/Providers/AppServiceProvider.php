@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Support\Arr;
 use App\Support\ConfigViewFactory;
+use App\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Switch to using the immutable versions of Carbon objects across the whole application.
         Date::use(CarbonImmutable::class);
+
+        $this->configureEncryption();
 
         /**
          * Register a custom View factory to use Blade for server config files.
@@ -60,5 +65,13 @@ class AppServiceProvider extends ServiceProvider
                 DB::rollBack();
             }
         });
+    }
+
+    private function configureEncryption(): void
+    {
+        Model::encryptUsing(new Encrypter(
+            base64_decode(Str::after(config('app.encryption_key'), 'base64:')),
+            config('app.cipher'),
+        ));
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Models\Traits;
 
+use App\Facades\Encryption;
 use App\Support\SshKeyFormatter;
-use App\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Crypt;
 use phpseclib3\Crypt\Common\PrivateKey as PrivateKeyInterface;
 use phpseclib3\Crypt\Common\PublicKey as PublicKeyInterface;
 use phpseclib3\Crypt\PublicKeyLoader;
@@ -51,7 +50,7 @@ trait IsSshKey
 
         /** @var PrivateKeyInterface $privateKey */
         $privateKey = PublicKeyLoader::load(
-            Crypt::decryptString($this->attributes['private_key'])
+            Encryption::decryptString($this->attributes['private_key'])
         );
 
         return $privateKey;
@@ -62,7 +61,7 @@ trait IsSshKey
         if (! $this->hasPrivateKey())
             return;
 
-        $this->attributes['private_key'] = Crypt::encryptString(
+        $this->attributes['private_key'] = Encryption::encryptString(
             $this->keyToString($privateKey, false)
         );
     }
