@@ -16,6 +16,7 @@ class DeploymentFactory extends Factory
     public function definition(): array
     {
         return [
+            'type' => 'manual',
             'branch' => 'master',
             'commit' => Str::random(8),
         ];
