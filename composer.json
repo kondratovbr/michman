@@ -18,6 +18,7 @@
         "ext-pdo": "*",
         "ext-tokenizer": "*",
         "ext-xml": "*",
+        "ext-redis": "*",
         "beyondcode/laravel-websockets": "^2.0",
         "composer/semver": "^3.2",
         "doctrine/dbal": "^2.9",
