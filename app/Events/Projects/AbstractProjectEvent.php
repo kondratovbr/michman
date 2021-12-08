@@ -4,6 +4,7 @@ namespace App\Events\Projects;
 
 use App\Broadcasting\ProjectChannel;
 use App\Broadcasting\ServerChannel;
+use App\Broadcasting\UserChannel;
 use App\Events\AbstractEvent;
 use App\Models\Project;
 use Illuminate\Broadcasting\Channel;
@@ -26,7 +27,10 @@ abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroad
         /** @var Project $project */
         $project = Project::query()->findOrFail($this->projectKey);
 
-        $channels = [ProjectChannel::channelInstance($project)];
+        $channels = [
+            ProjectChannel::channelInstance($project),
+            UserChannel::channelInstance($project->user),
+        ];
 
         foreach ($project->servers as $server) {
             $channels[] = ServerChannel::channelInstance($server);
