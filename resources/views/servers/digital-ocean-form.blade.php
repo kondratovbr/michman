@@ -1,6 +1,4 @@
 {{--TODO: IMPORTANT! The form desperately needs some loading indicators - it may take some time to work.--}}
-{{--TODO: Make a "What Will Be Installed" type of list somewhere here after a server type is chosen.--}}
-{{--TODO: Shoud I add DigitalOcean weekly backups feature? This way of deploying kinda doesn't need them - we need to backup databases, of course, and uploaded files somehow as well. Does DO has some other backup options? Snapshots? So, maybe we should offer to enable something better here?--}}
 
 <div class="space-y-6">
 

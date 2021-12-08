@@ -49,15 +49,18 @@
     </x-slot>
 
     <x-slot name="actions">
-        <div class="space-x-3">
-            <x-buttons.primary
-                wire:click.prevent="store"
-                wire:loading.attr="disabled"
-            >{{ __('servers.create.button') }}</x-buttons.primary>
-            <x-buttons.secondary
-                wire:click.prevent="cancel"
-                wire:loading.attr="disabled"
-            >{{ __('buttons.cancel') }}</x-buttons.secondary>
+        <div class="w-full flex justify-between items-center">
+            <div class="space-x-3">
+                <x-buttons.primary
+                    wire:click.prevent="store"
+                    wire:loading.attr="disabled"
+                >{{ __('servers.create.button') }}</x-buttons.primary>
+                <x-buttons.secondary
+                    wire:click.prevent="cancel"
+                    wire:loading.attr="disabled"
+                >{{ __('buttons.cancel') }}</x-buttons.secondary>
+            </div>
+            <div wire:loading><x-spinner/></div>
         </div>
     </x-slot>
 
