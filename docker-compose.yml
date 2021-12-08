@@ -56,7 +56,7 @@ services:
             test: ["CMD", "mysqladmin", "ping"]
 
     websockets:
-        image: sail-8.1/app
+        image: sail-8.0/app
         command: 'php artisan websockets:serve'
         volumes:
             - '.:/var/www/html'
