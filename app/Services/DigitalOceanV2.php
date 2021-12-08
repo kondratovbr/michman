@@ -20,13 +20,16 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-// TODO: IMPORTANT! DigitalOcean's API doesn't supply any cache guidance in responses. I may need to cache them manually sometime after.
-
 class DigitalOceanV2 extends AbstractServerProvider
 {
     protected function getConfigPrefix(): string
     {
         return 'providers.list.digital_ocean_v2';
+    }
+
+    protected function commonCacheKey(string $key): string
+    {
+        return "providers.digital_ocean_v2.{$key}";
     }
 
     protected function request(): PendingRequest
