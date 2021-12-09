@@ -1,7 +1,5 @@
 @props(['modalId'])
 
-{{--TODO: CRITICAL! I've updated how wire:model is provided into modals. Make sure all modals still work.--}}
-
 <x-modal-new
     id="{{ $modalId ?? md5($attributes->wire('model')) }}"
     {{ $attributes }}
