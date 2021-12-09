@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 /*
- * TODO: CRITICAL! Opening the actual form here takes some stupid long time.
- *       Better check if caching some stuff from DO is necessary after all and check what's happening there.
+ * TODO: IMPORTANT! Opening the actual form still may take long time for some users.
+ *       That's because the cached sizes and regions data needs to be updated regularly.
+ *       Should figure out how to do it in a scheduled job.
  */
 
 /**
