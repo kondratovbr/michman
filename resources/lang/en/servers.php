@@ -34,9 +34,19 @@ return [
         'cache' => 'Cache',
         'add-key-to-vcs' => 'Add server\'s SSH key to source control providers',
         'will-be-installed' => 'The following will be installed on the server:',
+
         'digital-ocean' => [
             'something-wrong' => 'Something went wrong while calling DigitalOcean API.',
             'error-code' => 'DigitalOcean API error code: :code',
+        ],
+
+        'modal' => [
+            'title' => 'Server Credentials',
+            'explanation-1' => 'Your server is creating. It will take a couple of minutes.',
+            // TODO: Add a note about updating these passwords later, when that feature is implemented.
+            'explanation-2' => 'We created random passwords for your server, please make sure to save them somewhere.',
+            'sudo-password' => 'Server Sudo Password',
+            'db-password' => 'Database Root Password',
         ],
 
     ],

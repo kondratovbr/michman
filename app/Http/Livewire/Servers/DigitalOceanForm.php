@@ -20,12 +20,6 @@ use Livewire\Component;
 
 // TODO: Should probably refactor to use one component class for all providers, but maybe some other dependencies to adapt to their differences.
 
-// TODO: The API key may be read-only, so we should do some POST request at the creation (or afterwards, in the queue) to verify that we have write access. We can just mark the key as "read-only" or just "invalid" in the providers list if we encounter such issue.
-
-// TODO: CRITICAL! Unfinished! Doesn't react after a server is created, nothing gets updated on the page.
-
-// TODO: Hide the buttons in this form when the form isn't showing at all, i.e. before the provider was chosen.
-
 class DigitalOceanForm extends Component
 {
     use AuthorizesRequests;
@@ -63,6 +57,10 @@ class DigitalOceanForm extends Component
 
     /** Error code returned by the external API, if any. */
     public int|null $apiErrorCode = null;
+
+    public bool $successModalOpen = false;
+    /** @var Server|null The newly created Server model. */
+    public Server|null $server = null;
 
     /** @var string[] */
     protected $listeners = ['store-server-button-pressed' => 'store'];
@@ -272,14 +270,21 @@ class DigitalOceanForm extends Component
 
         $state = $this->validate()['state'];
 
-        $server = $action->execute(
+        $this->server = $action->execute(
             NewServerDto::fromArray($state),
             Auth::user()->providers()->findOrFail($this->state['provider_id']),
         );
 
-        // dd($server);
+        $this->successModalOpen = true;
+    }
 
-        // TODO: CRITICAL! UNFINISHED! Don't forget to provide some feedback on success or failure. And don't forget to show the sudo password to the user!
+    /** Reset the form when user closes the success modal. */
+    public function updatedSuccessModalOpen(): void
+    {
+        if ($this->successModalOpen)
+            return;
+
+        $this->emitUp('server-created');
     }
 
     public function render(): View

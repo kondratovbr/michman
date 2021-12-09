@@ -39,11 +39,12 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
                 return;
             }
 
+            // In case the password wasn't set during server creation.
             if (empty($server->databaseRootPassword)) {
                 $server->databaseRootPassword = Str::random(32);
                 $server->save();
                 // We release the job here so the transaction will commit and save the password.
-                // This way we don't have to run this job in two transactions every time.
+                // The job will repeat shorty and actually install the database.
                 $this->release();
                 return;
             }

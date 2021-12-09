@@ -78,6 +78,7 @@ class Server extends AbstractModel
         'sudo_password',
         'suitable',
         'available',
+        'database_root_password',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */

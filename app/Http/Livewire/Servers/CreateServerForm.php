@@ -31,6 +31,9 @@ class CreateServerForm extends Component
         'digital_ocean_v2' => 'servers.digital-ocean-form',
     ];
 
+    /** @var string[] */
+    protected $listeners = ['server-created' => 'cancel'];
+
     public function rules(): array
     {
         return [

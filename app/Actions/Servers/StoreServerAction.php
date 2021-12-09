@@ -30,12 +30,16 @@ class StoreServerAction
 
     public function execute(NewServerDto $data, Provider $provider): Server
     {
-        return DB::transaction(function () use ($data, $provider) {
+        return DB::transaction(function () use ($data, $provider): Server {
             $user = $provider->owner;
 
-            $attributes = $data->toArray();
-            $attributes['ssh_port'] = (string) config('servers.default_ssh_port');
-            $attributes['sudo_password'] = Str::random(32);
+            $attributes = $data->toArray([
+                'ssh_port' => (string) config('servers.default_ssh_port'),
+                'sudo_password' => Str::random(32),
+            ]);
+
+            if (! empty($data->database) && $data->database != 'none')
+                $attributes['database_root_password'] = Str::random(32);
 
             /** @var Server $server */
             $server = $provider->servers()->create($attributes);

@@ -150,4 +150,30 @@
         </div>
     </x-message>
 
+    <x-modals.dialog wire:model="successModalOpen">
+        <x-slot name="header">
+            {{ __('servers.create.modal.title') }}
+        </x-slot>
+
+        <x-slot name="content">
+            <p>{{ __('servers.create.modal.explanation-1') }}</p>
+            <p class="mt-3">{{ __('servers.create.modal.explanation-2') }}</p>
+            <span class="mt-3">{{ __('servers.create.modal.sudo-password') }}</span>
+            <x-copy-code-block class="mt-1">{{ optional($server)->sudoPassword }}</x-copy-code-block>
+            @if(! empty($server->databaseRootPassword))
+                <span class="mt-3">{{ __('servers.create.modal.db-password') }}</span>
+                <x-copy-code-block class="mt-1">{{ optional($server)->databaseRootPassword }}</x-copy-code-block>
+            @endif
+        </x-slot>
+
+        <x-slot name="actions">
+            <x-buttons.secondary
+                x-on:click.prevent="show = false"
+                wire:loading.attr="disabled"
+            >
+                {{ __('buttons.close') }}
+            </x-buttons.secondary>
+        </x-slot>
+    </x-modals.dialog>
+
 </div>
