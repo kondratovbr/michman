@@ -6,6 +6,7 @@ use App\Exceptions\SshAuthFailedException;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Scripts\Root\VerifyServerIsSuitableScript;
+use App\States\Servers\Preparing;
 use Illuminate\Support\Facades\DB;
 
 // TODO: CRITICAL! Cover with tests.
@@ -39,8 +40,12 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
             $server->suitable = $verifyServerIsSuitable->execute($server, $ssh);
             $server->save();
 
-            if (! $server->suitable)
+            if (! $server->suitable) {
                 $this->notify();
+                return;
+            }
+
+            $server->state->transitionTo(Preparing::class);
         }, 5);
     }
 

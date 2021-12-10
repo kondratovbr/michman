@@ -32,6 +32,8 @@ class CreateServersTable extends Migration
             $table->text('database_root_password')->nullable();
             $table->string('installed_cache')->nullable();
 
+            $table->string('state');
+
             $table->timestamps();
         });
     }

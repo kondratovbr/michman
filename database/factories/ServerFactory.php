@@ -22,6 +22,7 @@ class ServerFactory extends Factory
             'ssh_port' => (string) config('servers.default_ssh_port'),
             // TODO: Seed others as well.
             'installed_database' => 'mysql-8_0',
+            'state' => 'ready',
         ];
     }
 

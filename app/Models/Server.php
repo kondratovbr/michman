@@ -6,6 +6,7 @@ use App\Events\Servers\ServerCreatedEvent;
 use App\Events\Servers\ServerDeletedEvent;
 use App\Events\Servers\ServerUpdatedEvent;
 use App\Exceptions\SshAuthFailedException;
+use App\States\Servers\ServerState;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\App;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
+use Spatie\ModelStates\HasStates;
 
 /**
  * Server Eloquent model
@@ -37,6 +39,7 @@ use phpseclib3\Net\SSH2;
  * @property string|null $installedDatabase
  * @property string|null $databaseRootPassword
  * @property string|null $installedCache
+ * @property ServerState $state
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
@@ -64,6 +67,7 @@ use phpseclib3\Net\SSH2;
 class Server extends AbstractModel
 {
     use HasFactory;
+    use HasStates;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -79,6 +83,7 @@ class Server extends AbstractModel
         'suitable',
         'available',
         'database_root_password',
+        'state',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -86,6 +91,7 @@ class Server extends AbstractModel
 
     /** @var string[] The attributes that should be cast. */
     protected $casts = [
+        'state' => ServerState::class,
         'suitable' => 'boolean',
         'available' => 'boolean',
         'sudo_password' => 'encrypted',

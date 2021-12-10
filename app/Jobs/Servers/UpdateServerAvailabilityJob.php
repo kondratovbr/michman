@@ -6,6 +6,7 @@ use App\Exceptions\SshAuthFailedException;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Notifications\Servers\ServerNotAvailableNotification;
 use App\Scripts\Root\VerifyServerAvailabilityScript;
+use App\States\Servers\Configuring;
 use Illuminate\Support\Facades\DB;
 use DateTimeInterface;
 use Throwable;
@@ -51,8 +52,12 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
             $server->available = $verifyServerAvailability->execute($server, $ssh);
             $server->save();
 
-            if (! $server->available)
+            if (! $server->available) {
                 $this->notify();
+                return;
+            }
+
+            $server->state->transitionTo(Configuring::class);
         }, 5);
     }
 

@@ -4,8 +4,16 @@ use App\Models\Certificate;
 use App\Models\Python;
 use App\States\Daemons;
 use App\States\Certificates;
+use App\States\Servers;
 
 return [
+
+    'states' => [
+        Servers\Creating::class => 'Creating',
+        Servers\Preparing::class => 'Preparing',
+        Servers\Configuring::class => 'Configuring',
+        Servers\Ready::class => 'Ready',
+    ],
 
     'index' => [
 
