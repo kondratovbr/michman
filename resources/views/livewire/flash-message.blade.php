@@ -55,7 +55,7 @@ use App\Events\Users\FlashMessageEvent;
             </div>
 
             <div
-                class="flex-shrink flex items-center font-medium text-sm"
+                class="shrink flex items-center font-medium text-sm"
             >{{ $message }}</div>
 
             <div class="flex items-start">

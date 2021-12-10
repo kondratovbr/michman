@@ -42,7 +42,11 @@
                 <x-td><x-badge>{{ __("servers.types.{$server->type}.badge") }}</x-badge></x-td>
 {{--                TODO: The loading spinner makes the table to jump a little. Maybe ignore it - we will redesing the servers index anyway.--}}
                 <x-td><x-state-badge :state="$server->state" /></x-td>
-                <x-td></x-td>
+                <x-td>
+                    <div class="bg-red-200">
+                        Foobar! Should be red.
+                    </div>
+                </x-td>
             </x-tr>
         @endforeach
     </x-slot>

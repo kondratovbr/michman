@@ -91,7 +91,7 @@ module.exports = {
     // so they will override components styling and defaults.
     important: true,
 
-    purge: [
+    content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
@@ -110,7 +110,7 @@ module.exports = {
             current: 'currentColor',
 
             // Default colors
-            gray: colors.coolGray,
+            gray: colors.gray,
             red: colors.red,
             yellow: colors.amber,
             green: colors.emerald,
@@ -244,36 +244,6 @@ module.exports = {
         },
     },
 
-    variants: {
-        extend: {
-
-            backgroundColor: ['hover', 'active', 'disabled', 'checked', 'input-checked', 'sibling-hover', 'input-disabled'],
-            backgroundOpacity: ['active', 'group-hover', 'group-active', 'checked', 'input-checked', 'sibling-hover', 'input-disabled'],
-            borderWidth: ['hover', 'active', 'last', 'input-checked'],
-            borderColor: ['hover', 'active', 'focus', 'input-checked', 'disabled'],
-            borderOpacity: ['focus', 'group-hover', 'group-active', 'group-focus', 'disabled'],
-            borderRadius: ['first', 'last'],
-            boxShadow: ['focus', 'input-checked'],
-            cursor: ['disabled', 'input-disabled'],
-            display: [],
-            margin: ['first', 'last'],
-            opacity: ['disabled', 'group-hover', 'group-active', 'input-disabled', 'group-disabled'],
-            outline: ['focus'],
-            padding: ['first', 'last'],
-            ringColor: ['focus', 'input-checked'],
-            ringOpacity: ['hover', 'focus', 'disabled', 'input-checked'],
-            ringWidth: ['input-checked'],
-            rotate: [],
-            scale: ['group-hover', 'group-focus'],
-            textColor: ['hover', 'active', 'group-hover', 'group-focus', 'disabled', 'sibling-focus'],
-            transform: [],
-            translate: [],
-            visibility: [],
-            zIndex: [],
-
-        },
-    },
-
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
@@ -339,7 +309,7 @@ module.exports = {
         }),
 
         // "group-selected" variant for styling various toggle-switches and checkboxes
-        // TODO: Does it even work?
+        // TODO: Does it even work? I don't think I currently use it anywhere.
         plugin(function({ addVariant, e }) {
             addVariant('selected', ({ modifySelectors, separator }) => {
                 modifySelectors(({ className }) => {

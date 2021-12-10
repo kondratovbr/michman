@@ -1,79 +1,75 @@
 @layer utilities {
 
-    @variants responsive {
+    /* Horizontal spacing using right margins instead of built-in left margins */
+    .space-x-2-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 0.5rem !important;
+    }
+    .space-x-2\.5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 0.625rem !important;
+    }
+    .space-x-3-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 0.75rem !important;
+    }
+    .space-x-3\.5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 0.875rem !important;
+    }
+    .space-x-4-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 1rem !important;
+    }
+    .space-x-5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 1.25rem !important;
+    }
+    .space-x-6-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
+        margin-right: 1.5rem !important;
+    }
 
-        /* Horizontal spacing using right margins instead of built-in left margins */
-        .space-x-2-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 0.5rem !important;
-        }
-        .space-x-2\.5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 0.625rem !important;
-        }
-        .space-x-3-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 0.75rem !important;
-        }
-        .space-x-3\.5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 0.875rem !important;
-        }
-        .space-x-4-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 1rem !important;
-        }
-        .space-x-5-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 1.25rem !important;
-        }
-        .space-x-6-right:not(.space-x-reversed) > :not(:last-child):not(:only-child) {
-            margin-right: 1.5rem !important;
-        }
+    /* Vertical spacing using bottom margins instead of built-in top margins */
+    .space-y-2-bottom > :not(:only-child) {
+        margin-bottom: 0.5rem !important;
+    }
+    .space-y-2\.5-bottom > :not(:only-child) {
+        margin-bottom: 0.625rem !important;
+    }
+    .space-y-3-bottom > :not(:only-child) {
+        margin-bottom: 0.75rem !important;
+    }
+    .space-y-3\.5-bottom > :not(:only-child) {
+        margin-bottom: 0.875rem !important;
+    }
+    .space-y-4-bottom > :not(:only-child) {
+        margin-bottom: 1rem !important;
+    }
+    .space-y-5-bottom > :not(:only-child) {
+        margin-bottom: 1.25rem !important;
+    }
+    .space-y-6-bottom > :not(:only-child) {
+        margin-bottom: 1.5rem !important;
+    }
 
-        /* Vertical spacing using bottom margins instead of built-in top margins */
-        .space-y-2-bottom > :not(:only-child) {
-            margin-bottom: 0.5rem !important;
-        }
-        .space-y-2\.5-bottom > :not(:only-child) {
-            margin-bottom: 0.625rem !important;
-        }
-        .space-y-3-bottom > :not(:only-child) {
-            margin-bottom: 0.75rem !important;
-        }
-        .space-y-3\.5-bottom > :not(:only-child) {
-            margin-bottom: 0.875rem !important;
-        }
-        .space-y-4-bottom > :not(:only-child) {
-            margin-bottom: 1rem !important;
-        }
-        .space-y-5-bottom > :not(:only-child) {
-            margin-bottom: 1.25rem !important;
-        }
-        .space-y-6-bottom > :not(:only-child) {
-            margin-bottom: 1.5rem !important;
-        }
-
-        /* Safe bottom padding for mobile */
-        /* TODO: Does it even work? I also have a Tailwind plugin for this. */
-        .pb-safe {
-            padding-bottom: env(safe-area-inset-bottom) !important;
-        }
-        .pt-safe {
-            padding-top: env(safe-area-inset-top) !important;
-        }
-        .pl-safe {
-            padding-left: env(safe-area-inset-left) !important;
-        }
-        .pr-safe {
-            padding-right: env(safe-area-inset-right) !important;
-        }
-        .py-safe {
-            padding-top: env(safe-area-inset-top) !important;
-            padding-bottom: env(safe-area-inset-bottom) !important;
-        }
-        .px-safe {
-            padding-left: env(safe-area-inset-left) !important;
-            padding-right: env(safe-area-inset-right) !important;
-        }
-        .p-safe {
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
-        }
-
+    /* Safe bottom padding for mobile */
+    /* TODO: Does it even work? I also have a Tailwind plugin for this. */
+    .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    .pt-safe {
+        padding-top: env(safe-area-inset-top) !important;
+    }
+    .pl-safe {
+        padding-left: env(safe-area-inset-left) !important;
+    }
+    .pr-safe {
+        padding-right: env(safe-area-inset-right) !important;
+    }
+    .py-safe {
+        padding-top: env(safe-area-inset-top) !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
+    }
+    .px-safe {
+        padding-left: env(safe-area-inset-left) !important;
+        padding-right: env(safe-area-inset-right) !important;
+    }
+    .p-safe {
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left) !important;
     }
 
     /* TODO: These properties kill focus states on checkboxes/radios in Chrome.
