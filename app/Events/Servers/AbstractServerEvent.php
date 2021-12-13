@@ -16,9 +16,7 @@ abstract class AbstractServerEvent extends AbstractEvent
         $this->serverKey = $server->getKey();
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     */
+    /** Get the channels the event should broadcast on. */
     public function broadcastOn(): Channel|array
     {
         return ServerChannel::channelInstance($this->serverKey);
