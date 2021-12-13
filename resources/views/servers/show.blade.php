@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Add a status bar on top or something like that - similar to Forge.--}}
+{{--TODO: IMPORTANT! Add a status bar on top or something like that - similar to Forge.--}}
 
 <x-slot name="header">
     <x-page-title>
