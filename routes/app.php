@@ -30,7 +30,7 @@ Route::get('/account/{show?}', AccountView::class)
 /*
  * Servers routes
  */
-Route::get('servers', [ServerController::class, 'index'])->name('server.index');
+Route::get('servers', [ServerController::class, 'index'])->name('servers.index');
 Route::get('servers/{server}/{show?}', ServerView::class)
     ->where('show', ServerView::viewsValidationRegex())
     ->name('servers.show');
