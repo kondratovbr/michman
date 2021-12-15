@@ -1,9 +1,5 @@
-<x-sub-page name="firewall">
+<livewire:firewall.firewall-create-form :server="$server" />
 
-    <livewire:firewall.firewall-create-form :server="$server" />
+<x-section-separator/>
 
-    <x-section-separator/>
-
-    <livewire:firewall.firewall-index-table :server="$server" />
-
-</x-sub-page>
+<livewire:firewall.firewall-index-table :server="$server" />

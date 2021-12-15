@@ -1,9 +1,5 @@
-<x-sub-page name="ssl">
+<livewire:certificates.create-lets-encrypt-certificate-form :server="$server" />
 
-    <livewire:certificates.create-lets-encrypt-certificate-form :server="$server" />
+<x-section-separator/>
 
-    <x-section-separator/>
-
-    <livewire:certificates.certificates-index-table :server="$server" />
-
-</x-sub-page>
+<livewire:certificates.certificates-index-table :server="$server" />

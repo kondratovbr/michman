@@ -1,9 +1,5 @@
-<x-sub-page name="daemons">
+<livewire:daemons.create-daemon-form :server="$server" />
 
-    <livewire:daemons.create-daemon-form :server="$server" />
+<x-section-separator/>
 
-    <x-section-separator/>
-
-    <livewire:daemons.daemons-index-table :server="$server" />
-
-</x-sub-page>
+<livewire:daemons.daemons-index-table :server="$server" />
