@@ -1,85 +1,43 @@
-# WARNING! This doesn't work. For some reason. Maybe try the stock sail config, Dockerfile and docker-compose dile for PHP 8.1.
-
-
-
 FROM ubuntu:21.04
 
-ARG WWWGROUP
 ARG NODE_VERSION=17
 
-WORKDIR /var/www/html
-
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=UTC
+
+WORKDIR /var/www/html
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 \
-    && mkdir -p ~/.gnupg \
-    && chmod 600 ~/.gnupg \
-    && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
-    && apt-key adv --homedir ~/.gnupg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E5267A6C \
-    && apt-key adv --homedir ~/.gnupg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C300EE8C \
-    && echo "deb http://ppa.launchpad.net/ondrej/php/ubuntu hirsute main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
+    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git sqlite3 libcap2-bin libpng-dev python2 \
+    && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN apt-get update && apt-get install -y software-properties-common \
+    && LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php \
     && apt-get update \
-    && apt-get install -y \
-        php8.1-cli php8.1-dev \
-        php8.0-pgsql php8.0-sqlite3 php8.0-gd \
-        php8.0-curl php8.0-memcached \
-        php8.0-imap php8.0-mysql php8.0-mbstring \
-        php8.0-xml php8.0-zip php8.0-bcmath php8.0-soap \
-        php8.0-intl php8.0-readline \
-        php8.0-msgpack php8.0-igbinary php8.0-ldap \
-        php8.0-swoole \
-        php8.0-redis \
-        php8.0-imagick \
-        php8.0-xdebug \
-        php8.0-pcov \
-        php8.0-ds \
-    && php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
-    && curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-    && apt-get install -y nodejs \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-    && apt-get update \
-    && apt-get install -y yarn \
-    && apt-get install -y mysql-client \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && apt-get install -y php8.1-cli php8.1-dev \
+        # Required by Laravel
+        php8.1-intl php8.1-readline php8.1-ldap php8.1-gd php8.1-curl php8.1-mbstring php8.1-imap \
+        php8.1-xml php8.1-zip php8.1-soap php8.1-msgpack php8.1-igbinary \
+        # Unused, but just in case
+        php8.1-pgsql php8.1-sqlite3 php8.1-memcached \
+        # Application-specific
+        php8.1-mysql php8.1-redis php8.1-bcmath \
+        # Dev-only
+        php8.1-xdebug php8.1-pcov \
+    && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ARG XDEBUG=true
-ARG XDEBUG_PORT=9003
-ARG XDEBUG_CONFIG=/etc/php/8.1/mods-available/xdebug.ini
-RUN echo "xdebug.max_nesting_level=512" >> $XDEBUG_CONFIG
-RUN if [ "${XDEBUG}" = 'true' ]; then \
-    echo "xdebug.client_port=${XDEBUG_PORT}" >> $XDEBUG_CONFIG \
-    && echo "xdebug.mode=develop,debug" >> $XDEBUG_CONFIG \
-    && echo "xdebug.start_with_request=yes" >> $XDEBUG_CONFIG \
-    && echo "xdebug.log_level=0" >> $XDEBUG_CONFIG \
-    && echo "xdebug.client_host=host.docker.internal" >> $XDEBUG_CONFIG ;\
-fi;
-RUN if [ "${XDEBUG}" = 'false' ]; then \
-    echo "xdebug.mode=off" >> $XDEBUG_CONFIG ;\
-fi;
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
+    && apt-get update && apt-get install -y \
+        nodejs \
+        mysql-client \
+    && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ARG PCOV_CONFIG=/etc/php/8.1/mods-available/pcov.ini
-RUN echo "pcov.directory=./app" >> $PCOV_CONFIG \
-    && echo "pcov.enabled=0" >> $PCOV_CONFIG
+RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
-RUN echo "max_execution_time = 600" >> /etc/php/8.1/cli/php.ini
-
-RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
-
-RUN groupadd --force -g $WWWGROUP sail
-RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
-
-COPY start-container /usr/local/bin/start-container
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
-RUN chmod +x /usr/local/bin/start-container
+COPY php.ini /etc/php/8.1/cli/conf.d/99-docker.ini
 
 EXPOSE 8000
 
-ENTRYPOINT ["start-container"]
+CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
