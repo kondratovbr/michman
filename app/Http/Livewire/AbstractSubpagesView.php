@@ -6,6 +6,8 @@ use App\Support\Arr;
 use Illuminate\Contracts\View\View;
 use Livewire\Component as LivewireComponent;
 
+// TODO: CRITICAL! Cover with some feature tests.
+
 abstract class AbstractSubpagesView extends LivewireComponent
 {
     /** @var string Base Blade view to render this page. */
