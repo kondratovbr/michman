@@ -6,6 +6,7 @@ use App\Events\Servers\ServerCreatedEvent;
 use App\Events\Servers\ServerDeletedEvent;
 use App\Events\Servers\ServerUpdatedEvent;
 use App\Exceptions\SshAuthFailedException;
+use App\States\Servers\Ready;
 use App\States\Servers\ServerState;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
@@ -170,6 +171,12 @@ class Server extends AbstractModel
             Arr::hasValue($cert->domains, $project->domain)
             || ! empty(Arr::intersect($cert->domains, $project->aliases))
         );
+    }
+
+    /** Check if this server was prepared and ready to be managed by the user. */
+    public function isReady(): bool
+    {
+        return $this->state->is(Ready::class);
     }
 
     /** Open an SSH session to the server with SFTP enabled. */
