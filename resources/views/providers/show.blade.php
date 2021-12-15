@@ -1,9 +1,5 @@
-<x-sub-page name="providers">
+<livewire:providers.create-provider-form/>
 
-    <livewire:providers.create-provider-form/>
+<x-section-separator/>
 
-    <x-section-separator/>
-
-    <livewire:providers.providers-index-table/>
-
-</x-sub-page>
+<livewire:providers.providers-index-table/>
