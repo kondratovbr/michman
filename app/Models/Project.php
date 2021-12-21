@@ -213,6 +213,19 @@ class Project extends AbstractModel
         return __("projects.repo.providers.{$this->vcsProvider->provider}");
     }
 
+    /** Get a short info about this project to show in the UI. */
+    public function shortInfo(): string
+    {
+        $info = [];
+
+        $info[] = __("projects.types.{$this->type}");
+
+        if (! empty($this->pythonVersion))
+            $info[] = 'Python ' . __("servers.pythons.versions.{$this->pythonVersion}");
+
+        return implode(', ', $info);
+    }
+
     /** Get a relation with the user that owns this project. */
     public function user(): BelongsTo
     {

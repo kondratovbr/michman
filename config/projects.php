@@ -2,11 +2,11 @@
 
 /*
  * TODO: CRITICAL! Don't forget to implement install/configuration/etc. scripts for every other version and application I plan on supporting.
- *       See all the nulls in here?
  */
 
 return [
 
+    // TODO: IMPORTANT. Add a "General Django" type. Should work pretty much the same as Django. Just for clarity.
     'types' => [
         'django' => [
             'default_root' => '/static',

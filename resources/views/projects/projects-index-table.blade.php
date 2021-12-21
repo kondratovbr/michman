@@ -23,12 +23,12 @@
                         <x-app-link href="{{ route('projects.show', [$project, 'deployment']) }}">
                             {{ $project->fullDomainName }}
                         </x-app-link>
-{{--                        TODO: CRITICAL! CONTINUE. Put here some additional info about the project the same way I do in servers index table.--}}
-                        <p class="text-sm">Foobar</p>
+                        <p class="text-sm">{{ $project->shortInfo() }}</p>
                     </div>
                 </x-td>
                 <x-td>
                     <div class="flex flex-col">
+{{--                        TODO: Add a small VCS provider logo icon here. Will look nicer.--}}
                         <x-app-link href="{{ $project->repoUrl }}" external :icon="false">{{ $project->repo }}</x-app-link>
                         <p class="text-sm">{{ $project->vcsProviderName }}</p>
                     </div>

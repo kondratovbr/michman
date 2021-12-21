@@ -6,7 +6,7 @@ use App\States\Workers;
 return [
 
     'types' => [
-        'django' => 'Django / General Python',
+        'django' => 'Django',
         'flask' => 'Flask',
         'static' => 'Static HTML',
     ],
