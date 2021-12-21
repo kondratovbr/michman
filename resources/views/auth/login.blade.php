@@ -45,7 +45,8 @@
 
             <div class="flex items-center justify-end">
                 @if (Route::has('password.request'))
-                    <x-link>{{ __('auth.forgot-your-password') }}</x-link>
+{{--                    TODO: CRITICAL! Test this, make sure it works. And make sure the UI looks OK. --}}
+                    <x-link href="{{ route('password.request') }}">{{ __('auth.forgot-your-password') }}</x-link>
                 @endif
 
                 <x-buttons.primary class="ml-4">
