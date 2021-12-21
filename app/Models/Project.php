@@ -187,6 +187,12 @@ class Project extends AbstractModel
     {
         return isset($this->vcsProvider) && ! empty($this->repo);
     }
+
+    /** Get the latest triggered deployment of this project. */
+    public function getLatestDeployment(): Deployment|null
+    {
+        return $this->deployments()->latest()->first();
+    }
     
     /** Get the latest successful deployment of this project. */
     public function getCurrentDeployment(): Deployment|null

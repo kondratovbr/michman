@@ -50,6 +50,11 @@ class ProjectsIndexTable extends LivewireComponent
     {
         $this->projects = $this->server->projects()->oldest()->get();
 
+        /** @var Project $project */
+        foreach ($this->projects as $project) {
+            $project->latestDeployment = $project->getLatestDeployment();
+        }
+
         return view('projects.projects-index-table');
     }
 }
