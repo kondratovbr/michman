@@ -219,7 +219,7 @@ return [
         'lets-encrypt' => [
             'title' => 'Let\'s Encrypt',
             'description' => 'Use a free service by Let\'s Encrypt to receive a free auto-renewable SSL certificate and configure HTTPS on this server.',
-            'explanation' => 'Let\'s Encrypt provides free SSL certificates that are recognized across all major browsers. This is the best way to add HTTPS support to your projects. You may separate multiple domains with commas.',
+            'explanation' => 'Let\'s Encrypt provides free SSL certificates that are recognized across all browsers, libraries and systems. This is the best way to add HTTPS support to your projects. You may separate multiple domains with commas.',
             'button' => 'Request Certificate',
 
             'domains' => [
