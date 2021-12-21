@@ -7,7 +7,6 @@ use App\Events\Servers\ServerDeletedEvent;
 use App\Events\Servers\ServerUpdatedEvent;
 use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Server;
-use App\Support\Arr;
 use Illuminate\Contracts\View\View;
 
 // TODO: CRITICAL! Cover with some feature tests.
@@ -43,7 +42,7 @@ class ServerView extends AbstractSubpagesView
         $this->echoPrivate(
             ServerChannel::name($this->server),
             ServerUpdatedEvent::class,
-            '$refresh',
+            'serverUpdated',
         );
         $this->echoPrivate(
             ServerChannel::name($this->server),
@@ -52,11 +51,25 @@ class ServerView extends AbstractSubpagesView
         );
     }
 
+    /** Reload the server model from the database. */
+    public function serverUpdated(): void
+    {
+        $this->server->refresh();
+
+        if ($this->server->isReady())
+            $this->show = 'projects';
+    }
+
     // TODO: CRITICAL! Try this out. Just out of curiosity. Will Livewire try to retrieve the deleted model from the DB?
     /** If the server got deleted somehow - redirect user to the servers index page. */
     public function serverDeleted(): void
     {
         $this->redirectRoute('servers.index');
+    }
+
+    public function getDisabledProperty(): bool
+    {
+        return ! $this->server->isReady();
     }
 
     public function render(): View

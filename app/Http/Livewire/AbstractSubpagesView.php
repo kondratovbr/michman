@@ -56,6 +56,12 @@ abstract class AbstractSubpagesView extends LivewireComponent
         $this->show = $show;
     }
 
+    /** Check if the side menu should currently be disabled. */
+    public function getDisabledProperty(): bool
+    {
+        return false;
+    }
+
     public function render(): View
     {
         /*

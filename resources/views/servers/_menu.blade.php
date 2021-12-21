@@ -1,7 +1,7 @@
 {{--TODO: CRITICAL! Values/links are placeholders. Don't forget to put the actual ones.--}}
 {{--TODO: CRITICAL! Make sure the irrelevant buttons aren't shown and menus cannot be accessed. Based on the server's type.--}}
 
-{{--TODO: CRITICAL! CONTINUE. Figure out disabling the buttons when the placeholder is shown. Then try rebuilding this system with @entangle - maybe it will help with "back"/"front" buttons in the browser.--}}
+{{--TODO: IMPORTANT. Try rebuilding this system with @entangle - maybe it will help with "back"/"front" buttons in the browser. Also - needs some loading indication and skeleton placeholders. The pages may time a bit of time to load on slower connections.--}}
 
 <aside x-data="{ current: '{{ $this->show }}' }">
     <ul class="flex flex-col items-stretch text-gray-200">

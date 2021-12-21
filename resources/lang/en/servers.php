@@ -8,6 +8,10 @@ use App\States\Servers;
 
 return [
 
+    'placeholder' => [
+        'preparing' => 'Preparing your server',
+    ],
+
     'states' => [
         Servers\Creating::class => 'Creating',
         Servers\Preparing::class => 'Preparing',

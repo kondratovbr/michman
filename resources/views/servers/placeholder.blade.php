@@ -1,3 +1,6 @@
-{{--TODO: CRITICAL! CONTINUE. Make this thing nicer and make sure to disable the menu if the server isn't ready.--}}
+{{--TODO: Improve this placeholder. Show progress, show steps, add a button to stop the process and delete the server. Don't forget the server information header.--}}
 
-Placeholder page!
+<div class="flex flex-col items-center">
+    <span class="text-2xl">{{ __('servers.placeholder.preparing') }}</span>
+    <x-spinner class="mt-4 text-2xl"/>
+</div>
