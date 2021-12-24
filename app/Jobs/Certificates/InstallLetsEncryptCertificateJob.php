@@ -14,10 +14,6 @@ use App\States\Certificates\Installing;
 use Illuminate\Support\Facades\DB;
 
 /*
- * TODO: CRITICAL! Make sure a user cannot start SSL installation before installing a repo, otherwise this whole logic won't work. Or rather install some different placeholder before that, so we have something to serve the ACME challenge from.
- */
-
-/*
  * TODO: CRITICAL! Make sure a certificate cannot be requested for a server of a type that shouldn't be accessible from the outside anyway. I.e. certificates are only for "app", "web" and "balancer" types of servers.
  */
 
@@ -60,11 +56,11 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
 
             /** @var Project $project */
             foreach ($server->projects as $project) {
-                if ($certificate->hasDomainOf($project)) {
+                if ($certificate->hasDomainOf($project))
                     $updateNginxConfig->execute($server, $project, $rootSsh);
-                    $uploadPlaceholderNginxConfig->execute($server, $project, $rootSsh);
-                }
             }
+
+            $uploadPlaceholderNginxConfig->execute($server, $rootSsh);
 
             $restartNginx->execute($server, $rootSsh);
 
