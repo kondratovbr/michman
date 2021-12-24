@@ -38,6 +38,7 @@
                 </x-td>
                 <x-td>
                     @if(! is_null($project->latestDeployment))
+{{--                        TODO: Maybe add a progress spinner here if the latest deployment is in process.--}}
                         @if($project->latestDeployment->successful)
                             <x-icon class="text-green-500"><i class="fa fa-check"></i></x-icon>
                         @elseif($project->latestDeployment->failed)
