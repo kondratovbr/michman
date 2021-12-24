@@ -66,9 +66,7 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
         $this->reset('domains');
     }
 
-    /**
-     * Store the new certificate.
-     */
+    /** Store the new certificate. */
     public function store(StoreLetsEncryptCertificateAction $action): void
     {
         $domains = $this->validate()['domains'];
