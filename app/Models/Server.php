@@ -115,7 +115,7 @@ class Server extends AbstractModel
     /** Get the owner of this server. */
     public function getUserAttribute(): User
     {
-        return $this->provider->owner;
+        return $this->provider->user;
     }
 
     /** Get the path to a directory for public files on this server. */

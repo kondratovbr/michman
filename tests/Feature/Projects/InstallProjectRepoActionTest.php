@@ -144,7 +144,7 @@ class InstallProjectRepoActionTest extends AbstractFeatureTest
         $user = $vcs->user;
 
         /** @var Provider $provider */
-        $provider = Provider::factory()->for($user, 'owner')->create();
+        $provider = Provider::factory()->for($user, 'user')->create();
 
         /** @var Server $server */
         $server = Server::factory()

@@ -20,7 +20,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $serverName = Str::random();
 
@@ -87,7 +87,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => 100500,
@@ -117,7 +117,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,
@@ -147,7 +147,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,
@@ -177,7 +177,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,
@@ -208,7 +208,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,
@@ -238,7 +238,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,
@@ -268,7 +268,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,
@@ -298,7 +298,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
 
         $state = [
             'provider_id' => $provider->id,

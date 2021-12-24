@@ -44,7 +44,7 @@ class ProjectFactory extends Factory
         ])->afterCreating(function (Project $project) {
             $server = Server::factory()->for(
                 Provider::factory()->for(
-                    $project->user, 'owner'
+                    $project->user, 'user'
                 )
             )->create();
             $project->servers()->attach($server);

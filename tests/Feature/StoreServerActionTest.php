@@ -27,7 +27,7 @@ class StoreServerActionTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
         VcsProvider::factory([
             'provider' => 'github_v3',
         ])->for($user)->create();

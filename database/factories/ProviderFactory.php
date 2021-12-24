@@ -65,6 +65,6 @@ class ProviderFactory extends Factory
     /** Attach provider to a user. */
     protected function associateOwner(Provider $provider, User $user): void
     {
-        $provider->owner()->associate($user);
+        $provider->user()->associate($user);
     }
 }

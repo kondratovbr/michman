@@ -13,7 +13,7 @@ class FirewallRulePolicy
 
     public function index(User $user, Server $server): bool
     {
-        return $user->is($server->provider->owner);
+        return $user->is($server->provider->user);
     }
 
     public function create(User $user, Server $server): bool

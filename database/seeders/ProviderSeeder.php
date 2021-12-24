@@ -25,7 +25,7 @@ class ProviderSeeder extends Seeder
                 ),
                 'name' => 'Dev Token',
             ])
-                ->for($dev, 'owner')
+                ->for($dev, 'user')
                 ->create();
         }
 

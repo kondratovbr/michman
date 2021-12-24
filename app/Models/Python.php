@@ -48,7 +48,7 @@ class Python extends AbstractModel
 
     public function getUserAttribute(): User
     {
-        return $this->server->provider->owner;
+        return $this->server->provider->user;
     }
 
     /** Check if this instance of Python was installed on the server. */

@@ -20,7 +20,7 @@ class UserSshKeysIndexTableTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
         /** @var UserSshKey $userSshKey */
         $userSshKey = UserSshKey::factory()->for($user)->create();
         /** @var Server $attachedServer */
@@ -54,7 +54,7 @@ class UserSshKeysIndexTableTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
         /** @var Collection $servers */
         $servers = Server::factory()->for($provider)->count(2)->create();
         /** @var UserSshKey $userSshKey */
@@ -81,7 +81,7 @@ class UserSshKeysIndexTableTest extends AbstractFeatureTest
     {
         /** @var Provider $provider */
         $provider = Provider::factory()->withOwner()->create();
-        $user = $provider->owner;
+        $user = $provider->user;
         /** @var Collection $servers */
         $servers = Server::factory()->for($provider)->count(2)->create();
         /** @var UserSshKey $userSshKey */

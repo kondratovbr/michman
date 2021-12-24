@@ -31,7 +31,7 @@ class StoreServerAction
     public function execute(NewServerDto $data, Provider $provider): Server
     {
         return DB::transaction(function () use ($data, $provider): Server {
-            $user = $provider->owner;
+            $user = $provider->user;
 
             $attributes = $data->toArray([
                 'ssh_port' => (string) config('servers.default_ssh_port'),
