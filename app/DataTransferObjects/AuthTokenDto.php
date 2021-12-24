@@ -23,7 +23,7 @@ class AuthTokenDto extends AbstractDto
             id: $id,
             token: $token,
             refresh_token: $refreshToken,
-            expires_at: now()->addSeconds((int) floor((int) $expiresInSecs * 0.9)),
+            expires_at: empty($expiresInSecs) ? null : now()->addSeconds((int) floor((int) $expiresInSecs * 0.9)),
         );
     }
 
