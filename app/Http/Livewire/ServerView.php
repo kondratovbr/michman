@@ -54,6 +54,10 @@ class ServerView extends AbstractSubpagesView
     /** Reload the server model from the database. */
     public function serverUpdated(): void
     {
+        // We don't want to refresh the page if the server was already ready.
+        if ($this->server->isReady())
+            return;
+
         $this->server->refresh();
 
         if ($this->server->isReady())
