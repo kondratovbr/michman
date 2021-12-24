@@ -9,14 +9,6 @@ use App\Scripts\Root\UploadPlaceholderPageNginxConfigScript;
 use App\Scripts\User\UploadPlaceholderPageScript;
 use Illuminate\Support\Facades\DB;
 
-/*
- * TODO: CRITICAL! CONTINUE. This job should install the placeholder page on a server even if the server has no project installed.
- *       This will allow to show the user that the server is operational,
- *       and to receive Let's Encrypt certificates independent of projects.
- *       Also, project installation won't conflict with the certificate installation.
- *       Make sure to disable placeholder installation in the project installation logic and test the whole thing.
- */
-
 class InstallPlaceholderPageJob extends AbstractRemoteServerJob
 {
     public function handle(
