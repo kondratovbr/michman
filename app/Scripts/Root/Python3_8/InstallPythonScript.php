@@ -24,8 +24,6 @@ class InstallPythonScript extends AbstractServerScript
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
         $this->read();
 
-        // TODO: IMPORTANT! Is this everything server needs to run generic Python/Django applications?
-        //       Google Django deployment on Ubuntu!
         $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libssl-dev libffi-dev python3-dev');
         $this->read();
 
