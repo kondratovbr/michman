@@ -5,7 +5,9 @@ namespace App\Rules;
 use App\Models\Server;
 use Illuminate\Contracts\Validation\Rule;
 
-class ProjectDomainUnique implements Rule
+// TODO: IMPORTANT! Cover with tests.
+
+class ProjectDomainUniqueRule implements Rule
 {
     public function __construct(
         protected Server $server,

@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\DataTransferObjects\NewProjectDto;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
-use App\Rules\ProjectDomainUnique;
+use App\Rules\ProjectDomainUniqueRule;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 use App\Actions\Projects\StoreProjectAction;
@@ -82,7 +82,7 @@ class CreateProjectForm extends LivewireComponent
     {
         $rules = [
             'state.domain' => Rules::domain()
-                ->addRule(new ProjectDomainUnique($this->server))
+                ->addRule(new ProjectDomainUniqueRule($this->server))
                 ->required(),
             'state.aliases' => Rules::array()->nullable(),
             'state.aliases.*' => Rules::domain(),
