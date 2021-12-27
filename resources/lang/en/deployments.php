@@ -9,7 +9,7 @@ return [
     'table' => [
         'title' => 'Recent Deployments',
         'empty' => 'The project hasn\'t been deployed yet.',
-        'started-at' => 'Started At',
+        'started' => 'Started',
         'status' => 'Status',
         'commit' => 'Commit',
         'duration' => 'Duration',
@@ -25,5 +25,7 @@ return [
     'view-output' => 'View Log',
     'view-output-from-server' => 'View Log From Server',
     'log-modal-title' => 'Deployment Log From',
+    'automatic' => 'Quick Deployment',
+    'manual' => 'Manual Deployment',
 
 ];

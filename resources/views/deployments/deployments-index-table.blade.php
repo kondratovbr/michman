@@ -4,9 +4,9 @@
 
     <x-slot name="header">
         <x-tr-header>
-            <x-th></x-th>
+            <x-th>{{ __('deployments.table.started') }}</x-th>
             <x-th>{{ __('deployments.table.commit') }}</x-th>
-            <x-th>{{ __('deployments.table.started-at') }}</x-th>
+            <x-th>{{ __('deployments.table.duration') }}</x-th>
             <x-th>{{ __('deployments.table.status') }}</x-th>
             <x-th></x-th>
         </x-tr-header>
@@ -15,14 +15,26 @@
     <x-slot name="body">
         @foreach($deployments as $deployment)
             <x-tr>
-                <x-td></x-td>
+                <x-td>
+                    <div class="inline-block" x-tooltip="'{{ $deployment->isAutomatic() ? __('deployments.automatic') : __('deployments.manual') }}'">
+                        <x-icon>
+                            @if($deployment->isAutomatic())
+{{--                                TODO: CRITICAL! Use a paid icon "far fa-robot" here.--}}
+                                <i class="fas fa-robot"></i>
+                            @else
+                                <i class="far fa-user"></i>
+                            @endif
+                        </x-icon>
+                        <span class="ml-2">{{ $deployment->createdAtFormatted }}</span>
+                    </div>
+                </x-td>
                 <x-td>
                     <div class="flex flex-col items-start">
                         <x-app-link href="{{ $deployment->commitUrl }}" :external="true" :icon="false">{{ Str::substr($deployment->commit, 0, 8) }}</x-app-link>
                         <x-code size="small">{{ $deployment->branch }}</x-code>
                     </div>
                 </x-td>
-                <x-td>{{ $deployment->createdAtFormatted }}</x-td>
+                <x-td>{{ $deployment->duration }}</x-td>
                 <x-td>
                     <div class="flex flex-col items-start space-y-1">
                         <x-deployments.status-badge :deployment="$deployment" />
