@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\SetCast;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
@@ -10,6 +11,7 @@ use App\States\Certificates\Installed;
 use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
+use Ds\Set;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\ModelStates\HasStates;
@@ -27,7 +29,7 @@ use Spatie\ModelStates\HasStates;
  *
  * @property int $id
  * @property string $type
- * @property string[] $domains
+ * @property Set $domains
  * @property CertificateState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
@@ -59,7 +61,7 @@ class Certificate extends AbstractModel
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        'domains' => 'array',
+        'domains' => SetCast::class,
         'state' => CertificateState::class,
     ];
 
@@ -79,7 +81,7 @@ class Certificate extends AbstractModel
     /** Derive a name for this certificate from its domains. */
     public function getNameAttribute(): string
     {
-        return $this->domains[0];
+        return $this->domains->first();
     }
 
     /** Get a directory where the files related to this certificate are stored on a server. */
@@ -91,14 +93,17 @@ class Certificate extends AbstractModel
     /** Check if this certificate has a domain from a project. */
     public function hasDomainOf(Project $project): bool
     {
-        return Arr::hasValue($this->domains, $project->domain)
-            || ! empty(Arr::intersect($this->domains, $project->aliases));
+        /*
+         * TODO: CRITICAL! Turn $project->aliases to Ds/Pair as well. Makes sense.
+         */
+        return $this->domains->contains($project->domain)
+            || ! $this->domains->intersect(new Set($project->aliases))->isEmpty();
     }
 
     /** Check if this certificate is a subset of another certificate. */
     public function isSubsetOf(Certificate $certificate): bool
     {
-        return empty(array_diff($this->domains, $certificate->domains));
+        return $this->domains->diff($certificate->domains)->isEmpty();
     }
 
     /** Check if this certificate is installed on a server. */

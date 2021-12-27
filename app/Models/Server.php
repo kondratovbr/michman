@@ -8,7 +8,6 @@ use App\Events\Servers\ServerUpdatedEvent;
 use App\Exceptions\SshAuthFailedException;
 use App\States\Servers\Ready;
 use App\States\Servers\ServerState;
-use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -168,8 +167,7 @@ class Server extends AbstractModel
     public function getCertificatesFor(Project $project): Collection
     {
         return $this->certificates->filter(fn(Certificate $cert) =>
-            Arr::hasValue($cert->domains, $project->domain)
-            || ! empty(Arr::intersect($cert->domains, $project->aliases))
+            $cert->hasDomainOf($project)
         );
     }
 
