@@ -1,17 +1,21 @@
 {{--TODO: IMPORTANT! Improve the single column layout - looks weird.--}}
 
-{{--TODO: CRITICAL! The servers page should have notifications as well.--}}
+{{--TODO: CRITICAL! CONTINUE. The servers page should have notifications as well.--}}
 
 <x-layouts.app-one-column>
 
     <x-slot name="header">
-        <x-page-title>Servers</x-page-title>
+        <x-page-title>{{ __('servers.title') }}</x-page-title>
     </x-slot>
 
-    <livewire:servers.create-server-form/>
+    <div class="space-y-10 sm:space-y-0">
 
-    <x-section-separator/>
+        <livewire:servers.create-server-form/>
 
-    <livewire:servers.servers-index-table/>
+        <x-section-separator/>
+
+        <livewire:servers.servers-index-table/>
+
+    </div>
 
 </x-layouts.app-one-column>

@@ -8,6 +8,8 @@ use App\States\Servers;
 
 return [
 
+    'title' => 'Servers',
+
     'placeholder' => [
         'preparing' => 'Preparing your server',
     ],
