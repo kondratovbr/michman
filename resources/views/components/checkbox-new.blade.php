@@ -16,7 +16,6 @@
         @endif
         {{ $attributes->wire('model') }}
         {{ $attributes->only('x-model') }}
-{{--        disabled--}}
     >
     <span class="ml-2 group-hover:text-gray-100 {{ $labelClass }}">
         {{ $slot }}

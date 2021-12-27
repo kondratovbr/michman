@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-// TODO: CRITICAL! Cover with tests somehow.
+// TODO: IMPORTANT! Cover with tests somehow.
 
 abstract class AbstractNotification extends Notification implements ShouldQueue
 {
