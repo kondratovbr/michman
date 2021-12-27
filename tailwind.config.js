@@ -89,7 +89,8 @@ module.exports = {
 
     // Utilities (NOT including custom ones) will be generated with "!important",
     // so they will override components styling and defaults.
-    important: true,
+    //important: true,
+    important: ':not([x-show])',
 
     content: [
         './app/**/*.php',
