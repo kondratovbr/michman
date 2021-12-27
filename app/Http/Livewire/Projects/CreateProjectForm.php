@@ -19,11 +19,10 @@ use Illuminate\Contracts\View\View;
 
 // TODO: CRITICAL! Cover with tests.
 
-// TODO: CRITICAL! Make sure the jobs cannot run on an unprepared server. And the whole server view cannot be seen at all as well.
+// TODO: CRITICAL! CONTINUE. Make sure the jobs cannot run on an unprepared server. And the whole server view cannot be seen at all as well.
+// TODO: CRITICAL! Figure out tasks and maybe statuses for servers/projects during project creation and repo installation.
 
 // TODO: CRITICAL! Make sure the main domain is unique server-wide. Maybe also user-wide. Users and some directories on servers are called by the domain name, so it should be unique.
-
-// TODO: CRITICAL! Figure out tasks and maybe statuses for servers/projects during project creation and repo installation.
 
 class CreateProjectForm extends LivewireComponent
 {

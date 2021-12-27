@@ -10,7 +10,6 @@
         @endisset
     </x-section-title>
 
-{{--    TODO: CRITICAL! The "overflow-x-auto" here was a temporary crotch for tables that don't quite fit. Check that all tables look OK on all screens.--}}
     <x-box class="mt-5">
         @isset($empty)
             <x-box.content>
