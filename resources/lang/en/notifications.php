@@ -14,6 +14,7 @@ use App\Notifications\Servers\FailedToUploadServerSshKeyToServerNotification;
 use App\Notifications\Servers\ServerIsNotSuitableNotification;
 use App\Notifications\Servers\ServerNotAvailableNotification;
 use App\Notifications\Projects\WebhookEnablingFailedNotification;
+use App\Notifications\TestNotification;
 use App\Notifications\Workers\WorkerFailedNotification;
 
 return [
@@ -24,6 +25,8 @@ return [
     'message' => 'Message',
 
     'messages' => [
+        TestNotification::class => ':message',
+
         DeploymentFailedNotification::class => 'We were unable to deploy project :project.',
 
         ProjectInstallationFailedNotification::class => 'We were unable to install your project :project to a server.',
