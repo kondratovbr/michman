@@ -67,17 +67,13 @@ abstract class AbstractBaseRules extends AbstractRules
         return $this->minMax($minLength, $maxLength);
     }
 
-    /**
-     * Field must be of a specified length (for strings).
-     */
+    /** Field must be of a specified length (for strings). */
     public function lengthExactly(int $length): static
     {
         return $this->minMax($length, $length);
     }
 
-    /**
-     * Add built-in "min" and "max" rules.
-     */
+    /** Add built-in "min" and "max" rules. */
     public function minMax(int|float|null $min = null, int|float|null $max = null): static
     {
         if (! is_null($min))
@@ -98,25 +94,19 @@ abstract class AbstractBaseRules extends AbstractRules
         return $this->addRule('regex:' . $pattern);
     }
 
-    /**
-     * Required if another field is present.
-     */
+    /** Required if another field is present. */
     public function requiredWith(string $field): static
     {
         return $this->requiredWithAny($field);
     }
 
-    /**
-     * Required if at least one of the fields is present.
-     */
+    /** Required if at least one of the fields is present. */
     public function requiredWithAny(string|array $fields): static
     {
         return $this->addRule('required_with:' . implode(',', Arr::wrap($fields)));
     }
 
-    /**
-     * Required only when any of the specified fields is not present.
-     */
+    /** Required only when any of the specified fields is not present. */
     public function requiredWithoutAny(string|array $fields): static
     {
         return $this->addRule('required_without:' . implode(',', Arr::wrap($fields)));
@@ -145,9 +135,7 @@ abstract class AbstractBaseRules extends AbstractRules
         return $this;
     }
 
-    /**
-     * Required only when another field has a specific value.
-     */
+    /** Required only when another field has a specific value. */
     public function requiredIfAnotherFieldIs(string $field, mixed $value): static
     {
         return $this->addRule("required_if:{$field},{$value}");
@@ -166,33 +154,25 @@ abstract class AbstractBaseRules extends AbstractRules
         return $this;
     }
 
-    /**
-     * Must exist in the DB in the specified table and column.
-     */
+    /** Must exist in the DB in the specified table and column. */
     public function existsInDb(string $table, string $column): static
     {
         return $this->addRule(Rule::exists($table, $column));
     }
 
-    /**
-     * Must not exist in the DB in the specified table and column.
-     */
+    /** Must not exist in the DB in the specified table and column. */
     public function doesNotExistInDb(string $table, string $column): static
     {
         return $this->addRule(Rule::unique($table, $column));
     }
 
-    /**
-     * Must exist in the DB in the specified column of the table for the specified model.
-     */
+    /** Must exist in the DB in the specified column of the table for the specified model. */
     public function modelExistsInDb(string $modelClass, string $column): static
     {
         return $this->addRule(Rule::exists($modelClass, $column));
     }
 
-    /**
-     * Must not exist in the DB in the specified column of the table of the specified model.
-     */
+    /** Must not exist in the DB in the specified column of the table of the specified model. */
     public function modelDoesNotExistInDb(string $modelClass, string $column): static
     {
         return $this->addRule(Rule::unique($modelClass, $column));
