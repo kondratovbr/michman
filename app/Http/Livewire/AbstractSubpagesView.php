@@ -19,7 +19,10 @@ abstract class AbstractSubpagesView extends LivewireComponent
     public string $show = '';
 
     /** @var string[] */
-    protected $listeners = ['showSubPage' => 'show'];
+    protected $listeners = [
+        'showSubPage' => 'show',
+        'refresh-view' => '$refresh',
+    ];
 
     /** @var string[] Map of $show property values to sub-page Blade views. */
     public const VIEWS = [

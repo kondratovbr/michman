@@ -125,8 +125,6 @@ class InstallRepoForm extends LivewireComponent
     /** Store the project's repository configuration. */
     public function update(InstallProjectRepoAction $installAction): void
     {
-        // TODO: CRITICAL! I should command the outer Livewire "page" component to refresh after this action - it should display a completely different set of forms.
-
         $state = $this->validate()['state'];
 
         $this->authorize('update', $this->project);
@@ -150,6 +148,7 @@ class InstallRepoForm extends LivewireComponent
         $this->resetState();
 
         $this->emit('project-updated');
+        $this->emitUp('refresh-view');
     }
 
     public function render(): View
