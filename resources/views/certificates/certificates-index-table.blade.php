@@ -14,7 +14,7 @@
     <x-slot name="body">
         @foreach($certificates as $cert)
             <x-tr>
-                <x-td>{{ implode(', ', $cert->domains) }}</x-td>
+                <x-td>{{ implode(', ', $cert->domains->toArray()) }}</x-td>
                 <x-td>{{ __("servers.ssl.types.{$cert->type}") }}</x-td>
                 <x-td>
 {{--                    TODO: Should I center these badges? Here and in all other tables.--}}
