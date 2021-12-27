@@ -10,6 +10,8 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\Unique;
 
 abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Countable
 {
@@ -82,13 +84,13 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
         if (is_string($rule))
             return $this->addNamedRule($rule);
 
+        // Custom rules
+        if ($rule instanceof Rule || $rule instanceof Unique || $rule instanceof Exists)
+            return $this->addRuleInstance($rule);
+
         // Built-in Laravel rule class helpers, like Illuminate\Validation\Rules\In, which are intended to be converted to strings.
         if (method_exists($rule, '__toString'))
             return $this->addNamedRule((string) $rule);
-
-        // Custom rules
-        if ($rule instanceof Rule)
-            return $this->addRuleInstance($rule);
 
         throw new InvalidRule($rule);
     }
@@ -148,7 +150,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
         return $this;
     }
 
-    private function addRuleInstance(Rule $rule): static
+    private function addRuleInstance(Rule|Unique|Exists $rule): static
     {
         $this->ruleInstances[] = $rule;
 
