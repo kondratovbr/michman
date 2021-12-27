@@ -5,8 +5,12 @@
     <div class="md:grid md:grid-cols-12">
         <div class="md:col-start-3 md:col-end-11">
 
+            @isset($notifications)
+                <div class="mt-8">{{ $notifications }}</div>
+            @endisset
+
             {{-- Page Heading --}}
-            <header class="py-8">
+            <header class="py-8 pl-4 sm:pl-0">
                 {{-- Keeping an empty header for padding if none provided. --}}
                 @isset($header)
                     {{ $header }}
