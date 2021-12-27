@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Projects;
 
 use App\DataTransferObjects\NewProjectDto;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
+use App\Rules\ProjectDomainUnique;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 use App\Actions\Projects\StoreProjectAction;
@@ -17,12 +18,7 @@ use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
 
-// TODO: CRITICAL! Cover with tests.
-
-// TODO: CRITICAL! CONTINUE. Make sure the jobs cannot run on an unprepared server. And the whole server view cannot be seen at all as well.
-// TODO: CRITICAL! Figure out tasks and maybe statuses for servers/projects during project creation and repo installation.
-
-// TODO: CRITICAL! Make sure the main domain is unique server-wide. Maybe also user-wide. Users and some directories on servers are called by the domain name, so it should be unique.
+// TODO: IMPORTANT! Cover with tests.
 
 class CreateProjectForm extends LivewireComponent
 {
@@ -85,7 +81,9 @@ class CreateProjectForm extends LivewireComponent
     protected function rules(): array
     {
         $rules = [
-            'state.domain' => Rules::domain()->required(),
+            'state.domain' => Rules::domain()
+                ->addRule(new ProjectDomainUnique($this->server))
+                ->required(),
             'state.aliases' => Rules::array()->nullable(),
             'state.aliases.*' => Rules::domain(),
             'state.type' => Rules::string(1, 16)
@@ -124,7 +122,7 @@ class CreateProjectForm extends LivewireComponent
             fn(string $type) => __("projects.types.{$type}"),
             true
         );
-        $this->pythonVersions = $this->pythonVersions = Arr::mapAssoc(
+        $this->pythonVersions = Arr::mapAssoc(
             Arr::keys(config('servers.python')),
             fn(int $index, string $type) => new Pair($type, Str::replace('_', '.', $type))
         );

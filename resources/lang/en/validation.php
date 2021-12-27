@@ -140,6 +140,7 @@ return [
         'path' => 'Enter a valid Unix path.',
         'repo' => 'Enter a valid Git repository name including a username, example: user/repo',
         'ssh-public-key' => 'This doesn\'t look like a valid SSH public key.',
+        'domain-unique' => 'Project with this domain is already deployed on this server.',
     ],
 
     /*
