@@ -129,13 +129,13 @@
 
     <x-slot name="actions">
         <div class="flex items-center space-x-3">
-            <x-buttons.secondary
-                wire:click.prevent="resetState"
-            >{{ __('buttons.cancel') }}</x-buttons.secondary>
             <x-buttons.primary
                 wire:click.prevent="update"
                 wire:loading.attr="disabled"
             >{{ __('projects.repo.configure.button') }}</x-buttons.primary>
+            <x-buttons.secondary
+                wire:click.prevent="resetState"
+            >{{ __('buttons.cancel') }}</x-buttons.secondary>
         </div>
     </x-slot>
 
