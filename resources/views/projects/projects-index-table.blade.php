@@ -4,7 +4,7 @@
 
     <x-slot name="header">
         <x-tr-header>
-{{--            TODO: CRITICAL! Implement the SSL itself and don' forget this badge.--}}
+{{--            TODO: CRITICAL! CONTINUE. Implement the SSL itself and don' forget this icon.--}}
             <x-th>SSL</x-th>
             <x-th>{{ __('projects.index.table.domain') }}</x-th>
             <x-th>{{ __('projects.index.table.repo') }}</x-th>

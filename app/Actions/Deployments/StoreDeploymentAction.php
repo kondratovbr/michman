@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: An automatic rollback on failure feature would be nice to have.
 
-// TODO: CRITICAL! Should I enable the placeholder back if the deployment fails? I mean, when a project has been deployed already, what to do if a new deployment fails?
-
 // TODO: CRITICAL! Cover with tests!
 
 class StoreDeploymentAction
