@@ -97,11 +97,8 @@ class Certificate extends AbstractModel
     /** Check if this certificate has a domain from a project. */
     public function hasDomainOf(Project $project): bool
     {
-        /*
-         * TODO: CRITICAL! CONTINUE. Turn $project->aliases to Ds/Set as well. Makes sense.
-         */
         return $this->domains->contains($project->domain)
-            || ! $this->domains->intersect(new Set($project->aliases))->isEmpty();
+            || ! $this->domains->intersect($project->aliases)->isEmpty();
     }
 
     /** Check if this certificate is a subset of another certificate. */

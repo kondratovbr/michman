@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Casts\SetCast;
 use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
 use App\Events\Projects\ProjectUpdatedEvent;
 use App\Support\Str;
 use Database\Factories\ProjectFactory;
+use Ds\Set;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @property int $id
  * @property string $domain
- * @property string[] $aliases
+ * @property Set<string> $aliases
  * @property bool $allowSubDomains
  * @property string $type
  * @property string $root
@@ -90,7 +92,7 @@ class Project extends AbstractModel
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        'aliases' => 'array',
+        'aliases' => SetCast::class,
         'use_deploy_key' => 'bool',
         'environment' => 'encrypted',
     ];
