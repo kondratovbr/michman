@@ -202,6 +202,18 @@ class Project extends AbstractModel
         return $this->deployments()->successful()->latest()->first();
     }
 
+    /** Check if SSL is enabled for this project. */
+    public function sslEnabled(): bool
+    {
+        /** @var Server $server */
+        foreach ($this->servers as $server) {
+            if (! $server->hasActiveCertificateForDomain($this->domain))
+                return false;
+        }
+
+        return true;
+    }
+
     /** Get a public URL to the repository configured for this project. */
     public function getRepoUrlAttribute(): string|null
     {

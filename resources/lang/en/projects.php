@@ -21,6 +21,8 @@ return [
         ],
 
         'empty' => 'No projects created yet.',
+        'ssl-enabled' => 'SSL enabled',
+        'ssl-disabled' => 'SSL not configured',
     ],
 
     'create' => [

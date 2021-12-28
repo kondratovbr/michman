@@ -4,8 +4,7 @@
 
     <x-slot name="header">
         <x-tr-header>
-{{--            TODO: CRITICAL! CONTINUE. Implement the SSL itself and don' forget this icon.--}}
-            <x-th>SSL</x-th>
+            <x-th class="w-12">SSL</x-th>
             <x-th>{{ __('projects.index.table.domain') }}</x-th>
             <x-th>{{ __('projects.index.table.repo') }}</x-th>
             <x-th>{{ __('projects.index.table.last-deployed') }}</x-th>
@@ -15,7 +14,21 @@
     <x-slot name="body">
         @foreach($projects as $project)
             <x-tr>
-                <x-td></x-td>
+                <x-td>
+                    <div class="flex justify-center">
+                        @if($project->sslEnabled())
+{{--                            TODO: CRITICAL! Use a paid FontAwesome icon here: "far fa-lock"--}}
+                            <x-icon
+                                x-tooltip="'{{ __('projects.index.ssl-enabled') }}'"
+                            ><i class="fas fa-lock"></i></x-icon>
+                        @else
+                            <x-icon
+                                class="text-red-500"
+                                x-tooltip="'{{ __('projects.index.ssl-disabled') }}'"
+                            ><i class="fas fa-exclamation-triangle"></i></x-icon>
+                        @endif
+                    </div>
+                </x-td>
 {{--                TODO: Should somehow handle long domain names here.--}}
                 <x-td>
                     <div class="flex flex-col">

@@ -135,6 +135,7 @@ class Server extends AbstractModel
         return ! empty($this->installedDatabase);
     }
 
+    // TODO: Do I even use this?
     /** Check if this server has an SSL certificate. */
     public function hasSsl(): bool
     {
@@ -169,6 +170,19 @@ class Server extends AbstractModel
         return $this->certificates->filter(fn(Certificate $cert) =>
             $cert->hasDomainOf($project)
         );
+    }
+
+    public function hasActiveCertificateForDomain(string $domain): bool
+    {
+        $certs = $this->certificates->filter(fn(Certificate $cert) => $cert->isInstalled());
+
+        /** @var Certificate $cert */
+        foreach ($certs as $cert) {
+            if ($cert->domains->contains($domain))
+                return true;
+        }
+
+        return false;
     }
 
     /** Check if this server was prepared and ready to be managed by the user. */
