@@ -9,7 +9,7 @@ use App\Scripts\Root\VerifyServerIsSuitableScript;
 use App\States\Servers\Preparing;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 {

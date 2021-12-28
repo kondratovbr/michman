@@ -5,7 +5,7 @@ namespace App\Models\Traits;
 use App\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 
-// TODO: CRITICAL! Cover with tests as well.
+// TODO: IMPORTANT! Cover with tests as well.
 
 /**
  * Trait with methods for locking models in the database.

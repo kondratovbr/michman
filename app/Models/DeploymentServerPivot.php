@@ -7,7 +7,7 @@ use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Collection;
 
 /*
- * TODO: CRITICAL! Cover with tests. I should really cover models with tests as well. I have lots of data access logic in them.
+ * TODO: IMPORTANT! Cover with tests. I should really cover models with tests as well. I have lots of data access logic in them.
  */
 
 /**

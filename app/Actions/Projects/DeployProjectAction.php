@@ -9,7 +9,7 @@ use App\Models\Project;
 
 // TODO: IMPORTANT! Figure out how to fail gracefully here if we can't get the commit hash and how to communicate this to the user.
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 class DeployProjectAction
 {

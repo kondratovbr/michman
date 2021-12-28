@@ -13,7 +13,7 @@ use App\Notifications\Servers\FailedToConfigureServerNotification;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 class ConfigureAppServerJob extends AbstractJob
 {

@@ -9,7 +9,7 @@ use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Server;
 use Illuminate\Contracts\View\View;
 
-// TODO: CRITICAL! Cover with some feature tests.
+// TODO: IMPORTANT! Cover with some feature tests.
 
 class ServerView extends AbstractSubpagesView
 {

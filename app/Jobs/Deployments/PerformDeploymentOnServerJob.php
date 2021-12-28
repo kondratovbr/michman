@@ -20,7 +20,7 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
 {

@@ -11,7 +11,7 @@ use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests. Definitely.
+// TODO: IMPORTANT! Cover with tests.
 
 abstract class AbstractServerScript
 {

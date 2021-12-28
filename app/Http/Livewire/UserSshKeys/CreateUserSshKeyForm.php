@@ -11,7 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 // TODO: CRITICAL! Don't forget to actually add these keys to new servers.
 

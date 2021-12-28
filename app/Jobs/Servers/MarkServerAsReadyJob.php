@@ -7,7 +7,7 @@ use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use App\States\Servers\Ready;
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 class MarkServerAsReadyJob extends AbstractJob
 {

@@ -9,7 +9,7 @@ use App\Http\Livewire\Traits\ListensForEchoes;
 use Illuminate\Contracts\View\View;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover this system with tests.
+// TODO: IMPORTANT! Cover this system with tests.
 
 class FlashMessage extends LivewireComponent
 {

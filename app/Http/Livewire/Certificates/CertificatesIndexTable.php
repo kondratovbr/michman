@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class CertificatesIndexTable extends LivewireComponent
 {

@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\UserSshKey;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class UserSshKeyPolicy
 {

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: An automatic rollback on failure feature would be nice to have.
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 class StoreDeploymentAction
 {

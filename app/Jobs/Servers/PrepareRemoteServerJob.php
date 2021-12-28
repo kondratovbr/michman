@@ -18,7 +18,7 @@ use App\Scripts\Root\UpdateSnapScript;
 use App\Scripts\Root\UpgradePackagesScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 class PrepareRemoteServerJob extends AbstractRemoteServerJob
 {

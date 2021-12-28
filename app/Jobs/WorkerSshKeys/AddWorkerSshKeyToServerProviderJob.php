@@ -9,7 +9,7 @@ use App\Models\WorkerSshKey;
 use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 {

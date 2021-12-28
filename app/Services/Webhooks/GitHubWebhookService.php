@@ -7,7 +7,7 @@ use App\Support\Arr;
 use App\Support\Str;
 use Illuminate\Http\Request;
 
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class GitHubWebhookService implements WebhookServiceInterface
 {

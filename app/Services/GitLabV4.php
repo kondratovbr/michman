@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests. Don't forget to cover stuff that I moved to AbstractVcsProvider - it should be tested for every API.
+// TODO: IMPORTANT! Cover with tests. Don't forget to cover stuff that I moved to AbstractVcsProvider - it should be tested for every API.
 
 /*
  * TODO: IMPORTANT! I should also handle the "scope".

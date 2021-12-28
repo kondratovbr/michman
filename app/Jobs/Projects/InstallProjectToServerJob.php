@@ -11,7 +11,7 @@ use App\Scripts\User\CloneGitRepoScript;
 use App\Scripts\User\CreateProjectVenvScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Cover with test.
+// TODO: IMPORTANT! Cover with test.
 
 class InstallProjectToServerJob extends AbstractRemoteServerJob
 {

@@ -5,7 +5,7 @@ namespace App\Models\Traits;
 use App\Models\AbstractModel;
 use App\Support\Str;
 
-// TODO: CRITICAL! Cover with tests!
+// TODO: IMPORTANT! Cover with tests!
 
 /**
  * Trait to have UUID as a model attribute and use it for route binding.

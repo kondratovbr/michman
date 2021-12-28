@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use RuntimeException;
 
-// TODO: CRITICAL! Cover with tests as well.
+// TODO: IMPORTANT! Cover with tests as well.
 
 /**
  * Customized base model class for Eloquent models
