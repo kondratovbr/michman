@@ -3,50 +3,44 @@
 namespace App\Http\Livewire\Certificates;
 
 use App\Actions\Certificates\StoreLetsEncryptCertificateAction;
+use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Certificate;
 use App\Models\Server;
-use App\Support\Arr;
-use App\Support\Str;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Validation\Rule;
 use Livewire\Component as LivewireComponent;
 
-/*
- * TODO: CRITICAL! CONTINUE. Need to make sure that duplicate certificates cannot be created. If a user tries to add certificates for subdomains - certbot will just force "expand" the existing one, so we should handle it here.
- */
+// TODO: IMPORTANT! Don't forget to explain somewhere in docs that the DNS should be configured by the user beforehand.
 
-/*
- * TODO: IMPORTANT! Don't forget to explain somewhere in docs that the DNS should be configured by the user beforehand.
- */
-
-// TODO: CRITICAL! Cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class CreateLetsEncryptCertificateForm extends LivewireComponent
 {
     use AuthorizesRequests;
+    use TrimsInputBeforeValidation;
 
     public Server $server;
 
-    public string $domains = '';
+    public string $domain = '';
 
-    protected function prepareForValidation($attributes): array
-    {
-        if (is_string($attributes['domains'])) {
-            $attributes['domains'] = Arr::map(
-                explode(',', Str::lower($attributes['domains'])),
-                fn(string $domain) => trim($domain)
-            );
-        }
-
-        return $attributes;
-    }
-
-    public function rules(): array
+    protected function rules(): array
     {
         return [
-            'domains' => Rules::array()->nullable(),
-            'domains.*' => Rules::domain(),
+            'domain' => Rules::domain()
+                ->addRule(Rule::unique('certificates', 'domain')->where(
+                    fn(Builder $query) => $query->where('server_id', $this->server->getKey())
+                ))
+                ->required(),
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return [
+            'domain.unique' => __('validation.custom.cert-domain-duplicate'),
         ];
     }
 
@@ -59,17 +53,17 @@ class CreateLetsEncryptCertificateForm extends LivewireComponent
 
     public function resetState(): void
     {
-        $this->reset('domains');
+        $this->reset('domain');
     }
 
     /** Store the new certificate. */
     public function store(StoreLetsEncryptCertificateAction $action): void
     {
-        $domains = $this->validate()['domains'];
+        $domain = $this->validate()['domain'];
 
         $this->authorize('create', [Certificate::class, $this->server]);
 
-        $action->execute($this->server, $domains);
+        $action->execute($this->server, $domain);
 
         $this->emit('certificate-stored');
 

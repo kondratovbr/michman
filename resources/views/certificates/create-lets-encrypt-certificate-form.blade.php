@@ -10,13 +10,13 @@
             <x-message class="max-w-prose">{{ __('servers.ssl.lets-encrypt.explanation') }}</x-message>
 
             <x-field class="max-w-sm">
-                <x-label>{{ __('servers.ssl.lets-encrypt.domains.title') }}</x-label>
+                <x-label>{{ __('servers.ssl.lets-encrypt.domain.title') }}</x-label>
                 <x-inputs.text
-                    name="domains"
-                    wire:model.defer="domains"
-                    placeholder="example.com, www.example.com"
+                    name="domain"
+                    wire:model.defer="domain"
+                    placeholder="example.com"
                 />
-                <x-input-error for="domains" />
+                <x-input-error for="domain" />
             </x-field>
 
         </div>

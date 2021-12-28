@@ -4,7 +4,7 @@
 
     <x-slot name="header">
         <x-tr-header>
-            <x-th>{{ __('servers.ssl.domains') }}</x-th>
+            <x-th>{{ __('servers.ssl.domain') }}</x-th>
             <x-th>{{ __('servers.ssl.type') }}</x-th>
             <x-th></x-th>
             <x-th></x-th>

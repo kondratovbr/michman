@@ -6,19 +6,18 @@ use App\Jobs\Certificates\InstallLetsEncryptCertificateJob;
 use App\Models\Certificate;
 use App\Models\Server;
 use App\States\Certificates\Installing;
-use Ds\Set;
 use Illuminate\Support\Facades\DB;
 
 class StoreLetsEncryptCertificateAction
 {
-    /** @param string[] $domains */
-    public function execute(Server $server, array $domains): Certificate
+    /** @param string[] $domain */
+    public function execute(Server $server, string $domain): Certificate
     {
-        return DB::transaction(function () use ($server, $domains): Certificate {
+        return DB::transaction(function () use ($server, $domain): Certificate {
             /** @var Certificate $certificate */
             $certificate = $server->certificates()->create([
                 'type' => Certificate::TYPE_LETS_ENCRYPT,
-                'domains' => new Set($domains),
+                'domain' => $domain,
                 'state' => Installing::class,
             ]);
 

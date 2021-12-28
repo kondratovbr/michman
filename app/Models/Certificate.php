@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Casts\SetCast;
 use App\Events\Certificates\CertificateCreatedEvent;
 use App\Events\Certificates\CertificateDeletedEvent;
 use App\Events\Certificates\CertificateUpdatedEvent;
 use App\States\Certificates\CertificateState;
 use App\States\Certificates\Installed;
-use App\Support\Arr;
 use Carbon\CarbonInterface;
 use Database\Factories\CertificateFactory;
 use Ds\Set;
@@ -29,7 +27,7 @@ use Spatie\ModelStates\HasStates;
  *
  * @property int $id
  * @property string $type
- * @property Set $domains
+ * @property string $domain
  * @property CertificateState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
@@ -37,6 +35,7 @@ use Spatie\ModelStates\HasStates;
  * @property-read User $user
  * @property-read string $name
  * @property-read string $directory
+ * @property-read Set $domains
  *
  * @property-read Server $server
  *
@@ -52,7 +51,7 @@ class Certificate extends AbstractModel
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
         'type',
-        'domains',
+        'domain',
         'state',
     ];
 
@@ -61,7 +60,6 @@ class Certificate extends AbstractModel
 
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
-        'domains' => SetCast::class,
         'state' => CertificateState::class,
     ];
 
@@ -78,10 +76,10 @@ class Certificate extends AbstractModel
         return $this->server->user;
     }
 
-    /** Derive a name for this certificate from its domains. */
+    /** Derive a name for this certificate from its domain. */
     public function getNameAttribute(): string
     {
-        return $this->domains->first();
+        return $this->domain;
     }
 
     /** Get a directory where the files related to this certificate are stored on a server. */
@@ -90,11 +88,17 @@ class Certificate extends AbstractModel
         return "/etc/letsencrypt/live/{$this->name}";
     }
 
+    /** Get the certificate domain wrapped in a set for compatibility with some unrefactored code. */
+    public function getDomainsAttribute(): Set
+    {
+        return new Set([$this->domain]);
+    }
+
     /** Check if this certificate has a domain from a project. */
     public function hasDomainOf(Project $project): bool
     {
         /*
-         * TODO: CRITICAL! Turn $project->aliases to Ds/Pair as well. Makes sense.
+         * TODO: CRITICAL! CONTINUE. Turn $project->aliases to Ds/Set as well. Makes sense.
          */
         return $this->domains->contains($project->domain)
             || ! $this->domains->intersect(new Set($project->aliases))->isEmpty();

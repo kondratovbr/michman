@@ -14,7 +14,7 @@ class CreateCertificatesTable extends Migration
             $table->foreignId('server_id')->references('id')->on('servers');
 
             $table->string('type');
-            $table->json('domains');
+            $table->string('domain');
             $table->string('state');
 
             $table->timestamps();
