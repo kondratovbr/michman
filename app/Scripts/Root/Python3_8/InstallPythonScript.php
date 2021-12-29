@@ -5,6 +5,7 @@ namespace App\Scripts\Root\Python3_8;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 class InstallPythonScript extends AbstractServerScript
@@ -31,7 +32,7 @@ class InstallPythonScript extends AbstractServerScript
         $this->read();
 
         // Verify that Python works.
-        if (trim($this->exec('python3.8 -c \'print("foobar")\'')) != 'foobar')
+        if (! Str::contains($this->exec('python3.8 -c \'print("foobar")\''), 'foobar'))
             throw new ServerScriptException('Python 3.8 installation failed - Python not accessible.');
 
         $this->execPty('pip3.8 install --upgrade pip');
