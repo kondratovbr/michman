@@ -11,17 +11,12 @@ class DeleteUser implements DeletesUsers
     /** The team deleter implementation. */
     protected DeletesTeams $deletesTeams;
 
-    /**
-     * Create a new action instance.
-     */
     public function __construct(DeletesTeams $deletesTeams)
     {
         $this->deletesTeams = $deletesTeams;
     }
 
-    /**
-     * Delete the given user.
-     */
+    /** Delete the given user. */
     public function delete($user): void
     {
         DB::transaction(function () use ($user) {
@@ -32,9 +27,7 @@ class DeleteUser implements DeletesUsers
         });
     }
 
-    /**
-     * Delete the teams and team associations attached to the user.
-     */
+    /** Delete the teams and team associations attached to the user. */
     protected function deleteTeams($user): void
     {
         $user->teams()->detach();

@@ -33,7 +33,7 @@ class DeletePythonJob extends AbstractRemoteServerJob
                 return;
             }
 
-            $scriptClass = (string) config("servers.python.{$python->version}.scripts_namespace") . '\DeletePythonScript';
+            $scriptClass = config("servers.python.{$python->version}.scripts_namespace") . '\DeletePythonScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No deletion script exists for this version of Python.');
