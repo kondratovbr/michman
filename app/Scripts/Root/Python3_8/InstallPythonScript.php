@@ -21,13 +21,13 @@ class InstallPythonScript extends AbstractServerScript
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
+        $this->execPty('apt-get update -y');
         $this->read();
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libssl-dev libffi-dev python3-dev');
+        $this->execPty('apt-get install -y build-essential libssl-dev libffi-dev python3-dev');
         $this->read();
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y python3.8 python3-pip python3-venv python3-virtualenv');
+        $this->execPty('apt-get install -y python3.8 python3-pip python3-venv python3-virtualenv');
         $this->read();
 
         // Verify that Python works.

@@ -37,7 +37,7 @@ class InstallBasePackagesScript extends AbstractServerScript
         $this->setTimeout(60 * 30); // 30 min
 
         $this->execPty(
-            'DEBIAN_FRONTEND=noninteractive apt-get install -y '
+            'apt-get install -y '
             . implode(' ', [
                 'ufw',
                 'git',

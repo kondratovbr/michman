@@ -16,10 +16,10 @@ class PatchPythonScript extends AbstractServerScript
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
+        $this->execPty('apt-get update -y');
         $this->read();
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get upgrade -y python3.8');
+        $this->execPty('apt-get upgrade -y python3.8');
         $this->read();
 
         // Verify that Python works.

@@ -23,10 +23,10 @@ class InstallNginxScript extends AbstractServerScript
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
+        $this->execPty('apt-get update -y');
         $this->read();
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y nginx');
+        $this->execPty('apt-get install -y nginx');
         $this->read();
 
         $this->disablePty();

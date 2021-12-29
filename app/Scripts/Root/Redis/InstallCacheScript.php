@@ -16,9 +16,9 @@ class InstallCacheScript extends AbstractServerScript
 
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
+        $this->execPty('apt-get update -y');
         $this->read();
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server');
+        $this->execPty('apt-get install -y redis-server');
         $this->read();
         $this->disablePty();
 

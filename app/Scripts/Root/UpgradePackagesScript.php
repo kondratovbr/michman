@@ -16,7 +16,7 @@ class UpgradePackagesScript extends AbstractServerScript
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min
 
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
+        $this->execPty('apt-get update -y');
         $this->read();
 
         if ($this->failed())
