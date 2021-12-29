@@ -76,7 +76,7 @@ return [
             'cli' => 'python3.8',
         ],
         '2_7' => [
-            'scripts_namespace' => null,
+            'scripts_namespace' => 'App\Scripts\Root\Python2_7',
             'cli' => 'python2.7',
         ],
     ],
