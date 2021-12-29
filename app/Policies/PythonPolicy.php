@@ -29,9 +29,6 @@ class PythonPolicy
 
     public function delete(User $user, Python $python): bool
     {
-        // TODO: CRITICAL! Put a correct check here and don't forget to cover with a test.
-        return false;
-
         return $user->is($python->user);
     }
 }

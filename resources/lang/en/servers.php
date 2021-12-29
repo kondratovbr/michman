@@ -142,6 +142,7 @@ return [
             Python::STATUS_INSTALLED => 'Installed',
             Python::STATUS_INSTALLING => 'Installing',
             Python::STATUS_UPDATING => 'Updating',
+            Python::STATUS_DELETING => 'Deleting',
         ],
     ],
 

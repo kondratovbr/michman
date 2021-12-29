@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pythons;
 
+use App\Actions\Pythons\DeletePythonAction;
 use App\Actions\Pythons\PatchPythonAction;
 use App\Actions\Pythons\StorePythonAction;
 use App\Events\Pythons\PythonInstalledEvent;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 use Illuminate\Support\Facades\Validator;
+
+// TODO: IMPORTANT! Cover deletion with tests as well.
 
 class PythonsIndexTable extends LivewireComponent
 {
@@ -78,16 +81,24 @@ class PythonsIndexTable extends LivewireComponent
     }
 
     /** Remove a Python installation from the server. */
-    public function remove(string $pythonKey): void
+    public function remove(DeletePythonAction $deletePython, string $pythonKey): void
     {
-        // TODO: CRITICAL! Implement and cover with tests.
+        $python = Python::validated($pythonKey, $this->pythons);
 
-        //
+        $this->authorize('delete', $python);
+
+        if ($this->server->pythons->count() == 1)
+            return;
+
+        if ($python->isInUse())
+            return;
+
+        $deletePython->execute($python);
     }
 
     public function render(): View
     {
-        // TODO: Is there are caching opportunity here? So, no reloading these from the DB every time? See other similar Livewire tables as well.
+        // TODO: Is there a caching opportunity here? So, no reloading these from the DB every time? See other similar Livewire tables as well.
         $this->pythons = $this->server->pythons()->get();
 
         return view('pythons.pythons-index-table');

@@ -30,6 +30,7 @@ class Python extends AbstractModel
     public const STATUS_INSTALLED = 'installed';
     public const STATUS_INSTALLING = 'installing';
     public const STATUS_UPDATING = 'updating';
+    public const STATUS_DELETING = 'deleting';
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -64,6 +65,24 @@ class Python extends AbstractModel
     public function isUpdating(): bool
     {
         return $this->status === static::STATUS_UPDATING;
+    }
+
+    /** Check if this instance of Python is marked for deletion. */
+    public function isDeleting(): bool
+    {
+        return $this->status === static::STATUS_DELETING;
+    }
+
+    /** Check if this instance of Python is explicitly used by some project. */
+    public function isInUse(): bool
+    {
+        /** @var Project $project */
+        foreach ($this->server->projects as $project) {
+            if ($project->pythonVersion == $this->version)
+                return true;
+        }
+
+        return false;
     }
 
     /** Get a relation with the server where this Python instance is installed. */

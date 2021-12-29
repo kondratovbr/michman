@@ -13,5 +13,6 @@
     loading="{{ in_array($status ?? $python->status, [
         Python::STATUS_INSTALLING,
         Python::STATUS_UPDATING,
+        Python::STATUS_DELETING,
     ]) }}"
 >{{ __('servers.pythons.statuses.' . ($status ?? $python->status)) }}</x-badge>
