@@ -55,6 +55,7 @@
                                     class="text-sm"
                                     wire:click="remove('{{ $python->getKey() }}')"
                                     wire:loading.attr="disabled"
+                                    :disabled="Gate::denies('delete', $python)"
                                 >
                                     {{ __('servers.pythons.table.remove-button', ['version' => __("servers.pythons.versions.{$version}")]) }}
                                 </x-dropdown.button>

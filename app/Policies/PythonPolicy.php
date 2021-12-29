@@ -18,8 +18,10 @@ class PythonPolicy
 
     public function create(User $user, Server $server, string $version): bool
     {
-        return $user->is($server->user)
-            && $server->pythons()->where('version', $version)->count() === 0;
+        if (! $user->is($server->user))
+            return false;
+
+        return $server->pythons()->where('version', $version)->count() === 0;
     }
 
     public function update(User $user, Python $python): bool
@@ -29,6 +31,15 @@ class PythonPolicy
 
     public function delete(User $user, Python $python): bool
     {
-        return $user->is($python->user);
+        if (! $user->is($python->user))
+            return false;
+
+        if ($python->server->pythons()->count() == 1)
+            return false;
+
+        if ($python->isInUse())
+            return false;
+
+        return true;
     }
 }

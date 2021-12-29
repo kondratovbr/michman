@@ -7,14 +7,15 @@
         'group h-full w-full flex flex-col items-stretch cursor-pointer select-none focus:outline-none',
         'px-3 md:px-2 py-1',
         'rounded-t-md bg-navy-300 border-b border-gray-600 md:border-b-0',
+        'disabled:cursor-default disabled:opacity-50',
     ]) }}
     x-on:click="open = false"
 >
     <div
-        class="py-3 px-4 rounded-md border border-gray-300 border-opacity-0 bg-navy-400 bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100 group-hover:text-gray-100 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick"
+        class="py-3 px-4 rounded-md border border-gray-300 border-opacity-0 bg-navy-400 bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100 group-hover:text-gray-100 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick group-disabled:border-opacity-0 group-disabled:bg-opacity-0"
     >
         <div
-            class="flex items-center justify-start text-gray-200 {{ $capitalize ? 'capitalize' : '' }} {{ $textClasses }} transform group-hover:scale-105 transition-transform ease-in-out duration-quick"
+            class="flex items-center justify-start text-gray-200 {{ $capitalize ? 'capitalize' : '' }} {{ $textClasses }} transform group-hover:scale-105 transition-transform ease-in-out duration-quick group-disabled:scale-100"
         >
             <div>
                 @isset($icon)

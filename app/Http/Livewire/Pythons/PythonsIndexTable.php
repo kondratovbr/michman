@@ -87,12 +87,6 @@ class PythonsIndexTable extends LivewireComponent
 
         $this->authorize('delete', $python);
 
-        if ($this->server->pythons->count() == 1)
-            return;
-
-        if ($python->isInUse())
-            return;
-
         $deletePython->execute($python);
     }
 
