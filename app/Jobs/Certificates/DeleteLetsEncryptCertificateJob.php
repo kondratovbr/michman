@@ -9,7 +9,9 @@ use App\Scripts\Root\DeleteLetsEncryptCertificateScript;
 use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\Root\UploadPlaceholderPageNginxConfigScript;
+use App\States\Certificates\Deleting;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 // TODO: CRITICAL! Test and cover with tests.
 
@@ -35,6 +37,11 @@ class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
         ) {
             $server = $this->server->freshSharedLock();
             $cert = $this->certificate->freshLockForUpdate();
+
+            if (! $cert->state->is(Deleting::class)) {
+                Log::error('Tried to delete a Certificate that was not in the Deleting state.');
+                return;
+            }
 
             $rootSsh = $server->sftp('root');
 
