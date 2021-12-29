@@ -6,8 +6,6 @@
 
 {{--TODO: CRITICAL! Make sure that versions that are in use by projects cannot be removed.--}}
 
-{{--TODO: CRITICAL! The table doesn't properly fit on some screen sizes. Breaks completely on smaller desktops. Should check it. Check other index tables as well.--}}
-
 <x-table-section>
 
     <x-slot name="title">{{ __('servers.pythons.table.title') }}</x-slot>
