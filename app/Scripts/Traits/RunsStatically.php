@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\App;
 
 trait RunsStatically
 {
-    /**
-     * Create an instance of this script and execute it using the arguments provided.
-     */
+    /** Create an instance of this script and execute it using the arguments provided. */
     public static function run(...$arguments): mixed
     {
         return App::make(static::class)->execute(...$arguments);
