@@ -4,11 +4,13 @@ namespace App\Scripts\Root\Python3_9;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
+use App\Scripts\Traits\InteractsWithPython;
 use phpseclib3\Net\SFTP;
 
 class PatchPythonScript extends AbstractServerScript
 {
+    use InteractsWithPython;
+
     public function execute(Server $server, SFTP $ssh = null): string
     {
         $this->init($server, $ssh);
@@ -22,14 +24,8 @@ class PatchPythonScript extends AbstractServerScript
         $this->execPty('apt-get upgrade -y python3.9');
         $this->read();
 
-        // Verify that Python works.
-        if (trim($this->exec('python3.9 -c \'print("foobar")\'')) != 'foobar')
-            throw new ServerScriptException('Python 3.9 installation failed - Python not accessible.');
+        $this->verifyPythonWorks('3.9');
 
-        return trim(explode(
-            ' ',
-            $this->exec('python3.9 --version'),
-            2
-        )[1]);
+        return $this->getPythonVersion('3.9');
     }
 }

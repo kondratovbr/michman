@@ -4,12 +4,13 @@ namespace App\Scripts\Root\Python2_7;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
-use App\Support\Str;
+use App\Scripts\Traits\InteractsWithPython;
 use phpseclib3\Net\SFTP;
 
 class InstallPythonScript extends AbstractServerScript
 {
+    use InteractsWithPython;
+
     public function execute(Server $server, SFTP $ssh = null): string
     {
         $this->init($server, $ssh);
@@ -31,17 +32,11 @@ class InstallPythonScript extends AbstractServerScript
         $this->execPty('apt-get install -y python2.7 python3-pip python2-venv python2-virtualenv');
         $this->read();
 
-        // Verify that Python works.
-        if (! Str::contains($this->exec('python2.7 -c \'print("foobar")\''), 'foobar'))
-            throw new ServerScriptException('Python 2.7 installation failed - Python not accessible.');
+        $this->verifyPythonWorks('2.7');
 
         $this->execPty('pip2.7 install --upgrade pip');
         $this->read();
 
-        return trim(explode(
-            ' ',
-            $this->exec('python2.7 --version'),
-            2
-        )[1]);
+        return $this->getPythonVersion('2.7');
     }
 }

@@ -4,12 +4,13 @@ namespace App\Scripts\Root\Python3_8;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
-use App\Support\Str;
+use App\Scripts\Traits\InteractsWithPython;
 use phpseclib3\Net\SFTP;
 
 class InstallPythonScript extends AbstractServerScript
 {
+    use InteractsWithPython;
+
     public function execute(Server $server, SFTP $ssh = null): string
     {
         $this->init($server, $ssh);
@@ -31,17 +32,11 @@ class InstallPythonScript extends AbstractServerScript
         $this->execPty('apt-get install -y python3.8 python3-pip python3-venv python3-virtualenv');
         $this->read();
 
-        // Verify that Python works.
-        if (! Str::contains($this->exec('python3.8 -c \'print("foobar")\''), 'foobar'))
-            throw new ServerScriptException('Python 3.8 installation failed - Python not accessible.');
+        $this->verifyPythonWorks('3.8');;
 
         $this->execPty('pip3.8 install --upgrade pip');
         $this->read();
 
-        return trim(explode(
-            ' ',
-            $this->exec('python3.8 --version'),
-            2
-        )[1]);
+        return $this->getPythonVersion('3.8');
     }
 }

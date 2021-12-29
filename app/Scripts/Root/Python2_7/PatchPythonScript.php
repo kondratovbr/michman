@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Scripts\Root\Python3_8;
+namespace App\Scripts\Root\Python2_7;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
@@ -21,11 +21,11 @@ class PatchPythonScript extends AbstractServerScript
         $this->execPty('apt-get update -y');
         $this->read();
 
-        $this->execPty('apt-get upgrade -y python3.8');
+        $this->execPty('apt-get upgrade -y python2.7');
         $this->read();
 
-        $this->verifyPythonWorks('3.8');
+        $this->verifyPythonWorks('2.7');
 
-        return $this->getPythonVersion('3.8');
+        return $this->getPythonVersion('2.7');
     }
 }
