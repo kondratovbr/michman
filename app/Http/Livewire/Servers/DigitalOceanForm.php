@@ -14,8 +14,10 @@ use App\Validation\Fields\SupportedPythonVersionField;
 use App\Validation\Rules;
 use Ds\Pair;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 // TODO: Should probably refactor to use one component class for all providers, but maybe some other dependencies to adapt to their differences.
@@ -71,8 +73,11 @@ class DigitalOceanForm extends Component
             'state.provider_id' => Rules::integer()
                 ->in(Arr::keys($this->providers))
                 ->required(),
-            // TODO: CRITICAL! Make the name unique for a user.
-            'state.name' => Rules::string(1, 255)->required(),
+            'state.name' => Rules::string(1, 255)
+                ->addRule(Rule::unique('name', 'providers')->where(
+                    fn(Builder $query) => $query->where('user_id', Auth::user()->getKey())
+                ))
+                ->required(),
             'state.region' => Rules::string(1, 255)
                 ->in(Arr::keys($this->availableRegions))
                 ->required(),
