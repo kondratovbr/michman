@@ -11,6 +11,12 @@ use Illuminate\Contracts\View\View;
 
 // TODO: IMPORTANT! Cover with some feature tests.
 
+/*
+ * TODO: IMPORTANT! Here and elsewhere: when a model that is stored as an attribute in a Livewire component gets deleted
+ *       the next refresh causes a 404 modal to appear.
+ *       Should maybe figure out something more graceful.
+ */
+
 class ServerView extends AbstractSubpagesView
 {
     use ListensForEchoes;
@@ -62,13 +68,6 @@ class ServerView extends AbstractSubpagesView
 
         if ($this->server->isReady())
             $this->show = 'projects';
-    }
-
-    // TODO: CRITICAL! Try this out. Just out of curiosity. Will Livewire try to retrieve the deleted model from the DB?
-    /** If the server got deleted somehow - redirect user to the servers index page. */
-    public function serverDeleted(): void
-    {
-        $this->redirectRoute('servers.index');
     }
 
     public function getDisabledProperty(): bool
