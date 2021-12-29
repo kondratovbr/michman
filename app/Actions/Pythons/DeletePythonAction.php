@@ -19,6 +19,7 @@ class DeletePythonAction
                 return;
 
             $python->status = Python::STATUS_DELETING;
+            $python->save();
 
             DeletePythonJob::dispatch($python);
         }, 5);
