@@ -16,10 +16,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-/*
- * TODO: CRITICAL! Need to make sure the app actually has Celery included. The user has to do this themselves since Celery requires at least some configuration. So, just don't allow to create workers if Celery isn't installed for this application. Or maybe offer to install it (later?)?
- */
-
 /**
  * @property-read string[] $types
  * @property-read string[] $servers
@@ -95,8 +91,11 @@ class CreateWorkerForm extends LivewireComponent
     {
         $this->reset('state');
 
-        // TODO: CRITICAL! Account for the fact that workers can only be run on "app", "web" or "worker" servers.
-        $this->state['serverId'] = $this->project->servers()->firstOrFail()->getKey();
+        // TODO: IMPORTANT! When multiple servers are implemented - account for it here somewhere.
+        $this->state['serverId'] = $this->project->servers()
+            ->whereIn('type', ['app', 'web', 'worker'])
+            ->firstOrFail()
+            ->getKey();
 
         $this->state['app'] = "{$this->project->package}.celery";
     }
