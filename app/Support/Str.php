@@ -18,4 +18,25 @@ class Str extends IlluminateStr
     {
         return preg_split("/\r\n|\n|\r/", $string);
     }
+
+    /** Re-implement the built-in implode() function to support other iterable objects, like Ds/Set for example. */
+    public static function implode(string $separator, \Traversable|array|null $array): string
+    {
+        if (is_null($array))
+            return '';
+
+        if (is_array($array))
+            $array = new \ArrayIterator($array);
+
+        $result = null;
+
+        foreach ($array as $item) {
+            if (is_null($result))
+                $result = $item;
+            else
+                $result .= $separator . $item;
+        }
+
+        return $result ?? '';
+    }
 }
