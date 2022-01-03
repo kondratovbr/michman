@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\Deployments\DeploymentCompletedEvent;
+use App\Events\Deployments\DeploymentFinishedEvent;
 use App\Events\Deployments\DeploymentFailedEvent;
 use App\Listeners\HandleFinishedDeploymentListener;
 use App\Listeners\SendFailedDeploymentNotificationListener;
@@ -17,7 +17,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        DeploymentCompletedEvent::class => [
+        DeploymentFinishedEvent::class => [
             HandleFinishedDeploymentListener::class,
         ],
         DeploymentFailedEvent::class => [

@@ -3,7 +3,7 @@
 namespace App\Actions\Deployments;
 
 use App\DataTransferObjects\DeploymentDto;
-use App\Events\Deployments\DeploymentCompletedEvent;
+use App\Events\Deployments\DeploymentFinishedEvent;
 use App\Events\Deployments\DeploymentFailedEvent;
 use App\Jobs\Deployments\PerformDeploymentOnServerJob;
 use App\Models\Deployment;
@@ -38,7 +38,7 @@ class StoreDeploymentAction
                 ->onQueue($jobs->first()->queue)
                 ->allowFailures()
                 ->then(function (Batch $batch) use ($deployment) {
-                    DeploymentCompletedEvent::dispatch($deployment);
+                    DeploymentFinishedEvent::dispatch($deployment);
                 })
                 ->catch(function (Batch $batch) use ($deployment) {
                     DeploymentFailedEvent::dispatch($deployment);

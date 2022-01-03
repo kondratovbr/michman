@@ -36,8 +36,6 @@ class HandlePushWebhookJob extends AbstractJob
         $hash = $this->call->webhook->service()->pushedCommitHash($this->call->payload);
 
         $action->execute($project, $hash, true);
-
-        // TODO: CRITICAL! Notify the user about a triggered deployment via email. Show in the UI (by storing in the DB) as well.
     }
 
     protected function validates(): bool

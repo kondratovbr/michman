@@ -1,6 +1,7 @@
 <?php
 
 use App\Notifications\Daemons\DaemonFailedNotification;
+use App\Notifications\Deployments\DeploymentCompletedNotification;
 use App\Notifications\Deployments\DeploymentFailedNotification;
 use App\Notifications\Projects\ProjectInstallationFailedNotification;
 use App\Notifications\Projects\WebhookDeletingFailedNotification;
@@ -28,6 +29,7 @@ return [
         TestNotification::class => ':message',
 
         DeploymentFailedNotification::class => 'We were unable to deploy project :project.',
+        DeploymentCompletedNotification::class => 'Project :project was successfully deployed.',
 
         ProjectInstallationFailedNotification::class => 'We were unable to install your project :project to a server.',
 
@@ -58,9 +60,19 @@ return [
         ],
 
         DeploymentFailedNotification::class => [
+            // TODO: Would be nice to mention the project/server name somewhere in subject.
             'subject' => 'Deployment Failed',
             'lines' => [
                 'Something went wrong when performing a deployment of your project :project.',
+            ],
+            'action' => 'View Deployments',
+        ],
+
+        DeploymentCompletedNotification::class => [
+            // TODO: Would be nice to mention the project/server name somewhere in subject.
+            'subject' => 'Deployment Completed',
+            'lines' => [
+                'Your project :project was successfully deployed.',
             ],
             'action' => 'View Deployments',
         ],

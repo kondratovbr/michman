@@ -1,5 +1,5 @@
 {{--TODO: IMPORTANT! This view need to accommodate logs from multiple servers.--}}
-{{--TODO: CRITICAL! CONTINUE. This is just a placeholder. This view obviously needs more information than just logs here. See what Forge shows for a failed deployment alert.--}}
+{{--TODO: CRITICAL! CONTINUE. Check this out in the UI and figure out if something more needs to be shown. It probably is. --}}
 
 <div class="min-h-0 flex flex-col space-y-2">
 
