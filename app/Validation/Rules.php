@@ -3,7 +3,7 @@
 namespace App\Validation;
 
 /*
- * TODO: CRITICAL! Don't forget to cover this whole system with tests.
+ * TODO: IMPORTANT! Don't forget to cover this whole system with tests.
  */
 
 /*
