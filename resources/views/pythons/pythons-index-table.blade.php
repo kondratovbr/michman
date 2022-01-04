@@ -1,11 +1,5 @@
 {{--TODO: This table (maybe others as well) jumps a bit when it refreshes and something changes. Seemingly because buttons change the height of rows and when there are no buttons the width of columns changes as well. Should fix those somehow so it doesn't jump. It also jumps when a badge width changes, which inevitably happens sometimes.--}}
 
-{{--TODO: CRITICAL! Unfinished!--}}
-
-{{--TODO: CRITICAL! Does deleting works? Do loading animation show up?--}}
-
-{{--TODO: CRITICAL! Make sure that versions that are in use by projects cannot be removed.--}}
-
 <x-table-section>
 
     <x-slot name="title">{{ __('servers.pythons.table.title') }}</x-slot>
