@@ -11,6 +11,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\DatabaseNotification;
 
+// TODO: IMPORTANT! Cleanup old notification marked as read?
+
 /**
  * @property string $id
  * @property string $type
