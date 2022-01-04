@@ -13,8 +13,6 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: IMPORTANT! Cover with tests.
 
-// TODO: CRITICAL! Don't forget to actually add these keys to new servers.
-
 class CreateUserSshKeyForm extends LivewireComponent
 {
     use AuthorizesRequests;
