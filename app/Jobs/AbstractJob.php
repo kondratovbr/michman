@@ -33,9 +33,7 @@ class AbstractJob implements ShouldQueue
         return $this;
     }
 
-    /**
-     * Set a queue for this job.
-     */
+    /** Set a queue for this job. */
     protected function setQueue(string $queueName): void
     {
         if (! Arr::hasValue(config('queue.queues'), $queueName))

@@ -16,9 +16,7 @@ abstract class AbstractRemoteServerJob extends AbstractJob
     /** The number of seconds to wait before retrying the job. */
     public int $backoff = 60; // 1 min
 
-    /**
-     * If a job isn't completed until this time - it will be failed.
-     */
+    /** If a job isn't completed until this time - it will be failed. */
     public function retryUntil(): DateTimeInterface
     {
         return now()->addMinutes(60);
@@ -37,9 +35,7 @@ abstract class AbstractRemoteServerJob extends AbstractJob
         return $this;
     }
 
-    /**
-     * Get the middleware the job should pass through.
-     */
+    /** Get the middleware the job should pass through. */
     public function middleware(): array
     {
         if ($this->sync)
@@ -56,9 +52,7 @@ abstract class AbstractRemoteServerJob extends AbstractJob
         ];
     }
 
-    /**
-     * Reload the Server model from the DB and lock it for update.
-     */
+    /** Reload the Server model from the DB and lock it for update. */
     protected function lockServer(): Server
     {
         return $this->server = $this->server->freshLockForUpdate();

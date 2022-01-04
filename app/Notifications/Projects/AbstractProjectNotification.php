@@ -21,9 +21,7 @@ abstract class AbstractProjectNotification extends AbstractNotification
         ];
     }
 
-    /**
-     * Get the data for localized message strings for this notification.
-     */
+    /** Get the data for localized message strings for this notification. */
     protected static function dataForMessage(array $data = []): array
     {
         return [
@@ -31,9 +29,7 @@ abstract class AbstractProjectNotification extends AbstractNotification
         ];
     }
 
-    /**
-     * Retrieve the project from the database.
-     */
+    /** Retrieve the project from the database. */
     protected static function project(array $data): Project|null
     {
         /** @var Project|null $project */
