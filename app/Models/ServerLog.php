@@ -7,6 +7,16 @@ use Database\Factories\ServerLogFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/*
+ * TODO: IMPORTANT! Think about refactoring the server logging system:
+ *       Maybe make a model ScriptLog and store a whole log for every ServerScript execution.
+ *       Will make it way easier and more reliable to store and retrieve.
+ *       Will also give an option to later store the logs in some separate DB more optimized for it.
+ *       Mildly related:
+ *       need a system for retrieving arbitrary logs from a server.
+ *       Like from log files and systemctl for example.
+ */
+
 /**
  * Server Log Eloquent model to store SSH logs in the database
  *
