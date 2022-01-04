@@ -5,21 +5,25 @@ namespace App\Jobs\Certificates;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Certificate;
 use App\Models\Project;
+use App\Notifications\Servers\FailedToInstallCertificateNotification;
+use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Root\InstallLetsEncryptCertificateScript;
 use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\Root\UpdateProjectNginxConfigOnServerScript;
 use App\Scripts\Root\UploadPlaceholderPageNginxConfigScript;
 use App\States\Certificates\Installed;
 use App\States\Certificates\Installing;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\DB;
 
-/*
- * TODO: CRITICAL! CONTINUE. Fail the process and notify the user if the certbot request fails.
- */
+// TODO: IMPORTANT! As a part of a later health checking feature need to verify HTTPS works based on these certificates.
 
 class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
 {
     protected Certificate $certificate;
+
+    protected CarbonInterface|null $logFrom = null;
+    protected CarbonInterface|null $logTo = null;
 
     public function __construct(Certificate $certificate)
     {
@@ -48,7 +52,15 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
             // We'll need Nginx to receive certificates, so let's ensure it is running.
             $restartNginx->execute($server, $rootSsh);
 
-            $installCertificate->execute($server, $certificate, $rootSsh);
+            $this->logFrom = now();
+
+            try {
+                $installCertificate->execute($server, $certificate, $rootSsh);
+            } catch (ServerScriptException) {
+                $this->logTo = now();
+                $this->handleFailure();
+                return;
+            }
 
             /** @var Project $project */
             foreach ($server->projects as $project) {
@@ -60,10 +72,23 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
 
             $restartNginx->execute($server, $rootSsh);
 
+            $this->logTo = now();
+
             $certificate->state->transitionTo(Installed::class);
-
-            // TODO: CRITICAL! Need to somehow verify that the certificate is received and, later, that it is installed and works.
-
         }, 5);
+    }
+
+    public function handleFailure(): void
+    {
+        $this->server->user->notify(new FailedToInstallCertificateNotification(
+            $this->server, $this->logFrom, $this->logTo
+        ));
+
+        $this->certificate->delete();
+    }
+
+    public function failed(): void
+    {
+        $this->handleFailure();
     }
 }
