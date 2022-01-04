@@ -19,7 +19,7 @@
                     <div class="inline-block" x-tooltip="'{{ $deployment->isAutomatic() ? __('deployments.automatic') : __('deployments.manual') }}'">
                         <x-icon>
                             @if($deployment->isAutomatic())
-{{--                                TODO: CRITICAL! Use a paid icon "far fa-robot" here.--}}
+{{--                                TODO: ICON! Use a paid icon "far fa-robot" here.--}}
                                 <i class="fas fa-robot"></i>
                             @else
                                 <i class="far fa-user"></i>

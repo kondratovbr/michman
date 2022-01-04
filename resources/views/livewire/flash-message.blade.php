@@ -33,22 +33,22 @@ use App\Events\Users\FlashMessageEvent;
                 <x-icon size="8">
                     @switch($style ?? null)
                         @case(FlashMessageEvent::STYLE_INFO)
-{{--                            TODO: CRITICAL! Put a different info icon here - the one from the paid version of FA: "far fa-info-circle"--}}
+{{--                            TODO: ICON! Put a different info icon here - the one from the paid version of FA: "far fa-info-circle"--}}
                             <i class="fas fa-info-circle fa-2x"></i>
                             @break
                         @case(FlashMessageEvent::STYLE_SUCCESS)
                             <i class="far fa-check-circle fa-2x"></i>
                             @break
                         @case(FlashMessageEvent::STYLE_WARNING)
-{{--                            TODO: CRITICAL! Put a different triangle icon here - the one from the paid version of FA: "far fa-exclamation-triangle"--}}
+{{--                            TODO: ICON! Put a different triangle icon here - the one from the paid version of FA: "far fa-exclamation-triangle"--}}
                             <i class="fas fa-exclamation-triangle fa-2x"></i>
                             @break
                         @case(FlashMessageEvent::STYLE_DANGER)
-{{--                            TODO: CRITICAL! Put a different triangle icon here - the one from the paid version of FA: "far fa-exclamation-triangle"--}}
+{{--                            TODO: ICON! Put a different triangle icon here - the one from the paid version of FA: "far fa-exclamation-triangle"--}}
                             <i class="fas fa-exclamation-triangle fa-2x"></i>
                             @break
                         @default
-{{--                            TODO: CRITICAL! Put a different info icon here - the one from the paid version of FA: "far fa-info-circle"--}}
+{{--                            TODO: ICON! Put a different info icon here - the one from the paid version of FA: "far fa-info-circle"--}}
                             <i class="fas fa-info-circle fa-2x"></i>
                     @endswitch
                 </x-icon>

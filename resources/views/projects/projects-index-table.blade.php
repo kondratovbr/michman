@@ -17,7 +17,7 @@
                 <x-td>
                     <div class="flex justify-center">
                         @if($project->sslEnabled())
-{{--                            TODO: CRITICAL! Use a paid FontAwesome icon here: "far fa-lock"--}}
+{{--                            TODO: ICON! Use a paid FontAwesome icon here: "far fa-lock"--}}
                             <x-icon
                                 x-tooltip="'{{ __('projects.index.ssl-enabled') }}'"
                             ><i class="fas fa-lock"></i></x-icon>
