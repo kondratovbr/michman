@@ -8,6 +8,7 @@ use App\Events\Servers\ServerUpdatedEvent;
 use App\Exceptions\SshAuthFailedException;
 use App\States\Servers\Ready;
 use App\States\Servers\ServerState;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Database\Factories\ServerFactory;
 use Illuminate\Database\Eloquent\Collection;
@@ -273,6 +274,21 @@ class Server extends AbstractModel
             'success' => $success,
             'created_at' => $timestamp ?? now(),
         ]);
+    }
+
+    /** Get this server's logs between the timestamps. */
+    public function getLogs(CarbonInterface|string $from, CarbonInterface|string $to): Collection
+    {
+        if (is_string($from))
+            $from = new CarbonImmutable($from);
+
+        if (is_string($to))
+            $to = new CarbonImmutable($to);
+
+        return $this->logs()
+            ->whereBetween('created_at', [$from, $to])
+            ->oldest()
+            ->get();
     }
 
     /** Get a relation to the provider that runs this server. */
