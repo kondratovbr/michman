@@ -7,7 +7,7 @@ use App\Models\Server;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-// TODO: CRITICAL! Covert with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class CertificatePolicy
 {
@@ -20,7 +20,10 @@ class CertificatePolicy
 
     public function create(User $user, Server $server): bool
     {
-        return $user->is($server->user);
+        if (! $user->is($server->user))
+            return false;
+
+        return in_array($server->type, ['app', 'web', 'balancer']);
     }
 
     public function delete(User $user, Certificate $certificate): bool

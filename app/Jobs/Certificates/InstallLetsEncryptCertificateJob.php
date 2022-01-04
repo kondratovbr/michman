@@ -14,11 +14,7 @@ use App\States\Certificates\Installing;
 use Illuminate\Support\Facades\DB;
 
 /*
- * TODO: CRITICAL! Make sure a certificate cannot be requested for a server of a type that shouldn't be accessible from the outside anyway. I.e. certificates are only for "app", "web" and "balancer" types of servers.
- */
-
-/*
- * TODO: CRITICAL! Fail the process and notify the user if the certbot request fails.
+ * TODO: CRITICAL! CONTINUE. Fail the process and notify the user if the certbot request fails.
  */
 
 class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
