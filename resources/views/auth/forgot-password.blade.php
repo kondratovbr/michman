@@ -1,26 +1,26 @@
-{{--TODO: IMPORTANT! Unfinished!--}}
-
 <x-layouts.guest>
     <x-auth-box>
 
-{{--        TODO: This text looks like a horrible mess and hard to read. Fix. Also, the box probably needs some header. --}}
+        <x-slot name="title">
+            {{ __('auth.forgot-your-password') }}
+        </x-slot>
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+        <div class="mb-4 text-sm">
+            {{ __('auth.forgot-password-info') }}
         </div>
 
         @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
+            <x-message class="mb-4" colors="info">
                 {{ session('status') }}
-            </div>
+            </x-message>
         @endif
 
-        <x-jet-validation-errors class="mb-4" />
+        <x-validation-errors class="mb-4" />
 
         <x-forms.vertical method="POST" action="{{ route('password.email') }}">
 
             <x-field>
-                <x-label for="email" value="{{ __('Email') }}" />
+                <x-label for="email">Email</x-label>
                 <x-inputs.email
                     name="email"
                     required
@@ -29,8 +29,9 @@
             </x-field>
 
             <div class="flex items-center justify-end mt-4">
+{{--                TODO: VERY IMPORTANT! Make sure this cannot be abused. I.e. use some harsh rate-limiting.--}}
                 <x-buttons.primary>
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('auth.email-password-reset') }}
                 </x-buttons.primary>
             </div>
 
