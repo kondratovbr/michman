@@ -47,7 +47,7 @@ class Str extends IlluminateStr
     public static function containsLax(string $haystack, string|array $needles): bool
     {
         $haystack = Str::lower($haystack);
-        $needles = Arr::map($needles, fn($item) => Str::lower($item));
+        $needles = Arr::map(Arr::wrap($needles), fn($item) => Str::lower($item));
 
         return Str::contains($haystack, $needles);
     }
