@@ -13,7 +13,7 @@ use App\States\Certificates\Deleting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-// TODO: CRITICAL! Test and cover with tests.
+// TODO: IMPORTANT! Cover with tests.
 
 class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
 {
