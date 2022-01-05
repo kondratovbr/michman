@@ -49,11 +49,12 @@ class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
 
             $cert->delete();
 
+            $uploadPlaceholderNginxConfig->execute($server, $rootSsh);
+
             /** @var Project $project */
             foreach ($server->projects as $project) {
                 if ($cert->hasDomainOf($project)) {
                     $updateNginxConfig->execute($server, $project, $rootSsh);
-                    $uploadPlaceholderNginxConfig->execute($server, $rootSsh);
                 }
             }
 
