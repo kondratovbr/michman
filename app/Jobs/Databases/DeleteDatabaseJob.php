@@ -27,6 +27,8 @@ class DeleteDatabaseJob extends AbstractRemoteServerJob
         DB::transaction(function () {
             $database = $this->database->freshLockForUpdate();
             $server = $this->server->freshSharedLock();
+            if ($database->project()->exists())
+                $database->project()->lockForUpdate()->firstOrFail();
 
             $this->getDatabaseScript(
                 $server,
@@ -35,6 +37,11 @@ class DeleteDatabaseJob extends AbstractRemoteServerJob
                 $server,
                 $database->name,
             );
+
+            if (! is_null($database->project)) {
+                $database->project->database()->disassociate();
+                $database->project->save();
+            }
 
             $database->delete();
         }, 5);
