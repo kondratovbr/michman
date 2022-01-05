@@ -74,7 +74,7 @@ class DigitalOceanForm extends Component
                 ->in(Arr::keys($this->providers))
                 ->required(),
             'state.name' => Rules::string(1, 255)
-                ->addRule(Rule::unique('name', 'providers')->where(
+                ->addRule(Rule::unique('providers', 'name')->where(
                     fn(Builder $query) => $query->where('user_id', Auth::user()->getKey())
                 ))
                 ->required(),
