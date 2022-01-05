@@ -87,10 +87,10 @@ flexSizingScale = {
 
 module.exports = {
 
-    // Utilities (NOT including custom ones) will be generated with "!important",
-    // so they will override components styling and defaults.
+    // Utilities (NOT including custom ones) will be generated with "[#app]",
+    // so they will override components styling and defaults, but not inline styles.
     //important: true,
-    important: ':not([x-show])',
+    important: '#app',
 
     content: [
         './app/**/*.php',
