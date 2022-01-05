@@ -15,7 +15,7 @@
                 href="{{ route('servers.show', $server) }}"
                 :capitalize="false"
             >
-{{--                TODO: IMPORTANT! Implement and enable this icon.--}}
+{{--                TODO: VERY IMPORTANT! Implement and enable this icon.--}}
 {{--                TODO: This icon looks rather dull. Any better options? Maybe some effects or slight animations? Should google it.--}}
 {{--                TODO: This icon should reflect server's status. Like, blink amber if something is wrong, for example. Also, maybe replace with a spinner when the server is in the process of creation and make the link disabled.--}}
 {{--                <x-slot name="icon"><i class="fas fa-circle text-green-500 text-xs"></i></x-slot>--}}
