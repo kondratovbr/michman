@@ -39,4 +39,16 @@ class Str extends IlluminateStr
 
         return $result ?? '';
     }
+
+    /**
+     * Determine if a given string contains a given substring,
+     * disregarding casing.
+     */
+    public static function containsLax(string $haystack, string|array $needles): bool
+    {
+        $haystack = Str::lower($haystack);
+        $needles = Arr::map($needles, fn($item) => Str::lower($item));
+
+        return Str::contains($haystack, $needles);
+    }
 }
