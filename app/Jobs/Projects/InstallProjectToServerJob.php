@@ -46,7 +46,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $cloneRepo->execute($server, $project, $userSsh, $api);
 
             /*
-             * TODO: CRITICAL! I'm creating a venv inside the project directory.
+             * TODO: IMPORTANT! I'm creating a venv inside the project directory.
              *       Make sure git won't break it on git pull during deployment.
              *       Will it work is a project repo has "venv" directory for some reason?
              *       Should probably move the venv somewhere else.
