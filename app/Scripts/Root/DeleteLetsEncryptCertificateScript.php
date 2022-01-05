@@ -9,8 +9,6 @@ use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithCertbot;
 use phpseclib3\Net\SFTP;
 
-// TODO: CRITICAL! CONTINUE. Test this.
-
 class DeleteLetsEncryptCertificateScript extends AbstractServerScript
 {
     use InteractsWithCertbot;
