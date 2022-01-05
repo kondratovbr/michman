@@ -1,4 +1,4 @@
-@props(['loading' => false, 'size' => null])
+@props(['loading' => false, 'size' => null, 'disabled' => false])
 
 @php
     $classes = implode(' ', [
@@ -20,8 +20,12 @@
 <button
     {{ $attributes->merge(['class' => $classes, 'type' => 'button']) }}
     x-data="{ loading: {{ $loading ? 'true' : 'false' }} }"
-    x-bind:disabled="loading"
     x-on:click="loading = true"
+    @if($disabled)
+        disabled
+    @else
+        x-bind:disabled="loading"
+    @endif
 >
     <div
         class="justify-center items-center"

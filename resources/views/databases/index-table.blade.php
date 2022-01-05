@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! Unfinished!--}}
-{{--TODO: CRITICAL! CONTINUE. Make sure a database that is being used by an active project cannot be deleted.--}}
 {{--TODO: IMPORTANT! Is "Sync Databases" function (like in Forge) necessary?--}}
 
 <x-table-section>
@@ -18,21 +16,16 @@
             <x-tr>
                 <x-td>{{ $database->name }}</x-td>
                 <x-td class="flex justify-end items-center min-h-14">
-{{--                    @if($database->isDeleting())--}}
-{{--                        <x-buttons.trash--}}
-{{--                            :loading="true"--}}
-{{--                            wire:key="delete-database-button-{{ $database->getKey() }}"--}}
-{{--                        />--}}
-{{--                    @endif--}}
-{{--                    @if($database->isCreating() || $database->isUpdating())--}}
                     @if($database->tasks > 0)
                         <div class="mr-4.5">
                             <x-spinner/>
                         </div>
                     @else
+{{--                        TODO: Maybe try reading user's ENV variables looking for database names to check is a database in use.--}}
                         <x-buttons.trash
                             wire:click.prevent="delete('{{ $database->getKey() }}')"
                             wire:key="delete-database-button-{{ $database->getKey() }}"
+                            :disabled="Gate::denies('delete', $database)"
                         />
                     @endif
                 </x-td>
