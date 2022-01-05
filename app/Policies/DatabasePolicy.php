@@ -18,11 +18,23 @@ class DatabasePolicy
 
     public function create(User $user, Server $server): bool
     {
-        return $user->is($server->user) && ! is_null($server->installedDatabase);
+        if (! $user->is($server->user))
+            return false;
+
+        if (empty($server->installedDatabase))
+            return false;
+
+        return true;
     }
 
     public function delete(User $user, Database $database): bool
     {
-        return $user->is($database->user) && $database->tasks == 0;
+        if (! $user->is($database->user))
+            return false;
+
+        if ($database->tasks != 0)
+            return false;
+
+        return true;
     }
 }
