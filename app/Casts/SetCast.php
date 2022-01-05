@@ -15,8 +15,11 @@ class SetCast implements CastsAttributes
 
     public function set($model, string $key, $value, array $attributes): string
     {
+        if (is_array($value))
+            $value = new Set($value);
+
         if (! $value instanceof Set)
-            throw new RuntimeException('Instance of Ds/Set expected.');
+            throw new RuntimeException('Instance of Ds/Set or an array expected.');
 
         return json_encode($value);
     }
