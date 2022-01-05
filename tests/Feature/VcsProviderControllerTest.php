@@ -14,7 +14,7 @@ use Laravel\Socialite\Contracts\Provider as OAuthDriver;
 use Laravel\Socialite\Contracts\User as OAuthUser;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 
-// TODO: CRITICAL! Forgot to test unlinking.
+// TODO: Forgot to test unlinking.
 
 class VcsProviderControllerTest extends AbstractFeatureTest
 {
