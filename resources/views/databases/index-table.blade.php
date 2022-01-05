@@ -1,5 +1,5 @@
 {{--TODO: CRITICAL! Unfinished!--}}
-{{--TODO: CRITICAL! Make sure a database that is being used by an active project cannot be deleted.--}}
+{{--TODO: CRITICAL! CONTINUE. Make sure a database that is being used by an active project cannot be deleted.--}}
 {{--TODO: IMPORTANT! Is "Sync Databases" function (like in Forge) necessary?--}}
 
 <x-table-section>

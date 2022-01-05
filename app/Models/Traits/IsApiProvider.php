@@ -10,7 +10,7 @@ use App\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! Make sure this thing is test covered.
+// TODO: IMPORTANT! Make sure this thing is test covered.
 
 /**
  * @property AuthTokenDto $token

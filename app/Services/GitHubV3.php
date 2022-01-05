@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Log;
  *       a button to repair permissions.
  */
 
-// TODO: CRITICAL! I had a problem with GitHub credentials - should verify that the tokens stay valid over long periods of time. Like, login to the app and then leave it be for a couple of days and try accessing GitHub with the stored credentials.
-
 class GitHubV3 extends AbstractVcsProvider
 {
     /**

@@ -22,12 +22,6 @@ class UpgradePackagesScript extends AbstractServerScript
         if ($this->failed())
             throw new ServerScriptException('apt-get update has failed.');
 
-        /*
-         * TODO: CRITICAL! Make sure this works without "noninteractive"
-         *       and update the rest of the similar apt-get commands if it does.
-         *       Intended to fix the "Could not get lock..." issue.
-         */
-        // $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get upgrade --with-new-pkgs -y');
         $this->execPty('apt-get upgrade --with-new-pkgs -y');
         $this->read();
 

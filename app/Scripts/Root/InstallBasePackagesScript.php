@@ -14,7 +14,7 @@ class InstallBasePackagesScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         /*
-         * TODO: CRITICAL! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
+         * TODO: IMPORTANT! Make sure to handle a situation when an apt-get gets interrupted by something (like an outage of sorts) so
          *       'dpkg was interrupted, you must manually run 'dpkg --configure -a --force-confold --force-confdef' to correct the problem.'
          *       message shows the next time.
          *       (The "force" parameters instruct dpkg on what to do with conflicting config files -

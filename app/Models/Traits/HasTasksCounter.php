@@ -7,7 +7,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
-// TODO: CRITICAL! Cover this with tests! Also - incrementing and decrementing are very similar. Should DRY it out.
+// TODO: IMPORTANT! Cover this with tests! Also - incrementing and decrementing are very similar. Should DRY it out.
 
 /**
  * Trait HasTasksCounter for Eloquent models

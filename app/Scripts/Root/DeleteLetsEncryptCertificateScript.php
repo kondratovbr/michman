@@ -8,7 +8,7 @@ use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use phpseclib3\Net\SFTP;
 
-// TODO: CRITICAL! Test this.
+// TODO: CRITICAL! CONTINUE. Test this.
 
 class DeleteLetsEncryptCertificateScript extends AbstractServerScript
 {
@@ -16,7 +16,7 @@ class DeleteLetsEncryptCertificateScript extends AbstractServerScript
     {
         $this->init($server, $rootSsh);
 
-        // TODO: CRITICAL! This may fail for numerous reasons. Should figure out how to inform the user.
+        // TODO: IMPORTANT! This may fail for numerous reasons. Should figure out how to inform the user.
         $this->exec("certbot -n delete --cert-name {$cert->name}");
 
         if ($this->failed())
