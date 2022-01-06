@@ -1,6 +1,6 @@
 {{--TODO: IMPORTANT! Terribly unfinished. Non even started.--}}
 
-<x-layouts.app>
+<x-layouts.app-new>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('API Tokens') }}
@@ -12,4 +12,4 @@
             @livewire('api.api-token-manager')
         </div>
     </div>
-</x-layouts.app>
+</x-layouts.app-new>
