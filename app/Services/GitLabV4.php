@@ -186,8 +186,6 @@ class GitLabV4 extends AbstractVcsProvider
     /** https://docs.gitlab.com/ee/api/projects.html#delete-project-hook */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
-        // TODO: CRITICAL! Test this.
-
         $repo = urlencode($repo);
 
         $this->delete("/projects/{$repo}/hooks/{$webhookExternalId}");
