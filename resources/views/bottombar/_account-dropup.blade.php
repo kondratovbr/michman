@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Placeholders. Put actual routes here.--}}
+{{--TODO: CRITICAL! CONTINUE. Doesn't work when account page isn't open for some reason. Fix.--}}
 
 <x-dropdown.menu
     drop="up"

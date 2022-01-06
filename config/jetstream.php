@@ -44,7 +44,8 @@ return [
     'features' => [
         Features::termsAndPrivacyPolicy(),
         Features::profilePhotos(),
-        Features::api(),
+        // TODO: Maybe make some API for users?
+        //Features::api(),
         Features::teams(['invitations' => true]),
         Features::accountDeletion(),
     ],

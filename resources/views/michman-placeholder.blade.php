@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Make this placeholder page nicer. Maybe add some content and some links to out main page and blog.--}}
+{{--TODO: VERY IMPORTANT! Make this placeholder page nicer. Maybe add some content and some links to out main page and blog.--}}
 
 <!doctype html>
 <html lang="en">
@@ -10,7 +10,7 @@
 
         <meta name="robots" content="noindex">
 
-{{--        TODO: CRITICAL! Don't forget to update fonts. Maybe just use OS ones, as usual.--}}
+{{--        TODO: IMPORTANT! Don't forget to update fonts. Maybe just use OS ones, as usual.--}}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>

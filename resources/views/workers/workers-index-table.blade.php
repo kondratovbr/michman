@@ -25,7 +25,7 @@
             <x-tr>
                 <x-td>{{ __("projects.queue.types.{$worker->type}") }}</x-td>
                 <x-td><x-app-link href="{{ route('servers.show', $worker->server) }}">{{ $worker->server->name }}</x-app-link></x-td>
-{{--                TODO: CRITICAL! Make sure to support other types in here.--}}
+{{--                TODO: IMPORTANT! Make sure to support other types in here.--}}
                 <x-td>{{ Str::implode(', ', $worker->queues ?? ['Celery']) }}</x-td>
                 <x-td show="lg">{{ $worker->processes ?? 'Auto' }}</x-td>
                 <x-td><x-state-badge :state="$worker->state" /></x-td>

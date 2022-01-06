@@ -17,7 +17,7 @@ return [
     
     'list' => [
 
-        // TODO: CRITICAL! Don't forget to implement support for all of these. Bitbucket is the only one left.
+        // TODO: CRITICAL! CONTINUE. Don't forget to implement support for all of these. Bitbucket is the only one left.
 
         'github_v3' => [
             // GitHub scopes are per-request and should be properly configured here.

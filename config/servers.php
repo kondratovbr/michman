@@ -3,10 +3,9 @@
 use App\Jobs\Servers\ConfigureAppServerJob;
 use App\Support\Str;
 
-/*
- * TODO: CRITICAL! Don't forget to implement install/configuration/etc. scripts for every other version and application I plan on supporting.
- *       See all the nulls in here?
- */
+// TODO: CRITICAL! CONTINUE. Disabled other server types for now.
+
+// TODO: VERY IMPORTANT! Implement other server types and enable support for them.
 
 // TODO: IMPORTANT! Need to add RabbitMQ option somewhere. Python Celery queue system recommends it, so people will probably want it.
 
@@ -81,12 +80,14 @@ return [
         ],
     ],
 
+    // TODO: CRITICAL! CONTINUE. Disable support for DBs other than MySQL 8 for now.
     'databases' => [
         'mysql-8_0' => [
             'scripts_namespace' => 'App\Scripts\Root\Mysql8_0',
             'django_url_prefix' => 'mysql',
             'default_port' => '3306',
         ],
+        // TODO: VERY IMPORTANT! Implement and enable support for other databases.
         'maria-10_5' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'mysql',
@@ -104,12 +105,14 @@ return [
         ],
     ],
 
+    // TODO: CRITICAL! CONTINUE. Disable support for memcached for now.
     'caches' => [
         'redis' => [
             'scripts_namespace' => 'App\Scripts\Root\Redis',
             'default_port' => '6379',
             'django_url_prefix' => 'redis',
         ],
+        // TODO: VERY IMPORTANT! Implement and enable support for memcached.
         'memcached' => [
             'scripts_namespace' => null,
             'default_port' => '11211',

@@ -1,6 +1,5 @@
-{{--TODO: CRITICAL! Add icons everywhere.--}}
-{{-- TODO: CRITICAL! Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
-{{--TODO: IMPORTANT! Does my enlarging-on-hover transition looks jittery? Only in some browsers? Should I do something about it?--}}
+{{--TODO: CRITICAL! Order a logo or make it some other way.--}}
+{{-- TODO: IMPORTANT! Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
 {{--TODO: The button's background blinks on page loads. At least in Chrome. Probably something to do with the Alpine loading. Fix.--}}
 
 <nav
@@ -37,7 +36,6 @@
             <div class="-ml-1.5 flex items-stretch">
                 {{-- Navigation Links --}}
                 <div class="hidden md:flex">
-{{--                    TODO: CRITICAL! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
                     <x-navbar.link routeName="home">
                         <x-slot name="icon"><i class="fas fa-border-all"></i></x-slot>
                         {{ __('nav.dashboard') }}

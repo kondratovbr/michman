@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! Unfinished! Editing is not implemented at all!--}}
-{{--TODO: CRITICAL! Make sure a user that is being used by an active project cannot be deleted.--}}
 {{--TODO: IMPORTANT! Is "Sync Users" function (like in Forge) necessary?--}}
 
 <x-table-section>
@@ -18,15 +16,6 @@
             <x-tr>
                 <x-td>{{ $databaseUser->name }}</x-td>
                 <x-td>
-{{--                    @if($databaseUser->isDeleting())--}}
-{{--                        <x-buttons.edit disabled />--}}
-{{--                        <x-buttons.trash--}}
-{{--                            class="ml-2"--}}
-{{--                            :loading="true"--}}
-{{--                            wire:key="delete-database-user-button-{{ $databaseUser->getKey() }}"--}}
-{{--                        />--}}
-{{--                    @endif--}}
-{{--                    @if($databaseUser->isCreating() || $databaseUser->isUpdating())--}}
                     <div class="flex justify-end items-center">
                         @if($databaseUser->tasks > 0)
                             <div class="mr-4.5">
@@ -34,6 +23,7 @@
                             </div>
                         @else
                             <x-buttons.edit wire:click="openModal('{{ $databaseUser->getKey() }}')" />
+{{--                            TODO: Maybe try reading user's ENV variables looking for database user's names to check if a user in use.--}}
                             <x-buttons.trash
                                 class="ml-2"
                                 wire:click.prevent="delete('{{ $databaseUser->getKey() }}')"

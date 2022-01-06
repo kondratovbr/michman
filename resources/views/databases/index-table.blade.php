@@ -21,7 +21,7 @@
                             <x-spinner/>
                         </div>
                     @else
-{{--                        TODO: Maybe try reading user's ENV variables looking for database names to check is a database in use.--}}
+{{--                        TODO: Maybe try reading user's ENV variables looking for database names to check if a database in use.--}}
                         <x-buttons.trash
                             wire:click.prevent="delete('{{ $database->getKey() }}')"
                             wire:key="delete-database-button-{{ $database->getKey() }}"

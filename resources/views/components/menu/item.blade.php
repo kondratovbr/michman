@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! This menu item can't handle the browser's "Back" button - the new item doesn't get highlighted after the "Back" button is pressed - try it. Should fix it.--}}
+{{--TODO: VERY IMPORTANT! This menu item can't handle the browser's "Back" button - the new item doesn't get highlighted after the "Back" button is pressed - try it. Should fix it.--}}
 
 @props(['show'])
 

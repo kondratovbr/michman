@@ -27,7 +27,6 @@ use Laravel\Socialite\Contracts\User as OauthUser;
 
 // TODO: IMPORTANT! Should I somehow handle accepting terms when registering using OAuth?
 //       Like, show a separate dialog after registration with accepting terms?
-// TODO: CRITICAL! Don't forget to write these terms, btw.
 
 /*
  * TODO: IMPORTANT! Figure out what to do if a user changes out permissions in the GitHub UI, for example.

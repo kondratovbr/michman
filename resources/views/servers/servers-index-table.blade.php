@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Unfinished! Add server statuses and actions. The short description is still "Foobar". Like, refresh status. Also, implement a servers health check and use it for server statuses. --}}
+{{--TODO: IMPORTANT! Does it need a "Refresh Status" button? Also, implement a servers health check and use it for server statuses. --}}
 
 <x-table-section>
 

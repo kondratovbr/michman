@@ -1,5 +1,3 @@
-{{--TODO: CRITICAL! Unfinished.--}}
-
 <x-form-section submit="store">
 
     <x-slot name="title">{{ __('servers.database-users.form.title') }}</x-slot>

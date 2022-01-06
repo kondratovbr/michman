@@ -9,7 +9,7 @@ return [
 
     'payload_url' => env('WEBHOOKS_URL'),
 
-    // TODO: CRITICAL! Don't forget to implement webhooks for Gitlab and Bitbucket as well.
+    // TODO: CRITICAL! CONTINUE. Don't forget to implement webhooks for Gitlab and Bitbucket as well.
     'providers' => [
         'github' => [
             'vcs_provider' => 'github_v3',

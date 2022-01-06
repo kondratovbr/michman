@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Unfinished. Need loading animations, etc.--}}
+{{--TODO: IMPORTANT! Unfinished. Need loading animations, etc.--}}
 
 <x-form-section submit="store">
 

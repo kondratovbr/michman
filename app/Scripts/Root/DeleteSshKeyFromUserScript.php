@@ -9,7 +9,7 @@ use App\Support\SshKeyFormatter;
 use phpseclib3\Crypt\Common\PublicKey;
 use phpseclib3\Net\SFTP;
 
-// TODO: CRITICAL! Test this.
+// TODO: CRITICAL! CONTINUE. Test this.
 
 class DeleteSshKeyFromUserScript extends AbstractServerScript
 {

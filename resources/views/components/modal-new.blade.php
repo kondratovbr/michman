@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Unfinished. Responsiveness, mobile. Test on touch - both tablet and mobile.--}}
+{{--TODO: VERY IMPORTANT! Unfinished. Test responsiveness and test on touch - both tablet and mobile.--}}
 
 {{-- Container for a modal --}}
 <div

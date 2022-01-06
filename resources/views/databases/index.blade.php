@@ -1,4 +1,4 @@
-{{--    TODO: CRITICAL! Don't forget to display the database connection URL or similar, like Forge does. Maybe I could even make a button for users to automatically connect to it.--}}
+{{--    TODO: IMPORTANT! Don't forget to display the database connection URL or similar, like Forge does. Maybe I could even make a button for users to automatically connect to it.--}}
 
 <livewire:databases.create-database-form :server="$server" />
 

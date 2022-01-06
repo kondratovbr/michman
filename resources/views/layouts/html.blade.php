@@ -15,7 +15,7 @@
         {{-- CSRF-token for front-end scripts is provided as a meta. --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-{{--        TODO: CRITICAL! Don't forget to update fonts. Maybe just use OS ones, as usual.--}}
+{{--        TODO: CRITICAL! CONTINUE. Don't forget to update fonts. Maybe just use OS ones, as usual.--}}
         {{-- Fonts --}}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
@@ -26,9 +26,9 @@
         {{-- Scripts --}}
         <script src="{{ mix('js/app.js') }}" defer></script>
             {{--
-            TODO: CRITICAL! Should I keep these Ace Editor sources here like that for production?
+            TODO: IMPORTANT! Should I keep these Ace Editor sources here like that for production?
+                  Is there a better way? Google how to install the Ace Editor for production in general. And see how Forge does it.
                   Serve locally? Package in app.js? Serve from a CDN but check it during some health check regularly?
-                  See how Forge does it.
                   NOTE: These scripts cannot be just "defer"red - they should be ran before the <script> tag that declares the actual editor field.
                   These should probably be put above the rest of the page - so the browser starts loading them in parallel with the rest of the page.
                   https://devdojo.com/tnylea/using-ace-editor-with-livewire
