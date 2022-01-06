@@ -1,0 +1,22 @@
+# ...
+
+DEBUG=off
+
+SECRET_KEY="{{ $secretKey }}"
+
+@if(isset($databaseHost) && isset($databasePort))
+DB_HOST="{{ $databaseHost }}"
+DB_PORT="{{ $databasePort }}"
+@endisset
+@if(isset($databaseUrl))
+DB_DATABASE="{{ $databaseName }}"
+DB_USERNAME="{{ $databaseUser }}"
+DB_PASSWORD="{{ $databasePassword }}"
+DATABASE_URL="{{ $databaseUrl }}"
+@endif
+
+@if(isset($cacheUrlPrefix))
+CACHE_HOST="{{ $cacheHost }}"
+CACHE_PORT="{{ $cachePort }}"
+CACHE_URL="{{ $cacheUrl }}"
+@endisset
