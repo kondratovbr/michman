@@ -93,16 +93,12 @@ trait IsSshKey
         return $this->publicKey->getFingerprint('md5');
     }
 
-    /**
-     * Convert a key to an OpenSSH formatted string with a proper comment included.
-     */
+    /** Convert a key to an OpenSSH formatted string with a proper comment included. */
     protected function keyToString(PrivateKeyInterface|PublicKeyInterface $key, bool $comment = true): string
     {
         return SshKeyFormatter::format($key, $comment ? $this->getSshKeyComment() : null);
     }
 
-    /**
-     * Get a comment for an OpenSSH key.
-     */
+    /** Get a comment for an OpenSSH key. */
     abstract protected function getSshKeyComment(): string;
 }
