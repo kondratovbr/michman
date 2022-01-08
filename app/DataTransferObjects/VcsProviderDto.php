@@ -28,7 +28,7 @@ class VcsProviderDto extends AbstractDto
         return match ($vcsProviderName) {
             'github_v3' => static::github($oauthUser),
             'gitlab_v4' => static::gitlab($oauthUser),
-            'bitbucket' => static::bitbucket($oauthUser),
+            'bitbucket_v2' => static::bitbucket($oauthUser),
             default => throw new RuntimeException('Unknown VCS provider name.')
         };
     }
@@ -64,12 +64,14 @@ class VcsProviderDto extends AbstractDto
     private static function bitbucket(OAuthUser $oauthUser): static
     {
         return new static(
-            provider: 'bitbucket',
+            provider: 'bitbucket_v2',
             external_id: (string) $oauthUser->getId(),
             nickname: $oauthUser->getNickname(),
             token: AuthTokenDto::fromData(
                 (string) $oauthUser->getId(),
                 $oauthUser->token,
+                $oauthUser->refreshToken,
+                $oauthUser->expiresIn,
             ),
         );
     }

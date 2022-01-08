@@ -4,6 +4,7 @@
  * Third-party VCS providers API configuration
  */
 
+use App\Services\BitbucketV2;
 use App\Services\GitHubV3;
 use App\Services\GitLabV4;
 
@@ -46,12 +47,12 @@ return [
             'ssh_host_key' => 'gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9',
         ],
 
-        'bitbucket' => [
+        'bitbucket_v2' => [
             // Bitbucket doesn't support granular scopes.
             // Scopes are configured on the OAuth application (consumer) on bitbucket.com
             'oauth_scopes' => [],
-            'provider_class' => null,
-            'base_path' => null,
+            'provider_class' => BitbucketV2::class,
+            'base_path' => 'https://api.bitbucket.org/2.0',
             'auth_type' => 'token',
             'disabled' => true,
             'icon' => 'fab fa-bitbucket',

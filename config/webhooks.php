@@ -27,7 +27,7 @@ return [
             ],
         ],
         'bitbucket' => [
-            'vcs_provider' => 'bitbucket',
+            'vcs_provider' => 'bitbucket_v2',
             'service_class' => null,
             'events' => [
                 'push',

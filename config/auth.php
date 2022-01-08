@@ -127,7 +127,6 @@ return [
 
     // A list of supported OAuth providers by config keys - see services.php config file.
     'oauth_providers' => [
-        // TODO: CRITICAL! CONTINUE. Don't forget to implement support for at least GitHub, GitLab and BitBucket.
         'github' => [
             'icon' => 'fab fa-github',
             'vcs_provider' => 'github_v3',
@@ -138,7 +137,7 @@ return [
         ],
         'bitbucket' => [
             'icon' => 'fab fa-bitbucket',
-            'vcs_provider' => 'bitbucket',
+            'vcs_provider' => 'bitbucket_v2',
         ],
     ],
 
