@@ -31,7 +31,6 @@
                 </x-td>
                 <x-td class="w-16">
                     <x-ellipsis-dropdown>
-{{--                        TODO: CRITICAL! This menu is cut by the table's overflow, like all others. Fix and make the menu wider - the longer button doesn't fit.--}}
                         <x-dropdown.menu align="right">
                             <x-dropdown.button
                                 wire:click.prevent="removeFromMichman('{{ $key->getKey() }}')"
