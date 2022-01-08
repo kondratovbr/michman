@@ -3,8 +3,6 @@
 use App\Jobs\Servers\ConfigureAppServerJob;
 use App\Support\Str;
 
-// TODO: CRITICAL! CONTINUE. Disabled other server types for now.
-
 // TODO: VERY IMPORTANT! Implement other server types and enable support for them.
 
 // TODO: IMPORTANT! Need to add RabbitMQ option somewhere. Python Celery queue system recommends it, so people will probably want it.
