@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-// TODO: IMPORTANT! Make some progress indicators here as well. A simple spinner would do.
+// TODO: VERY IMPORTANT! Make some progress indicators here as well. A simple spinner would do. For deletion and adding.
 
 class UserSshKeysIndexTable extends LivewireComponent
 {
