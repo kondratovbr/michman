@@ -85,7 +85,7 @@ class DigitalOceanForm extends Component
                 ->in(Arr::keys($this->availableSizes))
                 ->required(),
             'state.type' => Rules::string(1, 255)
-                ->in(Arr::keys(config('servers.types')))
+                ->in(Arr::keys($this->getServerTypeOptions()))
                 ->required(),
         ];
 
@@ -95,13 +95,13 @@ class DigitalOceanForm extends Component
 
         if ($this->shouldInstall('database')) {
             $rules['state.database'] = Rules::string(1, 32)
-                ->in(Arr::keys(Arr::add(config('servers.databases'), 'none', null)))
+                ->in(Arr::keys($this->getDatabaseOptions()))
                 ->required();
         }
 
         if ($this->shouldInstall('cache')) {
             $rules['state.cache'] = Rules::string(1, 32)
-                ->in(Arr::keys(Arr::add(config('servers.caches'), 'none', null)))
+                ->in(Arr::keys($this->getCacheOptions()))
                 ->required();
         }
 
@@ -117,24 +117,54 @@ class DigitalOceanForm extends Component
             ->pluck('name', 'id')
             ->toArray();
 
-        $this->types = Arr::mapAssoc(
-            Arr::keys(config('servers.types')),
-            fn(int $index, string $type) => new Pair($type, __('servers.types.' . $type . '.name'))
-        );
-        $this->databases = Arr::mapAssoc(
-            Arr::keys(Arr::add(config('servers.databases'), 'none', null)),
-            fn(int $index, string $type) => new Pair($type, __('servers.databases.' . $type))
-        );
+        $this->types = $this->getServerTypeOptions();
+        $this->databases = $this->getDatabaseOptions();
         $this->pythonVersions = Arr::mapAssoc(
             Arr::keys(config('servers.python')),
             fn(int $index, string $type) => new Pair($type, Str::replace('_', '.', $type))
         );
-        $this->caches = Arr::mapAssoc(
-            Arr::keys(Arr::add(config('servers.caches'), 'none', null)),
-            fn(int $index, string $type) => new Pair($type, __('servers.caches.' . $type))
-        );
+        $this->caches = $this->getCacheOptions();
 
         $this->loadDefaults();
+    }
+
+    protected function getDatabaseOptions(): array
+    {
+        $databases = Arr::keys(Arr::filter(
+            config('servers.databases'),
+            fn(array $config) => $config['enabled'] ?? false,
+        ));
+
+        $databases[] = 'none';
+
+        return Arr::mapAssoc($databases,
+            fn(int $index, string $type) => new Pair($type, __('servers.databases.' . $type))
+        );
+    }
+
+    protected function getCacheOptions(): array
+    {
+        $caches = Arr::keys(Arr::filter(
+            config('servers.caches'),
+            fn(array $config) => $config['enabled'] ?? false,
+        ));
+
+        $caches[] = 'none';
+
+        return Arr::mapAssoc($caches,
+            fn(int $index, string $type) => new Pair($type, __('servers.caches.' . $type))
+        );
+    }
+
+    protected function getServerTypeOptions(): array
+    {
+        $types = Arr::keys(Arr::filter(config('servers.types'),
+            fn(array $config) => $config['enabled'] ?? false,
+        ));
+
+        return Arr::mapAssoc($types,
+            fn(int $index, string $type) => new Pair($type, __('servers.types.' . $type . '.name'))
+        );
     }
 
     /** Put default values for user inputs. */

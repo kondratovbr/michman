@@ -17,7 +17,6 @@ return [
      */
     'types' => [
         'app' => [
-            'disabled' => false,
             'install' => [
                 'nginx',
                 'gunicorn',
@@ -27,9 +26,9 @@ return [
             ],
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => ConfigureAppServerJob::class,
+            'enabled' => true,
         ],
         'web' => [
-            'disabled' => false,
             'install' => [
                 'nginx',
                 'gunicorn',
@@ -37,30 +36,31 @@ return [
             ],
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => null,
+            'enabled' => true,
         ],
         'worker' => [
-            'disabled' => true,
             'install' => [
                 'python',
             ],
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => null,
+            'enabled' => false,
         ],
         'database' => [
-            'disabled' => true,
             'install' => [
                 'database',
             ],
             'add_ssh_key_to_vcs' => false,
             'configuration_job_class' => null,
+            'enabled' => false,
         ],
         'cache' => [
-            'disabled' => true,
             'install' => [
                 'cache',
             ],
             'add_ssh_key_to_vcs' => false,
             'configuration_job_class' => null,
+            'enabled' => false,
         ],
     ],
 
@@ -80,43 +80,47 @@ return [
         ],
     ],
 
-    // TODO: CRITICAL! CONTINUE. Disable support for DBs other than MySQL 8 for now.
     'databases' => [
         'mysql-8_0' => [
             'scripts_namespace' => 'App\Scripts\Root\Mysql8_0',
             'django_url_prefix' => 'mysql',
             'default_port' => '3306',
+            'enabled' => true,
         ],
         // TODO: VERY IMPORTANT! Implement and enable support for other databases.
         'maria-10_5' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'mysql',
             'default_port' => '3306',
+            'enabled' => false,
         ],
         'postgres-13' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'postgres',
             'default_port' => '5432',
+            'enabled' => false,
         ],
         'postgres-12' => [
             'scripts_namespace' => null,
             'django_url_prefix' => 'postgres',
             'default_port' => '5432',
+            'enabled' => false,
         ],
     ],
 
-    // TODO: CRITICAL! CONTINUE. Disable support for memcached for now.
     'caches' => [
         'redis' => [
             'scripts_namespace' => 'App\Scripts\Root\Redis',
             'default_port' => '6379',
             'django_url_prefix' => 'redis',
+            'enabled' => true,
         ],
         // TODO: VERY IMPORTANT! Implement and enable support for memcached.
         'memcached' => [
             'scripts_namespace' => null,
             'default_port' => '11211',
             'django_url_prefix' => 'memcache',
+            'enabled' => false,
         ],
     ],
 
