@@ -9,15 +9,19 @@ use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
 // TODO: IMPORTANT! Cover with tests.
 
 // TODO: CRITICAL! CONTINUE.
+// TODO: CRITICAL! CONTINUE. Now, implement BitbucketWebhookService class and test webhooks and deployment from Bitbucket.
 
 class BitbucketV2 extends AbstractVcsProvider
 {
+    private string $userId;
+
     protected function getConfigPrefix(): string
     {
         return 'vcs.list.bitbucket_v2';
@@ -26,6 +30,12 @@ class BitbucketV2 extends AbstractVcsProvider
     protected function request(): PendingRequest
     {
         return Http::withToken($this->token->token);
+    }
+
+    /** Override the standard nextUrl method - Bitbucket returns links in the body instead of a header. */
+    protected function nextUrl(Response $response): string|null
+    {
+        return $this->decodeJson($response->body())->next ?? null;
     }
 
     public function refreshToken(): AuthTokenDto
@@ -75,73 +85,195 @@ class BitbucketV2 extends AbstractVcsProvider
         return $response->successful();
     }
 
+    /**
+     * Get the Bitbucket account ID for the current user.
+     * Some Bitbucket endpoints require user ID.
+     */
+    private function userId(): string
+    {
+        if (! isset($this->userId)) {
+            $this->userId = $this->decodeJson($this->get('/user')->body())->account_id;
+        }
+
+        return $this->userId;
+    }
+
     public function getAllSshKeys(): SshKeyDataCollection
     {
-        // TODO: Implement getAllSshKeys() method.
+        // TODO: CRITICAL! Test this.
+
+        return $this->get("/users/{$this->userId()}/ssh-keys", [],
+            function (SshKeyDataCollection $carry, array $data) {
+                /** @var object $key */
+                foreach ($data['values'] as $key) {
+                    $carry->push($this->sshKeyDataFromResponseData($key));
+                }
+
+                return $carry;
+            },
+            new SshKeyDataCollection,
+        );
     }
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
     {
-        // TODO: Implement getSshKey() method.
+        // TODO: CRITICAL! Test this.
+
+        $response = $this->get("/users/{$this->userId()}/ssh-keys/{$sshKeyExternalId}");
+        $data = $this->decodeJson($response->body());
+
+        return $this->sshKeyDataFromResponseData($data);
     }
 
     public function addSshKey(string $name, string $publicKey): SshKeyDto
     {
-        // TODO: Implement addSshKey() method.
+        // TODO: CRITICAL! Test this.
+
+        $response = $this->post("/users/{$this->userId()}/ssh-keys", [
+            'label' => $name,
+            'key' => $publicKey,
+        ]);
+        $data = $this->decodeJson($response->body());
+
+        return $this->sshKeyDataFromResponseData($data);
     }
 
     public function updateSshKey(SshKeyDto $sshKey): SshKeyDto
     {
-        // TODO: Implement updateSshKey() method.
+        $this->deleteSshKey($sshKey->id);
+
+        return $this->addSshKey($sshKey->name, $sshKey->publicKey);
     }
 
     public function deleteSshKey(string $id): void
     {
-        // TODO: Implement deleteSshKey() method.
+        // TODO: CRITICAL! Test this.
+
+        $this->delete("/users/{$this->userId()}/ssh-keys/{$id}");
     }
 
     public function getSshHostKey(): string
     {
-        // TODO: Implement getSshHostKey() method.
+        return $this->config('ssh_host_key');
     }
 
-    public function getLatestCommitHash(?string $fullRepoName, string $branch, string $username = null, string $repo = null,): string
-    {
-        // TODO: Implement getLatestCommitHash() method.
+    public function getLatestCommitHash(
+        string|null $fullRepoName,
+        string $branch,
+        string $username = null,
+        string $repo = null,
+    ): string {
+        // TODO: CRITICAL! Test this.
+
+        $fullRepoName ??= "{$username}/{$repo}";
+
+        $response = $this->get("/repositories/{$fullRepoName}/commits/{$branch}");
+        $data = $this->decodeJson($response->body());
+
+        return $data->values[0]->hash;
     }
 
     public static function getFullSshString(string $repo): string
     {
-        // TODO: Implement getFullSshString() method.
+        return "git@bitbucket.org:{$repo}.git";
     }
 
+    /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-get */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        // TODO: Implement getWebhook() method.
+        // TODO: CRITICAL! Test this.
+
+        $response = $this->get("/repositories/{$repo}/hooks/{$webhookExternalId}");
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
+    /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-get */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        // TODO: Implement getRepoWebhooks() method.
+        // TODO: CRITICAL! Test this.
+
+        return $this->get("/repositories/{$repo}/hooks", [],
+            function (WebhookDataCollection $carry, array $data) {
+                /** @var object $key */
+                foreach ($data['values'] as $key) {
+                    $carry->push($this->webhookDataFromResponseData($key));
+                }
+
+                return $carry;
+            },
+            new WebhookDataCollection,
+        );
     }
 
+    /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: Implement addWebhookPush() method.
+        // TODO: CRITICAL! Test this. Bitbucket doesn't use secrets? So, what's with these methods then?
+
+        $response = $this->post("/repositories/{$repo}/hooks",
+            $this->pushWebhookRequestData($payloadUrl),
+        );
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
-    public function updateWebhookPush(string $repo, string $webhookExternalId, string $payloadUrl, string $secret,): WebhookDto
+    /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-put */
+    public function updateWebhookPush(string $repo, string $webhookExternalId, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: Implement updateWebhookPush() method.
+        // TODO: CRITICAL! Test this.
+
+        $response = $this->put("/repositories/{$repo}/hooks/{$webhookExternalId}",
+            $this->pushWebhookRequestData($payloadUrl),
+        );
+        $data = $this->decodeJson($response->body());
+
+        return $this->webhookDataFromResponseData($data);
     }
 
+    /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-delete */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
-        // TODO: Implement deleteWebhook() method.
+        // TODO: CRITICAL! Test this.
+
+        $this->delete("/repositories/{$repo}/hooks/{$webhookExternalId}");
     }
 
     public function dispatchesPingWebhookCalls(): bool
     {
-        // TODO: Implement dispatchesPingWebhookCalls() method.
+        // TODO: CRITICAL! Implement dispatchesPingWebhookCalls() method.
+    }
+
+    /** Convert SSH key object from response format to internal format. */
+    protected function sshKeyDataFromResponseData(object $data): SshKeyDto
+    {
+        return new SshKeyDto(
+            id: (string) $data->uuid,
+            publicKey: $data->key,
+            name: $data->label,
+        );
+    }
+
+    /** Convert webhook data from response format into the internal format. */
+    protected function webhookDataFromResponseData(object $data): WebhookDto
+    {
+        return new WebhookDto(
+            events: $data->events,
+            id: (string) $data->uuid,
+            url: $data->url,
+        );
+    }
+
+    /** Get a request data array for creating or updating a push webhook. */
+    protected function pushWebhookRequestData(string $payloadUrl): array
+    {
+        return [
+            'description' => 'Michman Auto Deploy Webhook',
+            'url' => $payloadUrl,
+            'active' => true,
+            'events' => ['repo:push'],
+        ];
     }
 }
