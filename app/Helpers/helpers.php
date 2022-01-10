@@ -77,8 +77,11 @@ if (! function_exists('trimRelativePath')) {
      * Remove spaces, empty characters, slashes from the beginning and end,
      * also replace double slashes with single ones.
      */
-    function trimRelativePath(string $path): string
+    function trimRelativePath(string|null $path): string|null
     {
+        if (is_null($path))
+            return null;
+
         $path = trim($path, " \t\n\r\0\x0B/");
 
         while (Str::contains($path, '//')) {
