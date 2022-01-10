@@ -100,12 +100,10 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public function getAllSshKeys(): SshKeyDataCollection
     {
-        // TODO: CRITICAL! Test this.
-
         return $this->get("/users/{$this->userId()}/ssh-keys", [],
-            function (SshKeyDataCollection $carry, array $data) {
+            function (SshKeyDataCollection $carry, object $data) {
                 /** @var object $key */
-                foreach ($data['values'] as $key) {
+                foreach ($data->values as $key) {
                     $carry->push($this->sshKeyDataFromResponseData($key));
                 }
 
@@ -117,8 +115,6 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
     {
-        // TODO: CRITICAL! Test this.
-
         $response = $this->get("/users/{$this->userId()}/ssh-keys/{$sshKeyExternalId}");
         $data = $this->decodeJson($response->body());
 
@@ -183,9 +179,9 @@ class BitbucketV2 extends AbstractVcsProvider
         // TODO: CRITICAL! Test this.
 
         return $this->get("/repositories/{$repo}/hooks", [],
-            function (WebhookDataCollection $carry, array $data) {
+            function (WebhookDataCollection $carry, object $data) {
                 /** @var object $key */
-                foreach ($data['values'] as $key) {
+                foreach ($data->values as $key) {
                     $carry->push($this->webhookDataFromResponseData($key));
                 }
 
