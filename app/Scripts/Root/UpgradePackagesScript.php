@@ -5,6 +5,7 @@ namespace App\Scripts\Root;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 class UpgradePackagesScript extends AbstractServerScript
@@ -22,11 +23,19 @@ class UpgradePackagesScript extends AbstractServerScript
         if ($this->failed())
             throw new ServerScriptException('apt-get update has failed.');
 
-        $this->execPty('apt-get upgrade --with-new-pkgs -y');
-        $this->read();
+        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get upgrade --with-new-pkgs -y');
 
-        if ($this->failed())
+        if (Str::contains($this->read(), 'dpkg was interrupted')) {
+            $this->execPty('DEBIAN_FRONTEND=noninteractive dpkg --configure -a');
+            $this->read();
+            $this->disablePty();
+            throw new ServerScriptException('E: dpkg was interrupted, had to repair.');
+        }
+
+        if ($this->failed()) {
+            $this->disablePty();
             throw new ServerScriptException('apt-get upgrade has failed.');
+        }
 
         $this->disablePty();
     }
