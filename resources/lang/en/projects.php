@@ -100,7 +100,7 @@ return [
         'providers' => [
             'github_v3' => 'GitHub',
             'gitlab_v4' => 'GitLab',
-            'bitbucket' => 'Bitbucket',
+            'bitbucket_v2' => 'Bitbucket',
         ],
     ],
 
