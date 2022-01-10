@@ -1,3 +1,4 @@
+{{--TODO: Check out Alpine.JS Components and maybe improve the modal https://alpinejs.dev/components--}}
 {{--TODO: VERY IMPORTANT! Unfinished. Test responsiveness and test on touch - both tablet and mobile.--}}
 
 {{-- Container for a modal --}}
