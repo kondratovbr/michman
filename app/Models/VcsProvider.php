@@ -87,6 +87,15 @@ class VcsProvider extends AbstractModel
         );
     }
 
+    /**
+     * Check if this VCS provider doesn't support server keys,
+     * i.e. we can't add an SSH key to the user's account.
+     */
+    public function mustUseDeployKey(): bool
+    {
+        return ! (bool) config("vcs.list.{$this->provider}.supports_ssh_keys", false);
+    }
+
     /** Get a relation with the user that owns this VCS provider account. */
     public function user(): BelongsTo
     {

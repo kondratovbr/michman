@@ -127,29 +127,17 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public function addSshKey(string $name, string $publicKey): SshKeyDto
     {
-        // TODO: CRITICAL! Test this.
-
-        $response = $this->post("/users/{$this->userId()}/ssh-keys", [
-            'label' => $name,
-            'key' => $publicKey,
-        ]);
-        $data = $this->decodeJson($response->body());
-
-        return $this->sshKeyDataFromResponseData($data);
+        throw new RuntimeException('Bitbucket does not support adding SSH keys via API.');
     }
 
     public function updateSshKey(SshKeyDto $sshKey): SshKeyDto
     {
-        $this->deleteSshKey($sshKey->id);
-
-        return $this->addSshKey($sshKey->name, $sshKey->publicKey);
+        throw new RuntimeException('Bitbucket does not support updating SSH keys via API.');
     }
 
     public function deleteSshKey(string $id): void
     {
-        // TODO: CRITICAL! Test this.
-
-        $this->delete("/users/{$this->userId()}/ssh-keys/{$id}");
+        throw new RuntimeException('Bitbucket does not support deleting SSH keys via API.');
     }
 
     public function getSshHostKey(): string
