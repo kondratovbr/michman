@@ -15,7 +15,6 @@
         {{-- CSRF-token for front-end scripts is provided as a meta. --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-{{--        TODO: CRITICAL! CONTINUE. Don't forget to update fonts. Maybe just use OS ones, as usual.--}}
         {{-- Fonts --}}
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
