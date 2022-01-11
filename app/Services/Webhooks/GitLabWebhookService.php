@@ -7,6 +7,8 @@ use App\Support\Arr;
 use App\Support\Str;
 use Illuminate\Http\Request;
 
+// TODO: Cover with tests.
+
 class GitLabWebhookService implements WebhookServiceInterface
 {
     use HasConfig;

@@ -18,8 +18,6 @@ return [
     
     'list' => [
 
-        // TODO: CRITICAL! CONTINUE. Don't forget to implement support for all of these. Bitbucket is the only one left.
-
         'github_v3' => [
             // GitHub scopes are per-request and should be properly configured here.
             'oauth_scopes' => ['user', 'repo', 'admin:public_key'],
