@@ -93,22 +93,26 @@
 
     {{--            TODO: CRITICAL! This whole thing needs some explanation and a link to docs. Don't forget to provide explanation on where to actually add those deploy keys inside the repo page for all providers.--}}
                 <div class="space-y-3">
-                    <x-field>
-                        <x-checkbox-new
-                            name="state.useDeployKey"
-                            wire:model="state.useDeployKey"
-                        >
-                            {{ __('projects.repo.configure.use-deploy-key.label') }}
-                        </x-checkbox-new>
-                        <x-input-error for="useDeployKey" />
-                    </x-field>
+                    @unless($this->mustUseDeployKey())
+                        <div>
+                            <x-field>
+                                <x-checkbox-new
+                                    name="state.useDeployKey"
+                                    wire:model="state.useDeployKey"
+                                >
+                                    {{ __('projects.repo.configure.use-deploy-key.label') }}
+                                </x-checkbox-new>
+                                <x-input-error for="useDeployKey" />
+                            </x-field>
+                        </div>
+                    @endunless
 
-                    @if($state['useDeployKey'])
-{{--                        TODO: IMPORTANT! Color is way too bright here. Should do something closer to Bulma's softer styles. Check out other uses and other colors as well. And don't forget about text contrast rating.--}}
+                    @if($this->mustUseDeployKey() || $state['useDeployKey'])
+    {{--                    TODO: IMPORTANT! Color is way too bright here. Should do something closer to Bulma's softer styles. Check out other uses and other colors as well. And don't forget about text contrast rating.--}}
                         <x-message colors="warning">
                             <p class="max-w-prose">
                                 {{ __('projects.repo.configure.use-deploy-key.enabled-message',
-                                ['provider' => __("projects.repo.providers.{$provider->provider}")]) }}
+                                    ['provider' => __("projects.repo.providers.{$provider->provider}")]) }}
                             </p>
                             <x-copy-code-block class="mt-3" :wrap="true">{{ $project->deploySshKey->publicKeyString }}</x-copy-code-block>
                         </x-message>

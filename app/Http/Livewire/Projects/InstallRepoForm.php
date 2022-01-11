@@ -13,6 +13,7 @@ use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Http\Livewire\Traits\TrimsInputBeforeValidation;
 use App\Models\Project;
 use App\Models\Server;
+use App\Models\VcsProvider;
 use App\Support\Str;
 use App\Validation\Rules;
 use Illuminate\Contracts\View\View;
@@ -117,9 +118,25 @@ class InstallRepoForm extends LivewireComponent
         if (! Str::contains($value, '/'))
             return;
 
-        [$username, $repo] = explode('/', $value);
+        $repo = explode('/', $value)[1];
 
         $this->state['package'] = Str::lower($repo);
+    }
+
+    /** Check if deploy key must be used with the currently chosen provider. */
+    public function mustUseDeployKey(): bool
+    {
+        return $this->getVcsProvider()->mustUseDeployKey();
+    }
+
+    protected function getVcsProvider(): VcsProvider
+    {
+        $vcsProviderKey = $this->validateOnly('state.vcsProviderKey')['state']['vcsProviderKey'];
+
+        /** @var VcsProvider $vcs */
+        $vcs = Auth::user()->vcsProviders()->findOrFail($vcsProviderKey);
+
+        return $vcs;
     }
 
     /** Store the project's repository configuration. */
@@ -138,7 +155,7 @@ class InstallRepoForm extends LivewireComponent
                 repo: $state['repo'],
                 branch: $state['branch'],
                 package: $state['package'],
-                use_deploy_key: $state['useDeployKey'],
+                use_deploy_key: $this->mustUseDeployKey() ? true : $state['useDeployKey'],
                 requirements_file: $state['requirementsFile'],
             ),
             $this->server,
