@@ -12,11 +12,15 @@ class HandleFinishedDeploymentListener extends AbstractEventListener implements 
 {
     public function handle(DeploymentFinishedEvent $event): void
     {
-        if ($event->deployment()->successful)
+        if ($event->deployment()->successful) {
             $event->deployment()->project->user->notify(new DeploymentCompletedNotification($event->deployment()));
+            return;
+        }
 
-        if ($event->deployment()->failed)
+        if ($event->deployment()->failed) {
             $event->deployment()->project->user->notify(new DeploymentFailedNotification($event->deployment()));
+            return;
+        }
 
         Log::error('HandleFinishedDeploymentListener: Deployment finished, but neither successful nor failed.');
     }
