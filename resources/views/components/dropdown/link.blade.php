@@ -1,11 +1,10 @@
-{{--TODO: Figure out highlighting a currently open page.--}}
-
 @props([
     'capitalize' => true,
     'textClasses' => '',
     'external' => false,
     'action' => null,
     'subPage' => '',
+    'route' => null,
 ])
 
 <a {{ $attributes->merge([
@@ -18,23 +17,27 @@
     @switch($action)
         @case('back')
             x-on:click="open = true; sub = ''"
+            role="button"
             @break
         @case('close')
             x-on:click="open = false; sub = ''"
+            role="button"
             @break
         @case('sub-page')
-            wire:click="$emit('showSubPage', '{{ $subPage }}')"
-            x-on:click="open = false; sub = ''; current = '{{ $subPage }}'"
+            @if( ! empty($route) && ! request()->routeIs($route))
+                href="{{ route($route) }}"
+            @else
+                wire:click="$emit('showSubPage', '{{ $subPage }}')"
+                x-on:click="open = false; sub = ''; current = '{{ $subPage }}'"
+                role="button"
+            @endif
             @break
         @case(null)
             @break
         @default
             x-on:click="open = false; sub = '{{ $action }}'"
+            role="button"
     @endswitch
-
-    @if($action !== null)
-        role="button"
-    @endif
 >
     {{-- When the $action is "sub-page", i.e. this link is actually a sub-page switcher,
          some classes are removed from classes="" and applied conditionally by Alpine
