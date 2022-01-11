@@ -7,6 +7,7 @@ use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
+use App\Services\Webhooks\BitbucketWebhookService;
 use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
@@ -15,9 +16,6 @@ use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
 // TODO: IMPORTANT! Cover with tests.
-
-// TODO: CRITICAL! CONTINUE.
-// TODO: CRITICAL! CONTINUE. Now, implement BitbucketWebhookService class and test webhooks and deployment from Bitbucket.
 
 class BitbucketV2 extends AbstractVcsProvider
 {
@@ -164,8 +162,6 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-get */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        // TODO: CRITICAL! Test this.
-
         $response = $this->get("/repositories/{$repo}/hooks/{$webhookExternalId}");
         $data = $this->decodeJson($response->body());
 
@@ -175,8 +171,6 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-get */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        // TODO: CRITICAL! Test this.
-
         return $this->get("/repositories/{$repo}/hooks", [],
             function (WebhookDataCollection $carry, object $data) {
                 /** @var object $key */
@@ -193,8 +187,6 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: CRITICAL! Test this. Bitbucket doesn't use secrets? So, what's with these methods then?
-
         $response = $this->post("/repositories/{$repo}/hooks",
             $this->pushWebhookRequestData($payloadUrl),
         );
@@ -206,8 +198,6 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-put */
     public function updateWebhookPush(string $repo, string $webhookExternalId, string $payloadUrl, string $secret): WebhookDto
     {
-        // TODO: CRITICAL! Test this.
-
         $response = $this->put("/repositories/{$repo}/hooks/{$webhookExternalId}",
             $this->pushWebhookRequestData($payloadUrl),
         );
@@ -252,11 +242,7 @@ class BitbucketV2 extends AbstractVcsProvider
     /** Convert webhook data from a response to an array of events. */
     protected function eventsArrayFromData(object $data): array
     {
-        // https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/
-        $events = [
-            'repo:push' => 'push',
-            //
-        ];
+        $events = BitbucketWebhookService::EVENTS_MAP;
 
         $result = [];
 
