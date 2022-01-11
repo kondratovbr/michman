@@ -7,12 +7,13 @@
 
         <x-bottombar.link routeName="home" class="col-span-4">
             <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
-            <x-slot name="content">Servers</x-slot>
+            <x-slot name="content">{{ __('nav.servers') }}</x-slot>
         </x-bottombar.link>
 
+{{--        TODO: VERY IMPORTANT! This was supposed to be a dropup, like in the navbar.--}}
         <x-bottombar.link routeName="home" class="col-span-4">
             <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
-            <x-slot name="content">Projects</x-slot>
+            <x-slot name="content">{{ __('nav.projects') }}</x-slot>
         </x-bottombar.link>
 
         <x-bottombar.dropup class="col-span-2">
