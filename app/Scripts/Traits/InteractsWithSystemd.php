@@ -50,7 +50,7 @@ trait InteractsWithSystemd
         if ($this->failed())
             return false;
 
-        return Str::contains(Str::lower($output), 'active (running)');
+        return Str::contains(Str::lower($output), ['active (running)', 'active (listening)']);
     }
 
     /** Check if a service is running and throw an exception is it doesn't. */
