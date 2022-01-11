@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Unfinished. Need loading animations, etc. Forge does loading very simple - by a spinner on the primary button that shows any time the component is loading, like "wire:loading" stuff.--}}
+{{--TODO: Need loading animations, etc. Forge does loading very simple - by a spinner on the primary button that shows any time the component is loading, like "wire:loading" stuff.--}}
 
 <x-form-section submit="store">
 
@@ -108,7 +108,7 @@
                     @endunless
 
                     @if($this->mustUseDeployKey() || $state['useDeployKey'])
-    {{--                    TODO: IMPORTANT! Color is way too bright here. Should do something closer to Bulma's softer styles. Check out other uses and other colors as well. And don't forget about text contrast rating.--}}
+    {{--                    TODO: Color is way too bright here. Should do something closer to Bulma's softer styles. Check out other uses and other colors as well. And don't forget about text contrast rating.--}}
                         <x-message colors="warning">
                             <p class="max-w-prose">
                                 {{ __('projects.repo.configure.use-deploy-key.enabled-message',
