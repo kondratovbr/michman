@@ -7,6 +7,7 @@ use App\Collections\WebhookDataCollection;
 use App\DataTransferObjects\AuthTokenDto;
 use App\DataTransferObjects\SshKeyDto;
 use App\DataTransferObjects\WebhookDto;
+use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
@@ -147,8 +148,6 @@ class BitbucketV2 extends AbstractVcsProvider
         string $username = null,
         string $repo = null,
     ): string {
-        // TODO: CRITICAL! Test this.
-
         $fullRepoName ??= "{$username}/{$repo}";
 
         $response = $this->get("/repositories/{$fullRepoName}/commits/{$branch}");
@@ -227,7 +226,7 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public function dispatchesPingWebhookCalls(): bool
     {
-        // TODO: CRITICAL! Implement dispatchesPingWebhookCalls() method.
+        return false;
     }
 
     /** Convert SSH key object from response format to internal format. */
@@ -244,10 +243,29 @@ class BitbucketV2 extends AbstractVcsProvider
     protected function webhookDataFromResponseData(object $data): WebhookDto
     {
         return new WebhookDto(
-            events: $data->events,
+            events: $this->eventsArrayFromData($data),
             id: (string) $data->uuid,
             url: $data->url,
         );
+    }
+
+    /** Convert webhook data from a response to an array of events. */
+    protected function eventsArrayFromData(object $data): array
+    {
+        // https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/
+        $events = [
+            'repo:push' => 'push',
+            //
+        ];
+
+        $result = [];
+
+        foreach ($events as $bitbucketEvent => $appEvent) {
+            if (Arr::hasValue($data->events, $bitbucketEvent))
+                $result[] = $appEvent;
+        }
+
+        return $result;
     }
 
     /** Get a request data array for creating or updating a push webhook. */
