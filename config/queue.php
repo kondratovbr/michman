@@ -36,7 +36,7 @@ return [
 
         'database' => [
 
-            // TODO: CRITICAL! Make sure workers actually work all queues. I have a list of queues here at the bottom.
+            // TODO: CRITICAL! DEPLOYMENT. Make sure workers actually work all queues. I have a list of queues here at the bottom.
 
             'driver' => 'database',
             'table' => 'jobs',

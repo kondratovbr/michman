@@ -43,7 +43,7 @@ class DeleteAccountForm extends Component
     /** Delete the current user. */
     public function deleteUser(DeletesUsers $deleter, StatefulGuard $auth): RedirectResponse
     {
-        // TODO: CRITICAL! Implement the actual feature. Would be more complex than that. Maybe need to clean servers, logout providers, VCSs, etc. Maybe need to have a cooldown time, so a user can stop deletion, if necessary. Also, need to handle billing on deletion somehow.
+        // TODO: CRITICAL! DELETING. Implement the actual feature. Would be more complex than that. Maybe need to clean servers, logout providers, VCSs, etc. Maybe need to have a cooldown time, so a user can stop deletion, if necessary. Also, need to handle billing on deletion somehow.
 
         abort(403);
 

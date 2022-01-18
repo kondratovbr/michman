@@ -1,4 +1,3 @@
-{{--    TODO: CRITICAL! Users can now have multiple OAuth accounts linked, so this is not correct. Reimplement.--}}
 @if(user()->usesOauth())
     @include('profile._oauth')
     <x-section-separator/>

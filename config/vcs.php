@@ -26,7 +26,7 @@ return [
             'base_path' => 'https://api.github.com',
             'auth_type' => 'token',
             'icon' => 'fab fa-github',
-            // TODO: CRITICAL! I should have a scheduled command that will check that this is the current key and notify me on the emergency channel if it isn't.
+            // TODO: VERY IMPORTANT! I should have a scheduled command that will check that this is the current key and notify me on the emergency channel if it isn't.
             //       A key can be retrieved like this: ssh-keyscan -t rsa github.com
             //       Or for all keys: ssh-keyscan github.com
             //       The format returned is suitable for a known-hosts file.

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
 /*
- * TODO: CRITICAL! Make sure no actions can be done with the project when we removing the repo,
+ * TODO: CRITICAL! DELETING. Make sure no actions can be done with the project when we removing the repo,
  *       and make sure the UI cannot be used.
  */
 

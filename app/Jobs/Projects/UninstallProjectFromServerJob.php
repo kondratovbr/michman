@@ -6,7 +6,7 @@ use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
 
-// TODO: CRITICAL! Implement.
+// TODO: CRITICAL! DELETING. Implement.
 
 class UninstallProjectFromServerJob extends AbstractRemoteServerJob
 {

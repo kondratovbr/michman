@@ -170,7 +170,7 @@ class Project extends AbstractModel
     /** Check if this project is currently deployed. */
     public function getDeployedProperty(): bool
     {
-        // TODO: CRITICAL! Update this when "undeploy" feature is implemented,
+        // TODO: CRITICAL! DELETING. Update this when "undeploy" feature is implemented,
         //       because it will be incorrect.
         return ! is_null($this->getCurrentDeployment());
     }

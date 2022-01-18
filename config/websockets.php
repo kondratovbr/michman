@@ -238,7 +238,7 @@ return [
     */
 
     /*
-     * TODO: CRITICAL! Configure SSL for Websockets on production.
+     * TODO: CRITICAL! DEPLOYMENT. Configure SSL for Websockets on production.
      *       https://beyondco.de/docs/laravel-websockets/basic-usage/ssl
      *       Don't forget to also configure SSL for the main app,
      *       make sure it works with Livewire as well.
