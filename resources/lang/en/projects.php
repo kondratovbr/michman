@@ -210,4 +210,10 @@ return [
         'button' => 'Update Branch',
     ],
 
+    'uninstall' => [
+        'title' => 'Uninstall Repository',
+        'info' => 'All project files will be removed from the servers, project page will be reverted to a placeholder.',
+        'button' => 'Uninstall Repository',
+    ],
+
 ];
