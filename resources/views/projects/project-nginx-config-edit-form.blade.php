@@ -26,7 +26,7 @@
                 :disabled="! $this->modified"
             >{{ __('buttons.rollback') }}</x-buttons.secondary>
             @if($this->modified)
-                <x-badge>Modified</x-badge>
+                <x-badge>{{ __('misc.modified') }}</x-badge>
             @endif
         </div>
     </x-slot>

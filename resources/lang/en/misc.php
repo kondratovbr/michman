@@ -15,5 +15,6 @@ return [
     'copied' => 'Copied',
     'dismiss' => 'Dismiss',
     'delete' => 'Delete',
+    'modified' => 'Modified',
 
 ];
