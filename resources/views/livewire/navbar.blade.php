@@ -1,6 +1,6 @@
 {{--TODO: CRITICAL! Order a logo or make it some other way.--}}
 {{-- TODO: IMPORTANT! Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
-{{--TODO: The button's background blinks on page loads. At least in Chrome. Probably something to do with the Alpine loading. Fix.--}}
+{{--TODO: The button's background blinks on page loads. At least in Chrome. Probably something to do with the Alpine loading. Maybe it's about default classes (before Alpine loads) Fix.--}}
 
 <nav
     class="relative hidden md:block bg-navy-300 z-40"

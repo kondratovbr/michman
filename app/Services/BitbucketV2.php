@@ -209,8 +209,6 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-delete */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
-        // TODO: CRITICAL! Test this.
-
         $this->delete("/repositories/{$repo}/hooks/{$webhookExternalId}");
     }
 
