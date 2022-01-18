@@ -27,8 +27,7 @@ class InstallProjectRepoAction
         return DB::transaction(function () use (
             $project, $vcsProvider, $data, $server, $installDependencies
         ): Project {
-            /** @var Project $project */
-            $project = Project::query()->lockForUpdate()->findOrFail($project->getKey());
+            $project = $project->freshLockForUpdate();
 
             $project->vcsProvider()->associate($vcsProvider);
             $project->fill($data->toArray());
