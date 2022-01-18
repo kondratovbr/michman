@@ -17,6 +17,7 @@ use App\Support\Arr;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -144,9 +145,9 @@ class DigitalOceanV2 extends AbstractServerProvider
             'region' => $data->region,
             'size' => $data->size,
             'image' => (string) $this->config('default_image'),
-            // TODO: CRITICAL! Don't forget to remove the second one!
-            'ssh_keys' => [$sshKeyIdentifier, '46:2e:86:c8:74:2d:d6:bf:d3:00:49:20:a7:67:12:4f'],
-            // 'ssh_keys' => [$sshKeyIdentifier],
+            'ssh_keys' => App::environment('local')
+                ? [$sshKeyIdentifier, $this->config('dev_ssh_key_identifier')]
+                : [$sshKeyIdentifier],
             'monitoring' => true,
         ]);
         $data = $this->decodeJson($response->body());

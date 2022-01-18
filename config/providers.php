@@ -22,6 +22,7 @@ return [
             'icon' => 'fab fa-digital-ocean',
             'disabled' => false,
             'default_image' => 'ubuntu-20-04-x64',
+            'dev_ssh_key_identifier' => env('DO_DEV_SSH_KEY'),
         ],
 
         'aws' => [
