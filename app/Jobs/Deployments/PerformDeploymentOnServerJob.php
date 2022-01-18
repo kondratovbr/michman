@@ -96,7 +96,7 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
                 $restartNginx->execute($server, $rootSsh);
 
                 $pivot->successful = true;
-            } catch (ServerScriptException $scriptException) {
+            } catch (ServerScriptException) {
                 // TODO: Maybe use the exception message as an additional piece of information for the user. I.e. store it in a Deployment pivot model and show in the failure notification or in the deployment log view.
                 $pivot->successful = false;
             } finally {

@@ -34,8 +34,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
         $api = $this->project->vcsProvider->api();
 
         DB::transaction(function () use (
-            $cloneRepo, $createVenv, $configureGunicorn,
-            $api,
+            $cloneRepo, $createVenv, $configureGunicorn, $api,
         ) {
             $project = $this->project->freshLockForUpdate();
             $server = $this->server->freshLockForUpdate();
