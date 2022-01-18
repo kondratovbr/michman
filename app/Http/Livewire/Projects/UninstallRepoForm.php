@@ -13,6 +13,8 @@ use Livewire\Component as LivewireComponent;
  *       and make sure the UI cannot be used.
  */
 
+// TODO: VERY IMPORTANT! Add a confirmation modal here. On other destructive actions as well.
+
 class UninstallRepoForm extends LivewireComponent
 {
     use AuthorizesRequests;
