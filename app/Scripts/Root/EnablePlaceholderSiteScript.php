@@ -2,7 +2,6 @@
 
 namespace App\Scripts\Root;
 
-use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use phpseclib3\Net\SFTP;
