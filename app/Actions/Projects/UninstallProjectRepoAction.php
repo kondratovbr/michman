@@ -3,6 +3,7 @@
 namespace App\Actions\Projects;
 
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
+use App\Jobs\Projects\UninstallProjectFromServerJob;
 use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
@@ -12,7 +13,7 @@ class UninstallProjectRepoAction
 {
     public function execute(Project $project): Project
     {
-        // TODO: CRITICAL! CONTINUE. Implement.
+        // TODO: CRITICAL! CONTINUE. Implement and test.
 
         return DB::transaction(function () use ($project): Project {
             $project->freshLockForUpdate('servers');
@@ -24,12 +25,10 @@ class UninstallProjectRepoAction
                 if ($project->useDeployKey)
                     $jobs[] = new DeleteDeploySshKeyFromServerJob($server, $project);
 
-                // Revert Nginx config to a placeholder and restart it
-                // Stop gunicorn service, remove config and service
-                // Remove project files
-                //
+                $jobs[] = new UninstallProjectFromServerJob($project, $server);
             }
 
+            // Make changes in the DB.
             //
 
             Bus::chain($jobs)->dispatch();
