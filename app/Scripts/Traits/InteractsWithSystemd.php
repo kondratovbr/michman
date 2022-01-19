@@ -13,11 +13,24 @@ use App\Support\Str;
  */
 trait InteractsWithSystemd
 {
+    protected function systemdReload(): void
+    {
+        $this->exec('systemctl daemon-reload');
+        $this->exec('systemctl reset-failed');
+    }
+
     protected function systemdStopService(string $service): void
     {
         $service = Str::lower($service);
 
         $this->exec("systemctl stop {$service}");
+    }
+
+    protected function systemdDisableService(string $service): void
+    {
+        $service = Str::lower($service);
+
+        $this->exec("systemctl disable {$service}");
     }
 
     /**
