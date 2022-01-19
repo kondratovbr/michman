@@ -7,10 +7,13 @@ use App\Models\Project;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Scripts\Traits\InteractsWithSystemd;
 use phpseclib3\Net\SFTP;
 
 class ConfigureGunicornScript extends AbstractServerScript
 {
+    use InteractsWithSystemd;
+
     public function execute(Server $server, Project $project, SFTP $ssh = null): void
     {
         $this->init($server, $ssh);
@@ -31,6 +34,6 @@ class ConfigureGunicornScript extends AbstractServerScript
             throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
         }
 
-        $this->exec("systemctl daemon-reload");
+        $this->systemdReload();
     }
 }
