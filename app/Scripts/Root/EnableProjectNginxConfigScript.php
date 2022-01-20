@@ -16,10 +16,7 @@ class EnableProjectNginxConfigScript extends AbstractServerScript
         $available = "/etc/nginx/sites-available";
         $enabled = "/etc/nginx/sites-enabled";
         $file = "{$project->projectName}.conf";
-        $placeholder = "{$project->projectName}_placeholder.conf";
 
         $this->exec("ln -sf {$available}/{$file} {$enabled}/{$file}");
-
-        $this->exec("rm -rf {$enabled}/{$placeholder}");
     }
 }
