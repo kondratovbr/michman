@@ -3,6 +3,7 @@
 namespace App\Actions\Projects;
 
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
+use App\Jobs\Projects\RemoveRepoDataFromProject;
 use App\Jobs\Projects\UninstallProjectFromServerJob;
 use App\Models\Project;
 use App\Models\Server;
@@ -28,8 +29,7 @@ class UninstallProjectRepoAction
                 $jobs[] = new UninstallProjectFromServerJob($project, $server);
             }
 
-            // Make changes in the DB.
-            //
+            $jobs[] = new RemoveRepoDataFromProject($project);
 
             Bus::chain($jobs)->dispatch();
 
