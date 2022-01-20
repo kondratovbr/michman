@@ -12,11 +12,6 @@ use App\Jobs\Servers\CreateUserOnServerJob;
 use App\Models\Project;
 use App\Models\Server;
 
-/*
- * TODO: IMPORTANT! I should also create a "default"/"placeholder" project after the server has been set up, like Forge does,
- *       just to demonstrate the project setup and so the user can check that the server is accessible and works alright.
- */
-
 class StoreProjectAction
 {
     public function __construct(
