@@ -11,7 +11,7 @@ use App\Scripts\Root\RestartNginxScript;
 use App\Scripts\User\DeleteProjectFilesScript;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! CONTINUE. Test.
+// TODO: Cover with tests.
 
 class UninstallProjectFromServerJob extends AbstractRemoteServerJob
 {
