@@ -10,12 +10,12 @@ use App\Models\Server;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
+// TODO: Cover with tests.
+
 class UninstallProjectRepoAction
 {
     public function execute(Project $project): Project
     {
-        // TODO: CRITICAL! CONTINUE. Implement and test.
-
         return DB::transaction(function () use ($project): Project {
             $project->freshLockForUpdate('servers');
 
@@ -32,6 +32,9 @@ class UninstallProjectRepoAction
             $jobs[] = new RemoveRepoDataFromProject($project);
 
             Bus::chain($jobs)->dispatch();
+
+            $project->removingRepo = true;
+            $project->save();
 
             return $project;
         }, 5);

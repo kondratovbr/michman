@@ -38,6 +38,8 @@ class RemoveRepoDataFromProject extends AbstractJob
 
             $project->vcsProvider()->disassociate();
 
+            $project->removingRepo = false;
+
             $project->save();
         }, 5);
     }

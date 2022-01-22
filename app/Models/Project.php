@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\ForceBooleanCast;
 use App\Casts\SetCast;
 use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $deployScript
  * @property string|null $gunicornConfig
  * @property string|null $nginxConfig
+ * @property bool $removingRepo
  *
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
@@ -85,6 +87,7 @@ class Project extends AbstractModel
         'deploy_script',
         'gunicorn_config',
         'nginx_config',
+        'removing_repo',
     ];
 
     /** @var string[] The attributes that should be visible in arrays and JSON. */
@@ -95,6 +98,7 @@ class Project extends AbstractModel
         'aliases' => SetCast::class,
         'use_deploy_key' => 'bool',
         'environment' => 'encrypted',
+        'removing_repo' => ForceBooleanCast::class,
     ];
 
     /** @var string[] The event map for the model. */
