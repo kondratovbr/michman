@@ -77,13 +77,13 @@ class Worker extends AbstractModel
     ];
 
     /** Get a configured stopSeconds attribute or the default value. */
-    public function getStopSecondsAttribute(): int
+    protected function getStopSecondsAttribute(): int
     {
         return $this->attributes['stop_seconds'] ?? 600;
     }
 
     /** Get the user who owns this worker. */
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->project->user;
     }
@@ -92,19 +92,19 @@ class Worker extends AbstractModel
      * Derive the application name for this worker from the project,
      * if it wasn't set explicitly.
      */
-    public function getAppAttribute(): string
+    protected function getAppAttribute(): string
     {
         return $this->attributes['app'] ?? $this->project->package;
     }
 
     /** Get a desired debug level for this queue worker. */
-    public function getDebugLevelAttribute(): string
+    protected function getDebugLevelAttribute(): string
     {
         return 'INFO';
     }
 
     /** Derive a name for this worker from its properties. */
-    public function getNameAttribute(): string
+    protected function getNameAttribute(): string
     {
         return "{$this->type}-{$this->id}";
     }

@@ -85,9 +85,15 @@ class Webhook extends AbstractModel
         });
     }
 
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->project->user;
+    }
+
+    /** Get the full name (with username) of the repository with this webhook. */
+    protected function getRepoAttribute(): string
+    {
+        return $this->project->repo;
     }
 
     /** Generate a payload URL for a webhook. */
@@ -100,12 +106,6 @@ class Webhook extends AbstractModel
         }
 
         return route('hook.push', [$hook->provider, $hook]);
-    }
-
-    /** Get the full name (with username) of the repository with this webhook. */
-    public function getRepoAttribute(): string
-    {
-        return $this->project->repo;
     }
 
     public function isEnabling(): bool

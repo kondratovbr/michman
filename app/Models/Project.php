@@ -105,19 +105,19 @@ class Project extends AbstractModel
     ];
 
     /** Get a domain name of this project for the front-end. */
-    public function getFullDomainNameAttribute(): string
+    protected function getFullDomainNameAttribute(): string
     {
         return ($this->allowSubDomains ? '*.' : '') . $this->domain;
     }
 
     /** Get a name for a server user that will be created and used to run this project. */
-    public function getServerUsernameAttribute(): string
+    protected function getServerUsernameAttribute(): string
     {
         return Str::replace('.', '_', Str::lower($this->domain));
     }
 
     /** Derive a project name from the repo name of this project. */
-    public function getProjectNameAttribute(): string|null
+    protected function getProjectNameAttribute(): string|null
     {
         if (empty($this->repo))
             return null;
@@ -126,49 +126,49 @@ class Project extends AbstractModel
     }
 
     /** Get the path to the file where the deploy script is stored on a server. */
-    public function getDeployScriptFilePathAttribute(): string
+    protected function getDeployScriptFilePathAttribute(): string
     {
         return "/home/{$this->serverUsername}/.michman/{$this->projectName}_deploy.sh";
     }
 
     /** Get the path to the .env file on a server. */
-    public function getEnvFilePathAttribute(): string
+    protected function getEnvFilePathAttribute(): string
     {
         return "/home/{$this->serverUsername}/{$this->domain}/.env";
     }
 
     /** Get the path to the Nginx config file on a server. */
-    public function getNginxConfigFilePathAttribute(): string
+    protected function getNginxConfigFilePathAttribute(): string
     {
         return "/etc/nginx/sites-available/{$this->projectName}.conf";
     }
 
     /** Get the path to the user-customizable part of the Nginx config on a server. */
-    public function getUserNginxConfigFilePathAttribute(): string
+    protected function getUserNginxConfigFilePathAttribute(): string
     {
         return "{$this->michmanDir}/{$this->projectName}_nginx.conf";
     }
 
     /** Get the path to the Gunicorn config file on a server. */
-    public function getGunicornConfigFilePathAttribute(): string
+    protected function getGunicornConfigFilePathAttribute(): string
     {
         return "{$this->michmanDir}/{$this->projectName}_gunicorn_config.py";
     }
 
     /** Get the path to the directory where this project is cloned on a server. */
-    public function getProjectDirAttribute(): string
+    protected function getProjectDirAttribute(): string
     {
         return "/home/{$this->serverUsername}/{$this->domain}";
     }
 
     /** Get the path to the directory where we store important files we add to a server. */
-    public function getMichmanDirAttribute(): string
+    protected function getMichmanDirAttribute(): string
     {
         return "/home/{$this->serverUsername}/.michman";
     }
 
     /** Check if this project is currently deployed. */
-    public function getDeployedProperty(): bool
+    protected function getDeployedAttribute(): bool
     {
         // TODO: CRITICAL! DELETING. Update this when "undeploy" feature is implemented,
         //       because it will be incorrect.
@@ -176,7 +176,7 @@ class Project extends AbstractModel
     }
 
     /** Check if this project has webhook enabled. */
-    public function getWebhookEnabledProperty(): bool
+    protected function getWebhookEnabledAttribute(): bool
     {
         if (! isset($this->webhook))
             return false;
@@ -215,7 +215,7 @@ class Project extends AbstractModel
     }
 
     /** Get a public URL to the repository configured for this project. */
-    public function getRepoUrlAttribute(): string|null
+    protected function getRepoUrlAttribute(): string|null
     {
         if (empty($this->repo) || ! isset($this->vcsProvider))
             return null;
@@ -225,7 +225,7 @@ class Project extends AbstractModel
     }
 
     /** Get a printable name of a VCS service configured for this project. */
-    public function getVcsProviderNameAttribute(): string|null
+    protected function getVcsProviderNameAttribute(): string|null
     {
         if (! isset($this->vcsProvider))
             return null;

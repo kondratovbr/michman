@@ -40,7 +40,7 @@ class DeploySshKey extends AbstractModel implements SshKeyInterface
     protected $visible = [];
 
     /** Get a name for the key to use as a filename on servers. */
-    public function getNameAttribute(): string
+    protected function getNameAttribute(): string
     {
         return Str::snake(Str::lower($this->project->domain));
     }

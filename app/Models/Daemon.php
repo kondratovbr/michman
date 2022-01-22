@@ -68,25 +68,25 @@ class Daemon extends AbstractModel
         'deleted' => DaemonDeletedEvent::class,
     ];
 
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->server->user;
     }
 
     /** Derive the name for this daemon from its properties. */
-    public function getNameAttribute(): string
+    protected function getNameAttribute(): string
     {
         return "daemon-{$this->id}";
     }
 
     /** Get a shortened version of the command for the UI. */
-    public function getShortCommandAttribute(): string
+    protected function getShortCommandAttribute(): string
     {
         return Arr::last(explode('/', explode(' ', $this->command)[0]));
     }
 
     /** Get a shortened version of the directory for the UI. */
-    public function getShortDirectoryAttribute(): string
+    protected function getShortDirectoryAttribute(): string
     {
         return Arr::last(explode('/', $this->directory));
     }

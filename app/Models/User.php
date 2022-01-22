@@ -80,19 +80,19 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         'profile_photo_url',
     ];
 
-    public function setEmailAttribute(string $email): void
+    protected function setEmailAttribute(string $email): void
     {
         $this->attributes['email'] = Str::lower($email);
     }
 
     /** Derive user's name from the email. */
-    public function getNameAttribute(): string
+    protected function getNameAttribute(): string
     {
         return explode('@', $this->email, 2)[0];
     }
 
     /** Get the URL for the user's profile photo. */
-    public function getAvatarUrlAttribute(): string
+    protected function getAvatarUrlAttribute(): string
     {
         return $this->profile_photo_url;
     }

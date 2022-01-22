@@ -63,7 +63,7 @@ class FirewallRule extends AbstractModel
     ];
 
     /** Get the owner of the server where this firewall rule belongs. */
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->server->provider->user;
     }

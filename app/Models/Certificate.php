@@ -71,25 +71,25 @@ class Certificate extends AbstractModel
     ];
 
     /** Get the user who owns this certificate. */
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->server->user;
     }
 
     /** Derive a name for this certificate from its domain. */
-    public function getNameAttribute(): string
+    protected function getNameAttribute(): string
     {
         return $this->domain;
     }
 
     /** Get a directory where the files related to this certificate are stored on a server. */
-    public function getDirectoryAttribute(): string
+    protected function getDirectoryAttribute(): string
     {
         return "/etc/letsencrypt/live/{$this->name}";
     }
 
     /** Get the certificate domain wrapped in a set for compatibility with some unrefactored code. */
-    public function getDomainsAttribute(): Set
+    protected function getDomainsAttribute(): Set
     {
         return new Set([$this->domain]);
     }

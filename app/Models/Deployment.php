@@ -87,7 +87,7 @@ class Deployment extends AbstractModel
     ];
 
     /** Get the user who owns the project that is being deployed by this deployment. */
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         /*
          * TODO: IMPORTANT! I need to re-do the Deployment in such a way that it can be started by a different user
@@ -98,7 +98,7 @@ class Deployment extends AbstractModel
     }
 
     /** Check if this deployment has been started. */
-    public function getStartedAttribute(): bool
+    protected function getStartedAttribute(): bool
     {
         return $this->servers->reduce(
             fn(bool $started, Server $server) => $started ? true : $server->serverDeployment->started,
@@ -107,7 +107,7 @@ class Deployment extends AbstractModel
     }
 
     /** Check if this deployment is finished (regardless of its success) or is it still going. */
-    public function getFinishedAttribute(): bool
+    protected function getFinishedAttribute(): bool
     {
         return $this->servers->reduce(
             fn(bool $finished, Server $server) => $finished ? $server->serverDeployment->finished : $finished,
@@ -116,7 +116,7 @@ class Deployment extends AbstractModel
     }
 
     /** Check if this deployment was successful. */
-    public function getSuccessfulAttribute(): bool|null
+    protected function getSuccessfulAttribute(): bool|null
     {
         /** @var Server $server */
         foreach ($this->servers as $server) {
@@ -131,7 +131,7 @@ class Deployment extends AbstractModel
     }
 
     /** Check if the deployment has failed. */
-    public function getFailedAttribute(): bool|null
+    protected function getFailedAttribute(): bool|null
     {
         if (is_null($this->successful))
             return null;
@@ -140,7 +140,7 @@ class Deployment extends AbstractModel
     }
 
     /** Derive the status of this deployment from the properties of its pivots with servers. */
-    public function getStatusAttribute(): string
+    protected function getStatusAttribute(): string
     {
         if (! $this->started)
             return static::STATUS_PENDING;
@@ -152,13 +152,13 @@ class Deployment extends AbstractModel
     }
 
     /** Get a timestamp when this deployment was started on any server. */
-    public function getStartedAtAttribute(): CarbonInterface|null
+    protected function getStartedAtAttribute(): CarbonInterface|null
     {
         return $this->servers->pluck('serverDeployment')->min('started_at');
     }
 
     /** Get a timestamp when this deployment was finished on the last server it happened on. */
-    public function getFinishedAtAttribute(): CarbonInterface|null
+    protected function getFinishedAtAttribute(): CarbonInterface|null
     {
         return $this->servers->pluck('serverDeployment')->max('finished_at');
     }
@@ -167,7 +167,7 @@ class Deployment extends AbstractModel
      * Calculate the duration of this deployment as the longest time any of
      * the server spent working on it.
      */
-    public function getDurationAttribute(): CarbonInterval|null
+    protected function getDurationAttribute(): CarbonInterval|null
     {
         if (! $this->finished)
             return null;
@@ -176,7 +176,7 @@ class Deployment extends AbstractModel
     }
 
     /** Get the $createdAt attribute nicely formatted for the UI. */
-    public function getCreatedAtFormattedAttribute(): string
+    protected function getCreatedAtFormattedAttribute(): string
     {
         return $this->createdAt->diffAsCarbonInterval(now())->lessThan(CarbonInterval::day())
             ? $this->createdAt->diffForHumans()
@@ -184,7 +184,7 @@ class Deployment extends AbstractModel
     }
 
     /** Get a URL to the page with the deployed commit on the VCS site. */
-    public function getCommitUrlAttribute(): string
+    protected function getCommitUrlAttribute(): string
     {
         // TODO: Creating API instance here may be slow because of token refreshing. Should probably move the URL generation logic.
         return $this->project->vcsProvider->api()->commitUrl($this->project->repo, $this->commit);

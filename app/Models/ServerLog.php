@@ -58,7 +58,7 @@ class ServerLog extends AbstractModel
     protected $visible = [];
 
     /** Check if this log is of type that can be shown to a user as an output log. */
-    public function getRenderableAttribute(): bool
+    protected function getRenderableAttribute(): bool
     {
         return ! empty($this->command) || ! empty($this->content);
     }

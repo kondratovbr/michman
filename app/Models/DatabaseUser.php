@@ -59,7 +59,7 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
     ];
 
     /** Get the user who owns the server with this database user. */
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->server->provider->user;
     }

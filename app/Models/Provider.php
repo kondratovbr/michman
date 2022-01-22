@@ -25,7 +25,6 @@ use RuntimeException;
  * @property CarbonInterface $updatedAt
  *
  * @property-read string $status
- * @property-read User $owner
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -61,7 +60,7 @@ class Provider extends AbstractModel
     private string $status;
 
     /** Get the current status of this provider. */
-    public function getStatusAttribute(): string
+    protected function getStatusAttribute(): string
     {
         // We're caching this attribute for an instance,
         // so we don't have to query the DB every time.
@@ -96,12 +95,6 @@ class Provider extends AbstractModel
             throw new RuntimeException('API instance created for Models/Provider is not an instance of ServerProviderInterface.');
 
         return $api;
-    }
-
-    /** An alias for the "user" relation in case it is still used somewhere. */
-    public function getOwnerProperty(): User
-    {
-        return $this->user;
     }
 
     /** Get a relation to the user who owns this provider account. */

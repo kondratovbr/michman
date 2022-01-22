@@ -107,19 +107,19 @@ class Server extends AbstractModel
     ];
 
     /** Get SSH port attribute or the default one if it's null. */
-    public function getSshPortAttribute(): string
+    protected function getSshPortAttribute(): string
     {
         return $this->attributes['ssh_port'] ?? (string) config('servers.default_ssh_port');
     }
 
     /** Get the owner of this server. */
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->provider->user;
     }
 
     /** Get the path to a directory for public files on this server. */
-    public function getPublicWorkerDirAttribute(): string
+    protected function getPublicWorkerDirAttribute(): string
     {
         return '/home/' . config('servers.worker_user') . '/public';
     }

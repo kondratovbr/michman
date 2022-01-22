@@ -55,19 +55,19 @@ class DeploymentServerPivot extends AbstractPivot
     ];
 
     /** Check if the deployment on the server has started. */
-    public function getStartedAttribute(): bool
+    protected function getStartedAttribute(): bool
     {
         return isset($this->startedAt);
     }
 
     /** Check if the deployment on the server is finished (regardless if its success) or is it still in progress. */
-    public function getFinishedAttribute(): bool
+    protected function getFinishedAttribute(): bool
     {
         return isset($this->finishedAt);
     }
 
     /** Calculate the time the server spent working on the deployment. */
-    public function getDurationAttribute(): CarbonInterval|null
+    protected function getDurationAttribute(): CarbonInterval|null
     {
         if (is_null($this->startedAt) || is_null($this->finishedAt))
             return null;
@@ -76,7 +76,7 @@ class DeploymentServerPivot extends AbstractPivot
     }
 
     /** Check if the deployment on the server has failed. */
-    public function getFailedAttribute(): bool|null
+    protected function getFailedAttribute(): bool|null
     {
         if (is_null($this->successful))
             return null;

@@ -42,12 +42,12 @@ class Python extends AbstractModel
     /** @var string[] The attributes that should be visible in arrays and JSON. */
     protected $visible = [];
 
-    public function getStatusAttribute(): string
+    protected function getStatusAttribute(): string
     {
         return $this->attributes['status'] ?? static::STATUS_INSTALLING;
     }
 
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->server->provider->user;
     }

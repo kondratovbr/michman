@@ -54,7 +54,7 @@ class WorkerSshKey extends AbstractModel implements SshKeyInterface
         return static::createName($this->server);
     }
 
-    public function getUserAttribute(): User
+    protected function getUserAttribute(): User
     {
         return $this->server->user;
     }
