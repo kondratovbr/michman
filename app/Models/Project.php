@@ -52,6 +52,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read bool $webhookEnabled
  * @property-read string|null $repoUrl
  * @property-read string|null $vcsProviderName
+ * @property-read bool $repoInstalled
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -191,7 +192,13 @@ class Project extends AbstractModel
     /** Check if the project has a configured Git repository. */
     public function repoInstalled(): bool
     {
-        return isset($this->vcsProvider) && ! empty($this->repo);
+        return isset($this->vcsProvider) && ! empty($this->repo) && ! $this->removingRepo;
+    }
+
+    /** Check if the project has a configured Git repository. */
+    protected function getRepoInstalledAttribute(): bool
+    {
+        return $this->repoInstalled();
     }
 
     /** Get the latest triggered deployment of this project. */
