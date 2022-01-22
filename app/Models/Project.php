@@ -175,9 +175,7 @@ class Project extends AbstractModel
     /** Check if this project is currently deployed. */
     protected function getDeployedAttribute(): bool
     {
-        // TODO: CRITICAL! DELETING. Update this when "undeploy" feature is implemented,
-        //       because it will be incorrect.
-        return ! is_null($this->getCurrentDeployment());
+        return ! is_null($this->getCurrentDeployment()) && $this->repoInstalled;
     }
 
     /** Check if this project has webhook enabled. */
