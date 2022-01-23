@@ -2,6 +2,7 @@
 
 namespace App\Actions\Projects;
 
+use App\Actions\Workers\DeleteAllWorkersAction;
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
 use App\Jobs\Projects\RemoveRepoDataFromProject;
 use App\Jobs\Projects\UninstallProjectFromServerJob;
@@ -14,12 +15,17 @@ use Illuminate\Support\Facades\DB;
 
 class UninstallProjectRepoAction
 {
+    public function __construct(
+        private DeleteAllWorkersAction $deleteWorkers,
+    ) {}
+
     public function execute(Project $project): Project
     {
         return DB::transaction(function () use ($project): Project {
             $project->freshLockForUpdate('servers');
 
-            $jobs = [];
+
+            $jobs = $this->deleteWorkers->execute($project, true);
 
             /** @var Server $server */
             foreach ($project->servers as $server) {
