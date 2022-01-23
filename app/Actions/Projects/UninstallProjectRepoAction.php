@@ -3,6 +3,7 @@
 namespace App\Actions\Projects;
 
 use App\Actions\Workers\DeleteAllWorkersAction;
+use App\Jobs\Deployments\DeleteProjectDeploymentsJob;
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
 use App\Jobs\Projects\RemoveRepoDataFromProject;
 use App\Jobs\Projects\UninstallProjectFromServerJob;
@@ -34,6 +35,8 @@ class UninstallProjectRepoAction
 
                 $jobs[] = new UninstallProjectFromServerJob($project, $server);
             }
+
+            $jobs[] = new DeleteProjectDeploymentsJob($project);
 
             $jobs[] = new RemoveRepoDataFromProject($project);
 
