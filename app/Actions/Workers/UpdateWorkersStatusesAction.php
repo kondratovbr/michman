@@ -11,6 +11,9 @@ class UpdateWorkersStatusesAction
 {
     public function execute(Project $project): void
     {
+        if ($project->workers->isEmpty())
+            return;
+        
         $jobs = $project->workers->map(
             fn(Worker $worker) => new UpdateWorkerStateJob($worker)
         );
