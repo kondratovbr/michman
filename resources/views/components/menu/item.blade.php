@@ -12,13 +12,13 @@
             x-on:click="current = '{{ $show }}'"
             wire:click.prefetch="show('{{ $show }}')"
         @endisset
-        @if($this->disabled || $disabled)
+        @if($this->disabled || $disabled || ! $this->canShow($show))
             disabled
         @endif
     >
         <div
             class="capitalize flex items-center py-3 px-4 rounded-lg border border-gray-300 border-opacity-0 bg-navy-300 bg-opacity-0 group-focus:border-opacity-100 transition-border-background ease-in-out duration-quick"
-            @unless($this->disabled || $disabled)
+            @unless($this->disabled || $disabled || ! $this->canShow($show))
                 x-bind:class="{
                     {{-- Default state --}}
                     'bg-opacity-0 group-hover:border-opacity-100 group-active:bg-opacity-100': current !== '{{ $show }}',
@@ -29,7 +29,7 @@
         >
             <div
                 class="md:text-sm lg:text-base transform transition-transform ease-in-out duration-quick"
-                @unless($this->disabled || $disabled)
+                @unless($this->disabled || $disabled || $this->canShow($show))
                     x-bind:class="{
                         {{-- Default state --}}
                         'group-hover:text-gray-100 group-hover:scale-105': current !== '{{ $show }}',

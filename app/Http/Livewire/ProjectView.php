@@ -21,4 +21,18 @@ class ProjectView extends AbstractSubpagesView
     protected const DEFAULT_SHOW = 'deployment';
 
     public Project $project;
+
+    public function canShow(string $view): bool
+    {
+        return (bool) match ($view) {
+            'config' => $this->project->repoInstalled,
+            'queue' => $this->project->deployed,
+            default => true,
+        };
+    }
+
+    protected function getDefaultRoute(): string
+    {
+        return route('projects.show', [$this->project, static::DEFAULT_SHOW]);
+    }
 }

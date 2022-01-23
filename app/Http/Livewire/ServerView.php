@@ -75,6 +75,11 @@ class ServerView extends AbstractSubpagesView
         return ! $this->server->isReady();
     }
 
+    protected function getDefaultRoute(): string
+    {
+        return route('servers.show', [$this->server, static::DEFAULT_SHOW]);
+    }
+
     public function render(): View
     {
         if (! $this->server->isReady())

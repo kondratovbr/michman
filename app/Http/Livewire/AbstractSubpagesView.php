@@ -65,6 +65,14 @@ abstract class AbstractSubpagesView extends LivewireComponent
         return false;
     }
 
+    /** Used to disable menu buttons and redirect from disabled sub-pages. */
+    public function canShow(string $view): bool
+    {
+        return true;
+    }
+
+    abstract protected function getDefaultRoute(): string;
+
     public function render(): View
     {
         /*
@@ -75,6 +83,9 @@ abstract class AbstractSubpagesView extends LivewireComponent
          */
         if (! Arr::has(static::VIEWS, $this->show))
             $this->redirect(route('error.404'));
+
+        if (! $this->canShow($this->show))
+            $this->redirect($this->getDefaultRoute());
 
         return view(static::VIEW)->layout(static::LAYOUT);
     }
