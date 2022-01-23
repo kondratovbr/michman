@@ -25,7 +25,6 @@ class UninstallProjectRepoAction
         return DB::transaction(function () use ($project): Project {
             $project->freshLockForUpdate('servers');
 
-
             $jobs = $this->deleteWorkers->execute($project, true);
 
             /** @var Server $server */

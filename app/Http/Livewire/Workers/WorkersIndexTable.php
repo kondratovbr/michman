@@ -62,6 +62,8 @@ class WorkersIndexTable extends LivewireComponent
     /** Update the worker statuses. */
     public function updateStatuses(UpdateWorkersStatusesAction $action): void
     {
+        // TODO: Disable the button and add a spinner on it while the update is happening. On other similar "Update Statuses" buttons as well.
+
         $this->authorize('index', [Worker::class, $this->project]);
 
         $action->execute($this->project);
