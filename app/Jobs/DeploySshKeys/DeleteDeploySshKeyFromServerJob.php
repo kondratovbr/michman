@@ -5,6 +5,8 @@ namespace App\Jobs\DeploySshKeys;
 use App\Jobs\AbstractRemoteServerJob;
 use App\Models\Project;
 use App\Models\Server;
+use App\Scripts\Root\DeleteSshKeyFromUserScript;
+use Illuminate\Support\Facades\DB;
 
 class DeleteDeploySshKeyFromServerJob extends AbstractRemoteServerJob
 {
@@ -17,10 +19,20 @@ class DeleteDeploySshKeyFromServerJob extends AbstractRemoteServerJob
         $this->project = $project->withoutRelations();
     }
 
-    public function handle(): void
+    public function handle(DeleteSshKeyFromUserScript $deleteKey): void
     {
-        // TODO: CRITICAL! CONTINUE. Implement.
+        DB::transaction(function () use ($deleteKey) {
+            $server = $this->server->freshSharedLock();
+            $project = $this->project->freshSharedLock();
 
-        //
+            if (is_null($project->deploySshKey))
+                return;
+
+            $deleteKey->execute(
+                $server,
+                $project->serverUsername,
+                $project->deploySshKey
+            );
+        }, 5);
     }
 }
