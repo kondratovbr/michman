@@ -2,10 +2,15 @@
 
 namespace App\Http\Livewire;
 
+use App\Broadcasting\ProjectChannel;
+use App\Events\Projects\ProjectUpdatedEvent;
+use App\Http\Livewire\Traits\ListensForEchoes;
 use App\Models\Project;
 
 class ProjectView extends AbstractSubpagesView
 {
+    use ListensForEchoes;
+
     protected const LAYOUT = 'layouts.app-with-menu';
 
     protected const VIEW = 'projects.show';
@@ -22,6 +27,22 @@ class ProjectView extends AbstractSubpagesView
 
     public Project $project;
 
+    protected function getDefaultRoute(): string
+    {
+        return route('projects.show', [$this->project, static::DEFAULT_SHOW]);
+    }
+
+    protected function configureEchoListeners(): void
+    {
+        $this->echoPrivate(
+            ProjectChannel::name($this->project),
+            [
+                ProjectUpdatedEvent::class,
+            ],
+            '$refresh',
+        );
+    }
+
     public function canShow(string $view): bool
     {
         return (bool) match ($view) {
@@ -29,10 +50,5 @@ class ProjectView extends AbstractSubpagesView
             'queue' => $this->project->deployed,
             default => true,
         };
-    }
-
-    protected function getDefaultRoute(): string
-    {
-        return route('projects.show', [$this->project, static::DEFAULT_SHOW]);
     }
 }
