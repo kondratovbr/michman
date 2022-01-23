@@ -26,6 +26,8 @@ class UninstallRepoForm extends LivewireComponent
         $this->authorize('update', $this->project);
 
         $action->execute($this->project);
+
+        $this->emitUp('refresh-view');
     }
 
     public function render(): View

@@ -9,10 +9,13 @@ use App\Scripts\Root\UpdateWorkerStateScript;
 use App\States\Workers\Deleting;
 use App\States\Workers\Failed;
 use App\States\Workers\Starting;
+use Illuminate\Bus\Batchable;
 use Illuminate\Support\Facades\DB;
 
 class UpdateWorkerStateJob extends AbstractRemoteServerJob
 {
+    use Batchable;
+
     protected Worker $worker;
 
     public function __construct(Worker $worker)

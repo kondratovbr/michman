@@ -5,7 +5,7 @@ namespace App\Actions\Workers;
 use App\Jobs\Workers\DeleteWorkerJob;
 use App\Models\Project;
 use App\Models\Worker;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 
 class DeleteAllWorkersAction
