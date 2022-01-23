@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y software-properties-common \
         # Unused, but just in case
         php8.1-pgsql php8.1-sqlite3 php8.1-memcached \
         # Application-specific
-        php8.1-mysql php8.1-redis php8.1-bcmath php8.1-ds \
+        php8.1-mysql php8.1-redis php8.1-bcmath php8.1-ds php8.1-imagick \
         # Dev-only
         php8.1-xdebug php8.1-pcov \
     && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
