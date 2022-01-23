@@ -124,11 +124,13 @@ class CreateWorkerForm extends LivewireComponent
         $action->execute(new WorkerDto(
             type: $state['type'],
             app: $state['app'],
-            processes: $state['processes'],
+            processes: int($state['processes']),
             queues: $state['queues'],
-            stop_seconds: $state['stop_seconds'],
-            max_tasks_per_child: $state['max_tasks_per_child'],
-            max_memory_per_child: is_null($state['max_memory_per_child']) ? null : ($state['max_memory_per_child'] * 1024), // We're asking users for MiB for convenience, but Celery expects KiB.
+            stop_seconds: int($state['stop_seconds']),
+            max_tasks_per_child: int($state['max_tasks_per_child']),
+            max_memory_per_child: empty($state['max_memory_per_child'])
+                ? null
+                : ($state['max_memory_per_child'] * 1024), // We're asking users for MiB for convenience, but Celery expects KiB.
         ), $this->project, $this->project->servers()->findOrFail($state['serverId']));
 
         $this->resetState();
