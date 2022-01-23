@@ -8,11 +8,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component as LivewireComponent;
 
-/*
- * TODO: CRITICAL! DELETING. Make sure no actions can be done with the project when we removing the repo,
- *       and make sure the UI cannot be used.
- */
-
 // TODO: VERY IMPORTANT! Add a confirmation modal here. On other destructive actions as well.
 
 class UninstallRepoForm extends LivewireComponent
