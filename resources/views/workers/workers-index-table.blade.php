@@ -6,6 +6,7 @@
         <x-buttons.secondary
             wire:click.prevent="updateStatuses"
             wire:loading.attr="disabled"
+            :disabled="$workers->isEmpty()"
         >{{ __('projects.queue.update-statuses') }}</x-buttons.secondary>
     </x-slot>
 
