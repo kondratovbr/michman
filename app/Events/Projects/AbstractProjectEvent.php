@@ -6,11 +6,12 @@ use App\Broadcasting\ProjectChannel;
 use App\Broadcasting\ServerChannel;
 use App\Broadcasting\UserChannel;
 use App\Events\AbstractEvent;
+use App\Events\Interfaces\ProjectEvent;
 use App\Models\Project;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroadcast
+abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroadcast, ProjectEvent
 {
     public int $projectKey;
 
@@ -37,5 +38,10 @@ abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroad
         }
 
         return $channels;
+    }
+
+    public function project(): Project
+    {
+        return Project::query()->find($this->projectKey);
     }
 }
