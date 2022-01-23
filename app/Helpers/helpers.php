@@ -139,3 +139,17 @@ if (! function_exists('flash')) {
         ));
     }
 }
+
+if (! function_exists('int')) {
+    /** Convert string to int, but keep a null on nulls and empty strings. */
+    function int(string|int|null $value): int|null
+    {
+        if (is_int($value))
+            return $value;
+
+        if (empty($value))
+            return null;
+
+        return (int) $value;
+    }
+}
