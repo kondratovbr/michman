@@ -38,7 +38,7 @@
             </x-slot>
 
             <x-slot name="actions">
-                <x-buttons>
+                <div class="flex space-x-3">
 {{--                    TODO: IMPORTANT! Implement tech support and this button.--}}
                     <x-buttons.primary>
                         {{ __('account.profile.delete.sorry.contact-button') }}
@@ -50,7 +50,7 @@
                     >
                         {{ __('buttons.cancel') }}
                     </x-buttons.secondary>
-                </x-buttons>
+                </div>
             </x-slot>
         </x-modals.dialog>
 
