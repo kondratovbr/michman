@@ -17,4 +17,9 @@ trait InteractsWithVcsProviders
     {
         return now()->addMinutes(30);
     }
+
+    protected function getQueue(): string
+    {
+        return 'providers';
+    }
 }

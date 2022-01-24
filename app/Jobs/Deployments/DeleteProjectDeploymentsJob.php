@@ -16,7 +16,7 @@ class DeleteProjectDeploymentsJob extends AbstractJob
 
     public function __construct(Project $project)
     {
-        $this->setQueue('default');
+        parent::__construct();
 
         $this->project = $project->withoutRelations();
     }

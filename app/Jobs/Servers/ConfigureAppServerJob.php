@@ -24,7 +24,7 @@ class ConfigureAppServerJob extends AbstractJob
 
     public function __construct(Server $server, NewServerDto $data)
     {
-        $this->setQueue('default');
+        parent::__construct();
 
         $this->server = $server->withoutRelations();
         $this->data = $data;

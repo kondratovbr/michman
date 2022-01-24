@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use RuntimeException;
 
-class AbstractJob implements ShouldQueue
+abstract class AbstractJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -18,6 +18,14 @@ class AbstractJob implements ShouldQueue
     use SerializesModels;
 
     protected bool $sync = false;
+
+    public function __construct()
+    {
+        $this->setQueue($this->getQueue());
+    }
+
+    /** Get the name of the queue for this job. */
+    abstract protected function getQueue(): string;
 
     /**
      * Mark this job instance as being executed synchronously.

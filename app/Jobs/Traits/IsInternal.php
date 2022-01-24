@@ -9,4 +9,9 @@ trait IsInternal
 
     /** The number of seconds to wait before retrying the job. */
     public int $backoff = 5;
+
+    protected function getQueue(): string
+    {
+        return 'default';
+    }
 }

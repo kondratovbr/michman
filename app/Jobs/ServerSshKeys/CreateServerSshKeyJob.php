@@ -16,7 +16,7 @@ class CreateServerSshKeyJob extends AbstractJob
 
     public function __construct(Server $server)
     {
-        $this->setQueue('default');
+        parent::__construct();
 
         $this->server = $server->withoutRelations();
     }

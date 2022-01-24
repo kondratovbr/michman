@@ -19,7 +19,7 @@ class AddServerSshKeyToVcsJob extends AbstractJob
 
     public function __construct(Server $server, VcsProvider $vcsProvider)
     {
-        $this->setQueue('providers');
+        parent::__construct();
 
         $this->server = $server->withoutRelations();
         $this->vcsProvider = $vcsProvider->withoutRelations();

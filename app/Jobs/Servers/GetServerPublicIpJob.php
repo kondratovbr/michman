@@ -18,7 +18,7 @@ class GetServerPublicIpJob extends AbstractJob
 
     public function __construct(Server $server)
     {
-        $this->setQueue('providers');
+        parent::__construct();
 
         $this->server = $server->withoutRelations();
     }

@@ -18,7 +18,7 @@ class CreatePythonJob extends AbstractJob
 
     public function __construct(Server $server, string $version, bool $sync = false)
     {
-        $this->setQueue('default');
+        parent::__construct();
 
         $this->server = $server->withoutRelations();
         $this->version = $version;

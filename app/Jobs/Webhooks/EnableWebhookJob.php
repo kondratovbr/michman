@@ -17,7 +17,7 @@ class EnableWebhookJob extends AbstractJob
 
     public function __construct(Webhook $hook)
     {
-        $this->setQueue('providers');
+        parent::__construct();
 
         $this->hook = $hook->withoutRelations();
     }

@@ -17,7 +17,7 @@ class HandlePingWebhookJob extends AbstractJob
 
     public function __construct(WebhookCall $call)
     {
-        $this->setQueue('default');
+        parent::__construct();
 
         $this->call = $call->withoutRelations();
         $this->callType = 'ping';

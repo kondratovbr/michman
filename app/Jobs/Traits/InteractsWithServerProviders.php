@@ -17,4 +17,9 @@ trait InteractsWithServerProviders
     {
         return now()->addMinutes(60);
     }
+
+    protected function getQueue(): string
+    {
+        return 'providers';
+    }
 }

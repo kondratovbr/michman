@@ -19,7 +19,7 @@ class RequestNewServerFromProviderJob extends AbstractJob
 
     public function __construct(Server $server, NewServerDto $serverData)
     {
-        $this->setQueue('providers');
+        parent::__construct();
 
         $this->server = $server->withoutRelations();
         $this->serverData = $serverData;
