@@ -189,6 +189,21 @@ return [
         'update-statuses' => 'Update Statuses',
     ],
 
+    'manage' => [
+        'button' => 'Manage',
+
+        'delete' => [
+            'title' => 'Delete Project',
+            'info' => 'All project data will be deleted from all your servers and from Michman\'s database. This action is permanent.',
+            'button' => 'Delete Project',
+
+            'modal' => [
+                'title' => 'Delete Project :project',
+                'field-label' => 'Please type the name of the project (:project) to confirm its deletion from all servers.',
+            ],
+        ],
+    ],
+
     'quick-deploy' => [
         'title' => 'Quick Deploy',
         'info' => 'Michman can set up a webhook on your repository, so when you push to your deployment branch a deployment will be triggered automatically. You\'ll receive an email notification about the deployment process.',
