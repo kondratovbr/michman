@@ -7,7 +7,7 @@ use App\Jobs\Traits\IsInternal;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
 
-class RemoveRepoDataFromProject extends AbstractJob
+class RemoveRepoDataFromProjectJob extends AbstractJob
 {
     use IsInternal;
 

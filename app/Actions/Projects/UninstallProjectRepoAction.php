@@ -5,7 +5,7 @@ namespace App\Actions\Projects;
 use App\Actions\Workers\DeleteAllWorkersAction;
 use App\Jobs\Deployments\DeleteProjectDeploymentsJob;
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
-use App\Jobs\Projects\RemoveRepoDataFromProject;
+use App\Jobs\Projects\RemoveRepoDataFromProjectJob;
 use App\Jobs\Projects\UninstallProjectFromServerJob;
 use App\Models\Project;
 use App\Models\Server;
@@ -37,7 +37,7 @@ class UninstallProjectRepoAction
 
             $jobs[] = new DeleteProjectDeploymentsJob($project);
 
-            $jobs[] = new RemoveRepoDataFromProject($project);
+            $jobs[] = new RemoveRepoDataFromProjectJob($project);
 
             Bus::chain($jobs)->dispatch();
 
