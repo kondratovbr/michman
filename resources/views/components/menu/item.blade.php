@@ -29,7 +29,7 @@
         >
             <div
                 class="md:text-sm lg:text-base transform transition-transform ease-in-out duration-quick"
-                @unless($this->disabled || $disabled || $this->canShow($show))
+                @unless($this->disabled || $disabled || ! $this->canShow($show))
                     x-bind:class="{
                         {{-- Default state --}}
                         'group-hover:text-gray-100 group-hover:scale-105': current !== '{{ $show }}',
