@@ -25,6 +25,9 @@ class RemoveRepoDataFromProjectJob extends AbstractJob
         DB::transaction(function () {
             $project = $this->project->freshLockForUpdate();
 
+            if ( ! $project->repoInstalled || ! $project->removingRepo)
+                return;
+
             $project->repo = null;
             $project->branch = null;
             $project->package = null;
