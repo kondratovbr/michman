@@ -9,6 +9,7 @@ use App\Jobs\Projects\RemoveRepoDataFromProjectJob;
 use App\Jobs\Projects\UninstallProjectFromServerJob;
 use App\Models\Project;
 use App\Models\Server;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
@@ -20,9 +21,9 @@ class UninstallProjectRepoAction
         private DeleteAllWorkersAction $deleteWorkers,
     ) {}
 
-    public function execute(Project $project): Project
+    public function execute(Project $project, bool $returnJobs = false): Collection|null
     {
-        return DB::transaction(function () use ($project): Project {
+        return DB::transaction(function () use ($project, $returnJobs): Collection|null {
             $project->freshLockForUpdate('servers');
 
             $jobs = $this->deleteWorkers->execute($project, true);
@@ -39,12 +40,15 @@ class UninstallProjectRepoAction
 
             $jobs[] = new RemoveRepoDataFromProjectJob($project);
 
-            Bus::chain($jobs)->dispatch();
-
             $project->removingRepo = true;
             $project->save();
 
-            return $project;
+            if ($returnJobs)
+                return new Collection($jobs);
+
+            Bus::chain($jobs)->dispatch();
+
+            return null;
         }, 5);
     }
 }
