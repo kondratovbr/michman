@@ -5751,28 +5751,28 @@
         },
         {
             "name": "spatie/laravel-cookie-consent",
-            "version": "3.1.2",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-cookie-consent.git",
-                "reference": "a6fa575663879b7d86ad365ca03c53a87c8fcb44"
+                "reference": "01db8a42ba379489279b849d8def306e0886c04a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-cookie-consent/zipball/a6fa575663879b7d86ad365ca03c53a87c8fcb44",
-                "reference": "a6fa575663879b7d86ad365ca03c53a87c8fcb44",
+                "url": "https://api.github.com/repos/spatie/laravel-cookie-consent/zipball/01db8a42ba379489279b849d8def306e0886c04a",
+                "reference": "01db8a42ba379489279b849d8def306e0886c04a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cookie": "^7.0|^8.0",
-                "illuminate/support": "^7.0|^8.0",
-                "illuminate/view": "^7.0|^8.0",
+                "illuminate/cookie": "^8.0|^9.0",
+                "illuminate/support": "^8.0|^9.0",
+                "illuminate/view": "^8.0|^9.0",
                 "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.6"
+                "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "fakerphp/faker": "~1.9",
-                "orchestra/testbench": "^5.0|^6.0"
+                "fakerphp/faker": "^1.9",
+                "orchestra/testbench": "^6.0|^7.0"
             },
             "type": "library",
             "extra": {
@@ -5816,7 +5816,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-cookie-consent/tree/3.1.2"
+                "source": "https://github.com/spatie/laravel-cookie-consent/tree/3.2.0"
             },
             "funding": [
                 {
@@ -5824,35 +5824,35 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-08-19T23:44:04+00:00"
+            "time": "2022-01-14T07:57:12+00:00"
         },
         {
             "name": "spatie/laravel-model-states",
-            "version": "2.1.3",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-model-states.git",
-                "reference": "8d409bc29ba81cd540245b0ce7d6d4cfd82955d7"
+                "reference": "c9c4865abd2b5ec534214aede784631366bed7d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/8d409bc29ba81cd540245b0ce7d6d4cfd82955d7",
-                "reference": "8d409bc29ba81cd540245b0ce7d6d4cfd82955d7",
+                "url": "https://api.github.com/repos/spatie/laravel-model-states/zipball/c9c4865abd2b5ec534214aede784631366bed7d4",
+                "reference": "c9c4865abd2b5ec534214aede784631366bed7d4",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "facade/ignition-contracts": "^1.0",
-                "illuminate/contracts": "^8.73",
-                "illuminate/database": "^8.73",
-                "illuminate/support": "^8.73",
+                "illuminate/contracts": "^8.73 | ^9.0",
+                "illuminate/database": "^8.73 | ^9.0",
+                "illuminate/support": "^8.73 | ^9.0",
                 "php": "^7.4|^8.0",
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.23",
+                "orchestra/testbench": "^6.23 | ^7.0",
                 "phpunit/phpunit": "^9.4",
-                "symfony/var-dumper": "^5.3"
+                "symfony/var-dumper": "^5.3 | ^6.0"
             },
             "type": "library",
             "extra": {
@@ -5886,7 +5886,7 @@
                 "state"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-model-states/tree/2.1.3"
+                "source": "https://github.com/spatie/laravel-model-states/tree/2.1.4"
             },
             "funding": [
                 {
@@ -5898,7 +5898,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-06T14:52:06+00:00"
+            "time": "2022-01-19T19:57:35+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
@@ -5962,35 +5962,34 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.26.4",
+            "version": "1.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "eebd571834d3940b1d8314950198b4ae71789a82"
+                "reference": "a637ebbea485253fbd793a97a095d55ea77f4a75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/eebd571834d3940b1d8314950198b4ae71789a82",
-                "reference": "eebd571834d3940b1d8314950198b4ae71789a82",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/a637ebbea485253fbd793a97a095d55ea77f4a75",
+                "reference": "a637ebbea485253fbd793a97a095d55ea77f4a75",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "illuminate/contracts": "^7.20|^8.19",
-                "illuminate/database": "^7.20|^8.19",
-                "illuminate/queue": "^7.20|^8.19",
-                "illuminate/support": "^7.20|^8.19",
+                "illuminate/contracts": "^7.20|^8.19|^9.0",
+                "illuminate/database": "^7.20|^8.19|^9.0",
+                "illuminate/queue": "^7.20|^8.19|^9.0",
+                "illuminate/support": "^7.20|^8.19|^9.0",
+                "laravel/framework": "^7.20|^8.19|^9.0",
                 "php": "^7.3|^8.0",
                 "spatie/backtrace": "^1.0",
                 "spatie/ray": "^1.27.1",
-                "symfony/stopwatch": "4.2|^5.1",
+                "symfony/stopwatch": "4.2|^5.1|^6.0",
                 "zbateson/mail-mime-parser": "^1.3.1|^2.0"
             },
             "require-dev": {
-                "facade/ignition": "^2.5",
                 "guzzlehttp/guzzle": "^7.3",
-                "laravel/framework": "^7.20|^8.19",
-                "orchestra/testbench-core": "^5.0|^6.0",
+                "orchestra/testbench-core": "^5.0|^6.0|^7.0",
                 "phpstan/phpstan": "^0.12.93",
                 "phpunit/phpunit": "^9.3",
                 "spatie/phpunit-snapshot-assertions": "^4.2"
@@ -6028,7 +6027,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.26.4"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.28.0"
             },
             "funding": [
                 {
@@ -6040,29 +6039,28 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-12-10T12:10:14+00:00"
+            "time": "2022-01-11T15:31:26+00:00"
         },
         {
             "name": "spatie/laravel-view-models",
-            "version": "1.4.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-view-models.git",
-                "reference": "7037fbef87982acb089b7cb6b1c157b211e350f3"
+                "reference": "0db1dd88df19450fb97989ed43a54e4b207a42ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-view-models/zipball/7037fbef87982acb089b7cb6b1c157b211e350f3",
-                "reference": "7037fbef87982acb089b7cb6b1c157b211e350f3",
+                "url": "https://api.github.com/repos/spatie/laravel-view-models/zipball/0db1dd88df19450fb97989ed43a54e4b207a42ed",
+                "reference": "0db1dd88df19450fb97989ed43a54e4b207a42ed",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^8.0",
+                "illuminate/support": "^8.0|^9.0",
                 "php": "^7.3|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16",
-                "orchestra/testbench": "^6.23"
+                "orchestra/testbench": "^6.23|^7.0"
             },
             "type": "library",
             "extra": {
@@ -6097,7 +6095,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-view-models/issues",
-                "source": "https://github.com/spatie/laravel-view-models/tree/1.4.0"
+                "source": "https://github.com/spatie/laravel-view-models/tree/1.5.1"
             },
             "funding": [
                 {
@@ -6109,7 +6107,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-12-06T09:13:38+00:00"
+            "time": "2022-01-13T06:49:58+00:00"
         },
         {
             "name": "spatie/macroable",
