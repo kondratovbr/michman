@@ -38,7 +38,7 @@
             </x-slot>
 
             <x-slot name="actions">
-                <div class="flex space-x-3">
+                <div class="flex justify-start items-center space-x-3">
 {{--                    TODO: IMPORTANT! Implement tech support and this button.--}}
                     <x-buttons.primary>
                         {{ __('account.profile.delete.sorry.contact-button') }}
@@ -81,21 +81,19 @@
             </x-slot>
 
             <x-slot name="actions">
-                <x-buttons>
-                    <x-buttons.secondary
-                        wire:click="$toggle('confirmingUserDeletion')"
-                        wire:loading.attr="disabled"
-                    >
-                        {{ __('buttons.cancel') }}
-                    </x-buttons.secondary>
+                <x-buttons.secondary
+                    wire:click="$toggle('confirmingUserDeletion')"
+                    wire:loading.attr="disabled"
+                >
+                    {{ __('buttons.cancel') }}
+                </x-buttons.secondary>
 
-                    <x-buttons.danger
-                        wire:click="deleteUser"
-                        wire:loading.attr="disabled"
-                    >
-                        {{ __('account.profile.delete.delete-button') }}
-                    </x-buttons.danger>
-                </x-buttons>
+                <x-buttons.danger
+                    wire:click="deleteUser"
+                    wire:loading.attr="disabled"
+                >
+                    {{ __('account.profile.delete.delete-button') }}
+                </x-buttons.danger>
             </x-slot>
         </x-modals.dialog>
         --}}

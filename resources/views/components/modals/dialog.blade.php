@@ -28,7 +28,7 @@
             {{ $slot }}
 
             @isset($actions)
-                <div class="flex justify-start items-center px-4 py-3 bg-navy-200 sm:px-6 rounded-b-lg">
+                <div class="px-4 py-3 bg-navy-200 sm:px-6 rounded-b-lg">
                     {{ $actions }}
                 </div>
             @endisset

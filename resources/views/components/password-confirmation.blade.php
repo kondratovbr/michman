@@ -42,7 +42,7 @@
         </x-slot>
 
         <x-slot name="actions">
-            <x-buttons>
+            <div class="flex justify-start items-center space-x-3">
                 <x-buttons.primary
                     wire:click="confirmPassword"
                     wire:loading.attr="disabled"
@@ -55,7 +55,7 @@
                 >
                     {{ __('buttons.cancel') }}
                 </x-buttons.secondary>
-            </x-buttons>
+            </div>
         </x-slot>
     </x-modals.dialog>
 @endonce
