@@ -27,6 +27,9 @@ interface VcsProviderInterface extends ProviderInterface
     /** Check if provided credentials are valid by trying some auth-protected GET request. */
     public function credentialsAreValid(): bool;
 
+    /** Check if this provider supports handling SSH keys via API. Some don't. */
+    public function supportsSshKeys(): bool;
+
     /** Get a collection of SSH keys added to this account. */
     public function getAllSshKeys(): SshKeyDataCollection;
 

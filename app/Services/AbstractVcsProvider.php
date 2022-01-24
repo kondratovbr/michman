@@ -9,6 +9,11 @@ use phpseclib3\Crypt\PublicKeyLoader;
 
 abstract class AbstractVcsProvider extends AbstractProvider implements VcsProviderInterface
 {
+    public function supportsSshKeys(): bool
+    {
+        return (bool) $this->config('supports_ssh_keys');
+    }
+
     public function addSshKeySafely(string $name, string $publicKey): SshKeyDto
     {
         $duplicatedAddedKey = $this->findDuplicatedKey($publicKey);
