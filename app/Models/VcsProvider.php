@@ -13,6 +13,7 @@ use Database\Factories\VcsProviderFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use RuntimeException;
 
@@ -33,6 +34,7 @@ use RuntimeException;
  *
  * @property-read User $user
  * @property-read Collection $projects
+ * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
  *
  * @method static VcsProviderFactory factory(...$parameters)
  */
@@ -106,5 +108,15 @@ class VcsProvider extends AbstractModel
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    /** Get the relation with the ServerSshKeys that were added to this provider. */
+    public function serverSshKeys(): BelongsToMany
+    {
+        return $this->belongsToMany(ServerSshKey::class, 'servers_ssh_key_vcs_provider')
+            ->as(ServerSshKeyVcsProviderPivot::ACCESSOR)
+            ->using(ServerSshKeyVcsProviderPivot::class)
+            ->withPivot(ServerSshKeyVcsProviderPivot::$pivotAttributes)
+            ->withTimestamps();
     }
 }

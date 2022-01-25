@@ -8,6 +8,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\ServerSshKeyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * ServerSshKey Eloquent model
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $updatedAt
  *
  * @property-read Server $server
+ * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
  *
  * @method static ServerSshKeyFactory factory(...$parameters)
  */
@@ -60,5 +62,15 @@ class ServerSshKey extends AbstractModel implements SshKeyInterface
     public function server(): BelongsTo
     {
         return $this->belongsTo(Server::class);
+    }
+
+    /** Get a relation with the VcsProviders that have this key added. */
+    public function vcsProviders(): BelongsToMany
+    {
+        return $this->belongsToMany(VcsProvider::class, 'server_ssh_key_vcs_provider')
+            ->as(ServerSshKeyVcsProviderPivot::ACCESSOR)
+            ->using(ServerSshKeyVcsProviderPivot::class)
+            ->withPivot(ServerSshKeyVcsProviderPivot::$pivotAttributes)
+            ->withTimestamps();
     }
 }
