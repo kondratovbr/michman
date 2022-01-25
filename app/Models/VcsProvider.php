@@ -113,7 +113,7 @@ class VcsProvider extends AbstractModel
     /** Get the relation with the ServerSshKeys that were added to this provider. */
     public function serverSshKeys(): BelongsToMany
     {
-        return $this->belongsToMany(ServerSshKey::class, 'servers_ssh_key_vcs_provider')
+        return $this->belongsToMany(ServerSshKey::class, 'server_ssh_key_vcs_provider')
             ->as(ServerSshKeyVcsProviderPivot::ACCESSOR)
             ->using(ServerSshKeyVcsProviderPivot::class)
             ->withPivot(ServerSshKeyVcsProviderPivot::$pivotAttributes)
