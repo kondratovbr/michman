@@ -44,6 +44,7 @@
 
             <x-slot name="actions">
                 <div class="flex justify-between items-center space-x-3">
+{{--                    TODO: Pressing "Enter" doesn't work here.--}}
                     <x-buttons.danger
                         wire:click="delete"
                         wire:loading.attr="disabled"
@@ -53,10 +54,7 @@
                             <span class="normal-case">{{ $project->domain }}</span>
                         </div>
                     </x-buttons.danger>
-                    <x-buttons.secondary
-                        wire:click="$toggle('confirmationModalOpen')"
-                        wire:loading.attr="disabled"
-                    >
+                    <x-buttons.secondary wire:click="$toggle('confirmationModalOpen')">
                         {{ __('buttons.cancel') }}
                     </x-buttons.secondary>
                 </div>
