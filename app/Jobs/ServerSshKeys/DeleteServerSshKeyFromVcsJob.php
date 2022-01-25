@@ -8,6 +8,7 @@ use App\Models\Server;
 use App\Models\ServerSshKey;
 use App\Models\VcsProvider;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class DeleteServerSshKeyFromVcsJob extends AbstractJob
 {
@@ -33,14 +34,26 @@ class DeleteServerSshKeyFromVcsJob extends AbstractJob
 
         DB::transaction(function () use ($api) {
             $server = $this->server->freshSharedLock();
-            $vcsProvider = $this->vcsProvider->freshSharedLock();
+            $vcsProvider = $this->vcsProvider->freshLockForUpdate();
 
             /** @var ServerSshKey $serverSshKey */
-            $serverSshKey = $server->serverSshKey()->lockForUpdate()->firstOrFail();
+            $serverSshKey = $vcsProvider->serverSshKeys()
+                ->lockForUpdate()
+                ->findOrFail($server->serverSshKey->getKey());
 
-            // TODO: CRITICAL! CONTINUE. To do this I first have to establish a relation between ServerSshKey and VcsProvider and store the external ID on the pivot model when received. (At the moment of adding it, in the AddServerSshKeyToVcsJob.)
+            if (is_null($serverSshKey->vcsProviderKey)) {
+                $this->fail(new RuntimeException('vcsProviderKey pivot model isn\'t set on ServerSshKey model.'));
+                return;
+            }
 
-            // $api->deleteSshKey($serverSshKey->);
+            if (empty($serverSshKey->vcsProviderKey->externalId)) {
+                $this->fail(new RuntimeException('externalId isn\'t set.'));
+                return;
+            }
+
+            $api->deleteSshKey($serverSshKey->vcsProviderKey->externalId);
+
+            $serverSshKey->vcsProviderKey->delete();
         }, 5);
     }
 }
