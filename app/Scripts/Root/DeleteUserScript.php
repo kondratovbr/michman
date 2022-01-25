@@ -4,6 +4,7 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 class DeleteUserScript extends AbstractServerScript
@@ -12,8 +13,11 @@ class DeleteUserScript extends AbstractServerScript
     {
         $this->init($server, $rootSsh);
 
-        $this->exec("deluser --remove-home {$username}");
+        $users = $this->exec("cut -d: -f1 /etc/passwd");
 
-        $this->exec("delgroup {$username}");
+        if (Str::contains($users, $username))
+            $this->exec("deluser --remove-home {$username}");
+
+        $this->exec("rm -rf /home/{$username}");
     }
 }
