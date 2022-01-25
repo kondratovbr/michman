@@ -23,9 +23,13 @@ class DeleteProjectAction
         return DB::transaction(function () use ($project, $returnJobs): Collection|null {
             $project = $project->freshLockForUpdate();
 
-            $jobs = $this->uninstallRepo->execute($project, true);
+            $jobs = new Collection;
 
-            $jobs->push($project->servers->map(
+            if ($project->repoInstalled && ! $project->removingRepo) {
+                $jobs = $jobs->concat($this->uninstallRepo->execute($project, true));
+            }
+
+            $jobs = $jobs->concat($project->servers->map(
                 fn(Server $server) => new DeleteUserFromServerJob($server, $project->serverUsername)
             ));
 
