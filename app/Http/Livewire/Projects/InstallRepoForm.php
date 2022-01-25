@@ -23,6 +23,9 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: IMPORTANT! Cover with tests.
 
+/**
+ * @property-read VcsProvider|null $vcsProvider
+ */
 class InstallRepoForm extends LivewireComponent
 {
     use AuthorizesRequests;
@@ -98,6 +101,16 @@ class InstallRepoForm extends LivewireComponent
         $this->resetState();
     }
 
+    public function getVcsProviderProperty(): VcsProvider|null
+    {
+        $vcsProviderKey = $this->validateOnly('state.vcsProviderKey')['state']['vcsProviderKey'];
+
+        /** @var VcsProvider|null $vcs */
+        $vcs = Auth::user()->vcsProviders()->find($vcsProviderKey);
+
+        return $vcs;
+    }
+
     public function resetState(): void
     {
         $this->reset('state');
@@ -126,17 +139,7 @@ class InstallRepoForm extends LivewireComponent
     /** Check if deploy key must be used with the currently chosen provider. */
     public function mustUseDeployKey(): bool
     {
-        return $this->getVcsProvider()->mustUseDeployKey();
-    }
-
-    protected function getVcsProvider(): VcsProvider
-    {
-        $vcsProviderKey = $this->validateOnly('state.vcsProviderKey')['state']['vcsProviderKey'];
-
-        /** @var VcsProvider $vcs */
-        $vcs = Auth::user()->vcsProviders()->findOrFail($vcsProviderKey);
-
-        return $vcs;
+        return $this->vcsProvider->mustUseDeployKey();
     }
 
     /** Store the project's repository configuration. */

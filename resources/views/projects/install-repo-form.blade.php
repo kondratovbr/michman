@@ -112,7 +112,7 @@
                         <x-message colors="warning">
                             <p class="max-w-prose">
                                 {{ __('projects.repo.configure.use-deploy-key.enabled-message',
-                                    ['provider' => __("projects.repo.providers.{$provider->provider}")]) }}
+                                    ['provider' => __("projects.repo.providers.{$this->vcsProvider->provider}")]) }}
                             </p>
                             <x-copy-code-block class="mt-3" :wrap="true">{{ $project->deploySshKey->publicKeyString }}</x-copy-code-block>
                         </x-message>
@@ -120,7 +120,7 @@
                         <x-message colors="info">
                             <p class="max-w-prose">
                                 {{ __('projects.repo.configure.use-deploy-key.disabled-message',
-                                    ['provider' => __("projects.repo.providers.{$provider->provider}")]) }}
+                                    ['provider' => __("projects.repo.providers.{$this->vcsProvider->provider}")]) }}
                             </p>
                         </x-message>
                     @endif
