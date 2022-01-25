@@ -192,6 +192,11 @@ return [
     'manage' => [
         'button' => 'Manage',
 
+        'deploy-key' => [
+            'title' => 'Project\'s Deploy Key',
+            'info' => 'The servers will attempt to clone the project\'s repo using this SSH key. Make sure to add this key to the repository.',
+        ],
+
         'delete' => [
             'title' => 'Delete Project',
             'info' => 'All project data will be deleted from all your servers and from Michman\'s database. This action is permanent.',
