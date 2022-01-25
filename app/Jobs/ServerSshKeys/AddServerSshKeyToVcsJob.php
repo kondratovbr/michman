@@ -10,6 +10,8 @@ use App\Models\VcsProvider;
 use App\Notifications\Providers\AddingSshKeyToProviderFailedNotification;
 use Illuminate\Support\Facades\DB;
 
+// TODO: Update tests to check that the pivot was created and external ID was stored.
+
 class AddServerSshKeyToVcsJob extends AbstractJob
 {
     use InteractsWithVcsProviders;
@@ -29,6 +31,11 @@ class AddServerSshKeyToVcsJob extends AbstractJob
     {
         $api = $this->vcsProvider->api();
 
+        if (! $api->supportsSshKeys()) {
+            $this->fail();
+            return;
+        }
+
         DB::transaction(function () use ($api) {
             $server = $this->server->freshSharedLock();
             $vcsProvider = $this->vcsProvider->freshSharedLock();
@@ -36,10 +43,12 @@ class AddServerSshKeyToVcsJob extends AbstractJob
             /** @var ServerSshKey $serverSshKey */
             $serverSshKey = $server->serverSshKey()->lockForUpdate()->firstOrFail();
 
-            $api->addSshKeySafely(
+            $keyData = $api->addSshKeySafely(
                 $serverSshKey->name,
                 $serverSshKey->getPublicKeyString(false)
             );
+
+            $serverSshKey->vcsProviders()->attach($vcsProvider, ['external_id' => $keyData->id]);
         }, 5);
     }
 
