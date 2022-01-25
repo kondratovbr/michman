@@ -7,6 +7,7 @@ use App\Jobs\Deployments\DeleteProjectDeploymentsJob;
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
 use App\Jobs\Projects\RemoveRepoDataFromProjectJob;
 use App\Jobs\Projects\UninstallProjectFromServerJob;
+use App\Jobs\ServerSshKeys\DeleteServerSshKeyFromVcsJob;
 use App\Models\Project;
 use App\Models\Server;
 use Illuminate\Support\Collection;
@@ -30,8 +31,11 @@ class UninstallProjectRepoAction
 
             /** @var Server $server */
             foreach ($project->servers as $server) {
-                if ($project->useDeployKey)
+                if ($project->useDeployKey) {
                     $jobs[] = new DeleteDeploySshKeyFromServerJob($server, $project);
+                } else {
+                    $jobs[] = new DeleteServerSshKeyFromVcsJob($server, $project->vcsProvider);
+                }
 
                 $jobs[] = new UninstallProjectFromServerJob($project, $server);
             }
