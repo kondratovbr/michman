@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 
+// TODO: Cover with tests.
+
 class DeleteProjectAction
 {
     public function __construct(
@@ -18,8 +20,6 @@ class DeleteProjectAction
 
     public function execute(Project $project, bool $returnJobs = false): Collection|null
     {
-        // TODO: CRITICAL! CONTINUE. Implement.
-
         return DB::transaction(function () use ($project, $returnJobs): Collection|null {
             $project = $project->freshLockForUpdate();
 
