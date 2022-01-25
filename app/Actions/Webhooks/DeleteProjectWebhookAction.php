@@ -9,17 +9,22 @@ use Illuminate\Support\Facades\DB;
 
 class DeleteProjectWebhookAction
 {
-    public function execute(Webhook $hook): void
+    public function execute(Webhook $hook, bool $returnJob = false): DeleteWebhookJob|null
     {
-        DB::transaction(function () use ($hook) {
+        return DB::transaction(function () use ($hook, $returnJob): DeleteWebhookJob|null {
             $hook = $hook->freshLockForUpdate();
 
             if (! $hook->state->canTransitionTo(Deleting::class))
-                return;
+                return null;
 
             $hook->state->transitionTo(Deleting::class);
 
+            if ($returnJob)
+                return new DeleteWebhookJob($hook);
+
             DeleteWebhookJob::dispatch($hook);
+
+            return null;
         }, 5);
     }
 }
