@@ -2,6 +2,7 @@
 
 namespace App\Actions\Projects;
 
+use App\Actions\Webhooks\DeleteProjectWebhookAction;
 use App\Actions\Workers\DeleteAllWorkersAction;
 use App\Jobs\Deployments\DeleteProjectDeploymentsJob;
 use App\Jobs\DeploySshKeys\DeleteDeploySshKeyFromServerJob;
@@ -16,10 +17,13 @@ use Illuminate\Support\Facades\DB;
 
 // TODO: Cover with tests.
 
+// TODO: Even just running this action may take some time. Better offload the logic to a job. Same for the whole project deletion action.
+
 class UninstallProjectRepoAction
 {
     public function __construct(
         private DeleteAllWorkersAction $deleteWorkers,
+        private DeleteProjectWebhookAction $deleteWebhook,
     ) {}
 
     public function execute(Project $project, bool $returnJobs = false): Collection|null
@@ -29,20 +33,23 @@ class UninstallProjectRepoAction
 
             $jobs = $this->deleteWorkers->execute($project, true);
 
+            if (isset($project->webhook))
+                $jobs->push($this->deleteWebhook->execute($project->webhook, true));
+
             /** @var Server $server */
             foreach ($project->servers as $server) {
                 if ($project->useDeployKey) {
-                    $jobs[] = new DeleteDeploySshKeyFromServerJob($server, $project);
+                    $jobs->push(new DeleteDeploySshKeyFromServerJob($server, $project));
                 } else {
-                    $jobs[] = new DeleteServerSshKeyFromVcsJob($server, $project->vcsProvider);
+                    $jobs->push(new DeleteServerSshKeyFromVcsJob($server, $project->vcsProvider));
                 }
 
-                $jobs[] = new UninstallProjectFromServerJob($project, $server);
+                $jobs->push(new UninstallProjectFromServerJob($project, $server));
             }
 
-            $jobs[] = new DeleteProjectDeploymentsJob($project);
+            $jobs->push(new DeleteProjectDeploymentsJob($project));
 
-            $jobs[] = new RemoveRepoDataFromProjectJob($project);
+            $jobs->push(new RemoveRepoDataFromProjectJob($project));
 
             $project->removingRepo = true;
             $project->save();
@@ -50,7 +57,7 @@ class UninstallProjectRepoAction
             if ($returnJobs)
                 return new Collection($jobs);
 
-            Bus::chain($jobs)->dispatch();
+            Bus::chain($jobs->toArray())->dispatch();
 
             return null;
         }, 5);
