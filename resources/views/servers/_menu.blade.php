@@ -37,5 +37,10 @@
             {{ __('servers.daemons.button') }}
         </x-menu.item>
 
+        <x-menu.item show="manage">
+            <x-slot name="icon"><i class="fas fa-cog"></i></x-slot>
+            {{ __('servers.manage.button') }}
+        </x-menu.item>
+
     </ul>
 </aside>

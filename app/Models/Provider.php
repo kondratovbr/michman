@@ -25,6 +25,7 @@ use RuntimeException;
  * @property CarbonInterface $updatedAt
  *
  * @property-read string $status
+ * @property-read string $localName
  *
  * @property-read User $user
  * @property-read Collection $servers
@@ -71,6 +72,12 @@ class Provider extends AbstractModel
             return $this->status = static::STATUS_ACTIVE;
 
         return $this->status = static::STATUS_READY;
+    }
+
+    /** Get the provider's name in a format for the UI. */
+    protected function getLocalNameAttribute(): string
+    {
+        return __("account.providers.{$this->provider}.name");
     }
 
     protected function diTargetName(): string

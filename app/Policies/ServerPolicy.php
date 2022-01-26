@@ -25,4 +25,11 @@ class ServerPolicy
     {
         return $user->is($server->user);
     }
+
+    public function delete(User $user, Server $server): bool
+    {
+        // TODO: CRITICAL! Is this correct? Need to check anything else?
+
+        return $user->is($server->user);
+    }
 }

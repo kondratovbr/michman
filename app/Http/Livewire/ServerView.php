@@ -32,6 +32,7 @@ class ServerView extends AbstractSubpagesView
         'firewall' => 'firewall.index',
         'ssl' => 'servers.ssl',
         'daemons' => 'daemons.index',
+        'manage' => 'servers.manage',
         //
 
         // This special sub-page will be shown when the server isn't ready to not confuse users.

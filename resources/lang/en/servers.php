@@ -307,4 +307,19 @@ return [
         'failed-to-retrieve-logs' => 'We were unable to retrieve this daemon\'s logs from the server.',
     ],
 
+    'manage' => [
+        'button' => 'Manage',
+
+        'delete' => [
+            'title' => 'Delete Server',
+            'info' => 'The server will be permanently removed from Michman as well as from :provider. This action is permanent.',
+            'button' => 'Delete Server',
+
+            'modal' => [
+                'title' => 'Delete Server :server',
+                'field-label' => 'Please type the name of the server (:server) to confirm its deletion.',
+            ],
+        ],
+    ],
+
 ];
