@@ -1,7 +1,8 @@
 # ...
 
-HOSTNAME="{{ $project->domain }}"
 DEBUG=off
+
+HOSTNAME="{{ $project->domain }}"
 
 SECRET_KEY="{{ $secretKey }}"
 
