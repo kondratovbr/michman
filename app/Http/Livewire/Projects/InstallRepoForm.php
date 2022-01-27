@@ -23,6 +23,8 @@ use Livewire\Component as LivewireComponent;
 
 // TODO: IMPORTANT! Cover with tests.
 
+// TODO: VERY IMPORTANT! This process shouldn't start until the project creation is completed.
+
 /**
  * @property-read VcsProvider|null $vcsProvider
  */

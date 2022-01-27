@@ -33,6 +33,7 @@
                     </div>
                 </x-td>
                 <x-td>
+{{--                    TODO: The copy icon doesn't fit in line on lg.--}}
                     @isset($server->publicIp)
                         <x-clipboard>{{ $server->publicIp }}</x-clipboard>
                     @else
