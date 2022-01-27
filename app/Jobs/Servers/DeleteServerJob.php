@@ -4,6 +4,7 @@ namespace App\Jobs\Servers;
 
 use App\Jobs\AbstractJob;
 use App\Jobs\Traits\IsInternal;
+use App\Models\Database;
 use App\Models\Server;
 use App\States\Servers\Deleting;
 use Illuminate\Support\Facades\DB;
@@ -33,11 +34,11 @@ class DeleteServerJob extends AbstractJob
         DB::transaction(function () {
             $server = $this->server->freshLockForUpdate([
                 'databases',
-                'database_users',
-                'worker_ssh_key',
+                'databaseUsers',
+                'workerSshKey',
                 'pythons',
-                'server_ssh_key',
-                'firewall_rules',
+                'serverSshKey',
+                'firewallRules',
                 'certificates',
                 'workers',
                 'daemons',
@@ -55,8 +56,10 @@ class DeleteServerJob extends AbstractJob
 
             $server->userSshKeys()->sync([]);
 
+            $server->databases->each(fn(Database $database) => $database->databaseUsers()->sync([]));
             $server->databases()->delete();
             $server->databaseUsers()->delete();
+            
             $server->workerSshKey()->delete();
             $server->pythons()->delete();
             $server->serverSshKey()->delete();
