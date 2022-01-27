@@ -71,6 +71,11 @@ class ServerView extends AbstractSubpagesView
             $this->show = 'projects';
     }
 
+    public function serverDeleted(): void
+    {
+        $this->redirectRoute('home');
+    }
+
     public function getDisabledProperty(): bool
     {
         return ! $this->server->isReady();
