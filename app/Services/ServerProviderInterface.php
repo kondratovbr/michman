@@ -39,6 +39,9 @@ interface ServerProviderInterface extends ProviderInterface
     /** Provision a new server with this server provider. */
     public function createServer(NewServerDto $data, string $sshKeyIdentifier): ServerDto;
 
+    /** Delete a server. */
+    public function deleteServer(string $externalId): void;
+
     /** Get a collection of all regions supported by the API. */
     public function getAllRegions(): RegionDataCollection;
 

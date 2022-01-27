@@ -155,6 +155,11 @@ class DigitalOceanV2 extends AbstractServerProvider
         return $this->serverDataFromResponseData($data->droplet);
     }
 
+    public function deleteServer(string $externalId): void
+    {
+        $this->delete("/droplets/{$externalId}");
+    }
+
     public function getAvailableRegions(): RegionDataCollection
     {
         $availableSizes = $this->getAllSizes()
