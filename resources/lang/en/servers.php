@@ -12,6 +12,7 @@ return [
 
     'placeholder' => [
         'preparing' => 'Preparing your server',
+        'deleting' => 'Deleting server',
     ],
 
     'states' => [
@@ -19,6 +20,7 @@ return [
         Servers\Preparing::class => 'Preparing',
         Servers\Configuring::class => 'Configuring',
         Servers\Ready::class => 'Ready',
+        Servers\Deleting::class => 'Deleting',
     ],
 
     'index' => [
