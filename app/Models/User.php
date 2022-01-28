@@ -24,7 +24,6 @@ use Illuminate\Support\HtmlString;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
-use Laravel\Paddle\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Facades\QrCode;
 
@@ -61,7 +60,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     use UsesCamelCaseAttributes;
     use HasModelHelpers;
     use IsLockable;
-    use Billable;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
