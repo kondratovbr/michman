@@ -22,6 +22,7 @@ worker_dev_ssh_key.pub
 /storage/*.key
 /vendor
 *.env
+auth.json
 !.env.example
 .env.backup
 .phpunit.result.cache

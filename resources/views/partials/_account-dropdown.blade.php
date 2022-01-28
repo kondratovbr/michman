@@ -1,7 +1,5 @@
 <x-navbar.dropdown>
 
-{{--    TODO: CRITICAL! Don't forget to put real routes here!--}}
-
     <x-slot name="trigger">
         <div class="flex items-center space-x-2">
             <x-avatar class="h-8 w-8" />
@@ -21,7 +19,7 @@
             {{ __('nav.account') }}
         </x-dropdown.link>
 
-        <x-dropdown.link href="">
+        <x-dropdown.link href="/billing">
             <x-slot name="icon"><i class="far fa-money-bill-alt"></i></x-slot>
             {{ __('nav.billing') }}
         </x-dropdown.link>

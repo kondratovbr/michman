@@ -26,6 +26,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use App\Facades\QrCode;
+use Spark\Billable;
 
 /**
  * User Eloquent model
@@ -60,6 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
     use UsesCamelCaseAttributes;
     use HasModelHelpers;
     use IsLockable;
+    use Billable;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

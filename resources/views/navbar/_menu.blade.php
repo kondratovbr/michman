@@ -16,7 +16,7 @@
         {{ __('nav.account') }}
     </x-dropdown.link>
 
-    <x-dropdown.link href="">
+    <x-dropdown.link href="/billing">
         <x-slot name="icon"><i class="far fa-money-bill-alt"></i></x-slot>
         {{ __('nav.billing') }}
     </x-dropdown.link>
