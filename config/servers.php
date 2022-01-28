@@ -21,6 +21,8 @@ return [
                 'python',
                 'database',
                 'cache',
+                'supervisor',
+                'ufw',
             ],
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => ConfigureAppServerJob::class,
@@ -31,6 +33,8 @@ return [
                 'nginx',
                 'gunicorn',
                 'python',
+                'supervisor',
+                'ufw',
             ],
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => null,
@@ -39,6 +43,8 @@ return [
         'worker' => [
             'install' => [
                 'python',
+                'supervisor',
+                'ufw',
             ],
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => null,
@@ -47,6 +53,7 @@ return [
         'database' => [
             'install' => [
                 'database',
+                'ufw',
             ],
             'add_ssh_key_to_vcs' => false,
             'configuration_job_class' => null,
@@ -55,6 +62,7 @@ return [
         'cache' => [
             'install' => [
                 'cache',
+                'ufw',
             ],
             'add_ssh_key_to_vcs' => false,
             'configuration_job_class' => null,

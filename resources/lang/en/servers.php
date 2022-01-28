@@ -101,6 +101,8 @@ return [
         'python' => 'Python',
         'database' => 'Database',
         'cache' => 'Cache',
+        'supervisor' => 'Supervisor',
+        'ufw' => 'Uncomplicated Firewall',
     ],
 
     'databases' => [
