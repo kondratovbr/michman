@@ -42,6 +42,7 @@ return [
     |
     */
 
+    // TODO: CRITICAL! Don't forget to at least add a logo here.
     // 'brand' =>  [
     //     'logo' => realpath(__DIR__.'/../public/svg/billing-logo.svg'),
     //     'color' => 'bg-gray-800',
