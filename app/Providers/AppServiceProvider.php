@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models;
 use App\Support\Arr;
 use App\Support\ConfigViewFactory;
 use App\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
@@ -55,6 +57,11 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Relation::enforceMorphMap([
+            'user' => Models\User::class,
+            'team' => Models\Team::class,
+        ]);
+
         /*
          * This will rollback any transactions that may have been
          * left open after a job has failed.
