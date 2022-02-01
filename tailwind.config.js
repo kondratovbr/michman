@@ -243,7 +243,7 @@ module.exports = {
         },
 
         debugScreens: {
-            position: ['top', 'left'],
+            position: ['bottom', 'right'],
         },
     },
 
