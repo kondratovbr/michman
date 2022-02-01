@@ -48,4 +48,11 @@
         @endforeach
     </x-slot>
 
+    @if($servers->isEmpty())
+        <x-slot name="empty">
+{{--            TODO: Maybe add some call to action here.--}}
+            <p class="max-w-prose">{{ __('servers.index.empty') }}</p>
+        </x-slot>
+    @endif
+
 </x-table-section>
