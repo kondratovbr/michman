@@ -26,6 +26,7 @@ return [
     'index' => [
 
         'title' => 'Active Servers',
+        'empty' => 'No servers created yet.',
 
         'table' => [
             'server' => 'Server',

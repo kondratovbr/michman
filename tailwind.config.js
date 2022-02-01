@@ -235,6 +235,7 @@ module.exports = {
                 'border-background': 'border-color, background-color',
                 'border-ring-background': 'border-color, box-shadow, background-color',
                 'opacity-transform': 'opacity, transform',
+                'background': 'background-color',
                 'border-ring': 'border-color, box-shadow',
                 'border': 'border-color',
                 'text': 'color',

@@ -4,6 +4,10 @@
 
     <div class="min-h-screen">
 
+        @if(user()->onTrial())
+            <x-trial-bar/>
+        @endif
+
         <livewire:navbar/>
 
         {{-- Bottombar has "fixed" positioning to the bottom.
