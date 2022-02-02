@@ -23,11 +23,11 @@ class SparkServiceProvider extends ServiceProvider
         });
 
         Spark::billable(User::class)->checkPlanEligibility(function (User $billable, Plan $plan) {
-            // if ($billable->projects > 5 && $plan->name == 'Basic') {
-            //     throw ValidationException::withMessages([
-            //         'plan' => 'You have too many projects for the selected plan.'
-            //     ]);
-            // }
+            if ($billable->servers()->count() > 0 && ! ($plan->options['unlimited_servers'] ?? false)) {
+                throw ValidationException::withMessages([
+                    'plan' => __('billing.too-many-servers'),
+                ]);
+            }
         });
     }
 }

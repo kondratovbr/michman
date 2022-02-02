@@ -17,7 +17,15 @@ class ServerPolicy
 
     public function create(User $user): bool
     {
-        // For now - no limits. Later will add subscription plan based limits here.
+        if ($user->onTrial())
+            return true;
+
+        if (! $user->subscribed())
+            return false;
+
+        if ($user->servers()->count() > 0 && ! ($user->sparkPlan()->options['unlimited_servers'] ?? false))
+            return false;
+
         return true;
     }
 

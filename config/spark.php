@@ -112,6 +112,9 @@ return [
                         'Unlimited Deployments',
                         'Automatic Deployments',
                     ],
+                    'options' => [
+                        'unlimited_servers' => true,
+                    ],
                     'archived' => false,
                 ],
                 /*
@@ -121,11 +124,14 @@ return [
                     'monthly_id' => env('SPARK_BUSINESS_MONTHLY_PLAN'),
                     'yearly_id' => env('SPARK_BUSINESS_YEARLY_PLAN'),
                     'features' => [
-                        'Unlimited Server',
+                        'Unlimited Servers',
                         'Unlimited Projects',
                         'Unlimited Deployments',
                         'Automatic Deployments',
                         '...',
+                    ],
+                    'options' => [
+                        'unlimited_servers' => true,
                     ],
                     'archived' => false,
                 ],
