@@ -6,6 +6,8 @@
 
         @if(user()->onTrial())
             <x-trial-bar/>
+        @elseif(! user()->subscribed())
+            <x-not-subscribed-bar/>
         @endif
 
         <livewire:navbar/>
