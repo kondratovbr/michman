@@ -58,6 +58,29 @@ class UserFactory extends Factory
     }
 
     /**
+     * Create an active subscription plan for the user.
+     *
+     * @return $this
+     */
+    public function withSubscription(int $planId = null): static
+    {
+        return $this->afterCreating(function ($user) use ($planId) {
+            optional($user->customer)->update(['trial_ends_at' => null]);
+
+            $user->subscriptions()->create([
+                'name' => 'default',
+                'paddle_id' => random_int(1, 1000),
+                'paddle_status' => 'active',
+                'paddle_plan' => $planId,
+                'quantity' => 1,
+                'trial_ends_at' => null,
+                'paused_from' => null,
+                'ends_at' => null,
+            ]);
+        });
+    }
+
+    /**
      * Have a TFA enabled for the user.
      *
      * @return $this

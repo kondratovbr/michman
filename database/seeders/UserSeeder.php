@@ -15,10 +15,17 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Seed admin user.
-        User::factory()->theAdmin()->withPersonalTeam()->create();
+        User::factory()
+            ->theAdmin()
+            ->withPersonalTeam()
+            ->create();
 
         // Seed a predefined generic user useful for development.
-        User::factory()->theUser()->withPersonalTeam()->create();
+        User::factory()
+            ->theUser()
+            ->withPersonalTeam()
+            ->withSubscription((int) env('SPARK_STANDARD_MONTHLY_PLAN'))
+            ->create();
 
         if (static::SEED_DEV_USER) {
             // Seed a user with an actual email that will have actual API tokens and everything.
@@ -28,7 +35,9 @@ class UserSeeder extends Seeder
                 'password' => null,
             ])
                 ->withPersonalTeam()
+                ->withSubscription((int) env('SPARK_UNLIMITED_MONTHLY_PLAN'))
                 ->create();
+
             $user->oauthUsers()->create([
                 'provider' => 'github',
                 'oauth_id' => '5469212',
