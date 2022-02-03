@@ -27,6 +27,7 @@ return [
 
     'create' => [
         'title' => 'Create New Project',
+        'no-subscription' => 'You need an active subscription to create new projects.',
 
         'form' => [
             'button' => 'Create Project',
