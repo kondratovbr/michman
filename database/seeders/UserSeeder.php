@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
         User::factory()
             ->theUser()
             ->withPersonalTeam()
+            ->trialExpired()
             // ->withSubscription((int) env('SPARK_STANDARD_MONTHLY_PLAN'))
             ->create();
 

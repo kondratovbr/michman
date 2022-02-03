@@ -64,7 +64,7 @@ class UserFactory extends Factory
      */
     public function withSubscription(int $planId = null): static
     {
-        return $this->afterCreating(function ($user) use ($planId) {
+        return $this->afterCreating(function (User $user) use ($planId) {
             optional($user->customer)->update(['trial_ends_at' => null]);
 
             $user->subscriptions()->create([
@@ -76,6 +76,20 @@ class UserFactory extends Factory
                 'trial_ends_at' => null,
                 'paused_from' => null,
                 'ends_at' => null,
+            ]);
+        });
+    }
+
+    /**
+     * Make the trial for this user to be expired.
+     *
+     * @return $this
+     */
+    public function trialExpired(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->customer->update([
+                'trial_ends_at' => now()->subMinutes(5),
             ]);
         });
     }
