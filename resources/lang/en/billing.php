@@ -9,4 +9,5 @@ return [
 
     'too-many-servers' => 'You have too many servers for the selected plan.',
 
+    'upgrade-button' => 'Upgrade',
 ];
