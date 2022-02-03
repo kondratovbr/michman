@@ -16,9 +16,17 @@ class ServerSeeder extends Seeder
     {
         // Make sure the dev user has a server seeded.
         $dev = User::query()->firstWhere('email', (string) config('app.dev_email'));
-        if (! is_null($dev)) {
+        if ($dev) {
             Server::factory()
                 ->for($dev->providers()->first())
+                ->create();
+        }
+
+        // Make sure the generic user has a server seeded as well.
+        $user = User::query()->firstWhere('email', 'user@example.com');
+        if ($user) {
+            Server::factory()
+                ->for($user->providers()->first())
                 ->create();
         }
 

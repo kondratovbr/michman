@@ -29,6 +29,11 @@ class ProviderSeeder extends Seeder
                 ->create();
         }
 
+        // Make sure the generic user has a provider seeded.
+        $user = User::query()->firstWhere('email', 'user@example.com');
+        if ($user)
+            Provider::factory()->for($user)->create();
+
         // Seed fake tokens.
         Provider::factory()
             ->forRandomUserFrom(User::query()
