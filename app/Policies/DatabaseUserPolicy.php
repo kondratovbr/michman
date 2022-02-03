@@ -18,11 +18,17 @@ class DatabaseUserPolicy
 
     public function create(User $user, Server $server): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($server->user) && ! is_null($server->installedDatabase);
     }
 
     public function update(User $user, DatabaseUser $databaseUser): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($databaseUser->user);
     }
 

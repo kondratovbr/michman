@@ -18,6 +18,9 @@ class WorkerPolicy
 
     public function create(User $user, Project $project): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($project->user);
     }
 
@@ -28,6 +31,9 @@ class WorkerPolicy
 
     public function restart(User $user, Worker $worker): bool
     {
+        if (! $user->appEnabled())
+            return false;
+        
         return $user->is($worker->user);
     }
 

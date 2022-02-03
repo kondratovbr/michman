@@ -31,6 +31,9 @@ class ServerPolicy
 
     public function update(User $user, Server $server): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($server->user);
     }
 

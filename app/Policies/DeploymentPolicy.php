@@ -18,6 +18,9 @@ class DeploymentPolicy
 
     public function create(User $user, Project $project): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($project->user);
     }
 

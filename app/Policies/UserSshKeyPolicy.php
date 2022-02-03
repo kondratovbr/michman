@@ -19,11 +19,17 @@ class UserSshKeyPolicy
 
     public function create(User $user, User $subject): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($subject);
     }
 
     public function update(User $user, UserSshKey $key): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($key->user);
     }
 

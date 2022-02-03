@@ -215,6 +215,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         return $this->email === $adminEmail && $this->hasVerifiedEmail();
     }
 
+    /** Check if this user should have general application features enabled. */
+    public function appEnabled(): bool
+    {
+        return $this->onTrial() || $this->subscribed();
+    }
+
     /** Get a relation with server providers owned by this user. */
     public function providers(): HasMany
     {

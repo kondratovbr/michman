@@ -18,6 +18,9 @@ class PythonPolicy
 
     public function create(User $user, Server $server, string $version): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         if (! $user->is($server->user))
             return false;
 
@@ -26,6 +29,9 @@ class PythonPolicy
 
     public function update(User $user, Python $python): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($python->user);
     }
 

@@ -18,6 +18,9 @@ class DaemonPolicy
     
     public function create(User $user, Server $server): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($server->user);
     }
 
@@ -28,6 +31,9 @@ class DaemonPolicy
 
     public function update(User $user, Daemon $daemon): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         return $user->is($daemon->user);
     }
 

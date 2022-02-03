@@ -18,6 +18,9 @@ class DatabasePolicy
 
     public function create(User $user, Server $server): bool
     {
+        if (! $user->appEnabled())
+            return false;
+
         if (! $user->is($server->user))
             return false;
 
