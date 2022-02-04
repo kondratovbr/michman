@@ -2,7 +2,7 @@
 
 @php
     $classes = implode(' ', [
-        'inline-flex items-center justify-center min-w-16 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
+        'shrink-0 grow-0 inline-flex items-center justify-center min-w-16 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
         ($capitalize ?? true) ? 'capitalize' : '',
         'bg-transparent ring-2 ring-gray-400 border-2 border-gray-400 border-opacity-0',
         'mx-2px',

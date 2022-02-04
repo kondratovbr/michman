@@ -7,7 +7,7 @@
 
 @php
     $classes = implode(' ', [
-        'inline-flex items-center justify-center min-w-16 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
+        'shrink-0 grow-0 inline-flex items-center justify-center min-w-16 rounded-md outline-none cursor-pointer select-none whitespace-nowrap',
         ($capitalize ?? true) ? 'capitalize' : '',
         match ($size ?? null) {
             'small' => 'py-0.5 px-2 text-sm',
