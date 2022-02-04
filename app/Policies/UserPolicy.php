@@ -40,7 +40,7 @@ class UserPolicy
     }
 
     /** Determine if a user can delete another user's account. */
-    public function deleteAccount(User $user, User $subject): bool
+    public function delete(User $user, User $subject): bool
     {
         return $user->is($subject);
     }

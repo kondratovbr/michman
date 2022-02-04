@@ -25,6 +25,6 @@
     @endif
 @endif
 
-@if(user()->can('deleteAccount', user()) && Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+@if(user()->can('delete', user()) && Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
     <livewire:profile.delete-account-form/>
 @endif

@@ -47,7 +47,7 @@ class DeleteAccountForm extends Component
 
         abort(403);
 
-        $this->authorize('deleteAccount', [Auth::user()]);
+        $this->authorize('delete', [Auth::user()]);
 
         $this->validate();
 
