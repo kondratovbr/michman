@@ -61,7 +61,7 @@ return [
                 'label' => 'Create database user',
             ],
             'db-user-name' => [
-                'label' => 'Database user name',
+                'label' => 'Database username',
             ],
             'db-user-password' => [
                 'label' => 'Database user password',
