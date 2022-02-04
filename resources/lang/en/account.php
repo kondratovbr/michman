@@ -51,8 +51,8 @@ return [
 
             'title' => 'Delete Account',
             'description' => 'Permanently delete your account.',
-            'explanation' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please save any data or information that you wish to retain.',
-            'are-you-sure' => 'Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+            'explanation' => 'This will cancel your subscription and permanently delete all of your account\'s data. Your servers will be preserved and stay active with no changes. This action cannot be undone.',
+            'enter-password' => 'Please enter your password to confirm account deletion.',
             'delete-button' => 'Delete Account',
             'modal-title' => 'Delete Account',
         ],

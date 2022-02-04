@@ -1,5 +1,3 @@
-{{--TODO: IMPORTANT! Unfinished!--}}
-
 <x-action-section>
     <x-slot name="title">
         {{ __('account.profile.delete.title') }}
@@ -23,80 +21,51 @@
             </x-buttons.danger>
         </div>
 
-{{--        TODO: Actually implement the feature. It isn't that simple.--}}
-        {{-- Temorary Sorry Modal --}}
-        <x-modals.dialog wire:model="confirmingUserDeletion">
-            <x-slot name="header">
-                {{ __('account.profile.delete.sorry.title') }}
-            </x-slot>
-
-            <x-slot name="content">
-                <div class="space-y-4">
-                    <p>{{ __('account.profile.delete.sorry.content') }}</p>
-                    <p>{{ __('account.profile.delete.sorry.contact-support') }}</p>
-                </div>
-            </x-slot>
-
-            <x-slot name="actions">
-                <div class="flex justify-start items-center space-x-3">
-{{--                    TODO: IMPORTANT! Implement tech support and this button.--}}
-                    <x-buttons.primary>
-                        {{ __('account.profile.delete.sorry.contact-button') }}
-                    </x-buttons.primary>
-                    <x-buttons.secondary
-                        x-on:click.prevent="show = false"
-{{--                        wire:click="$toggle('confirmingUserDeletion')"--}}
-                        wire:loading.attr="disabled"
-                    >
-                        {{ __('buttons.cancel') }}
-                    </x-buttons.secondary>
-                </div>
-            </x-slot>
-        </x-modals.dialog>
-
-        {{-- Actual Delete User Confirmation Modal --}}
-        {{--
         <x-modals.dialog wire:model="confirmingUserDeletion">
             <x-slot name="header">
                 {{ __('account.profile.delete.modal-title') }}
             </x-slot>
 
             <x-slot name="content">
-                {{ __('account.profile.delete.are-you-sure') }}
+                <div class="space-y-4">
+                    <p>{{ __('account.profile.delete.explanation') }}</p>
 
-                <div
-                    class="mt-4"
-                    x-data="{}"
-                    x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)"
-                >
-                    <x-label>{{ __('forms.password.label') }}</x-label>
-                    <x-inputs.password
-                        name="password"
-                        x-ref="password"
-                        wire:model.defer="password"
-                        wire:keydown.enter="deleteUser"
-                    />
-                    <x-input-error for="password" />
+                    <p>{{ __('account.profile.delete.enter-password') }}</p>
+
+                    <div
+                        x-data="{}"
+                        x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)"
+                    >
+                        <x-label>{{ __('forms.password.label') }}</x-label>
+                        <x-inputs.password
+                            name="password"
+                            x-ref="password"
+                            wire:model.defer="password"
+                            wire:keydown.enter="deleteUser"
+                        />
+                        <x-input-error for="password" />
+                    </div>
                 </div>
             </x-slot>
 
             <x-slot name="actions">
-                <x-buttons.secondary
-                    wire:click="$toggle('confirmingUserDeletion')"
-                    wire:loading.attr="disabled"
-                >
-                    {{ __('buttons.cancel') }}
-                </x-buttons.secondary>
+                <div class="flex justify-between">
+                    <x-buttons.secondary
+                        wire:click="$toggle('confirmingUserDeletion')"
+                        wire:loading.attr="disabled"
+                    >
+                        {{ __('buttons.cancel') }}
+                    </x-buttons.secondary>
 
-                <x-buttons.danger
-                    wire:click="deleteUser"
-                    wire:loading.attr="disabled"
-                >
-                    {{ __('account.profile.delete.delete-button') }}
-                </x-buttons.danger>
+                    <x-buttons.danger
+                        wire:click="deleteUser"
+                        wire:loading.attr="disabled"
+                    >
+                        {{ __('account.profile.delete.delete-button') }}
+                    </x-buttons.danger>
+                </div>
             </x-slot>
         </x-modals.dialog>
-        --}}
 
     </x-slot>
 </x-action-section>
