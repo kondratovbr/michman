@@ -64,8 +64,6 @@ class QuickDeployForm extends LivewireComponent
     /** Disable automatic deployment for this project. */
     public function disable(DeleteProjectWebhookAction $action): void
     {
-        $this->authorize('update', $this->project);
-
         if (! isset($this->project->webhook))
             return;
 
