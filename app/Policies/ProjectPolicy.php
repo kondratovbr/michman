@@ -24,6 +24,11 @@ class ProjectPolicy
         return $user->is($server->user);
     }
 
+    public function view(User $user, Project $project): bool
+    {
+        return $user->is($project->user);
+    }
+
     public function update(User $user, Project $project): bool
     {
         if (! $user->appEnabled())

@@ -18,7 +18,7 @@ class UninstallRepoForm extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('update', $this->project);
+        $this->authorize('view', $this->project);
     }
 
     public function uninstall(UninstallProjectRepoAction $action): void

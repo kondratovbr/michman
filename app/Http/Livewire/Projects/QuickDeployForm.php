@@ -40,7 +40,7 @@ class QuickDeployForm extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('update', $this->project);
+        $this->authorize('view', $this->project);
     }
 
     public function getHookProperty(): Webhook|null
