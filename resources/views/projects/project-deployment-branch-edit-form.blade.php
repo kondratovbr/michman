@@ -8,6 +8,7 @@
             <x-inputs.text
                 name="branch"
                 wire:model="branch"
+                :disabled="Gate::denies('update', $project)"
             />
             <x-input-error for="branch" />
         </x-field>
@@ -17,6 +18,7 @@
         <x-buttons.primary
             wire:click.prevent="update"
             wire:loading.attr="disabled"
+            :disabled="Gate::denies('update', $project)"
         >{{ __('projects.branch.button') }}</x-buttons.primary>
     </x-slot>
 
