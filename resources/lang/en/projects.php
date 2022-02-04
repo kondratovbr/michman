@@ -73,6 +73,7 @@ return [
         'configure' => [
             'title' => 'Configure Repository',
             'button' => 'Install Repository',
+            'no-subscription' => 'You need an active subscription to configure a project.',
             'vcs' => [
                 'label' => 'Provider',
             ],

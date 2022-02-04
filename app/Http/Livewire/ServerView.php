@@ -86,6 +86,14 @@ class ServerView extends AbstractSubpagesView
         return route('servers.show', [$this->server, static::DEFAULT_SHOW]);
     }
 
+    public function canShow(string $view): bool
+    {
+        return (bool) match ($view) {
+            'databases', 'pythons', 'firewall', 'ssl', 'daemons' => user()->appEnabled(),
+            default => true,
+        };
+    }
+
     public function render(): View
     {
         if (! $this->server->isReady())

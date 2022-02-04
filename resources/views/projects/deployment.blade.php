@@ -1,6 +1,8 @@
 {{--TODO: Can the interaction here be made nicer? Like some transition or an animation. Check out how Forge does.--}}
 
-@if($project->removingRepo)
+@if(! user()->appEnabled())
+    <x-projects.repo-no-subscription/>
+@elseif($project->removingRepo)
     <livewire:projects.removing-repo-placeholder :project="$project" />
 @elseif(! $project->repoInstalled())
     <livewire:projects.install-repo-form :project="$project" />

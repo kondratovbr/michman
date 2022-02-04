@@ -90,8 +90,13 @@
             <x-buttons.primary
                 wire:click.prevent="deploy"
                 wire:loading.attr="disabled"
+                :disabled="! user()->appEnabled()"
             >{{ __('deployments.deploy-button') }}</x-buttons.primary>
-            <div class="text-sm"><x-lang key="deployments.deploying-branch" branch="{{ $project->branch }}"/></div>
+            @if(user()->appEnabled())
+                <div class="text-sm"><x-lang key="deployments.deploying-branch" branch="{{ $project->branch }}" /></div>
+            @else
+                <div class="text-sm"><x-lang key="deployments.no-subscription" /></div>
+            @endif
         </div>
     </x-slot>
 
