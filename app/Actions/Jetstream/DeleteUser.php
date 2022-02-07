@@ -9,13 +9,10 @@ use Laravel\Jetstream\Contracts\DeletesUsers;
 
 class DeleteUser implements DeletesUsers
 {
-    /** The team deleter implementation. */
-    protected DeletesTeams $deletesTeams;
-
-    public function __construct(DeletesTeams $deletesTeams)
-    {
-        $this->deletesTeams = $deletesTeams;
-    }
+    public function __construct(
+        /** The team deleter implementation. */
+        protected DeletesTeams $deletesTeams,
+    ) {}
 
     /**
      * Delete the given user.
@@ -24,12 +21,15 @@ class DeleteUser implements DeletesUsers
      */
     public function delete($user): void
     {
+        throw new \RuntimeException('This action is deprecated and should not be used.');
+
         DB::transaction(function () use ($user) {
+            $user->freshLockForUpdate();
+
             $this->deleteTeams($user);
-            $user->deleteProfilePhoto();
             $user->tokens->each->delete();
 
-            // $user->subscription()->cancel();
+            $user->subscription()->cancel();
 
             $user->delete();
         });
