@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as BaseUser;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\HtmlString;
@@ -50,7 +50,7 @@ use Spark\Billable;
  *
  * @method static UserFactory factory(...$parameters)
  */
-class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
+class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
 {
     use HasApiTokens;
     use HasFactory;
