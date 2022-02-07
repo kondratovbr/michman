@@ -8,6 +8,7 @@ use App\Handlers\VcsProviderHandler;
 use App\Models\VcsProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Laravel\Socialite\Contracts\User as OauthUser;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 use RuntimeException;
@@ -40,6 +41,7 @@ class VcsProviderController extends AbstractController
         DB::transaction(function () use ($vcsProviderOauthName) {
             $user = Auth::user();
 
+            /** @var OauthUser $oauthUser */
             $oauthUser = Socialite::driver($vcsProviderOauthName)
                 ->redirectUrl(route('vcs.link-callback', $vcsProviderOauthName))
                 ->user();
@@ -48,6 +50,17 @@ class VcsProviderController extends AbstractController
 
             if (is_null($vcs)) {
                 $vcs = $this->handler->createViaOAuth($vcsProviderOauthName, $oauthUser, $user);
+
+                // TODO: Cover this association with a test.
+                if (
+                    $oauthModel = $user->oauthUsers()
+                        ->where('provider', $vcsProviderOauthName)
+                        ->where('oauth_id', $vcs->externalId)
+                        ->latest()
+                        ->first()
+                ) {
+                    $vcs->oauthUser()->associate($oauthModel);
+                }
 
                 flash(__('flash.vcs-provider-linked', [
                     'vcs' => __("projects.repo.providers.{$vcs->provider}"),

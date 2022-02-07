@@ -12,6 +12,7 @@ use App\Http\Exceptions\OAuth\RedirectUriMismatchException;
 use App\Http\Exceptions\OAuth\OAuthException;
 use App\Models\User;
 use App\Models\OAuthUser as OauthModel;
+use App\Models\VcsProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -129,16 +130,29 @@ class OAuthController extends AbstractController
                 );
             }
 
+            /** @var OauthUser $oauthUser */
             $oauthUser = Socialite::driver($oauthProvider)
                 ->redirectUrl(route('oauth.link-callback', $oauthProvider))
                 ->user();
 
-            $this->createOAuthUser->execute(
+            $oauthModel = $this->createOAuthUser->execute(
                 $oauthProvider,
                 $oauthUser->getId(),
                 $oauthUser->getNickname(),
                 $user,
             );
+
+            // TODO: Cover this association with a test.
+            /** @var VcsProvider|null $vcsProvider */
+            if (
+                $vcsProvider = $user->vcsProviders()
+                    ->where('provider', config("auth.oauth_providers.{$oauthProvider}.vcs_provider"))
+                    ->where('external_id', $oauthModel->oauthId)
+                    ->latest()
+                    ->first()
+            ) {
+                $vcsProvider->oauthUser()->associate($oauthModel);
+            }
 
             /*
              * TODO: IMPORTANT! This doesn't really work because these flashes use broadcasting,
@@ -236,7 +250,12 @@ class OAuthController extends AbstractController
                 'terms' => true,
             ]);
 
-            $this->vcsProviderHandler->createViaOAuth($oauthProvider, $oauthUser, $user);
+            $oauthModel = $user->oauth($oauthProvider);
+
+            $vcsProvider = $this->vcsProviderHandler->createViaOAuth($oauthProvider, $oauthUser, $user);
+
+            // TODO: Cover this association with a test.
+            $vcsProvider->oauthUser()->associate($oauthModel);
 
             event(new Registered($user));
 
