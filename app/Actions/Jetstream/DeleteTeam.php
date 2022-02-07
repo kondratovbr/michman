@@ -11,8 +11,8 @@ class DeleteTeam implements DeletesTeams
     /** @param Team $team */
     public function delete($team): void
     {
-        throw new NotImplementedException('Team deletion is not implemented yet.');
+        throw new NotImplementedException('This action is deprecated and should not be used.');
 
-        $team->purge();
+        // $team->purge();
     }
 }
