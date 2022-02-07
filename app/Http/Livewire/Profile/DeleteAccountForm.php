@@ -2,14 +2,12 @@
 
 namespace App\Http\Livewire\Profile;
 
+use App\Actions\Users\DeleteUserAction;
 use App\Validation\Rules;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Facades\Auth;
-use Laravel\Jetstream\Contracts\DeletesUsers;
 use Livewire\Component;
-use Livewire\Redirector;
 
 class DeleteAccountForm extends Component
 {
@@ -41,21 +39,21 @@ class DeleteAccountForm extends Component
     }
 
     /** Delete the current user. */
-    public function deleteUser(DeletesUsers $deleter, StatefulGuard $auth): Redirector
+    public function deleteUser(DeleteUserAction $deleteUser): void
     {
-        // TODO: CRITICAL! DELETING. Implement the actual feature. Would be more complex than that. Maybe need to clean servers, logout providers, VCSs, etc. Maybe need to have a cooldown time, so a user can stop deletion, if necessary. Also, need to handle billing on deletion somehow.
-
-        abort(403);
+        // TODO: CRITICAL! CONTINUE. Implement the actual feature. Would be more complex than that. Maybe need to clean servers, logout providers, VCSs, etc. Maybe need to have a cooldown time, so a user can stop deletion, if necessary. Also, need to handle billing on deletion somehow.
 
         $this->authorize('delete', [Auth::user()]);
 
         $this->validate();
 
-        $deleter->delete(Auth::user()->fresh());
+        ray('Will delete user ' . Auth::user()->email)->die();
 
-        $auth->logout();
+        $deleteUser->execute(Auth::user()->fresh());
 
-        return redirect('/');
+        Auth::logout();
+
+        $this->redirectRoute('home');
     }
 
     public function render(): View
