@@ -5,7 +5,6 @@ namespace App\Handlers;
 use App\Actions\VcsProviders\StoreVcsProviderAction;
 use App\Actions\VcsProviders\UpdateVcsProviderAction;
 use App\DataTransferObjects\VcsProviderDto;
-use App\Events\Users\FlashMessageEvent;
 use App\Models\User;
 use App\Models\VcsProvider;
 use Laravel\Socialite\Contracts\User as OAuthUser;
