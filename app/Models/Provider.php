@@ -29,6 +29,7 @@ use RuntimeException;
  *
  * @property-read User $user
  * @property-read Collection $servers
+ * @property-read OAuthUser|null $oauthUser
  *
  * @method static ProviderFactory factory(...$parameters)
  */
@@ -114,5 +115,11 @@ class Provider extends AbstractModel
     public function servers(): HasMany
     {
         return $this->hasMany(Server::class);
+    }
+
+    /** Get a relation with the corresponding OAuthUser, if any. */
+    public function oauthUser(): BelongsTo
+    {
+        return $this->belongsTo(OAuthUser::class, 'oauth_user_id');
     }
 }

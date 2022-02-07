@@ -35,6 +35,7 @@ use RuntimeException;
  * @property-read User $user
  * @property-read Collection $projects
  * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
+ * @property-read OAuthUser|null $oauthUser
  *
  * @method static VcsProviderFactory factory(...$parameters)
  */
@@ -118,5 +119,11 @@ class VcsProvider extends AbstractModel
             ->using(ServerSshKeyVcsProviderPivot::class)
             ->withPivot(ServerSshKeyVcsProviderPivot::$pivotAttributes)
             ->withTimestamps();
+    }
+
+    /** Get a relation with the corresponding OAuthUser, if any. */
+    public function oauthUser(): BelongsTo
+    {
+        return $this->belongsTo(OAuthUser::class, 'oauth_user_id');
     }
 }

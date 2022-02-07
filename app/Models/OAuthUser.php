@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\OAuthUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * OAuthUser Eloquent model
@@ -20,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $updatedAt
  *
  * @property-read User $user
+ * @property-read Provider|null $serverProvider
+ * @property-read VcsProvider|null $vcsProvider
  *
  * @method static OAuthUserFactory factory(...$parameters)
  */
@@ -54,5 +57,17 @@ class OAuthUser extends AbstractModel
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /** Get a relation with the corresponding Provider, if any. */
+    public function serverProvider(): HasOne
+    {
+        return $this->hasOne(Provider::class, 'oauth_user_id');
+    }
+
+    /** Get a relation with the corresponding VcsProvider, if any. */
+    public function vcsProvider(): HasOne
+    {
+        return $this->hasOne(VcsProvider::class, 'oauth_user_id');
     }
 }
