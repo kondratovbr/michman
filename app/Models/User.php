@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Facades\Log;
@@ -62,6 +63,7 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     use HasModelHelpers;
     use IsLockable;
     use Billable;
+    use SoftDeletes;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
