@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Profile;
 
 use App\Actions\Users\DeleteUserAction;
 use App\Validation\Rules;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Facades\Auth;
 use Livewire\Component;
+
+// TODO: CRITICAL! CONTINUE. Forgot to handle a situation when the user has no password (OAuth only).
 
 class DeleteAccountForm extends Component
 {
@@ -39,19 +42,15 @@ class DeleteAccountForm extends Component
     }
 
     /** Delete the current user. */
-    public function deleteUser(DeleteUserAction $deleteUser): void
+    public function deleteUser(DeleteUserAction $deleteUser, StatefulGuard $auth): void
     {
-        // TODO: CRITICAL! CONTINUE. Implement the actual feature. Would be more complex than that. Maybe need to clean servers, logout providers, VCSs, etc. Maybe need to have a cooldown time, so a user can stop deletion, if necessary. Also, need to handle billing on deletion somehow.
-
         $this->authorize('delete', [Auth::user()]);
 
         $this->validate();
 
-        ray('Will delete user ' . Auth::user()->email)->die();
-
         $deleteUser->execute(Auth::user()->fresh());
 
-        Auth::logout();
+        $auth->logout();
 
         $this->redirectRoute('home');
     }
