@@ -8,4 +8,7 @@ interface ProviderInterface
 {
     /** Refresh the authentication token if applicable. */
     public function refreshToken(): AuthTokenDto;
+
+    /** Revoke OAuth access if applicable. */
+    // public function revokeOAuthAccess(): void;
 }
