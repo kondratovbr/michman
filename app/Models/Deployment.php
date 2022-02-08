@@ -222,4 +222,11 @@ class Deployment extends AbstractModel
     {
         return new DeploymentQueryBuilder($query);
     }
+
+    public function delete(): bool|null
+    {
+        $this->servers()->detach();
+
+        return parent::delete();
+    }
 }

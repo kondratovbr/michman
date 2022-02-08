@@ -310,4 +310,16 @@ class Project extends AbstractModel
     {
         return $this->hasOne(Webhook::class);
     }
+
+    public function delete(): bool|null
+    {
+        $this->servers()->detach();
+
+        $this->deploySshKey?->delete();
+        $this->deployments->each->delete();
+        $this->workers->each->delete();
+        $this->webhook?->delete();
+
+        return parent::delete();
+    }
 }

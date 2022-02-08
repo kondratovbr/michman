@@ -48,6 +48,7 @@ use Spark\Billable;
  * @property-read Collection $vcsProviders
  * @property-read Collection $projects
  * @property-read Collection $oauthUsers
+ * @property-read Collection $webhooks
  *
  * @method static UserFactory factory(...$parameters)
  */
@@ -257,5 +258,23 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     public function oauthUsers(): HasMany
     {
         return $this->hasMany(OAuthUser::class);
+    }
+
+    /** Get a relation with all the webhooks created for projects of this user. */
+    public function webhooks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Webhook::class, Project::class);
+    }
+
+    public function delete(): bool|null
+    {
+        $this->providers->each->delete();
+        $this->servers->each->delete();
+        $this->userSshKeys->each->delete();
+        $this->vcsProviders->each->delete();
+        $this->projects->each->delete();
+        $this->oauthUsers->each->delete();
+
+        return parent::delete();
     }
 }

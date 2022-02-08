@@ -383,4 +383,34 @@ class Server extends AbstractModel
     {
         return $this->hasMany(Daemon::class);
     }
+
+    /*
+     * TODO: IMPORTANT! Cover all these custom delete() methods with tests.
+     */
+    public function delete(): bool|null
+    {
+        $this->userSshKeys()->detach();
+        $this->deployments()->detach();
+
+        $this->workerSshKey?->delete();
+        $this->logs->each->delete();
+        $this->databases->each->delete();
+        $this->databaseUsers->each->delete();
+        $this->pythons->each->delete();
+        $this->serverSshKey?->delete();
+        $this->firewallRules->each->delete();
+
+        $this->projects->each(function (Project $project) {
+            $project->servers()->detach($this->getKey());
+
+            if ($project->servers()->count() == 0)
+                $project->delete();
+        });
+
+        $this->certificates->each->delete();
+        $this->workers->each->delete();
+        $this->daemons->each->delete();
+
+        return parent::delete();
+    }
 }

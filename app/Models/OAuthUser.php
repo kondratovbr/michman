@@ -70,4 +70,12 @@ class OAuthUser extends AbstractModel
     {
         return $this->hasOne(VcsProvider::class, 'oauth_user_id');
     }
+
+    public function delete(): bool|null
+    {
+        $this->serverProvider?->oauthUser()->dissociate();
+        $this->vcsProvider?->oauthUser()->dissociate();
+
+        return parent::delete();
+    }
 }

@@ -144,4 +144,11 @@ class Webhook extends AbstractModel
     {
         return $this->hasMany(WebhookCall::class);
     }
+
+    public function delete(): bool|null
+    {
+        $this->calls->each->delete();
+
+        return parent::delete();
+    }
 }

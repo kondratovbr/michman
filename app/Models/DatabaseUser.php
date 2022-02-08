@@ -82,4 +82,12 @@ class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
     {
         return $this->hasOne(Project::class);
     }
+
+    public function delete(): bool|null
+    {
+        $this->databases()->detach();
+        $this->project?->databaseUser()->disassociate();
+
+        return parent::delete();
+    }
 }
