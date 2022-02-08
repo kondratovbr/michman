@@ -207,6 +207,22 @@ class GitHubV3 extends AbstractVcsProvider
         return $this->token;
     }
 
+    /** https://docs.github.com/en/rest/reference/apps#delete-an-app-authorization */
+    public function revokeOAuthAccess(): void
+    {
+        $clientId = config('services.github.client_id');
+
+        Http::withBasicAuth(
+            config('services.github.client_id'),
+            config('services.github.client_secret'),
+        )
+            ->accept(static::ACCEPT)
+            ->delete("/applications/{$clientId}/grant", [
+                'access_token' => $this->token->token,
+            ])
+            ->throw();
+    }
+
     /** Convert webhook data from response format into the internal format. */
     protected function webhookDataFromResponseData(object $data): WebhookDto
     {
