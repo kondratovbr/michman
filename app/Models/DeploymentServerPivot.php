@@ -15,8 +15,10 @@ use Illuminate\Database\Eloquent\Collection;
  *
  * Represents the deployment process performed on a specific server.
  *
+ * @property int $id
  * @property int $deploymentId
  * @property int $serverId
+ *
  * @property CarbonInterface|null $startedAt
  * @property CarbonInterface|null $finishedAt
  * @property bool|null $successful

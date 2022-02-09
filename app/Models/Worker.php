@@ -23,6 +23,8 @@ use Spatie\ModelStates\HasStates;
  * Represents a server queue worker.
  *
  * @property int $id
+ * @property int $projectId
+ *
  * @property string $type
  * @property string|null $app
  * @property int|null $processes

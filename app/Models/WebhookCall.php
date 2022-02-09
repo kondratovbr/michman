@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * WebhookCall Eloquent model
  *
  * @property int $id
+ * @property int $webhookId
+ *
  * @property string $type
  * @property string $url
  * @property string $externalId

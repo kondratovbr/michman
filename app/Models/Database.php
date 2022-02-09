@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Database Eloquent model
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt

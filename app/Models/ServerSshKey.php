@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * to access project repositories during deployment.
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt

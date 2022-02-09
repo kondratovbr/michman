@@ -25,7 +25,11 @@ use Spatie\ModelStates\HasStates;
 /**
  * Server Eloquent model
  *
+ * Database IDs:
  * @property int $id
+ * @property int $userId
+ *
+ * Database-stored properties:
  * @property string $externalId
  * @property string $region
  * @property string $size
@@ -44,9 +48,11 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
+ * Derived properties:
  * @property-read User $user
  * @property-read string $publicWorkerDir
  *
+ * Relations:
  * @property-read Provider $provider
  * @property-read WorkerSshKey $workerSshKey
  * @property-read Collection $logs

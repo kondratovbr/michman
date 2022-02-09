@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * FirewallRule Eloquent model
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $name
  * @property string $port
  * @property string $fromIp

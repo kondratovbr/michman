@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Python Eloquent model
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $version
  * @property string|null $status
  * @property string|null $patchVersion

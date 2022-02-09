@@ -8,6 +8,7 @@ use App\Events\Projects\ProjectCreatedEvent;
 use App\Events\Projects\ProjectDeletedEvent;
 use App\Events\Projects\ProjectUpdatedEvent;
 use App\Support\Str;
+use Carbon\CarbonInterface;
 use Database\Factories\ProjectFactory;
 use Ds\Set;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Project Eloquent model
  *
  * @property int $id
+ * @property int $userId
+ *
  * @property string $domain
  * @property Set<string> $aliases
  * @property bool $allowSubDomains
@@ -37,6 +40,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null $gunicornConfig
  * @property string|null $nginxConfig
  * @property bool $removingRepo
+ * @property CarbonInterface $createdAt
+ * @property CarbonInterface $updatedAt
  *
  * @property-read string $fullDomainName
  * @property-read string $serverUsername

@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Represents an OAuth account linked to some User model.
  *
  * @property int $id
+ * @property int $userId
+ *
  * @property string $provider
  * @property string $oauthId
  * @property string $nickname

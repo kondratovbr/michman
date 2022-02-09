@@ -26,6 +26,8 @@ use Spatie\ModelStates\HasStates;
  * Certificate Eloquent model
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $type
  * @property string $domain
  * @property CertificateState $state

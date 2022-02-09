@@ -19,6 +19,8 @@ use RuntimeException;
  * like DigitalOcean or Linode.
  *
  * @property int $id
+ * @property int $userId
+ *
  * @property string $provider
  * @property string|null $name
  * @property CarbonInterface $createdAt

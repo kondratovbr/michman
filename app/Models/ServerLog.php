@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Server Log Eloquent model to store SSH logs in the database
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $type
  * @property string|null $command
  * @property int|null $exitCode

@@ -20,6 +20,8 @@ use Spatie\ModelStates\HasStates;
  * Represents a supervisord-managed program running on a server.
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $command
  * @property string $username
  * @property string|null $directory

@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Represents an SSH key that our worker process uses to access the server.
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $name
  * @property string|null $externalId
  * @property CarbonInterface $createdAt

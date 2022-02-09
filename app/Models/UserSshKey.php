@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * Represents an SSH key that the user added to their account to be able to access their servers manually.
  *
  * @property int $id
+ * @property int $userId
+ *
  * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt

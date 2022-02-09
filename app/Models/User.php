@@ -33,6 +33,7 @@ use Spark\Billable;
  * User Eloquent model
  *
  * @property int $id
+ *
  * @property string $email
  * @property string|null $password
  * @property CarbonInterface $emailVerifiedAt

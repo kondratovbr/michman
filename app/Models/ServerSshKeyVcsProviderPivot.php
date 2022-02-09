@@ -9,8 +9,10 @@ use Carbon\CarbonInterface;
  *
  * Represents a key added to a VCS provider account.
  *
+ * @property int $id
  * @property int $serverSshKeyId
  * @property int $vcsProviderId
+ *
  * @property string|null $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt

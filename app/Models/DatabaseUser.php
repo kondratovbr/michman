@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * DatabaseUser Eloquent model
  *
  * @property int $id
+ * @property int $serverId
+ *
  * @property string $name
  * @property string|null $password
  * @property CarbonInterface $createdAt

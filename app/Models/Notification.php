@@ -15,12 +15,14 @@ use Illuminate\Notifications\DatabaseNotification;
 
 /**
  * @property string $id
+ *
  * @property string $type
- * @property Model $notifiable
  * @property array $data
  * @property CarbonInterface $readAt
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @property-read Model $notifiable
  */
 class Notification extends DatabaseNotification
 {

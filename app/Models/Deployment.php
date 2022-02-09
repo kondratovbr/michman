@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * DeploymentServerPivot contains information about that process on a single server.
  *
  * @property int $id
+ * @property int $projectId
+ *
  * @property string $type
  * @property string $branch
  * @property string|null $commit

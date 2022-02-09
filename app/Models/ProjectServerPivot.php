@@ -7,8 +7,10 @@ use Carbon\CarbonInterface;
 /**
  * Pivot model for Project to Server relation
  *
+ * @property int $id
  * @property int $projectId
  * @property int $serverId
+ *
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  */

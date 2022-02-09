@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * and added to a specific VCS repository to be used for deployment.
  *
  * @property int $id
+ * @property int $projectId
+ *
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *

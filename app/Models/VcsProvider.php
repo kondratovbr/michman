@@ -24,6 +24,8 @@ use RuntimeException;
  * like GitHub or GitLab.
  *
  * @property int $id
+ * @property int $userId
+ *
  * @property string $provider
  * @property string $externalId
  * @property string $nickname

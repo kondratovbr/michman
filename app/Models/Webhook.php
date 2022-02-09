@@ -24,6 +24,8 @@ use Spatie\ModelStates\HasStates;
  * Webhook Eloquent model
  *
  * @property int $id
+ * @property int $projectId
+ *
  * @property string $uuid
  * @property string $provider
  * @property string $type
