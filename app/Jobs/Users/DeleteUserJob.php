@@ -7,9 +7,6 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-// TODO: CRITICAL! CONTINUE.
-//       Don't forget to logout from all the third-party providers.
-
 // TODO: IMPORTANT! Cover with tests.
 
 class DeleteUserJob extends AbstractJob
@@ -37,30 +34,33 @@ class DeleteUserJob extends AbstractJob
     public function handle(): void
     {
         DB::transaction(function () {
-            $user = $this->user->freshLockForUpdate();
+            /** @var User $user */
+            $user = User::withTrashed()
+                ->whereKey($this->user->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
 
             $this->deleteTokens($user);
 
             $this->deleteTeams($user);
 
-            $this->deleteSshKeys($user);
+            // Does nothing right now.
+            // $this->revokeOAuthAuthorizations($user);
 
-            $this->revokeOAuthAuthorizations($user);
-
-            $user->subscription()->cancel();
+            $user->subscription()?->cancel();
 
             $user->forceDelete();
         }, 5);
     }
 
-    protected function deleteSshKeys(User $user): void
-    {
-        //
-    }
-
     protected function revokeOAuthAuthorizations(User $user): void
     {
-        // TODO: CRITICAL! CONTINUE. Create a custom OAuth facade to wrap Socialite and add revocation function. Make a custom driver Interface and wrap built-ins to add functionality.
+        /*
+         * TODO: IMPORTANT! Do we actually need to do this? I found such functions in GitHub's and GitLab's APIs,
+         *       but not in Bitbucket's. Will have to dig deeper.
+         * https://docs.gitlab.com/ee/api/oauth2.html#revoke-a-token
+         * https://docs.github.com/en/rest/reference/apps#delete-an-app-authorization
+         */
 
         //
     }
