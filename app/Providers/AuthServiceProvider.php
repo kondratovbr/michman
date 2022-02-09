@@ -23,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         // Authorization gate used by beyondcode/laravel-websockets for restricting access to the stats dashboard.
         Gate::define('viewWebSocketsDashboard', function (User $user = null) {
             return config('app.env') == 'local'
+                && $user
                 && in_array($user->email, [
                     'kondratovbr@gmail.com',
                     'admin@example.com',
