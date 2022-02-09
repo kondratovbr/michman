@@ -13,12 +13,12 @@ abstract class AbstractServerEvent extends AbstractEvent
     use Broadcasted;
 
     protected int $serverKey;
-    protected int $userKey;
+    protected int|null $userKey;
 
     public function __construct(Server $server)
     {
         $this->serverKey = $server->getKey();
-        $this->userKey = $server->userId;
+        $this->userKey = $server->provider?->userId;
     }
 
     protected function getChannels(): array

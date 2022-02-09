@@ -27,7 +27,7 @@ use Spatie\ModelStates\HasStates;
  *
  * Database IDs:
  * @property int $id
- * @property int $userId
+ * @property int $providerId
  *
  * Database-stored properties:
  * @property string $externalId
