@@ -147,10 +147,10 @@ class Webhook extends AbstractModel
         return $this->hasMany(WebhookCall::class);
     }
 
-    public function delete(): bool|null
+    public function purge(): bool|null
     {
-        $this->calls->each->delete();
+        $this->calls->each->purge();
 
-        return parent::delete();
+        return $this->delete();
     }
 }

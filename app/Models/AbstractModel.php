@@ -6,9 +6,11 @@ use App\Collections\EloquentCollection;
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\IsLockable;
 use App\Models\Traits\UsesCamelCaseAttributes;
+use App\Support\Arr;
 use App\Validation\Rules;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
 use RuntimeException;
 
@@ -52,5 +54,14 @@ abstract class AbstractModel extends Model
     public function newCollection(array $models = []): EloquentCollection
     {
         return new EloquentCollection($models);
+    }
+
+    /** Cascade delete this model, detach the relations and delete all models owned by this one. */
+    public function purge(): bool|null
+    {
+        if (Arr::hasValue(class_uses_recursive($this), SoftDeletes::class))
+            return $this->forceDelete();
+
+        return $this->delete();
     }
 }

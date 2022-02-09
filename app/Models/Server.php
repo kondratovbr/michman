@@ -391,32 +391,32 @@ class Server extends AbstractModel
     }
 
     /*
-     * TODO: IMPORTANT! Cover all these custom delete() methods with tests.
+     * TODO: IMPORTANT! Cover all these custom purge() methods with tests.
      */
-    public function delete(): bool|null
+    public function purge(): bool|null
     {
         $this->userSshKeys()->detach();
         $this->deployments()->detach();
 
-        $this->workerSshKey?->delete();
-        $this->logs->each->delete();
-        $this->databases->each->delete();
-        $this->databaseUsers->each->delete();
-        $this->pythons->each->delete();
-        $this->serverSshKey?->delete();
-        $this->firewallRules->each->delete();
+        $this->workerSshKey?->purge();
+        $this->logs->each->purge();
+        $this->databases->each->purge();
+        $this->databaseUsers->each->purge();
+        $this->pythons->each->purge();
+        $this->serverSshKey?->purge();
+        $this->firewallRules->each->purge();
 
         $this->projects->each(function (Project $project) {
             $project->servers()->detach($this->getKey());
 
             if ($project->servers()->count() == 0)
-                $project->delete();
+                $project->purge();
         });
 
-        $this->certificates->each->delete();
-        $this->workers->each->delete();
-        $this->daemons->each->delete();
+        $this->certificates->each->purge();
+        $this->workers->each->purge();
+        $this->daemons->each->purge();
 
-        return parent::delete();
+        return $this->delete();
     }
 }

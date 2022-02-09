@@ -125,10 +125,10 @@ class Provider extends AbstractModel
         return $this->belongsTo(OAuthUser::class, 'oauth_user_id');
     }
 
-    public function delete(): bool|null
+    public function purge(): bool|null
     {
-        $this->servers->each->delete();
+        $this->servers->each->purge();
         
-        return parent::delete();
+        return $this->delete();
     }
 }

@@ -267,15 +267,15 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return $this->hasManyThrough(Webhook::class, Project::class);
     }
 
-    public function delete(): bool|null
+    public function purge(): bool|null
     {
-        $this->providers->each->delete();
-        $this->servers->each->delete();
-        $this->userSshKeys->each->delete();
-        $this->vcsProviders->each->delete();
-        $this->projects->each->delete();
-        $this->oauthUsers->each->delete();
+        $this->providers->each->purge();
+        $this->servers->each->purge();
+        $this->userSshKeys->each->purge();
+        $this->vcsProviders->each->purge();
+        $this->projects->each->purge();
+        $this->oauthUsers->each->purge();
 
-        return parent::delete();
+        return $this->forceDelete();
     }
 }
