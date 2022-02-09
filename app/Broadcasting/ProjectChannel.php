@@ -8,25 +8,19 @@ use Illuminate\Broadcasting\PrivateChannel;
 
 class ProjectChannel implements BroadcastingChannelInterface
 {
-    /**
-     * Authenticate the user's access to the channel.
-     */
+    /** Authenticate the user's access to the channel. */
     public function join(User $user, Project $project): bool
     {
         return $user->is($project->user);
     }
 
-    /**
-     * Get the channel's definition string.
-     */
+    /** Get the channel's definition string. */
     public static function definition(): string
     {
         return 'projects.{project}';
     }
 
-    /**
-     * Get the channel's name.
-     */
+    /** Get the channel's name. */
     public static function name(Project|int $project): string
     {
         $projectKey = $project instanceof Project
@@ -36,11 +30,12 @@ class ProjectChannel implements BroadcastingChannelInterface
         return "projects.{$projectKey}";
     }
 
-    /**
-     * Get an instance of Laravel's Channel class corresponding with this broadcasting class.
-     */
-    public static function channelInstance(Project|int $project): PrivateChannel
+    /** Get an instance of Laravel's Channel class corresponding with this broadcasting class. */
+    public static function channelInstance(Project|int|null $project): PrivateChannel|null
     {
+        if (is_null($project))
+            return null;
+        
         return new PrivateChannel(static::name($project));
     }
 }

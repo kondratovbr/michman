@@ -7,25 +7,19 @@ use Illuminate\Broadcasting\PrivateChannel;
 
 class UserChannel implements BroadcastingChannelInterface
 {
-    /**
-     * Authenticate the user's access to the channel.
-     */
+    /** Authenticate the user's access to the channel. */
     public function join(User $user, User $subject): bool
     {
         return $user->is($subject);
     }
 
-    /**
-     * Get the channel's definition string.
-     */
+    /** Get the channel's definition string. */
     public static function definition(): string
     {
         return 'user.{user}';
     }
 
-    /**
-     * Get the channel's name.
-     */
+    /** Get the channel's name. */
     public static function name(User|int $user): string
     {
         $userKey = $user instanceof User
@@ -35,11 +29,12 @@ class UserChannel implements BroadcastingChannelInterface
         return "user.{$userKey}";
     }
 
-    /**
-     * Get an instance of Laravel's Channel class corresponding with this broadcasting class.
-     */
-    public static function channelInstance(User|int $user): PrivateChannel
+    /** Get an instance of Laravel's Channel class corresponding with this broadcasting class. */
+    public static function channelInstance(User|int|null $user): PrivateChannel|null
     {
+        if (is_null($user))
+            return null;
+
         return new PrivateChannel(static::name($user));
     }
 }

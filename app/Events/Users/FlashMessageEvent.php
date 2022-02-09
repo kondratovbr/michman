@@ -2,7 +2,11 @@
 
 namespace App\Events\Users;
 
+use App\Broadcasting\UserChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\User;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 /*
@@ -11,8 +15,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
  *       Can it be improved or reworked entirely?
  */
 
-class FlashMessageEvent extends AbstractUserEvent implements ShouldBroadcast
+class FlashMessageEvent extends AbstractEvent implements ShouldBroadcast
 {
+    use Broadcasted;
+
     // TODO: Replace these with a PHP8.1 enum, if possible.
     public const STYLE_INFO     = 'info';
     public const STYLE_SUCCESS  = 'success';
@@ -21,12 +27,17 @@ class FlashMessageEvent extends AbstractUserEvent implements ShouldBroadcast
 
     public string $message;
     public string|null $style;
+    protected int $userKey;
 
     public function __construct(User $user, string $message, string $style = null)
     {
-        parent::__construct($user);
-
+        $this->userKey = $user->getKey();
         $this->message = $message;
         $this->style = $style;
+    }
+
+    protected function getChannels(): Channel
+    {
+        return UserChannel::channelInstance($this->userKey);
     }
 }

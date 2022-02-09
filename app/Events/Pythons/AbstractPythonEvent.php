@@ -2,17 +2,25 @@
 
 namespace App\Events\Pythons;
 
-use App\Events\Servers\AbstractServerEvent;
+use App\Broadcasting\ServerChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Python;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractPythonEvent extends AbstractServerEvent
+abstract class AbstractPythonEvent extends AbstractEvent
 {
-    public int $pythonKey;
+    use Broadcasted;
+
+    protected int $serverKey;
 
     public function __construct(Python $python)
     {
-        parent::__construct($python->server);
+        $this->serverKey = $python->serverId;
+    }
 
-        $this->pythonKey = $python->getKey();
+    protected function getChannels(): Channel
+    {
+        return ServerChannel::channelInstance($this->serverKey);
     }
 }

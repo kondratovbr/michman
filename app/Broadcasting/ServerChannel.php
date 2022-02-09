@@ -31,8 +31,11 @@ class ServerChannel implements BroadcastingChannelInterface
     }
 
     /** Get an instance of Laravel's Channel class corresponding with this broadcasting class. */
-    public static function channelInstance(Server|int $server): PrivateChannel
+    public static function channelInstance(Server|int|null $server): PrivateChannel|null
     {
+        if (is_null($server))
+            return null;
+        
         return new PrivateChannel(static::name($server));
     }
 }

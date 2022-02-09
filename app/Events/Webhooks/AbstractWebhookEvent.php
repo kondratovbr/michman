@@ -2,17 +2,25 @@
 
 namespace App\Events\Webhooks;
 
-use App\Events\Projects\AbstractProjectEvent;
+use App\Broadcasting\ProjectChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Webhook;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractWebhookEvent extends AbstractProjectEvent
+abstract class AbstractWebhookEvent extends AbstractEvent
 {
-    public int $webhookKey;
+    use Broadcasted;
+
+    protected int $projectKey;
 
     public function __construct(Webhook $hook)
     {
-        parent::__construct($hook->project);
+        $this->projectKey = $hook->projectId;
+    }
 
-        $this->webhookKey = $hook->getKey();
+    protected function getChannels(): Channel
+    {
+        return ProjectChannel::channelInstance($this->projectKey);
     }
 }

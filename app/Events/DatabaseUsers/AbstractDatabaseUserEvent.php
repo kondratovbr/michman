@@ -2,17 +2,25 @@
 
 namespace App\Events\DatabaseUsers;
 
-use App\Events\Servers\AbstractServerEvent;
+use App\Broadcasting\ServerChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\DatabaseUser;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractDatabaseUserEvent extends AbstractServerEvent
+abstract class AbstractDatabaseUserEvent extends AbstractEvent
 {
-    public int $databaseUserKey;
+    use Broadcasted;
+
+    protected int $serverKey;
 
     public function __construct(DatabaseUser $databaseUser)
     {
-        parent::__construct($databaseUser->server);
+        $this->serverKey = $databaseUser->serverId;
+    }
 
-        $this->databaseUserKey = $databaseUser->getKey();
+    protected function getChannels(): Channel
+    {
+        return ServerChannel::channelInstance($this->serverKey);
     }
 }

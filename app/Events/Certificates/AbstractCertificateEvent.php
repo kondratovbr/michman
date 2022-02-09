@@ -2,17 +2,25 @@
 
 namespace App\Events\Certificates;
 
-use App\Events\Servers\AbstractServerEvent;
+use App\Broadcasting\ServerChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Certificate;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractCertificateEvent extends AbstractServerEvent
+abstract class AbstractCertificateEvent extends AbstractEvent
 {
-    protected int $certificateKey;
+    use Broadcasted;
+
+    protected int $serverKey;
 
     public function __construct(Certificate $certificate)
     {
-        parent::__construct($certificate->server);
+        $this->serverKey = $certificate->serverId;
+    }
 
-        $this->certificateKey = $certificate->getKey();
+    protected function getChannels(): Channel
+    {
+        return ServerChannel::channelInstance($this->serverKey);
     }
 }

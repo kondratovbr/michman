@@ -7,31 +7,34 @@ use App\Broadcasting\ServerChannel;
 use App\Broadcasting\UserChannel;
 use App\Events\AbstractEvent;
 use App\Events\Interfaces\ProjectEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Project;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroadcast, ProjectEvent
+abstract class AbstractProjectEvent extends AbstractEvent implements ProjectEvent
 {
-    public int $projectKey;
+    use Broadcasted;
+
+    protected int $projectKey;
+    protected int $userKey;
 
     public function __construct(Project $project)
     {
         $this->projectKey = $project->getKey();
+        $this->userKey = $project->userId;
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     */
-    public function broadcastOn(): Channel|array
+    protected function getChannels(): array
     {
-        /** @var Project $project */
-        $project = Project::query()->findOrFail($this->projectKey);
-
         $channels = [
-            ProjectChannel::channelInstance($project),
-            UserChannel::channelInstance($project->user),
+            ProjectChannel::channelInstance($this->projectKey),
+            UserChannel::channelInstance($this->userKey),
         ];
+
+        /** @var Project $project */
+        $project = Project::query()->find($this->projectKey);
+
+        if (! $project)
+            return $channels;
 
         foreach ($project->servers as $server) {
             $channels[] = ServerChannel::channelInstance($server);
@@ -40,8 +43,11 @@ abstract class AbstractProjectEvent extends AbstractEvent implements ShouldBroad
         return $channels;
     }
 
-    public function project(): Project
+    public function project(): Project|null
     {
-        return Project::query()->find($this->projectKey);
+        /** @var Project|null $project */
+        $project = Project::query()->find($this->projectKey);
+
+        return $project;
     }
 }

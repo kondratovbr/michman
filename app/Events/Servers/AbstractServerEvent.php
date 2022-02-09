@@ -3,22 +3,29 @@
 namespace App\Events\Servers;
 
 use App\Broadcasting\ServerChannel;
+use App\Broadcasting\UserChannel;
 use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Server;
-use Illuminate\Broadcasting\Channel;
 
 abstract class AbstractServerEvent extends AbstractEvent
 {
-    public int $serverKey;
+    use Broadcasted;
+
+    protected int $serverKey;
+    protected int $userKey;
 
     public function __construct(Server $server)
     {
         $this->serverKey = $server->getKey();
+        $this->userKey = $server->userId;
     }
 
-    /** Get the channels the event should broadcast on. */
-    public function broadcastOn(): Channel|array
+    protected function getChannels(): array
     {
-        return ServerChannel::channelInstance($this->serverKey);
+        return [
+            ServerChannel::channelInstance($this->serverKey),
+            UserChannel::channelInstance($this->userKey),
+        ];
     }
 }

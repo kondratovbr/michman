@@ -2,17 +2,27 @@
 
 namespace App\Events\VcsProviders;
 
-use App\Events\Users\AbstractUserEvent;
+use App\Broadcasting\UserChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\VcsProvider;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractVcsProviderEvent extends AbstractUserEvent
+abstract class AbstractVcsProviderEvent extends AbstractEvent
 {
-    public int $vcsProviderKey;
+    use Broadcasted;
+
+    protected int $vcsProviderKey;
+    protected int $userKey;
 
     public function __construct(VcsProvider $vcsProvider)
     {
-        parent::__construct($vcsProvider->user);
-
         $this->vcsProviderKey = $vcsProvider->getKey();
+        $this->userKey = $vcsProvider->userId;
+    }
+
+    protected function getChannels(): Channel|array|null
+    {
+        return UserChannel::channelInstance($this->userKey);
     }
 }

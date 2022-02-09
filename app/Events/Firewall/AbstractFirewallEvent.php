@@ -2,17 +2,25 @@
 
 namespace App\Events\Firewall;
 
-use App\Events\Servers\AbstractServerEvent;
+use App\Broadcasting\ServerChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\FirewallRule;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractFirewallEvent extends AbstractServerEvent
+abstract class AbstractFirewallEvent extends AbstractEvent
 {
-    public int $ruleKey;
+    use Broadcasted;
+
+    protected int $serverKey;
 
     public function __construct(FirewallRule $rule)
     {
-        parent::__construct($rule->server);
+        $this->serverKey = $rule->serverId;
+    }
 
-        $this->ruleKey = $rule->getKey();
+    protected function getChannels(): Channel
+    {
+        return ServerChannel::channelInstance($this->serverKey);
     }
 }

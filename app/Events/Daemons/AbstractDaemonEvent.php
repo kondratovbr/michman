@@ -2,17 +2,25 @@
 
 namespace App\Events\Daemons;
 
-use App\Events\Servers\AbstractServerEvent;
+use App\Broadcasting\ServerChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Daemon;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractDaemonEvent extends AbstractServerEvent
+abstract class AbstractDaemonEvent extends AbstractEvent
 {
-    public int $daemonKey;
+    use Broadcasted;
+
+    protected int $serverKey;
 
     public function __construct(Daemon $daemon)
     {
-        parent::__construct($daemon->server);
+        $this->serverKey = $daemon->serverId;
+    }
 
-        $this->daemonKey = $daemon->getKey();
+    protected function getChannels(): Channel
+    {
+        return ServerChannel::channelInstance($this->serverKey);
     }
 }

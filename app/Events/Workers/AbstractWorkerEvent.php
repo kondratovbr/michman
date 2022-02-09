@@ -2,17 +2,25 @@
 
 namespace App\Events\Workers;
 
-use App\Events\Projects\AbstractProjectEvent;
+use App\Broadcasting\ProjectChannel;
+use App\Events\AbstractEvent;
+use App\Events\Traits\Broadcasted;
 use App\Models\Worker;
+use Illuminate\Broadcasting\Channel;
 
-abstract class AbstractWorkerEvent extends AbstractProjectEvent
+abstract class AbstractWorkerEvent extends AbstractEvent
 {
-    public int $workerKey;
+    use Broadcasted;
+
+    protected int $projectKey;
 
     public function __construct(Worker $worker)
     {
-        parent::__construct($worker->project);
+        $this->projectKey = $worker->projectId;
+    }
 
-        $this->workerKey = $worker->getKey();
+    protected function getChannels(): Channel
+    {
+        return ProjectChannel::channelInstance($this->projectKey);
     }
 }
