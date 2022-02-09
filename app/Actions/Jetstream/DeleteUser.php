@@ -23,6 +23,7 @@ class DeleteUser implements DeletesUsers
     {
         throw new \RuntimeException('This action is deprecated and should not be used.');
 
+        /*
         DB::transaction(function () use ($user) {
             $user->freshLockForUpdate();
 
@@ -33,6 +34,7 @@ class DeleteUser implements DeletesUsers
 
             $user->delete();
         });
+        */
     }
 
     /** Delete the teams and team associations attached to the user. */
