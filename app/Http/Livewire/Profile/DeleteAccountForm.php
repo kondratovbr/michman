@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Profile;
 
 use App\Actions\Users\DeleteUserAction;
+use App\Support\Str;
 use App\Validation\Rules;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
@@ -10,7 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Facades\Auth;
 use Livewire\Component;
 
-// TODO: CRITICAL! CONTINUE. Forgot to handle a situation when the user has no password (OAuth only).
+// TODO: Cover with tests.
 
 class DeleteAccountForm extends Component
 {
@@ -19,13 +20,21 @@ class DeleteAccountForm extends Component
     /** Indicates if user deletion is being confirmed. */
     public bool $confirmingUserDeletion = false;
 
-    /** The user's currently typed password. */
     public string $password = '';
+    public string $email = '';
+
+    protected function prepareForValidation($attributes): array
+    {
+        $attributes['email'] = Str::lower($attributes['email']);
+
+        return $attributes;
+    }
 
     protected function rules(): array
     {
         return [
-            'password' => Rules::currentUserPassword()->required(),
+            'password' => Rules::currentUserPassword()->requiredIf(fn() => user()->usesPassword()),
+            'email' => Rules::currentUserEmail()->requiredIf(fn() => ! user()->usesPassword()),
         ];
     }
 
