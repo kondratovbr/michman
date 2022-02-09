@@ -17,6 +17,7 @@ use App\Rules\SshPublicKeyRule;
 use App\Rules\UnixAbsolutePathRule;
 use App\Rules\UnixAnyPathRule;
 use App\Rules\UnixRelativePathRule;
+use App\Support\Str;
 
 /**
  * Support class Rules.
@@ -33,6 +34,16 @@ class Rules extends AbstractBaseRules
             'string',
             'password'
         ]))->max((int) config('auth.password.max_length'));
+    }
+
+    static public function currentUserEmail(): static
+    {
+        return (new static([
+            'string',
+            'email',
+        ]))
+            ->max(255)
+            ->in([Str::lower(user()->email)]);
     }
 
     /**

@@ -42,8 +42,9 @@ class DeleteUserJob extends AbstractJob
     {
         DB::transaction(function () {
             /** @var User $user */
-            $user = User::withTrashed()
+            $user = User::query()
                 ->whereKey($this->user->getKey())
+                ->isDeleting()
                 ->lockForUpdate()
                 ->firstOrFail();
 

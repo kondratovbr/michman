@@ -31,7 +31,8 @@ class DeleteUserAction
 
             Bus::chain($jobs->toArray())->dispatch();
 
-            $user->delete();
+            $user->isDeleting = true;
+            $user->save();
         }, 5);
     }
 

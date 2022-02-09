@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Broadcasting\UserChannel;
+use App\Casts\ForceBooleanCast;
 use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\IsLockable;
 use App\Models\Traits\UsesCamelCaseAttributes;
@@ -13,11 +14,11 @@ use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as BaseUser;
 use App\Models\Traits\Notifiable;
 use Illuminate\Support\Facades\Log;
@@ -37,6 +38,7 @@ use Spark\Billable;
  * @property string $email
  * @property string|null $password
  * @property CarbonInterface $emailVerifiedAt
+ * @property bool $isDeleting
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -65,7 +67,6 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     use HasModelHelpers;
     use IsLockable;
     use Billable;
-    use SoftDeletes;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [
@@ -79,6 +80,7 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     /** @var string[] The attributes that should be cast to native types with their respective types. */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_deleting' => ForceBooleanCast::class,
     ];
 
     /** @var string[] The accessors to append to the model's array form. */
@@ -267,6 +269,18 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return $this->hasManyThrough(Webhook::class, Project::class);
     }
 
+    public function scopeIsDeleting(Builder $query): Builder
+    {
+        return $query->where('is_deleting', true);
+    }
+
+    public function scopeNotDeleting(Builder $query): Builder
+    {
+        return $query
+            ->where('is_deleting', false)
+            ->orWhereNull('is_deleting');
+    }
+
     public function purge(): bool|null
     {
         $this->providers->each->purge();
@@ -276,6 +290,6 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         $this->projects->each->purge();
         $this->oauthUsers->each->purge();
 
-        return $this->forceDelete();
+        return $this->delete();
     }
 }

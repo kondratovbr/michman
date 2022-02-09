@@ -41,6 +41,8 @@ use Laravel\Socialite\Contracts\User as OauthUser;
  *       or use an external service to generate an avatar when OAuth gives nothing or isn't even used.
  */
 
+// TODO: Update tests to account for "is_deleting" flag on users.
+
 class OAuthController extends AbstractController
 {
     public function __construct(
@@ -143,6 +145,7 @@ class OAuthController extends AbstractController
             );
 
             // TODO: Cover this association with a test.
+            // TODO: CRITICAL! CONTINUE. Test this manually. And the one in VcsProviderController as well.
             /** @var VcsProvider|null $vcsProvider */
             if (
                 $vcsProvider = $user->vcsProviders()
@@ -219,7 +222,10 @@ class OAuthController extends AbstractController
             ->where('oauth_id', $oauthUser->getId())
             ->first();
 
-        return optional($oauth)->user;
+        if ($oauth->user?->isDeleting)
+            return null;
+
+        return $oauth?->user;
     }
 
     /** Try to find a user by an email returned from an OAuth provider. */
@@ -228,6 +234,7 @@ class OAuthController extends AbstractController
         /** @var User|null $user */
         $user = User::query()
             ->where('email', $oauthUser->getEmail())
+            ->notDeleting()
             ->first();
 
         return $user;

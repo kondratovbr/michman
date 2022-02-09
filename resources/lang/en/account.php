@@ -53,6 +53,7 @@ return [
             'description' => 'Permanently delete your account.',
             'explanation' => 'This will cancel your subscription and permanently delete all of your account\'s data. Your servers will be preserved and stay active with no changes. This action cannot be undone.',
             'enter-password' => 'Please enter your password to confirm account deletion.',
+            'enter-email' => 'Please enter your email to confirm account deletion.',
             'delete-button' => 'Delete Account',
             'modal-title' => 'Delete Account',
         ],
