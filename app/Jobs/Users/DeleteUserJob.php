@@ -6,6 +6,7 @@ use App\Jobs\AbstractJob;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use DateTimeInterface;
 
 // TODO: IMPORTANT! Cover with tests.
 
@@ -24,6 +25,12 @@ class DeleteUserJob extends AbstractJob
         parent::__construct();
 
         $this->user = $user->withoutRelations();
+    }
+
+    /** Determine the time at which the job should timeout. */
+    public function retryUntil(): DateTimeInterface
+    {
+        return now()->addMinutes(30);
     }
 
     protected function getQueue(): string
@@ -49,7 +56,7 @@ class DeleteUserJob extends AbstractJob
 
             $user->subscription()?->cancel();
 
-            $user->forceDelete();
+            $user->purge();
         }, 5);
     }
 
@@ -75,6 +82,6 @@ class DeleteUserJob extends AbstractJob
 
     protected function deleteTokens(User $user): void
     {
-        $user->tokens->each->delete();
+        $user->tokens->each->purge();
     }
 }
