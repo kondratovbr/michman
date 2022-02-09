@@ -315,6 +315,17 @@ return [
     'manage' => [
         'button' => 'Manage',
 
+        'server-key' => [
+            'title' => 'Server\'s SSH Key',
+            'description' => 'The key used by this server to clone source code from your repositories.',
+            'info' => 'Normally, this key will automatically be added to your accounts on GitHub, GitLab and Bitbucket. However, if you need to add it to a source control service manually, you may copy it from here.',
+        ],
+
+        'worker-key' => [
+            'title' => 'Michman\'s SSH Key',
+            'description' => 'The key used by Michman to manage this server.',
+        ],
+
         'delete' => [
             'title' => 'Delete Server',
             'info' => 'The server will be permanently removed from Michman as well as from :provider. This action is permanent.',
