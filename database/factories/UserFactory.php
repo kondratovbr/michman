@@ -65,7 +65,7 @@ class UserFactory extends Factory
     public function withSubscription(int $planId = null): static
     {
         return $this->afterCreating(function (User $user) use ($planId) {
-            optional($user->customer)->update(['trial_ends_at' => null]);
+            $user->customer?->update(['trial_ends_at' => null]);
 
             $user->subscriptions()->create([
                 'name' => 'default',
