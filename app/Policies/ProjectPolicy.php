@@ -39,8 +39,6 @@ class ProjectPolicy
 
     public function delete(User $user, Project $project): bool
     {
-        // TODO: CRITICAL! Is this correct? Need to check anything else?
-
         return $user->is($project->user);
     }
 }

@@ -145,7 +145,6 @@ class OAuthController extends AbstractController
             );
 
             // TODO: Cover this association with a test.
-            // TODO: CRITICAL! CONTINUE. Test this manually. And the one in VcsProviderController as well.
             /** @var VcsProvider|null $vcsProvider */
             if (
                 $vcsProvider = $user->vcsProviders()

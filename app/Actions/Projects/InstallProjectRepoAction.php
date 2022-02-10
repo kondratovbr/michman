@@ -65,7 +65,7 @@ class InstallProjectRepoAction
 
         if (! empty($server->installedDatabase)) {
             $envData['databaseUrlPrefix'] = (string) config("servers.databases.{$server->installedDatabase}.django_url_prefix");
-            // TODO: CRITICAL! This only works for "app" server type. Handle other types as well.
+            // TODO: IMPORTANT! This only works for "app" server type. Handle other types as well.
             $envData['databaseHost'] = '127.0.0.1';
             $envData['databasePort'] = (string) config("servers.databases.{$server->installedDatabase}.default_port");
             if (isset($project->database)) {
