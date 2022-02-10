@@ -154,7 +154,7 @@ class OAuthController extends AbstractController
                     ->latest()
                     ->first()
             ) {
-                $vcsProvider->oauthUser()->associate($oauthModel);
+                $vcsProvider->oauthUser()->associate($oauthModel)->save();
             }
 
             /*
@@ -222,10 +222,13 @@ class OAuthController extends AbstractController
             ->where('oauth_id', $oauthUser->getId())
             ->first();
 
+        if (! $oauth)
+            return null;
+
         if ($oauth->user?->isDeleting)
             return null;
 
-        return $oauth?->user;
+        return $oauth->user;
     }
 
     /** Try to find a user by an email returned from an OAuth provider. */
@@ -262,7 +265,7 @@ class OAuthController extends AbstractController
             $vcsProvider = $this->vcsProviderHandler->createViaOAuth($oauthProvider, $oauthUser, $user);
 
             // TODO: Cover this association with a test.
-            $vcsProvider->oauthUser()->associate($oauthModel);
+            $vcsProvider->oauthUser()->associate($oauthModel)->save();
 
             event(new Registered($user));
 

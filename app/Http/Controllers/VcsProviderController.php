@@ -59,7 +59,7 @@ class VcsProviderController extends AbstractController
                         ->latest()
                         ->first()
                 ) {
-                    $vcs->oauthUser()->associate($oauthModel);
+                    $vcs->oauthUser()->associate($oauthModel)->save();
                 }
 
                 flash(__('flash.vcs-provider-linked', [
