@@ -75,8 +75,8 @@ class OAuthUser extends AbstractModel
 
     public function purge(): bool|null
     {
-        $this->serverProvider?->oauthUser()->dissociate();
-        $this->vcsProvider?->oauthUser()->dissociate();
+        $this->serverProvider?->oauthUser()->dissociate()->save();
+        $this->vcsProvider?->oauthUser()->dissociate()->save();
 
         return $this->delete();
     }
