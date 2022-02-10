@@ -95,7 +95,7 @@ class VcsProviderController extends AbstractController
 
             $this->authorize('delete', $vcs);
 
-            $vcs->delete();
+            $vcs->purge();
         }, 5);
 
         return redirect()->route('account.show', 'vcs');

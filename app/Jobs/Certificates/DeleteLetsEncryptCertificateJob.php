@@ -47,7 +47,7 @@ class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
 
             $deleteCertificate->execute($server, $cert, $rootSsh);
 
-            $cert->delete();
+            $cert->purge();
 
             $uploadPlaceholderNginxConfig->execute($server, $rootSsh);
 

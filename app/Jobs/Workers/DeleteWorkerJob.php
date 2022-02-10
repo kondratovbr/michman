@@ -30,7 +30,7 @@ class DeleteWorkerJob extends AbstractRemoteServerJob
 
             $script->execute($server, $worker);
 
-            $worker->delete();
+            $worker->purge();
         }, 5);
     }
 }

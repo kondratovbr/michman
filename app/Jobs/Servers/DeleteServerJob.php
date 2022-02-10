@@ -69,7 +69,7 @@ class DeleteServerJob extends AbstractJob
 
             $server->provider->api()->deleteServer($server->externalId);
 
-            $server->delete();
+            $server->purge();
         }, 5);
     }
 }

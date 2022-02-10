@@ -190,7 +190,7 @@ class OAuthController extends AbstractController
                 return;
             }
 
-            $oauthModel->delete();
+            $oauthModel->purge();
 
             $vcsProviderName = $this->vcsProviderHandler->getVcsProviderName($oauthProvider);
 

@@ -29,7 +29,7 @@ class DeleteProjectDeploymentsJob extends AbstractJob
             /** @var Deployment $deployment */
             foreach ($project->deployments as $deployment) {
                 $deployment->servers()->detach();
-                $deployment->delete();
+                $deployment->purge();
             }
         }, 5);
     }

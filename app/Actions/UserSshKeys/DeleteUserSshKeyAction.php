@@ -13,7 +13,7 @@ class DeleteUserSshKeyAction
             $key = $key->freshLockForUpdate();
 
             $key->servers()->sync([]);
-            $key->delete();
+            $key->purge();
         }, 5);
     }
 }

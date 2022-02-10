@@ -40,7 +40,7 @@ class DeletePythonJob extends AbstractRemoteServerJob
 
             $scriptClass::run($server);
 
-            $python->delete();
+            $python->purge();
 
             event(new PythonRemovedEvent($python));
         }, 5);

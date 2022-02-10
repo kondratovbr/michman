@@ -38,7 +38,7 @@ class VerifyWebhookEnabledJob extends AbstractJob
             $hook->user->notify(new WebhookEnablingFailedNotification($hook->project));
 
             $hook->calls()->delete();
-            $hook->delete();
+            $hook->purge();
         }, 5);
     }
 }

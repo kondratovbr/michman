@@ -84,7 +84,7 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
             $this->server, $this->logFrom, $this->logTo
         ));
 
-        $this->certificate->delete();
+        $this->certificate->purge();
     }
 
     public function failed(): void

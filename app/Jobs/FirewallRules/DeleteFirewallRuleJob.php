@@ -31,7 +31,7 @@ class DeleteFirewallRuleJob extends AbstractRemoteServerJob
                 $rule->fromIp,
             );
 
-            $rule->delete();
+            $rule->purge();
         }, 5);
     }
 }
