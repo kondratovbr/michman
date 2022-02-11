@@ -1,8 +1,8 @@
 
-{{-- NOTE: This menu is currently not in use. --}}
 
-{{--TODO: IMPORTANT! Placeholders. These should be dropdowns with user's servers/projects respectively. Like in Forge.--}}
-{{--TODO: CRITICAL! Don't forget to put real routes here!--}}
+
+{{-- NOTE: This menu is currently not in use. --}}
+{{-- NOTE: Some links and menus are placeholders. --}}
 
 <div class="h-full w-full flex justify-start">
     <button
@@ -31,25 +31,16 @@
 
 <x-burger.separator/>
 
-<x-burger.link
-    href="{{ route('home') }}"
-    routeName="home"
->
+<x-burger.link href="{{ route('home') }}" routeName="home">
     <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
     {{ __('nav.servers') }}
 </x-burger.link>
-<x-burger.link
-    href="{{ route('home') }}"
-    routeName="home"
->
+<x-burger.link href="{{ route('home') }}" routeName="home">
     <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
     {{ __('nav.projects') }}
 </x-burger.link>
 {{--    TODO: Add external link icon. Maybe animate it on hover/active.--}}
-<x-burger.link
-    href="{{ route('home') }}"
-    routeName="home"
->
+<x-burger.link href="{{ route('home') }}" routeName="home">
     <x-slot name="icon"><i class="far fa-file-alt"></i></x-slot>
     {{ __('nav.documentation') }}
 </x-burger.link>
@@ -104,8 +95,8 @@
 </x-form>
 
 {{-- Team Management --}}
-{{--        TODO: Temporarily disabled by this "false &&" thing. Don't forget to implement with the teams feature.--}}
-@if (false && Laravel\Jetstream\Jetstream::hasTeamFeatures())
+{{-- Was temporarily disabled by this "false &&" thing. --}}
+@if(false && Laravel\Jetstream\Jetstream::hasTeamFeatures())
     <x-burger.separator/>
 
     <div class="block px-4 py-2 text-xs">
