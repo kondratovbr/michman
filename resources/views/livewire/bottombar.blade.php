@@ -5,16 +5,19 @@
             <x-logo class="block h-9 w-auto" />
         </x-bottombar.link>
 
-        <x-bottombar.link routeName="home" class="col-span-4">
+{{--        TODO: VERY IMPORTANT! Should be col-span-4, the "8" was put to stretch the thing while the "projects" button isn't implemented yet (commented below).--}}
+        <x-bottombar.link routeName="home" class="col-span-8">
             <x-slot name="icon"><i class="fa fa-server"></i></x-slot>
             <x-slot name="content">{{ __('nav.servers') }}</x-slot>
         </x-bottombar.link>
 
-{{--        TODO: VERY IMPORTANT! This was supposed to be a dropup, like in the navbar.--}}
+{{--        TODO: VERY IMPORTANT! This was supposed to be a dropup, like in the navbar. The one above - "servers" too. --}}
+        {{--
         <x-bottombar.link routeName="home" class="col-span-4">
             <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
             <x-slot name="content">{{ __('nav.projects') }}</x-slot>
         </x-bottombar.link>
+        --}}
 
         <x-bottombar.dropup class="col-span-2">
             <x-slot name="trigger">
