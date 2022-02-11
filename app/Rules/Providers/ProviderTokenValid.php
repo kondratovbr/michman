@@ -12,20 +12,19 @@ class ProviderTokenValid implements Rule
         protected string $providerName,
     ) {}
 
-    /**
-     * Determine if the validation rule passes.
-     */
+    /** Determine if the validation rule passes. */
     public function passes($attribute, $value): bool
     {
+        if (config('providers.list.' . $this->providerName . '.disabled'))
+            return false;
+
         /** @var ServerProviderInterface $api */
         $api = App::make("{$this->providerName}_servers", ['token' => $value]);
 
         return $api->credentialsAreValid();
     }
 
-    /**
-     * Get the validation error message.
-     */
+    /** Get the validation error message. */
     public function message(): string
     {
         return __('validation.custom.provider-credentials-valid');
