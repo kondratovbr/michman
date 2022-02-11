@@ -63,8 +63,6 @@ class CreateProviderTest extends AbstractFeatureTest
         $data = [
             'provider' => 'digital_ocean_v2',
             'token' => Str::random(32),
-            'key' => null,
-            'secret' => null,
             'name' => 'Valid name for an invalid provider',
         ];
 
@@ -89,13 +87,11 @@ class CreateProviderTest extends AbstractFeatureTest
 
     public function test_disabled_provider_cannot_be_created()
     {
-        config(['providers.list.digital_ocean_v2.disabled' => true]);
+        config(['providers.list.linode.disabled' => true]);
 
         $data = [
-            'provider' => 'aws',
+            'provider' => 'linode',
             'token' => Str::random(32),
-            'key' => null,
-            'secret' => null,
             'name' => 'Valid name',
         ];
 
@@ -104,7 +100,7 @@ class CreateProviderTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
-        $this->mockBind('aws_servers', ServerProviderInterface::class, function (MockInterface $mock) {
+        $this->mockBind('linode_servers', ServerProviderInterface::class, function (MockInterface $mock) {
             $mock->shouldNotHaveBeenCalled();
         });
 

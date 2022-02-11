@@ -23,7 +23,7 @@ class DeleteUserSshKeyJobTest extends AbstractFeatureTest
 
         $job = new DeleteUserSshKeyJob($userSshKey);
 
-        $this->assertNull( $job->queue);
+        $this->assertEquals('default', $job->queue);
 
         $this->app->call([$job, 'handle']);
     }

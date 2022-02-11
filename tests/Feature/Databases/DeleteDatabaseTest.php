@@ -30,7 +30,6 @@ class DeleteDatabaseTest extends AbstractFeatureTest
                 ->andReturnTrue();
             $mock->shouldReceive('delete')
                 ->withArgs(fn(User $userArg, Database $databaseArg) => $userArg->is($user) && $databaseArg->is($database))
-                ->once()
                 ->andReturnTrue();
         });
 

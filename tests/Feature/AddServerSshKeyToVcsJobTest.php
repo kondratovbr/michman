@@ -46,6 +46,9 @@ class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
                         publicKey: SshKeyFormatter::format($key->getPublicKey()),
                         name: $server->name . ' - server key',
                     ));
+                $mock->shouldReceive('supportsSshKeys')
+                    ->once()
+                    ->andReturnTrue();
             }
         );
 

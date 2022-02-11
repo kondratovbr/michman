@@ -142,6 +142,12 @@ class CreatePythonTest extends AbstractFeatureTest
                 )
                 ->once()
                 ->andReturnTrue();
+            $mock->shouldReceive('delete')
+                ->withArgs(fn(User $userArg, Python $pythonArg) =>
+                    $userArg->is($server->user)
+                    && $pythonArg->is($python)
+                )
+                ->andReturnTrue();
         });
 
         Livewire::test(PythonsIndexTable::class, ['server' => $server])

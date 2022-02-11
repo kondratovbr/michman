@@ -4,6 +4,7 @@ namespace Tests\Unit\Rules;
 
 use App\Rules\SshPublicKeyRule;
 use Tests\AbstractUnitTest;
+use Throwable;
 
 class SshPublicKeyRuleTest extends AbstractUnitTest
 {
@@ -24,7 +25,7 @@ class SshPublicKeyRuleTest extends AbstractUnitTest
 
         try {
             $result = $rule->passes('key', $value);
-        } catch (\TypeError) {
+        } catch (Throwable) {
             $result = false;
         }
 

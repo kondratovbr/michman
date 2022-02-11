@@ -254,7 +254,7 @@ class UserPolicyTest extends AbstractFeatureTest
         /** @var UserPolicy $policy */
         $policy = $this->app->make(UserPolicy::class);
 
-        $result = $policy->deleteAccount($user, $user);
+        $result = $policy->delete($user, $user);
 
         $this->assertTrue($result);
     }
@@ -271,7 +271,7 @@ class UserPolicyTest extends AbstractFeatureTest
         /** @var UserPolicy $policy */
         $policy = $this->app->make(UserPolicy::class);
 
-        $result = $policy->deleteAccount($user, $subject);
+        $result = $policy->delete($user, $subject);
 
         $this->assertFalse($result);
     }

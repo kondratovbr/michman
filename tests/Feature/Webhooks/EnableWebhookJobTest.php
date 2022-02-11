@@ -50,6 +50,9 @@ class EnableWebhookJobTest extends AbstractFeatureTest
                 ->with($hook->repo, $hook->url, $hook->secret)
                 ->once()
                 ->andReturn(new WebhookDto(['push'], '12345', $hook->url));
+            $mock->shouldReceive('dispatchesPingWebhookCalls')
+                ->once()
+                ->andReturnTrue();
         });
 
         Bus::fake();

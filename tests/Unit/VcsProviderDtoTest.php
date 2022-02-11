@@ -75,9 +75,9 @@ class VcsProviderDtoTest extends AbstractUnitTest
 
         $oauthUser->map($data)->setRaw($data);
 
-        $dto = VcsProviderDto::fromOauth($oauthUser, 'bitbucket');
+        $dto = VcsProviderDto::fromOauth($oauthUser, 'bitbucket_v2');
 
-        $this->assertEquals('bitbucket', $dto->provider);
+        $this->assertEquals('bitbucket_v2', $dto->provider);
         $this->assertEquals('{123}', $dto->external_id);
         $this->assertEquals('FreeGuy', $dto->nickname);
         $this->assertEquals('1234567890', $dto->token->token);

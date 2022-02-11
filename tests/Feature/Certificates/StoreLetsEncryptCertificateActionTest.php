@@ -25,11 +25,12 @@ class StoreLetsEncryptCertificateActionTest extends AbstractFeatureTest
         Bus::fake();
         Event::fake();
 
-        $cert = $action->execute($server, ['foo.com', 'bar.com']);
+        $cert = $action->execute($server, 'foo.com');
 
         $this->assertDatabaseHas('certificates', [
             'id' => $cert->id,
             'server_id' => $server->id,
+            'domain' => 'foo.com',
             'type' => 'lets-encrypt',
             'state' => 'installing',
         ]);
@@ -39,7 +40,6 @@ class StoreLetsEncryptCertificateActionTest extends AbstractFeatureTest
         /** @var Certificate $cert */
         $cert = $server->certificates()->firstOrFail();
 
-        $this->assertEquals(['foo.com', 'bar.com'], $cert->domains);
         $this->assertTrue($cert->state->is(Installing::class));
 
         Bus::assertDispatched(InstallLetsEncryptCertificateJob::class);
