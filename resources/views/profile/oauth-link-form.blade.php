@@ -13,10 +13,10 @@
             @if(Auth::user()->oauth($provider))
                 <div class="mb-3 flex flex items-center text-green-400">
                     <x-icon><i class="fas fa-check"></i></x-icon>
-                    <span class="ml-2">
+                    <p class="ml-2">
                         {{ __('auth.oauth-linked-to') }}<br>
-                        {{ Auth::user()->oauth($provider)->nickname }}
-                    </span>
+                        <span class="break-all">{{ Auth::user()->oauth($provider)->nickname }}</span>
+                    </p>
                 </div>
                 <x-buttons.secondary wire:click="$toggle('confirmationModalOpen')" :disabled="! $this->canUnlink">
                     {{ __('auth.unlink-button') }}
