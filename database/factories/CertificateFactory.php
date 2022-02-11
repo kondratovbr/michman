@@ -14,7 +14,7 @@ class CertificateFactory extends Factory
     {
         return [
             'type' => 'lets-encrypt',
-            'domains' => [$this->faker->domainName],
+            'domain' => $this->faker->domainName,
             'state' => 'installing',
         ];
     }
