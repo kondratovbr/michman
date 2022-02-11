@@ -12,10 +12,12 @@ abstract class AbstractUserSshKeyEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $userSshKeyKey;
     protected int $userKey;
 
     public function __construct(UserSshKey $sshKey)
     {
+        $this->userSshKeyKey = $sshKey->getKey();
         $this->userKey = $sshKey->userId;
     }
 

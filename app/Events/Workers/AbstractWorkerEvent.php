@@ -12,10 +12,12 @@ abstract class AbstractWorkerEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $workerKey;
     protected int $projectKey;
 
     public function __construct(Worker $worker)
     {
+        $this->workerKey = $worker->getKey();
         $this->projectKey = $worker->projectId;
     }
 

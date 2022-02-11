@@ -12,10 +12,12 @@ abstract class AbstractPythonEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected $pythonKey;
     protected int $serverKey;
 
     public function __construct(Python $python)
     {
+        $this->pythonKey = $python->getKey();
         $this->serverKey = $python->serverId;
     }
 

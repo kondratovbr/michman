@@ -12,10 +12,12 @@ abstract class AbstractDaemonEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $daemonKey;
     protected int $serverKey;
 
     public function __construct(Daemon $daemon)
     {
+        $this->daemonKey = $daemon->getKey();
         $this->serverKey = $daemon->serverId;
     }
 

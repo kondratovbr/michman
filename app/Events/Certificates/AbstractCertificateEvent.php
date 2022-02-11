@@ -12,10 +12,12 @@ abstract class AbstractCertificateEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $certificateKey;
     protected int $serverKey;
 
     public function __construct(Certificate $certificate)
     {
+        $this->certificateKey = $certificate->getKey();
         $this->serverKey = $certificate->serverId;
     }
 

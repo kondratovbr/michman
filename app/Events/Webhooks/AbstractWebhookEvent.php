@@ -12,10 +12,12 @@ abstract class AbstractWebhookEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $webhookKey;
     protected int $projectKey;
 
     public function __construct(Webhook $hook)
     {
+        $this->webhookKey = $hook->getKey();
         $this->projectKey = $hook->projectId;
     }
 

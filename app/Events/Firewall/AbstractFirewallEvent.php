@@ -12,10 +12,12 @@ abstract class AbstractFirewallEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $firewallRuleKey;
     protected int $serverKey;
 
     public function __construct(FirewallRule $rule)
     {
+        $this->firewallRuleKey = $rule->getKey();
         $this->serverKey = $rule->serverId;
     }
 

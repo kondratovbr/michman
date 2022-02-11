@@ -12,10 +12,12 @@ abstract class AbstractDatabaseEvent extends AbstractEvent
 {
     use Broadcasted;
 
+    protected int $databaseKey;
     protected int $serverKey;
 
     public function __construct(Database $database)
     {
+        $this->databaseKey = $database->getKey();
         $this->serverKey = $database->serverId;
     }
 
