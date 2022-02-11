@@ -15,6 +15,8 @@ class DeleteUserSshKeyJob extends AbstractJob
 
     public function __construct(UserSshKey $key)
     {
+        parent::__construct();
+
         $this->key = $key->withoutRelations();
     }
 
