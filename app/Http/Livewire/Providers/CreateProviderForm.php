@@ -8,7 +8,6 @@ use App\DataTransferObjects\ProviderDto;
 use App\Exceptions\NotSupportedException;
 use App\Facades\Auth;
 use App\Models\Provider;
-use App\Rules\Providers\ProviderKeyValid;
 use App\Rules\Providers\ProviderTokenValid;
 use App\Support\Arr;
 use App\Validation\Rules;
@@ -34,11 +33,6 @@ class CreateProviderForm extends Component
     /** Remove auth parameters unrelated to the chosen provider. */
     protected function prepareForValidation($attributes): mixed
     {
-        if ((string) config('providers.list.' . $attributes['provider'] . '.auth_type') == 'token') {
-            $attributes['key'] = null;
-            $attributes['secret'] = null;
-        }
-
         if ((string) config('providers.list.' . $this->provider . '.auth_type') == 'basic') {
             throw new NotSupportedException;
         }
@@ -69,14 +63,6 @@ class CreateProviderForm extends Component
                     new ProviderTokenValid($this->provider),
                     $authType === 'token'
                 ),
-            'key' => Rules::string()->max(255)->nullable()
-                ->requiredIf($authType === 'basic')
-                ->addRuleIf(
-                    new ProviderKeyValid($this->provider, $this->secret),
-                    $authType === 'basic'
-                ),
-            'secret' => Rules::string()->max(255)->nullable()
-                ->requiredIf($authType === 'basic'),
             // TODO: IMPORTANT! Should the name actually be optional or does UI requires it?
             'name' => Rules::string()->max(255)->nullable(),
         ];
