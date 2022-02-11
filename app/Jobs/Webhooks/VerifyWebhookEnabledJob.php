@@ -3,6 +3,7 @@
 namespace App\Jobs\Webhooks;
 
 use App\Jobs\AbstractJob;
+use App\Jobs\Traits\IsInternal;
 use App\Models\Webhook;
 use App\Notifications\Projects\WebhookEnablingFailedNotification;
 use App\States\Webhooks\Enabling;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class VerifyWebhookEnabledJob extends AbstractJob
 {
+    use IsInternal;
+
     /** Delete the job if its models no longer exist. */
     public bool $deleteWhenMissingModels = true;
 
@@ -17,7 +20,7 @@ class VerifyWebhookEnabledJob extends AbstractJob
 
     public function __construct(Webhook $hook)
     {
-        $this->setQueue('default');
+        parent::__construct();
 
         $this->hook = $hook->withoutRelations();
     }
