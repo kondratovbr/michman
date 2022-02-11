@@ -12,8 +12,8 @@ abstract class AbstractPythonEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected $pythonKey;
-    protected int $serverKey;
+    public int $pythonKey;
+    public int $serverKey;
 
     public function __construct(Python $python)
     {

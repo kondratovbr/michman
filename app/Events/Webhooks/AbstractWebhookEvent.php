@@ -12,8 +12,8 @@ abstract class AbstractWebhookEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $webhookKey;
-    protected int $projectKey;
+    public int $webhookKey;
+    public int $projectKey;
 
     public function __construct(Webhook $hook)
     {

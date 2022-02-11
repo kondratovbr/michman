@@ -12,8 +12,8 @@ abstract class AbstractServerEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $serverKey;
-    protected int|null $userKey;
+    public int $serverKey;
+    public int|null $userKey;
 
     public function __construct(Server $server)
     {

@@ -12,8 +12,8 @@ abstract class AbstractVcsProviderEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $vcsProviderKey;
-    protected int $userKey;
+    public int $vcsProviderKey;
+    public int $userKey;
 
     public function __construct(VcsProvider $vcsProvider)
     {

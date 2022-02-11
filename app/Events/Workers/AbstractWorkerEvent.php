@@ -12,8 +12,8 @@ abstract class AbstractWorkerEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $workerKey;
-    protected int $projectKey;
+    public int $workerKey;
+    public int $projectKey;
 
     public function __construct(Worker $worker)
     {

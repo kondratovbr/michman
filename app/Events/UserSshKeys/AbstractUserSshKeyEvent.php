@@ -12,8 +12,8 @@ abstract class AbstractUserSshKeyEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $userSshKeyKey;
-    protected int $userKey;
+    public int $userSshKeyKey;
+    public int $userKey;
 
     public function __construct(UserSshKey $sshKey)
     {

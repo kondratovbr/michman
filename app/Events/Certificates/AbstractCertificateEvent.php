@@ -12,8 +12,8 @@ abstract class AbstractCertificateEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $certificateKey;
-    protected int $serverKey;
+    public int $certificateKey;
+    public int $serverKey;
 
     public function __construct(Certificate $certificate)
     {

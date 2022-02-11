@@ -12,8 +12,8 @@ abstract class AbstractFirewallEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $firewallRuleKey;
-    protected int $serverKey;
+    public int $firewallRuleKey;
+    public int $serverKey;
 
     public function __construct(FirewallRule $rule)
     {

@@ -12,8 +12,8 @@ abstract class AbstractDatabaseEvent extends AbstractEvent
 {
     use Broadcasted;
 
-    protected int $databaseKey;
-    protected int $serverKey;
+    public int $databaseKey;
+    public int $serverKey;
 
     public function __construct(Database $database)
     {

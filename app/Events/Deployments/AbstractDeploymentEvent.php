@@ -13,8 +13,8 @@ abstract class AbstractDeploymentEvent extends AbstractEvent implements Deployme
 {
     use Broadcasted;
 
-    protected int $deploymentKey;
-    protected int $projectKey;
+    public int $deploymentKey;
+    public int $projectKey;
 
     public function __construct(Deployment $deployment)
     {

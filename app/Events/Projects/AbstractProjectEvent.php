@@ -14,8 +14,8 @@ abstract class AbstractProjectEvent extends AbstractEvent implements ProjectEven
 {
     use Broadcasted;
 
-    protected int $projectKey;
-    protected int $userKey;
+    public int $projectKey;
+    public int $userKey;
 
     public function __construct(Project $project)
     {
