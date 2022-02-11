@@ -1,4 +1,4 @@
-{{--TODO: CRITICAL! Adjust size for different screens.--}}
+{{--TODO: This block looks meh in general and especially on smaller screens and with long nicknames shown. Should redesign the thing to fit longer nicknames and look nicer on smaller screens. --}}
 <x-smallbox class="w-40">
     <x-slot name="content">
         <div class="h-full w-full flex flex-col items-center">

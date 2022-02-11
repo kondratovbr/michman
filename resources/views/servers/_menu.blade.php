@@ -1,5 +1,5 @@
 {{--TODO: CRITICAL! Values/links are placeholders. Don't forget to put the actual ones.--}}
-{{--TODO: CRITICAL! Make sure the irrelevant buttons aren't shown and menus cannot be accessed. Based on the server's type.--}}
+{{--TODO: IMPORTANT! Make sure the irrelevant buttons aren't shown and menus cannot be accessed. Based on the server's type.--}}
 
 {{--TODO: IMPORTANT. Try rebuilding this system with @entangle - maybe it will help with "back"/"front" buttons in the browser. Also - needs some loading indication and skeleton placeholders. The pages may time a bit of time to load on slower connections.--}}
 

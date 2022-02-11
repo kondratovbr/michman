@@ -1,7 +1,5 @@
 {{-- TODO: IMPORTANT! Check how it looks with longer names and everything. --}}
 
-{{--TODO: CRITICAL! I completely ignored the tablet and mobile layouts when updating the navbar multiple times. Don't forget them!--}}
-
 <x-navbar.dropdown>
     <x-slot name="trigger">
         <div class="flex items-center space-x-2">

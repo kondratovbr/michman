@@ -1,6 +1,4 @@
-{{--TODO: CRITICAL! This page should not be available before the project's repo is installed.--}}
-
-{{--    TODO: IMPORTANT! Add an info block here explaining how config files work in relation to deployments.--}}
+{{-- TODO: IMPORTANT! Add an info block here explaining how config files work in relation to deployments.--}}
 
 <livewire:projects.project-environment-edit-form :project="$project" />
 
