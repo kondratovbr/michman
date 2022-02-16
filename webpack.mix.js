@@ -1,12 +1,16 @@
 const mix = require('laravel-mix');
 
-mix.js('resources/js/app.js', 'public/js')
+mix
+    .webpackConfig({ stats: { children: true }})
+    .js('resources/js/app.js', 'public/js')
 
-    // TODO: Are comments dropped from the resulting CSS on prod?
+    // TODO: IMPORTANT! Are comments dropped from the resulting CSS on prod?
+    //       Check out: https://www.npmjs.com/package/postcss-discard-comments
 
     .postCss('resources/css/app.pcss', 'public/css', [
         require('postcss-import'),
-        require('postcss-nested'),
+        //require('postcss-nested'),
+        require('tailwindcss/nesting'),
         require('tailwindcss'),
         require('autoprefixer'),
     ])
