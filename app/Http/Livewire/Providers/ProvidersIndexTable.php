@@ -8,6 +8,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
+// TODO: VERY IMPORTANT! Implement provider deletion/unlinking after refactoring DigitalOcean to OAuth.
+//       NOTE: I think I should keep the old manual token way of connection DO as well - business accounts may want it.
+
 class ProvidersIndexTable extends Component
 {
     use AuthorizesRequests;
