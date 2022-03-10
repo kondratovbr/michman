@@ -170,6 +170,7 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                serif: ['IBM Plex Serif', ...defaultTheme.fontFamily.serif]
             },
             // Some specific additional inset (top/right/bottom/left) values
             inset: {

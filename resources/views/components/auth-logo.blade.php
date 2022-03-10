@@ -3,6 +3,6 @@
     href="{{ route('home') }}"
 >
     <div class="flex items-center transform group-hover:scale-110 group-focus:scale-110 transition-transform ease-in-out duration-quick">
-        <x-logo class="w-16 h-16" />
+        <x-logo/>
     </div>
 </a>
