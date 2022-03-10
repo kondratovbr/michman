@@ -20,7 +20,7 @@
 
         {{-- Logo container --}}
         {{-- NOTE: It should have the same fixed width as the burger menu button container - to ensure that the middle part is centered. --}}
-        <div class="w-24 flex justify-end items-stretch">
+        <div class="flex justify-end items-stretch">
             <x-navbar.link routeName="home">
                 <x-logo class="block h-9 w-auto" />
             </x-navbar.link>

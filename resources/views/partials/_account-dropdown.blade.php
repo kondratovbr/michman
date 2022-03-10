@@ -3,7 +3,8 @@
     <x-slot name="trigger">
         <div class="flex items-center space-x-2">
             <x-avatar class="h-8 w-8" />
-            <span>{{ user()->email }}</span>
+            <span class="hidden xl:inline">{{ user()->email }}</span>
+            <span class="inline xl:hidden">{{ user()->name }}</span>
         </div>
     </x-slot>
 
