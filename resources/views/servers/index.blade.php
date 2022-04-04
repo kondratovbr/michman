@@ -12,15 +12,15 @@
 
     <div class="space-y-10 sm:space-y-0">
 
+        <livewire:servers.servers-index-table/>
+
+        <x-section-separator/>
+
         @can('create', App\Models\Server::class)
             <livewire:servers.create-server-form/>
         @else
             <x-servers.upgrade-subscription/>
         @endcan
-
-        <x-section-separator/>
-
-        <livewire:servers.servers-index-table/>
 
     </div>
 
