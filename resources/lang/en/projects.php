@@ -74,6 +74,8 @@ return [
             'title' => 'Configure Repository',
             'button' => 'Install Repository',
             'no-subscription' => 'You need an active subscription to configure a project.',
+            'no-vcs-provider' => 'Connect a source control provider\'s account (GitHub, GitLab, Bitbucket) before installing a repository.',
+            'no-vcs-provider-button' => 'Source Control Providers',
             'vcs' => [
                 'label' => 'Provider',
             ],

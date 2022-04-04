@@ -4,6 +4,8 @@
     <x-projects.repo-no-subscription/>
 @elseif($project->removingRepo)
     <livewire:projects.removing-repo-placeholder :project="$project" />
+@elseif(user()->vcsProviders->isEmpty())
+    <x-projects.repo-no-vcs-provider/>
 @elseif(! $project->repoInstalled())
     <livewire:projects.install-repo-form :project="$project" />
 @else
