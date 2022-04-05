@@ -6,7 +6,6 @@
         <x-tr-header>
             <x-th>{{ __('deployments.table.started') }}</x-th>
             <x-th>{{ __('deployments.table.commit') }}</x-th>
-            <x-th>{{ __('deployments.table.duration') }}</x-th>
             <x-th>{{ __('deployments.table.status') }}</x-th>
             <x-th></x-th>
         </x-tr-header>
@@ -34,7 +33,6 @@
                         <x-code size="small">{{ $deployment->branch }}</x-code>
                     </div>
                 </x-td>
-                <x-td>{{ $deployment->duration }}</x-td>
                 <x-td>
                     <div class="flex flex-col items-start space-y-1">
                         <x-deployments.status-badge :deployment="$deployment" />
