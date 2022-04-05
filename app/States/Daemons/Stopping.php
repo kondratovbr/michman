@@ -5,4 +5,6 @@ namespace App\States\Daemons;
 class Stopping extends DaemonState
 {
     public static string $name = 'stopping';
+
+    public static bool $loading = true;
 }

@@ -5,4 +5,6 @@ namespace App\States\Daemons;
 class Restarting extends DaemonState
 {
     public static string $name = 'restarting';
+
+    public static bool $loading = true;
 }
