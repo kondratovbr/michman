@@ -6,9 +6,9 @@
         <div class="space-y-6">
             <x-message colors="info">{{ __('projects.quick-deploy.info') }}</x-message>
 
-            <p class="text-sm"><x-lang key="deployments.no-subscription" /></p>
-
-            @if(is_null($this->hook) || $this->hook->isEnabling())
+            @cannot('create', [App\Models\Webhook::class, $project])
+                <p class="text-sm"><x-lang key="deployments.no-subscription" /></p>
+            @elseif(is_null($this->hook) || $this->hook->isEnabling())
                 <x-buttons.primary
                     wire:click.prevent="enable"
                     wire:loading.attr="disabled"
