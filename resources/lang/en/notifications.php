@@ -54,6 +54,9 @@ return [
         Deployments\DeploymentFailedNotification::class => [
             // TODO: Would be nice to mention the project/server name somewhere in subject.
             'subject' => 'Deployment Failed',
+            // TODO: Provide some more info here - git commit hash and link to that commit in a repo;
+            //       deployment duration;
+            //       direct link to see the log.
             'lines' => [
                 'Something went wrong when performing a deployment of your project :project.',
             ],
@@ -63,6 +66,9 @@ return [
         Deployments\DeploymentCompletedNotification::class => [
             // TODO: Would be nice to mention the project/server name somewhere in subject.
             'subject' => 'Deployment Completed',
+            // TODO: Provide some more info here - git commit hash and link to that commit in a repo;
+            //       deployment duration;
+            //       direct link to see the log.
             'lines' => [
                 'Your project :project was successfully deployed.',
             ],
