@@ -2,7 +2,7 @@
     <div class="h-16 mx-auto pb-0-safe grid grid-cols-12 divide-x divide-gray-600">
 
         <x-bottombar.link routeName="home" class="col-span-2">
-            <x-logo-small class="block h-9 w-auto" />
+            <x-logo-small class="block w-auto" />
         </x-bottombar.link>
 
 {{--        TODO: VERY IMPORTANT! Should be col-span-4, the "8" was put to stretch the thing while the "projects" button isn't implemented yet (commented below).--}}
