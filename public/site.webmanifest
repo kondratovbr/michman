@@ -16,5 +16,6 @@
     "theme_color": "#002952",
     "background_color": "#002952",
     "start_url": "https://michman.dev",
+    "description": "No-hassle Python/Django deployment",
     "display": "standalone"
 }
