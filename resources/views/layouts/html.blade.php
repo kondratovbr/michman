@@ -12,6 +12,8 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="referrer" content="always">
 
+        @include('partials._favicons')
+
         {{-- CSRF-token for front-end scripts is provided as a meta. --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -72,7 +74,7 @@
         <title>{{ config('app.name', 'App') }}</title>
         <link rel="canonical" href="{{ url()->current() }}">
         <meta name="description" content="">
-{{--        TODO: CRITICAL! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! Also, favicons! --}}
+{{--        TODO: CRITICAL! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! --}}
     </head>
     <body class="relative font-sans antialiased w-screen overflow-x-hidden bg-navy-100 text-gray-100 {{ isDebug() ? 'debug-screens' : null }}">
 
