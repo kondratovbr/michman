@@ -42,11 +42,10 @@ return [
     |
     */
 
-    // TODO: CRITICAL! Don't forget to at least add a logo here.
-    // 'brand' =>  [
-    //     'logo' => realpath(__DIR__.'/../public/svg/billing-logo.svg'),
-    //     'color' => 'bg-gray-800',
-    // ],
+    'brand' =>  [
+        'logo' => realpath(__DIR__.'/../public/svg/michman-navy.svg'),
+        'color' => '#005cb8',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -142,7 +141,6 @@ return [
 
     ],
 
-    // TODO: CRITICAL! Make sure this works. And terms are written.
     // Spark will show a link to the page with Terms and Conditions at this URL.
     'terms_url' => 'https://michman.dev/terms-of-service',
 
