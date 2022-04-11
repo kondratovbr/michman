@@ -1,5 +1,7 @@
 const mix = require('laravel-mix');
 
+mix.disableNotifications();
+
 mix
     .webpackConfig({ stats: { children: true }})
     .js('resources/js/app.js', 'public/js')
