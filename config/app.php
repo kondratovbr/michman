@@ -274,6 +274,10 @@ return [
     // The same cipher as configured with the APP_KEY will be used. ('app.cipher' config value)
     'encryption_key' => env('ENCRYPTION_KEY'),
 
+    // This is an option to disabled billing and all the subscription requirements,
+    // to make the app temporarily free for all.
+    'billing_enabled' => env('BILLING_ENABLED', true),
+
     // URL for a separate documentation site.
     'docs_url' => 'https://docs.michman.dev/',
 

@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\BillingDisabledController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\VcsProviderController;
 use App\Http\Controllers\ServerController;
@@ -18,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 | Guest are redirected to the login page.
 |
 */
+
+// Show a temporary page instead of the billing portal until billing is enabled.
+Route::get('/billing-disabled', BillingDisabledController::class)
+    ->name('billing-disabled');
 
 /*
  * Custom user account routes

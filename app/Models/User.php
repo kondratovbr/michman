@@ -221,10 +221,16 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return $this->email === $adminEmail && $this->hasVerifiedEmail();
     }
 
+    /** Check is an active subscription is required for this user to use all the features. */
+    public function subscriptionRequired(): bool
+    {
+        return (bool) config('app.billing_enabled', true);
+    }
+
     /** Check if this user should have general application features enabled. */
     public function appEnabled(): bool
     {
-        return $this->onTrial() || $this->subscribed();
+        return ! $this->subscriptionRequired() || $this->onTrial() || $this->subscribed();
     }
 
     /** Get a relation with server providers owned by this user. */
