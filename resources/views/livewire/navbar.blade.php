@@ -2,8 +2,6 @@
 {{-- TODO: IMPORTANT! Don't forget to properly align the actual logo with other elements once it's done. It can probably be done with a negative margin, the same way the burger icon is aligned down below. --}}
 {{--TODO: The button's background blinks on page loads. At least in Chrome. Probably something to do with the Alpine loading. Maybe it's about default classes (before Alpine loads) Fix.--}}
 
-{{--TODO: CRITICAL! Placeholders! Don't forget to put actual routes here!--}}
-
 <nav
     class="relative hidden md:block bg-navy-300 z-40"
     x-data="{ open: false }"
@@ -52,6 +50,9 @@
                         @include('partials._servers-dropdown')
                     @endif
 
+{{--                    TODO: Make this button more informative when user has no projects.
+                              Show some "Choose a server to create a project" screen or something.
+                              Will redo the whole flow later to make it possible to create projects without servers at all.--}}
                     @if($user->projects->isEmpty())
                         <x-navbar.link routeName="home">
                             <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
@@ -61,10 +62,14 @@
                         @include('partials._projects-dropdown')
                     @endif
 
-{{--                    TODO: Add external link icon. Maybe animate it on hover/active.--}}
-                    <x-navbar.link routeName="home" class="md:hidden lg:inline-flex">
+                    <x-navbar.link
+                        class="md:hidden lg:inline-flex"
+                        href="{{ docsUrl() }}"
+                        target="_blank"
+                    >
                         <x-slot name="icon"><i class="far fa-file-alt"></i></x-slot>
                         {{ __('nav.documentation') }}
+                        <i class="ml-1 fas fa-external-link-alt text-gray-400"></i>
                     </x-navbar.link>
                 </div>
             </div>

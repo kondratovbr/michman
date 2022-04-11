@@ -7,7 +7,9 @@ use Illuminate\View\Component;
 
 class Link extends Component
 {
+    public string|null $href;
     public string|null $routeName;
+    public bool $disabled;
     public bool $active;
     public string $stateClasses;
     public string $contentStateClasses;
@@ -20,17 +22,16 @@ class Link extends Component
     private const CONTENT_INACTIVE_CLASSES = 'group-hover:scale-110';
     private const CONTENT_ACTIVE_CLASSES = '';
 
-    public function __construct(string $routeName = null)
+    public function __construct(string $routeName = null, $href = null, $disabled = false)
     {
         $this->routeName = $routeName;
-        $this->active = isset($routeName) ? request()->routeIs($routeName) : false;
+        $this->href = $href;
+        $this->disabled = $disabled;
+        $this->active = isset($routeName) && request()->routeIs($routeName);
         $this->stateClasses = $this->active ? self::ACTIVE_CLASSES : self::INACTIVE_CLASSES;
         $this->contentStateClasses = $this->active ? self::CONTENT_ACTIVE_CLASSES : self::CONTENT_INACTIVE_CLASSES;
     }
 
-    /**
-     * Get the view that represents the component.
-     */
     public function render(): View
     {
         return view('components.navbar.link');
