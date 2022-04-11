@@ -14,7 +14,7 @@
     {{-- Dropdown button --}}
 {{--If a <button> is used here - in Safari the child div (inside the button) doesn't stretch vertically by any means. A bug in safari.--}}
     <a
-        class="group py-2 h-full w-full flex items-stretch cursor-pointer focus:outline-none"
+        class="group p-2 h-full w-full flex items-stretch cursor-pointer focus:outline-none"
         {{-- TODO: IMPORTANT! Does this work on touch? --}}
         x-on:click.prevent="open = !open"
         role="button"
