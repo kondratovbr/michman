@@ -91,6 +91,6 @@ class CreateServerForm extends Component
 
     public function render(): View
     {
-        return view('servers.create-form');
+        return view('servers.create-server-form');
     }
 }
