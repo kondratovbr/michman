@@ -144,6 +144,6 @@ return [
 
     // TODO: CRITICAL! Make sure this works. And terms are written.
     // Spark will show a link to the page with Terms and Conditions at this URL.
-    'terms_url' => '/terms',
+    'terms_url' => 'https://michman.dev/terms-of-service',
 
 ];
