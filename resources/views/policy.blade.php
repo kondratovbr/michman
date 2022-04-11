@@ -1,4 +1,7 @@
-{{--TODO: IMPORTANT! Terribly unfinished. Non even started.--}}
+
+
+
+{{--NOTE: This page is not in use at this point. I have a separate marketing site where the legal stuff is hosted.--}}
 
 <x-layouts.guest>
     <div class="pt-4 bg-gray-100">

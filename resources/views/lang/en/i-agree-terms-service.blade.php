@@ -1,6 +1,6 @@
 <span>
     I agree to the
-    <x-link href="{{ route('terms.show') }}">Terms of Service</x-link>
+    <x-link href="{{ config('app.terms_url') }}" :external="true" :icon="false">Terms of Service</x-link>
     and
-    <x-link href="{{ route('policy.show') }}">Privacy Policy.</x-link>
+    <x-link href="{{ config('app.privacy_policy_url') }}" :external="true" :icon="false">Privacy Policy.</x-link>
 </span>

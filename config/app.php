@@ -276,4 +276,10 @@ return [
 
     // URL for a separate documentation site.
     'docs_url' => 'https://docs.michman.dev/',
+
+    // URL for the Terms of Service page on a separate site.
+    'terms_url' => 'https://michman.dev/terms-of-service',
+
+    // URL for the Privacy Policy page on a separate site.
+    'privacy_policy_url' => 'https://michman.dev/privacy-policy',
 ];
