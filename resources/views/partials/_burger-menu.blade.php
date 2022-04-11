@@ -39,10 +39,10 @@
     <x-slot name="icon"><i class="fa fa-hard-hat"></i></x-slot>
     {{ __('nav.projects') }}
 </x-burger.link>
-{{--    TODO: Add external link icon. Maybe animate it on hover/active.--}}
-<x-burger.link href="{{ route('home') }}" routeName="home">
+<x-burger.link href="{{ docsUrl() }}">
     <x-slot name="icon"><i class="far fa-file-alt"></i></x-slot>
     {{ __('nav.documentation') }}
+    <i class="fas fa-external-link-alt"></i>
 </x-burger.link>
 
 <x-burger.separator/>

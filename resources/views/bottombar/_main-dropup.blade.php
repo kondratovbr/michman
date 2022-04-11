@@ -28,7 +28,7 @@
         </x-dropdown.link>
     @endif
 
-    <x-dropdown.link href="" :external="true">
+    <x-dropdown.link href="{{ docsUrl() }}" :external="true">
         <x-slot name="icon"><i class="far fa-file-alt"></i></x-slot>
         {{ __('nav.documentation') }}
         <x-slot name="iconRight"><i class="fas fa-external-link-alt text-gray-400"></i></x-slot>

@@ -1,4 +1,3 @@
-{{--TODO: CRITICAL! Placeholders! Don't forget to put actual routes here!--}}
 {{--TODO: IMPORTANT! Make sure longer emails actually fit. Same in the navbar. Maybe cut the email if it's long. Or maybe even don't show it at all if it's long - just an avatar.--}}
 
 {{-- Dropdown menu available from the navbar only on "md" screens. Intended mostly for tidier navigation on tablets. --}}
@@ -28,7 +27,7 @@
         </x-dropdown.link>
     @endif
 
-    <x-dropdown.link href="" :external="true">
+    <x-dropdown.link href="{{ docsUrl() }}" :external="true">
         <x-slot name="icon"><i class="far fa-file-alt"></i></x-slot>
         {{ __('nav.documentation') }}
         <x-slot name="iconRight"><i class="fas fa-external-link-alt text-gray-400"></i></x-slot>

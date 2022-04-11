@@ -274,4 +274,6 @@ return [
     // The same cipher as configured with the APP_KEY will be used. ('app.cipher' config value)
     'encryption_key' => env('ENCRYPTION_KEY'),
 
+    // URL for a separate documentation site.
+    'docs_url' => 'https://docs.michman.dev/',
 ];

@@ -74,3 +74,17 @@ if (! function_exists('classes')) {
         }, '');
     }
 }
+
+if (! function_exists('docsUrl')) {
+    /** Get a URL for the separate docs site. */
+    function docsUrl(string $page = null): string
+    {
+        if (! $page)
+            return config('app.docs_url');
+
+        return
+            rtrim(config('app.docs_url'), '/')
+            . '/'
+            . ltrim($page, '/');
+    }
+}
