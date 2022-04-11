@@ -1,9 +1,8 @@
 <x-layouts.app-new>
 
     {{-- Main Container - to make the single column layout narrower --}}
-{{--    TODO: IMPORTANT! Responsiveness and mobile unfinished!--}}
-    <div class="md:grid md:grid-cols-12">
-        <div class="md:col-start-3 md:col-end-11">
+    <div class="lg:grid lg:grid-cols-12">
+        <div class="lg:col-start-3 lg:col-end-11">
 
             @isset($notifications)
                 <div class="mt-8">{{ $notifications }}</div>
