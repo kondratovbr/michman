@@ -17,7 +17,7 @@ class ServerPolicy
 
     public function create(User $user): bool
     {
-        if (! user()->subscriptionRequired())
+        if (! $user->subscriptionRequired())
             return true;
 
         if ($user->onTrial())
