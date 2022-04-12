@@ -286,4 +286,7 @@ return [
 
     // URL for the Privacy Policy page on a separate site.
     'privacy_policy_url' => 'https://michman.dev/privacy-policy',
+
+    // Email to provide for customer support.
+    'support_email' => 'contact@michman.dev',
 ];

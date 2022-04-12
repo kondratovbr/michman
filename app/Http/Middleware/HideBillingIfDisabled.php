@@ -10,16 +10,8 @@ class HideBillingIfDisabled
 {
     public function handle(Request $request, Closure $next): Response
     {
-        ray(
-            $request->route(),
-            $request->route()->getName(),
-            $request->routeIs('spark.portal'),
-            $request->path(),
-        );
-
-        if ($request->routeIs('spark.portal')) {
-            //
-        }
+        if ( ! config('app.billing_enabled') && $request->routeIs('spark.portal'))
+            return redirect()->route('billing-disabled');
 
         return $next($request);
     }
