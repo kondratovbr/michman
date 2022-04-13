@@ -77,3 +77,6 @@
         include_role: name=install-docker
         vars:
             compose_version: "1.29.2"
+
+    -   name: Ensure server is using UTC timezone
+        include_role: name=configure-timezone
