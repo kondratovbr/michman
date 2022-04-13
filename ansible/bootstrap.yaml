@@ -1,0 +1,63 @@
+-   hosts: all
+    become: true
+    vars:
+        username: michman
+        force_change_password: false
+    tasks:
+
+    -   name: Install aptitude
+        apt: name=aptitude state=latest update_cache=true
+
+    -   name: Upgrade packages
+        apt: upgrade=safe update_cache=true
+
+    -   name: Create user "ansible"
+        user:
+            name: ansible
+            password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') | password_hash('sha512') }}"
+            update_password: on_create
+
+    -   name: Change password for user "ansible"
+        when: force_change_password
+        user:
+            name: ansible
+            password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') | password_hash('sha512') }}"
+            update_password: always
+
+    -   name: Add SSH key for user "ansible"
+        authorized_key:
+            user: ansible
+            state: present
+            key: "{{ lookup('file', './files/id_ansible.pub') }}"
+
+    -   name: Copy sudoers file for user "ansible"
+        copy:
+            src: sudoer_ansible
+            dest: /etc/sudoers.d/ansible
+            owner: root
+            group: root
+            mode: 0440
+
+    -   name: Create user "{{ username }}" for manual access
+        include_role: name=create-manual-user
+        vars:
+            manual_ssh_public_key: "~/.ssh/id_ed25519.pub"
+
+    -   name: Install and configure Oh My Zsh for user "{{ username }}"
+        include_role: name=configure-oh-my-zsh
+
+    -   name: Cleanup SSH keys from user "root"
+        file:
+            path: /root/.ssh/authorized_keys
+            state: absent
+
+    -   name: Configure sshd
+        include_role: name=configure-sshd
+
+    -   name: Install and configure UFW
+        include_role: name=configure-ufw
+
+    -   name: Install Docker
+        include_role: name=install-docker
+        vars:
+            compose_version: "1.29.2"

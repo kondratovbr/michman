@@ -1,0 +1,37 @@
+-   name: Install UFW package
+    apt:
+        name: ufw
+        state: latest
+        update_cache: true
+
+-   name: "UFW: Limit SSH traffic"
+    ufw:
+        rule: limit
+        direction: in
+        port: 22
+        proto: tcp
+
+-   name: "UFW: Deny incoming traffic by default"
+    ufw:
+        direction: incoming
+        default: deny
+
+-   name: "UFW: Deny routed traffic by default"
+    ufw:
+        direction: routed
+        default: deny
+
+-   name: "UFW: Allow outgoing traffic by default"
+    ufw:
+        direction: outgoing
+        default: allow
+
+-   name: Enable UFW and logging
+    ufw:
+        state: enabled
+        logging: on
+
+-   name: Ensure UFW service is running
+    service:
+        name: ufw
+        state: started

@@ -1,0 +1,68 @@
+Port 22
+
+#
+# Authentication
+#
+
+#LoginGraceTime 2m
+PermitRootLogin no
+StrictModes yes
+# Limit auth attempts to a low number
+MaxAuthTries 6
+MaxSessions 10
+
+# Allow authentication using SSH identity keys.
+PubkeyAuthentication yes
+# Disable password authentication entirely.
+PasswordAuthentication no
+# Just in case also disallow authentication with an empty password.
+PermitEmptyPasswords no
+# Excplicitly disable fancy authentication methods.
+GSSAPIAuthentication no
+KerberosAuthentication no
+# Only allow the most secure ed25519 type of key to be used.
+PubkeyAcceptedKeyTypes ssh-ed25519-cert-v01@openssh.com,ssh-ed25519
+
+
+
+#
+# These parameters would allow to use Google 2FA for authentication in combination with pubkeys
+#
+
+# Enable authentication using PAM external system. The system will be responsible for Google 2FA.
+#UsePAM yes
+# Enable keyboard-interactive challenge-response types of authentication. This is how Google 2FA works.
+#ChallengeResponseAuthentication yes
+# Specifies that a user must complete publickey AND THEN keyboard-interactive authentication to log in.
+# PAM will handle the latter using Google 2FA.
+#AuthenticationMethods publickey,keyboard-interactive
+
+
+
+AllowAgentForwarding no
+# Allow remote port forwarding
+AllowTcpForwarding yes
+# Allow remote forwarding using Unix socket
+AllowStreamLocalForwarding yes
+# Remove .socket file on establishing a new socket-based forwarding.
+# Otherwise forwarding fails if the file already exists
+StreamLocalBindUnlink yes
+# Forbid X11 (Linux graphic UI) forwarding
+X11Forwarding no
+# Do not print daily message file on every login
+PrintMotd no
+# Do not show a banner on every login
+Banner none
+PermitTTY yes
+
+# Drop logged user after 60 minutes of inactivity
+# works network-wise, i.e. when network drops.
+# In other cases - users can keep sending update packets to keep alive.
+ClientAliveInterval 3600
+ClientAliveCountMax 10
+
+# Allow client to pass locale environment variables/
+AcceptEnv LANG LC_*
+
+# Allow SFTP connections using the specified subsystem.
+Subsystem sftp internal-sftp

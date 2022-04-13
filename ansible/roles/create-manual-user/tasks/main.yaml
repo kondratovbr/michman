@@ -1,0 +1,49 @@
+-   become: true
+    block:
+
+    -   name: Install zsh
+        apt: name=zsh state=latest update_cache=true
+
+    -   name: Create user "{{ username }}" for manual access
+        user:
+            name: "{{ username }}"
+            shell: /usr/bin/zsh
+            groups: adm,sudo
+            append: true
+
+    -   name: Set user password if provided
+        when: user_password is defined
+        user:
+            name: "{{ username }}"
+            password: "{{ user_password | password_hash('sha512') }}"
+
+    -   name: Install packages I'm used to
+        apt:
+            name: "{{ item }}"
+            state: latest
+            update_cache: true
+        loop:
+            - tmux
+            - ruby
+            - rsync
+            - curl
+            - git
+
+    -   name: Install rmate
+        gem:
+            name: rmate
+            state: latest
+
+    -   name: Copy custom tmux config
+        copy:
+            src: tmux.conf
+            dest: "/home/{{ username }}/.tmux.conf"
+            owner: "{{ username }}"
+            group: "{{ username }}"
+            mode: 0644
+            force: true
+
+    -   name: Add an SSH key for manual access
+        authorized_key:
+            user: "{{ username }}"
+            key: "{{ lookup('file', manual_ssh_public_key) }}"
