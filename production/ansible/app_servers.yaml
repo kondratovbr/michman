@@ -1,4 +1,4 @@
--   hosts: app-servers
+-   hosts: app_servers
     become: true
     tasks:
 
