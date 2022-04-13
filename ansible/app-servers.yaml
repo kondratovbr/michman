@@ -1,0 +1,12 @@
+-   hosts: app-servers
+    become: true
+    tasks:
+
+   -   name: "UFW: Allow HTTP/HTTPS traffic"
+       ufw:
+           direction: in
+           port: "{{ item }}"
+           rule: allow
+       loop:
+           - '80'
+           - '443'
