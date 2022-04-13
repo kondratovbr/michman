@@ -1,0 +1,60 @@
+services:
+
+    nginx:
+        image: ''
+
+    app:
+        image: 'kondorb/michman:1.0'
+        ports:
+            - '80:8000'
+        depends_on:
+            - redis
+            - mysql
+
+    queue:
+        image: 'kondorb/michman:1.0'
+        command: 'php artisan queue:work --queue=default,providers,servers,broadcasting'
+        depends_on:
+            - redis
+            - mysql
+
+#     websockets:
+#         image: 'kondorb/michman:1.0'
+#         command: 'php artisan websockets:serve'
+#         ports:
+#             - '6001:6001'
+#         depends_on:
+#             - redis
+#             - mysql
+
+    redis:
+        image: 'redis:alpine'
+#         ports:
+#             - '6379:6379'
+        volumes:
+            - 'redis-data:/data'
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+
+    mysql:
+        image: 'mysql:8.0'
+#         ports:
+#             - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+#             MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+#             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        volumes:
+            - 'mysql-data:/var/lib/mysql'
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping"]
+
+
+
+volumes:
+    redis-data:
+        driver: local
+    mysql-data:
+        driver: local
