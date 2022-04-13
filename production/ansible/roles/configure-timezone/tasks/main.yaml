@@ -1,0 +1,8 @@
+-   become: true
+    block:
+
+    -   name: Ensure server is using UTC timezone
+        timezone:
+            name: UTC
+        notify:
+            - restart crond
