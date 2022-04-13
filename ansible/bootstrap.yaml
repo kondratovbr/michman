@@ -11,6 +11,22 @@
     -   name: Upgrade packages
         apt: upgrade=safe update_cache=true
 
+    -   name: Install required packages
+        apt:
+            name:
+                - acl
+                - gnupg
+                - ca-certificates
+                - curl
+                - lsb-release
+                - python3
+                - python3-pip
+                - virtualenv
+                - apt-transport-https
+                - ufw
+            state: latest
+            update_cache: true
+
     -   name: Create user "ansible"
         user:
             name: ansible
