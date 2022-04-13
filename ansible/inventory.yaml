@@ -1,5 +1,5 @@
 all:
-    hosts:
+    app-servers:
         michman-app-1:
             ansible_host: 167.99.217.206
     vars:
