@@ -1,60 +1,155 @@
+# TODO: VERY IMPORTANT! Queue worker can easily make MySQL use 100% of available CPU when performing some heavy SQL queries. Should make sure the app can still work while at it and it cannot be abused.
+
+# TODO: Deploy policy is a stub. Make it to properly restart if failed and to use healthchecks.
+# Default reusable deployment policy.
+x-deploy:
+    &default-deploy
+    mode: replicated
+    replicas: 1
+
+# Reusable logging config
+x-logging:
+    &default-logging
+    driver: "local"
+
+
+
 services:
 
     nginx:
-        image: ''
+        image: nginx:1.21-alpine
+        user: nginx
+        read_only: true
+        ports:
+            - '80:8080'
+        volumes:
+            - /var/cache
+            - /var/run
+            - /tmp
+        configs:
+            -   source: nginx-conf
+                target: /etc/nginx/server.conf
+        deploy: *default-deploy
+        logging: *default-logging
 
     app:
-        image: 'kondorb/michman:1.0'
-        ports:
-            - '80:8000'
+        # To reuse the whole base app service for other services, see below.
+        &app-image
+        image: 'kondorb/michman:0.9.0'
+        read_only: true
+        secrets:
+            -   source: app-env
+                target: /var/www/.env
+                uid: "100"
+                gid: "101"
+                mode: 0400
+        networks:
+            - frontend
+            - backend
         depends_on:
             - redis
             - mysql
+        deploy: *default-deploy
+        logging: *default-logging
 
     queue:
-        image: 'kondorb/michman:1.0'
-        command: 'php artisan queue:work --queue=default,providers,servers,broadcasting'
-        depends_on:
-            - redis
-            - mysql
+        <<: *app-image
+        command: [
+#             "dockerize", "-wait", "tcp://redis:6379", "-wait", "tcp://bitcoind:8332", "-timeout", "5m", "--",
+            "php", "artisan", "queue:work",
+            "--queue", "default,providers,servers,broadcasting",
+            "--sleep", "3",
+            "--tries", "3",
+            "--timeout", "300",
+            "--backoff", "5",
+            "--memory", "256"
+        ]
+
+    scheduler:
+        <<: *app-image
+        # crond must be run as root.
+        user: root
+        command: [
+#             "dockerize", "-wait", "tcp://redis:6379", "-timeout", "60s", "--",
+            "crond", "-f"
+       ]
 
 #     websockets:
-#         image: 'kondorb/michman:1.0'
+#         <<: *app-image
 #         command: 'php artisan websockets:serve'
 #         ports:
 #             - '6001:6001'
-#         depends_on:
-#             - redis
-#             - mysql
 
     redis:
-        image: 'redis:alpine'
-#         ports:
-#             - '6379:6379'
+        image: redis:6-alpine
+        read_only: true
+        # Command is overridden to explicitly put in a config that has a password configured.
+        command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
         volumes:
             - 'redis-data:/data'
+        secrets:
+            -   source: redis-conf
+                target: /usr/local/etc/redis/redis.conf
+                uid: "999"
+                gid: "1000"
+                mode: 0400
+        networks:
+            - backend
+        logging: *default-logging
+        deploy: *default-deploy
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
 
     mysql:
-        image: 'mysql:8.0'
-#         ports:
-#             - '3306:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-#             MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-#             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        image: mysql:8.0
+        read_only: true
         volumes:
-            - 'mysql-data:/var/lib/mysql'
+            - mysql-db:/var/lib/mysql
+            - /run/mysqld
+            - /tmp
+        configs:
+            -   source: mysql-conf
+                target: /etc/mysql/conf.d/my.cnf
+        networks:
+            - backend
+        logging: *default-logging
+        deploy: *default-deploy
         healthcheck:
             test: ["CMD", "mysqladmin", "ping"]
 
 
 
+networks:
+    # For access to the internet.
+    frontend:
+        driver: bridge
+        internal: false
+        attachable: false
+    # For backend services to communicate.
+    backend:
+        driver: bridge
+        internal: true
+        attachable: true
+
 volumes:
+    # Redis can store some data on disc.
     redis-data:
         driver: local
-    mysql-data:
+    # The actual MySQL database stored.
+    mysql-db:
         driver: local
+
+configs:
+    nginx-conf:
+        file: ./nginx/nginx.conf
+        name: michman_nginx-conf-v1
+    mysql-conf:
+        file: ./mysql/my.cnf
+
+secrets:
+    app-env:
+        external: true
+        name: michman_app-env-1
+    redis-conf:
+        external: true
+        name: michman_redis-conf
