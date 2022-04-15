@@ -1,0 +1,87 @@
+### Ignore everything and use this file as a white-list.
+
+*
+
+!app
+
+!/bootstrap
+/bootstrap/cache/*
+
+!/config
+!/database
+!/production
+
+!/public
+/public/hot
+/public/storage/*
+
+!/resources
+!/routes
+!/tests
+!composer.json
+!composer.lock
+!artisan
+!phpunit.xml
+
+!.env.build
+
+
+
+
+
+### To keep some files ignored even inside un-ignored directories:
+
+### Docker ###
+
+/**/.dockerignore
+/**/Dockerfile
+/**/*.Dockerfile
+
+
+
+### Laravel ###
+
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+
+
+### macOS ###
+
+.DS_Store
+/**/.DS_Store
+.AppleDouble
+/**/.AppleDouble
+.LSOverride
+/**/.LSOverride
+Icon
+/**/Icon
+._*
+/**/._*
+.DocumentRevisions-V100
+/**/.DocumentRevisions-V100
+.fseventsd
+/**/.fseventsd
+.Spotlight-V100
+/**/.Spotlight-V100
+.TemporaryItems
+/**/.TemporaryItems
+.Trashes
+/**/.Trashes
+.VolumeIcon.icns
+/**/.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+/**/.com.apple.timemachine.donotpresent
+.AppleDB
+/**/.AppleDB
+.AppleDesktop
+/**/.AppleDesktop
+Network Trash Folder
+/**/Network Trash Folder
+Temporary Items
+/**/Temporary Items
+.apdisk
+/**/.apdisk
