@@ -35,7 +35,7 @@ return [
     */
 
     'channels' => [
-        'stack' => [
+        'dev' => [
             'driver' => 'stack',
             'channels' => ['single'],
             'ignore_exceptions' => false,
@@ -51,6 +51,35 @@ return [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'docker' => [
+            'driver' => 'stack',
+            'channels' => ['stdout', 'stderr'],
+            'ignore_exceptions' => false,
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'stdout' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stdout',
+            ],
+            // Minimum level of a message to get to this channel.
+            // debug is the lowest one, so all messages will go here.
+            'level' => 'debug',
+        ],
+
+        'stderr' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stderr',
+            ],
+            // Minimum level of a message to get to this channel.
+            // error - only error-level and more severe ones will go here.
+            'level' => 'error',
         ],
 
         'daily' => [
@@ -75,15 +104,6 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-            ],
-        ],
-
-        'stderr' => [
-            'driver' => 'monolog',
-            'handler' => StreamHandler::class,
-            'formatter' => env('LOG_STDERR_FORMATTER'),
-            'with' => [
-                'stream' => 'php://stderr',
             ],
         ],
 
