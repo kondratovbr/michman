@@ -3,7 +3,7 @@
     "type": "project",
     "description": "The no-fuss Python deployment service.",
     "keywords": ["python", "django", "saas", "deployment"],
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
         "php": "^8.1",
         "ext-bcmath": "*",
