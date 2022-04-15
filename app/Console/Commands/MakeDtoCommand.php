@@ -14,17 +14,13 @@ class MakeDtoCommand extends GeneratorCommand
     /** @var string The console command description. */
     protected $description = 'Create a new data transfer object class';
 
-    /**
-     * Get the stub file for the generator.
-     */
+    /** Get the stub file for the generator. */
     protected function getStub(): string
     {
         return base_path() . '/stubs/dto.stub';
     }
 
-    /**
-     * Get the default namespace for the class.
-     */
+    /** Get the default namespace for the class. */
     protected function getDefaultNamespace($rootNamespace): string
     {
         return $rootNamespace . '\DataTransferObjects';

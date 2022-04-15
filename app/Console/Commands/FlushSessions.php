@@ -17,9 +17,6 @@ class FlushSessions extends AbstractCommand
     /** @var string The console command description. */
     protected $description = 'Flush all user sessions';
 
-    /**
-     * Perform the console command.
-     */
     public function perform(): int
     {
         $driver = config('session.driver');
@@ -40,9 +37,7 @@ class FlushSessions extends AbstractCommand
         return 0;
     }
 
-    /**
-     * Sessions flush method for sessions driver 'file'.
-     */
+    /** Sessions flush method for sessions driver 'file'. */
     protected function flushFile(): void {
         $directory = config('session.files');
         $ignoreFiles = ['.gitignore', '.', '..'];
@@ -56,18 +51,14 @@ class FlushSessions extends AbstractCommand
         }
     }
 
-    /**
-     * Sessions flush method for sessions driver 'database'.
-     */
+    /** Sessions flush method for sessions driver 'database'. */
     protected function flushDatabase(): void {
         $table = config('session.table');
         DB::table($table)->truncate();
     }
 
     // TODO: Implement sessions flush method for Redis.
-    /**
-     * Placeholder for sessions flush method for Redis.
-     */
+    /** Placeholder for sessions flush method for Redis. */
     protected function flushRedis(): void {
         throw new NotImplementedException("Sorry, I don't know how to clean the sessions of the driver 'Redis', yet.");
     }
