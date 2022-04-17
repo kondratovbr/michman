@@ -14,7 +14,8 @@ fi
 version=$(php "$APP_ROOT"/artisan version);
 
 if [ "$version" != "$APP_VERSION" ]; then
-    >&2 echo "ERROR: Requested version ($APP_VERSION) is different from the version of sources provided ($version)";
+    >&2 echo "ERROR: Requested version ($APP_VERSION) is different from the version of sources provided ($version),";
+    >&2 echo "or maybe something else went wrong when running the app.";
     exit 1;
 else
     echo "App version verified: $version";
