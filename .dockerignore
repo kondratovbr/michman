@@ -4,26 +4,40 @@
 
 !app
 
-!/bootstrap
-/bootstrap/cache/*
+!bootstrap
+bootstrap/cache/*
 
-!/config
-!/database
-!/production
+!config
+!database
+!production
 
-!/public
-/public/hot
-/public/storage/*
+!public
+public/hot
+public/storage/*
 
-!/resources
-!/routes
-!/tests
+!resources
+!routes
+!tests
+
+!storage
+storage/app/*
+storage/debugbar
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/testing/*
+storage/framework/views/*
+storage/logs
+storage/temp/*
+
 !composer.json
 !composer.lock
+!package.json
+!package-lock.json
 !artisan
 !phpunit.xml
-
 !.env.build
+!tailwind.config.js
+!webpack.mix.js
 
 
 
