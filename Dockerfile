@@ -11,7 +11,31 @@
 # SPARK_PASSWORD
 #
 
-FROM php:8.1-fpm
+#
+# Static assets building stage
+#
+
+FROM node:17 AS static
+
+RUN mkdir /root/michman
+
+WORKDIR /root/michman
+
+COPY --chown=root:root . /root/michman/
+
+RUN \
+    npm install && \
+    npm run prod
+
+
+
+
+
+#
+# App image preparation stage
+#
+
+FROM php:8.1-fpm AS app
 
 ARG APP_VERSION
 ARG SPARK_USERNAME
@@ -126,6 +150,9 @@ RUN chmod uga+x "$APP_ROOT/entrypoint"
 # Slashes are very important here! Sources must be copied in the existing folder,
 # since we already have Composer packages in there.
 COPY --chown=$USER:$GROUP ./ "$APP_ROOT/"
+
+# Copy compiled static files.
+COPY --from=static --chown=$USER:$GROUP /root/michman/public "$APP_ROOT/public"
 
 # Use a placehodler .env file for running artisan during build.
 RUN mv "$APP_ROOT/.env.build" "$APP_ROOT/.env"
