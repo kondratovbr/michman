@@ -17,14 +17,21 @@ worker_dev_ssh_key.pub
 ### Laravel ###
 
 /node_modules
+/vendor
+
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
-*.env
+
 auth.json
+
+.env
+*.env
+.env.*
+*.env.*
 !.env.example
-.env.backup
+!.env.stage
+
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
