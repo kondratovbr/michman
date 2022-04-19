@@ -1,7 +1,8 @@
-# TODO: VERY IMPORTANT! Queue worker can easily make MySQL use 100% of available CPU when performing some heavy SQL queries. Should make sure the app can still work while at it and it cannot be abused.
+# TODO: VERY IMPORTANT! Queue worker can easily make MySQL use 100% of available CPU when performing some heavy SQL queries.
+#       Should make sure the app can still work while at it and it cannot be abused.
 
 # TODO: Deploy policy is a stub. Make it to properly restart if failed and to use healthchecks.
-# Default reusable deployment policy.
+# Default reusable deployment policy
 x-deploy:
     &default-deploy
     mode: replicated
