@@ -21,6 +21,8 @@
         "ext-tokenizer": "*",
         "ext-xml": "*",
         "ext-intl": "*",
+        "ext-mysqli": "*",
+        "ext-pdo_mysql": "*",
         "beyondcode/laravel-websockets": "^2.0",
         "composer/semver": "^3.2",
         "doctrine/dbal": "^2.9",

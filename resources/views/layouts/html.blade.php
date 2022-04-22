@@ -78,6 +78,8 @@
     </head>
     <body class="relative font-sans antialiased w-screen overflow-x-hidden bg-navy-100 text-gray-100 {{ isDebug() ? 'debug-screens' : null }}">
 
+{{--        TODO: Add big and visible dev/stage marker somewhere just for convenience.--}}
+
         {{ $slot }}
 
         @livewireScripts

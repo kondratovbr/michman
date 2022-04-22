@@ -54,6 +54,9 @@ ENV APP_ROOT="/home/$USER/michman"
 # Ensure the image is using UTC timezone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Copy a slightly customized and slightly hardened production PHP configuration.
+COPY production/app/php.ini-production "$PHP_INI_DIR/php.ini"
+
 # Copy a community script that eases installation of PHP extensions and Composer.
 # It downloads all dependencies, properly configures all extensions and removes unnecesary packages afterwards.
 # Docs: https://github.com/mlocati/docker-php-extension-installer
@@ -71,6 +74,8 @@ RUN apt-get -y update && \
         redis \
         intl \
         gd \
+        mysqli \
+        pdo_mysql \
     && \
     # Remove the script, we don't need it inside the image.
     rm /usr/local/bin/install-php-extensions && \
@@ -126,12 +131,6 @@ RUN \
     # so we have to give Composer credentials for it.
     # Credentials must be provided as a build arg in docker build command.
     echo "{\"http-basic\": {\"spark.laravel.com\": {\"username\": \"$SPARK_USERNAME\",\"password\": \"$SPARK_PASSWORD\"}}}" > auth.json && \
-    composer check-platform-reqs \
-        # Less junk in the console.
-        --no-interaction \
-        # Plugins and scripts are inherently unsafe to run as root and aren't needed here anyway.
-        --no-plugins --no-scripts \
-    && \
     composer install \
         --no-interaction --no-cache \
         --no-plugins --no-scripts \
@@ -139,6 +138,12 @@ RUN \
         --no-dev \
         # Don't generate autoload classes at this stage - this will be done below.
         --no-autoloader \
+    && \
+    composer check-platform-reqs \
+        # Less junk in the console.
+        --no-interaction \
+        # Plugins and scripts are inherently unsafe to run as root and aren't needed here anyway.
+        --no-plugins --no-scripts \
     && \
     rm auth.json
 
@@ -173,9 +178,6 @@ RUN composer dump-autoload \
     --no-interaction \
     --no-plugins --no-scripts \
     --no-dev
-
-# Copy a slightly customized and slightly hardened production PHP configuration.
-COPY production/app/php.ini-production "$PHP_INI_DIR/php.ini"
 
 # Requested version of the app.
 ARG APP_VERSION

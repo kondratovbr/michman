@@ -21,13 +21,14 @@ public/storage/*
 
 !storage
 storage/app/*
-storage/debugbar
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/testing/*
 storage/framework/views/*
-storage/logs
+storage/logs/*
 storage/temp/*
+storage/debugbar
+storage/coverage
 
 !composer.json
 !composer.lock
@@ -38,6 +39,7 @@ storage/temp/*
 !.env.build
 !tailwind.config.js
 !webpack.mix.js
+!server.php
 
 
 
