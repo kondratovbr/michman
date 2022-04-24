@@ -30,6 +30,7 @@ services:
         ports:
             - '80:8080'
         volumes:
+            - 'app-public:/home/app/michman/public:ro'
             - './nginx:/etc/nginx:ro'
             - /var/cache
             - /var/run
@@ -45,14 +46,12 @@ services:
         image: kondorb/michman:0.9.0
         user: root
         read_only: true
-        command: ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
         ports:
             - '8000:8000'
             - '8001:8001'
         volumes:
+            - 'app-public:/home/app/michman/public:ro'
             - './.env.stage:/home/app/michman/.env:ro'
-#             - './.env:/home/app/michman/.env:ro'
-            - '../server.php:/home/app/michman/server.php'
         depends_on:
             - mysql
             - redis
@@ -93,14 +92,12 @@ services:
         image: mysql:8.0
         read_only: true
         environment:
-#             MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
             MYSQL_ROOT_PASSWORD: "password"
         volumes:
             - mysql-db:/var/lib/mysql
             - /run/mysqld
             - /tmp
-#             - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
-#             - './mysql-root:/run/secrets/mysql-root:ro'
+            - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
         # TODO: CRITICAL! Make sure the actual database only exposed to localhost for SSH access.
         ports:
             - '3306:3306'
@@ -130,4 +127,7 @@ volumes:
         driver: local
     # The actual MySQL database stored.
     mysql-db:
+        driver: local
+    # Application public directory with static assets.
+    app-public:
         driver: local
