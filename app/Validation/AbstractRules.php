@@ -39,7 +39,7 @@ abstract class AbstractRules implements Arrayable, \ArrayAccess, \Iterator, \Cou
         'bail', 'required', 'nullable', 'required_if', 'required_with', 'required_without', 'required_without_all',
         'array', 'string', 'integer', 'numeric', 'alpha', 'alpha_dash', 'alpha_num', 'bool', 'boolean', 'file', 'image',
         'uuid', 'email', 'ip', 'ipv4', 'ipv6',
-        'password',
+        'current_password',
         'size', 'min', 'max',
         'regex', 'confirmed',
         'mimetypes', 'in', 'exists', 'unique',

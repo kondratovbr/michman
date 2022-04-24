@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServerLogsTable extends Migration
+return new class extends Migration
 {
     /** @var string The database connection that should be used by the migration. */
     protected $connection = 'db-logs';
@@ -28,4 +28,4 @@ class CreateServerLogsTable extends Migration
             $table->timestamp('created_at')->nullable();
         });
     }
-}
+};

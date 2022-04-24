@@ -9,11 +9,8 @@ use Illuminate\Support\Facades\Schema;
  *
  * By beyondcode/laravel-websockets package.
  */
-class RenameStatisticsCounters extends Migration
+return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('websockets_statistics_entries', function (Blueprint $table) {
@@ -23,9 +20,6 @@ class RenameStatisticsCounters extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('websockets_statistics_entries', function (Blueprint $table) {
@@ -34,4 +28,4 @@ class RenameStatisticsCounters extends Migration
             $table->renameColumn('api_messages_count', 'api_message_count');
         });
     }
-}
+};

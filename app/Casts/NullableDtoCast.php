@@ -4,7 +4,6 @@ namespace App\Casts;
 
 use App\DataTransferObjects\AbstractDto;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 
 class NullableDtoCast implements CastsAttributes
@@ -13,12 +12,6 @@ class NullableDtoCast implements CastsAttributes
         protected string $dtoClass,
     ) {}
 
-    /**
-     * Cast the given value retrieved from storage.
-     *
-     * @param Model $model
-     * @param string|null $value
-     */
     public function get($model, string $key, $value, array $attributes): AbstractDto|null
     {
         if (is_null($value))
@@ -35,12 +28,6 @@ class NullableDtoCast implements CastsAttributes
         return $result;
     }
 
-    /**
-     * Prepare the given value for storage.
-     *
-     * @param Model $model
-     * @param AbstractDto|array|null $value
-     */
     public function set($model, string $key, $value, array $attributes): string|null
     {
         if (is_null($value))

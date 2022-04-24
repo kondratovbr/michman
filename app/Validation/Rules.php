@@ -32,7 +32,7 @@ class Rules extends AbstractBaseRules
         // can display a more appropriate validation message.
         return (new static([
             'string',
-            'password'
+            'current_password'
         ]))->max((int) config('auth.password.max_length'));
     }
 

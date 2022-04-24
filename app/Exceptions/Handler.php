@@ -9,6 +9,11 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    /** @var array A list of exception types with their corresponding custom log levels. */
+    protected $levels = [
+        //
+    ];
+
     /** @var string[] A list of the exception types that are not reported. */
     protected $dontReport = [
         //

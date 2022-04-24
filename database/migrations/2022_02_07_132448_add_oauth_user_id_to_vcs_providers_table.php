@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddOAuthUserIdToVcsProvidersTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -12,4 +12,4 @@ class AddOAuthUserIdToVcsProvidersTable extends Migration
             $table->foreignId('oauth_user_id')->nullable()->references('id')->on('oauth_users');
         });
     }
-}
+};

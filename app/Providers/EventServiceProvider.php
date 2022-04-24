@@ -29,4 +29,10 @@ class EventServiceProvider extends ServiceProvider
             DispatchProjectUpdatedEventListener::class,
         ],
     ];
+
+    /** Determine if events and listeners should be automatically discovered. */
+    public function shouldDiscoverEvents(): bool
+    {
+        return false;
+    }
 }

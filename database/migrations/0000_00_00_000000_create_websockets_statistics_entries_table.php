@@ -9,11 +9,8 @@ use Illuminate\Support\Facades\Schema;
  *
  * By beyondcode/laravel-websockets package.
  */
-class CreateWebSocketsStatisticsEntriesTable extends Migration
+return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('websockets_statistics_entries', function (Blueprint $table) {
@@ -26,11 +23,8 @@ class CreateWebSocketsStatisticsEntriesTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('websockets_statistics_entries');
     }
-}
+};

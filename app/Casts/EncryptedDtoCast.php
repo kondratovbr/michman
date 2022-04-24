@@ -14,12 +14,6 @@ class EncryptedDtoCast implements CastsAttributes
         protected string $dtoClass,
     ) {}
 
-    /**
-     * Cast the given value retrieved from storage.
-     *
-     * @param Model $model
-     * @param string $value
-     */
     public function get($model, string $key, $value, array $attributes): AbstractDto
     {
         if (! is_string($value))
@@ -33,12 +27,6 @@ class EncryptedDtoCast implements CastsAttributes
         return $result;
     }
 
-    /**
-     * Prepare the given value for storage.
-     *
-     * @param Model $model
-     * @param AbstractDto|array $value
-     */
     public function set($model, string $key, $value, array $attributes): string|null
     {
         if (is_null($value))
