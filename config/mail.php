@@ -57,6 +57,10 @@ return [
             'transport' => 'postmark',
         ],
 
+        'mailersend' => [
+            'transport' => 'mailersend',
+        ],
+
         'sendmail' => [
             'transport' => 'sendmail',
             'path' => '/usr/sbin/sendmail -bs -i',
