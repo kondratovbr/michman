@@ -25,51 +25,25 @@
             username: "{{ docker_username }}"
             password: "{{ docker_password }}"
 
-    -   name: Stop services that depend on public assets
-        docker_compose:
-            project_src: /home/michman/michman
-            files: docker-compose.stage.yaml
-            project_name: michman-stage
-            services:
-                - app
-                - queue
-                - scheduler
-                - nginx
-            stopped: true
-
-    -   name: Remove public files directory
-        file:
-            path: /home/michman/michman/public
-            state: absent
-
-    -   name: Recreate an empty public files directory
-        file:
-            path: /home/michman/michman/public
-            state: directory
-            owner: michman
-            group: michman
-
 #  TODO: Add a step with docker-compose yaml files validation using "docker-compose config"
 
-#     -   name: Deploy Docker Compose project and restart services
-#         docker_compose:
-#             project_src: /home/michman/michman
-#             files: docker-compose.stage.yaml
-#             project_name: michman-stage
-#             build: false
-#             pull: true
-#             recreate: always
-
-#     -   name: Remove the volume with public assets
-#         docker_volume:
-#             name: volume_one
-#             state: absent
-
-    -   name: Deploy Docker Compose project and restart services
+    -   name: Down the whole Docker Compose project
         docker_compose:
-            project_src: /home/michman/michman
-            files: docker-compose.stage.yaml
-            project_name: michman-stage
+            project_src: &project_src /home/michman/michman
+            files: &files docker-compose.stage.yaml
+            project_name: &project_name michman-stage
+            state: absent
+
+    -   name: Remove the volume with public assets
+        docker_volume:
+            name: michman-stage_app-public
+            state: absent
+
+    -   name: Deploy Docker Compose project
+        docker_compose:
+            project_src: *project_src
+            files: *files
+            project_name: *project_name
             build: false
             pull: true
             recreate: always
