@@ -9,7 +9,7 @@ bootstrap/cache/*
 
 !config
 !database
-!production
+!deployment
 
 !public
 public/hot
@@ -39,7 +39,6 @@ storage/coverage
 !.env.build
 !tailwind.config.js
 !webpack.mix.js
-!server.php
 
 
 

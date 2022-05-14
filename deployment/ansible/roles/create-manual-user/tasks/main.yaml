@@ -17,7 +17,7 @@
             name: "{{ username }}"
             password: "{{ user_password | password_hash('sha512') }}"
 
-    -   name: Install packages I'm used to
+    -   name: "Install packages I'm used to"
         apt:
             name: "{{ item }}"
             state: latest

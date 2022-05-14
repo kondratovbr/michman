@@ -10,8 +10,7 @@ x-deploy:
     mode: replicated
     replicas: 1
     restart_policy:
-        condition: on-failure
-        max_attempts: 3
+        condition: any
 
 # Reusable logging config
 x-logging:
@@ -44,11 +43,7 @@ services:
         # To reuse the whole base app service for other services, see below.
         &app-image
         image: kondorb/michman:0.9.0
-        user: root
         read_only: true
-        ports:
-            - '8000:8000'
-            - '8001:8001'
         volumes:
             - 'app-public:/home/app/michman/public:ro'
             - './.env.stage:/home/app/michman/.env:ro'
@@ -60,18 +55,18 @@ services:
         healthcheck:
             test: ["CMD", "php", "artisan", "version"]
 
-#     queue:
-#         <<: *app-image
-#         command: [
-# #             "dockerize", "-wait", "tcp://redis:6379", "-wait", "tcp://bitcoind:8332", "-timeout", "5m", "--",
-#             "php", "artisan", "queue:work",
-#             "--queue", "default,providers,servers,broadcasting",
-#             "--sleep", "3",
-#             "--tries", "3",
-#             "--timeout", "300",
-#             "--backoff", "5",
-#             "--memory", "256"
-#         ]
+    queue:
+        <<: *app-image
+        command: [
+#             "dockerize", "-wait", "tcp://redis:6379", "-wait", "tcp://bitcoind:8332", "-timeout", "5m", "--",
+            "php", "artisan", "queue:work",
+            "--queue", "default,providers,servers,broadcasting",
+            "--sleep", "3",
+            "--tries", "3",
+            "--timeout", "300",
+            "--backoff", "5",
+            "--memory", "256"
+        ]
 
 #     scheduler:
 #         <<: *app-image
@@ -80,7 +75,7 @@ services:
 #         command: [
 # #             "dockerize", "-wait", "tcp://redis:6379", "-timeout", "60s", "--",
 #             "crond", "-f"
-#        ]
+#         ]
 
 #     websockets:
 #         <<: *app-image
@@ -91,16 +86,16 @@ services:
     mysql:
         image: mysql:8.0
         read_only: true
-        environment:
-            MYSQL_ROOT_PASSWORD: "password"
         volumes:
+            # Actual DB data
             - mysql-db:/var/lib/mysql
+            # Temporary directories needed to be writable to run read_only
             - /run/mysqld
             - /tmp
+            # Customized config with some sane defaults
             - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
-        # TODO: CRITICAL! Make sure the actual database only exposed to localhost for SSH access.
         ports:
-            - '3306:3306'
+            - '127.0.0.1:3306:3306'
         logging: *default-logging
         deploy: *default-deploy
         healthcheck:
@@ -114,10 +109,17 @@ services:
         volumes:
             - 'redis-data:/data'
             - './redis.stage.conf:/usr/local/etc/redis/redis.conf:ro'
+        ports:
+            - '127.0.0.1:6379:6379'
         logging: *default-logging
         deploy: *default-deploy
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
+
+    mailhog:
+        image: 'mailhog/mailhog:latest'
+        ports:
+            - '8025:8025'
 
 
 

@@ -24,6 +24,7 @@
                 - virtualenv
                 - apt-transport-https
                 - ufw
+                - rsync
             state: latest
             update_cache: true
 

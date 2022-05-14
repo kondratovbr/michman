@@ -23,6 +23,8 @@ WORKDIR /root/michman
 
 COPY --chown=root:root . /root/michman/
 
+RUN mv .env.build .env
+
 RUN \
     npm install && \
     npm run prod
@@ -55,7 +57,7 @@ ENV APP_ROOT="/home/$USER/michman"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Copy a slightly customized and slightly hardened production PHP configuration.
-COPY production/app/php.ini-production "$PHP_INI_DIR/php.ini"
+COPY deployment/app/php.ini-production "$PHP_INI_DIR/php.ini"
 
 # Copy a community script that eases installation of PHP extensions and Composer.
 # It downloads all dependencies, properly configures all extensions and removes unnecesary packages afterwards.
@@ -148,7 +150,7 @@ RUN \
     rm auth.json
 
 # Copy a customized entrypoint script that performs environement-dependent Laravel optimizations at runtime.
-COPY --chown=$USER:$GROUP production/app/entrypoint.sh "$APP_ROOT/entrypoint"
+COPY --chown=$USER:$GROUP deployment/app/entrypoint.sh "$APP_ROOT/entrypoint"
 RUN chmod uga+x "$APP_ROOT/entrypoint"
 
 # Copy sources.
@@ -163,7 +165,7 @@ COPY --from=static --chown=$USER:$GROUP /root/michman/public "$APP_ROOT/public"
 RUN mv "$APP_ROOT/.env.build" "$APP_ROOT/.env"
 
 # Copy a tiny script that will verify the app version.
-COPY --chown=$USER:$GROUP production/app/verify-version.sh "$APP_ROOT/"
+COPY --chown=$USER:$GROUP deployment/app/verify-version.sh "$APP_ROOT/"
 RUN chmod +x "$APP_ROOT/verify-version.sh"
 
 # This dummy file needs to exist, otherwise post-autoload composer scripts fail.
