@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class DeleteUserAction
 {
     public function __construct(
-        private DeleteProjectWebhookAction $deleteWebhook,
+        private readonly DeleteProjectWebhookAction $deleteWebhook,
     ) {}
 
     public function execute(User $user): void
