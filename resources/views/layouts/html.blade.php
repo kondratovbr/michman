@@ -29,14 +29,14 @@
 
         {{-- Scripts --}}
         <script src="{{ mix('js/app.js') }}" defer></script>
-            {{--
-            TODO: IMPORTANT! Should I keep these Ace Editor sources here like that for production?
-                  Is there a better way? Google how to install the Ace Editor for production in general. And see how Forge does it.
-                  Serve locally? Package in app.js? Serve from a CDN but check it during some health check regularly?
-                  NOTE: These scripts cannot be just "defer"red - they should be ran before the <script> tag that declares the actual editor field.
-                  These should probably be put above the rest of the page - so the browser starts loading them in parallel with the rest of the page.
-                  https://devdojo.com/tnylea/using-ace-editor-with-livewire
-            --}}
+        {{--
+        TODO: IMPORTANT! Should I keep these Ace Editor sources here like that for production?
+              Is there a better way? Google how to install the Ace Editor for production in general. And see how Forge does it.
+              Serve locally? Package in app.js? Serve from a CDN but check it during some health check regularly?
+              NOTE: These scripts cannot be just "defer"red - they should be ran before the <script> tag that declares the actual editor field.
+              These should probably be put above the rest of the page - so the browser starts loading them in parallel with the rest of the page.
+              https://devdojo.com/tnylea/using-ace-editor-with-livewire
+        --}}
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js"
             integrity="sha512-GoORoNnxst42zE3rYPj4bNBm0Q6ZRXKNH2D9nEmNvVF/z24ywVnijAWVi/09iBiVDQVf3UlZHpzhAJIdd9BXqw=="
