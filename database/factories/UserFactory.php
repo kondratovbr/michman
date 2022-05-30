@@ -88,7 +88,7 @@ class UserFactory extends Factory
     public function trialExpired(): static
     {
         return $this->afterCreating(function (User $user) {
-            $user->customer->update([
+            $user->customer?->update([
                 'trial_ends_at' => now()->subMinutes(5),
             ]);
         });
