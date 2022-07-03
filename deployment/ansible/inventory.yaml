@@ -1,12 +1,12 @@
 all:
     children:
-        production:
+        prod:
             hosts:
                 michman-app-1:
                     ansible_host: 167.99.217.206
-        staging:
+        stage:
             hosts:
-                michman-staging:
+                michman-stage:
                     ansible_host: 176.124.200.69
     vars:
         ansible_port: 22

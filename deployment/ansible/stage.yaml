@@ -1,8 +1,8 @@
--   hosts: staging
+-   hosts: stage
     become: true
     tasks:
 
-    -   name: Update staging Docker Compose config
+    -   name: Update stage Docker Compose config
         synchronize:
             src: ../../deployment/
             dest: /home/michman/michman
