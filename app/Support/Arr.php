@@ -35,7 +35,7 @@ class Arr extends IlluminateArr
      * Does not modify the source array.
      * Wrapper for the built-in array_map() function.
      */
-    public static function map(array $array, \Closure $callback): array
+    public static function map(array $array, callable $callback): array
     {
         return array_map($callback, $array);
     }
@@ -48,7 +48,7 @@ class Arr extends IlluminateArr
      *
      * Callback must return a single value.
      *
-     * @param bool $keepKeys Keep original keys. Will be replace by the default integer keys otherwise.
+     * @param bool $keepKeys Keep original keys. Will be replaced by the default integer keys otherwise.
      */
     public static function mapWithKeys(array $array, \Closure $callback, bool $keepKeys = false): array
     {
@@ -112,7 +112,7 @@ class Arr extends IlluminateArr
     /**
      * Map an array using its keys.
      *
-     * @param bool $keepKeys Keep original keys. Will be replace by the default integer keys otherwise.
+     * @param bool $keepKeys Keep original keys. Will be replaced by the default integer keys otherwise.
      */
     public static function mapKeys(array $array, \Closure $callback, bool $keepKeys = false): array
     {
@@ -198,7 +198,7 @@ class Arr extends IlluminateArr
     }
 
     /**
-     * Get keys of a multi-dimensional array that are on the specified level.
+     * Get keys of a multidimensional array that are on the specified level.
      *
      * $level = 0 - keys of the specified array itself.
      */
@@ -243,7 +243,7 @@ class Arr extends IlluminateArr
     }
 
     /**
-     * Get values of a multi-dimensional array that are on the specified level.
+     * Get values of a multidimensional array that are on the specified level.
      *
      * $level = 0 - keys of the specified array itself.
      */
