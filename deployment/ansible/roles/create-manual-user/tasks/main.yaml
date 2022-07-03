@@ -14,7 +14,7 @@
     -   name: Set a random password when creating this user
         user:
             name: "{{ username }}"
-            password: "{{ lookup('/dev/null length=15 chars=ascii_letters') | password_hash('sha512') }}"
+            password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') | password_hash('sha512') }}"
             update_password: on_create
 
     -   name: Set user password if provided
