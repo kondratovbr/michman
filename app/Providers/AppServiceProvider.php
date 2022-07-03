@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Date;
 use Carbon\CarbonImmutable;
 use Illuminate\View\FileViewFinder;
 use Illuminate\View\ViewServiceProvider;
+use RuntimeException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -76,6 +77,9 @@ class AppServiceProvider extends ServiceProvider
 
     private function configureEncryption(): void
     {
+        if (empty(config('app.encryption_key')))
+            throw new RuntimeException('ENCRYPTION_KEY is not set.');
+
         Model::encryptUsing(new Encrypter(
             base64_decode(Str::after(config('app.encryption_key'), 'base64:')),
             config('app.cipher'),
