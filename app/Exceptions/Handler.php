@@ -2,10 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Mail\UncaughtThrowableAdminMail;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Support\Facades\Mail;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -29,8 +26,17 @@ class Handler extends ExceptionHandler
     /** Register the exception handling callbacks for the application. */
     public function register(): void
     {
-        $this->reportable(function (Throwable $throwable) {
-            Mail::to(config('app.alert_email'))->send(new UncaughtThrowableAdminMail($throwable));
-        });
+        /*
+         * This is the place to register custom exception handlers and reporters.
+         * See: https://laravel.com/docs/9.x/errors
+         */
+
+        //
+
+        // This breaks horribly on local when installing the project.
+        // And also spams exceptions.
+        // $this->reportable(function (Throwable $throwable) {
+        //     Mail::to(config('app.alert_email'))->send(new UncaughtThrowableAdminMail($throwable));
+        // });
     }
 }
