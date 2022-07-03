@@ -1,5 +1,7 @@
 <?php
 
+// TODO: CRITICAL! Add "artisan larabug:test" on deployment.
+
 return [
 
     /*
