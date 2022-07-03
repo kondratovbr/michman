@@ -41,6 +41,11 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'production' => [
+            'driver' => 'stack',
+            'channels' => ['docker', 'larabug'],
+        ],
+
         'testing' => [
             'driver' => 'single',
             'path' => storage_path('logs/test.log'),
@@ -87,6 +92,11 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
+        ],
+
+        'larabug' => [
+            'driver' => 'larabug',
+            'level' => env('LB_LOG_LEVEL', 'warning'),
         ],
 
         'slack' => [
