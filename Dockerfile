@@ -14,7 +14,6 @@
 #
 # Static assets building stage
 #
-
 FROM node:17 AS static
 
 RUN mkdir /root/michman
@@ -36,16 +35,17 @@ RUN \
 #
 # App image preparation stage
 #
+FROM ubuntu:22.04 as app
 
-FROM php:8.1-fpm AS app
+ARG PHP_VERSION=8.1
 
 ARG APP_VERSION
 ARG SPARK_USERNAME
 ARG SPARK_PASSWORD
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+ENV PHP_VERSION ${PHP_VERSION}
 ENV TZ=UTC
-
 # Set up user:group to run PHP.
 ENV USER=app
 ENV GROUP=app
@@ -53,40 +53,58 @@ ENV GROUP=app
 # Project source code root directory inside an image. Absolute path.
 ENV APP_ROOT="/home/$USER/michman"
 
-# Ensure the image is using UTC timezone
+# Ensure the image is using UTC timezone.
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Copy a slightly customized and slightly hardened production PHP configuration.
-COPY deployment/app/php.ini-production "$PHP_INI_DIR/php.ini"
 
 # Copy a community script that eases installation of PHP extensions and Composer.
 # It downloads all dependencies, properly configures all extensions and removes unnecesary packages afterwards.
 # Docs: https://github.com/mlocati/docker-php-extension-installer
-COPY --from=mlocati/php-extension-installer:latest /usr/bin/install-php-extensions /usr/local/bin/
+#COPY --from=mlocati/php-extension-installer:latest /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apt-get -y update && \
-    # Add tini to use as an entrypoint, cron for scheduling; git and zip are for composer downloads.
+    # Add tini to use as an entrypoint, cron for scheduling; git and zip are for composer downloads. \
+    # software-properties-common comes with add-apt-repository command we're using.
     apt-get -y install tini cron git zip && \
-    install-php-extensions @composer-2 && \
-    install-php-extensions \
-        bcmath \
-        ds \
-        imagick \
-        pcntl \
-        redis \
-        intl \
-        gd \
-        mysqli \
-        pdo_mysql \
+    # Add apt packages required only for building.
+    apt-get -y install software-properties-common && \
+    # Install PHP and extensions from a ppa:ondrej/php repo.
+    LC_ALL=C.UTF-8 add-apt-repository -y -u ppa:ondrej/php && \
+    apt-get -y update && \
+    apt-get install -y php${PHP_VERSION} php${PHP_VERSION}-fpm \
+        # Required by Laravel
+        php${PHP_VERSION}-intl  \
+        php${PHP_VERSION}-readline \
+        php${PHP_VERSION}-ldap \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-mbstring  \
+        php${PHP_VERSION}-imap \
+        php${PHP_VERSION}-xml  \
+        php${PHP_VERSION}-zip  \
+        php${PHP_VERSION}-soap \
+        php${PHP_VERSION}-msgpack  \
+        php${PHP_VERSION}-igbinary \
+        # Application-specific
+        php${PHP_VERSION}-mysqli \
+        php${PHP_VERSION}-sqlite3 \
+        php${PHP_VERSION}-redis \
+        php${PHP_VERSION}-bcmath \
+        php${PHP_VERSION}-ds \
+        php${PHP_VERSION}-imagick \
     && \
+    # Install Composer using the official script.
+    php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \
+    # Remove apt packages we don't need at runtime.
+    apt-get -y remove software-properties-common && \
     # Remove the script, we don't need it inside the image.
-    rm /usr/local/bin/install-php-extensions && \
-    # Cleanup after ourselves. \
-    apt-get -y autoremove && \
-    apt-get -y clean && \
-    rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/* && \
+    #rm /usr/local/bin/install-php-extensions && \
+    # Cleanup after ourselves.
+    apt-get -y autoremove && apt-get -y clean && rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/* && \
     # Remove whatever is inside app root, just in case.
     rm -rf "$APP_ROOT/*"
+
+# Copy a slightly customized and slightly hardened production PHP configuration.
+COPY deployment/app/php.ini-production "$PHP_INI_DIR/php.ini"
 
 # Create a non-root user and group that will be used for running the app.
 RUN useradd -U -m $USER
@@ -99,14 +117,12 @@ RUN echo "* * * * * php $APP_ROOT/artisan schedule:run > /dev/stdout 2>/dev/stde
 
 
 
-
+# TODO: Add some basic container hardening, like: remove apk and curl, for example. Google something else.
+# TODO: Consider using a hardening script, I had examples in my previos projects.
 
 #
 # Application stage
 #
-
-# TODO: Add some basic container hardening, like: remove apk and curl, for example. Google something else.
-# TODO: Consider using a hardening script, I had examples in my previos projects.
 
 # Composer needs to be run from the app user,
 # the app itself will be run from an arbitrary user as well for security reasons.
@@ -199,4 +215,4 @@ EXPOSE 9000
 ENTRYPOINT [ "/usr/bin/tini", "--", "/home/app/michman/entrypoint" ]
 
 # By default - start by simply running php-fpm.
-CMD [ "php-fpm" ]
+CMD [ "php-fpm", "--nodaemonize" ]

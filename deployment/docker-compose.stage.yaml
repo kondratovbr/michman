@@ -40,10 +40,14 @@ services:
         deploy: *default-deploy
         logging: *default-logging
 
+    # Example commands to build and push this image:
+    # docker image build --platform linux/amd64 -t kondorb/michman:XXX --build-arg APP_VERSION=XXX --build-arg SPARK_USERNAME=YYY --build-arg SPARK_PASSWORD=ZZZ .
+    # docker image push kondorb/michman:XXX
     app:
         # To reuse the whole base app service for other services, see below.
         &app-image
-        image: kondorb/michman:0.9.0
+        image: kondorb/michman:0.9.1
+        platform: 'linux/x86_64'
         read_only: true
         volumes:
             - 'app-public:/home/app/michman/public:ro'
