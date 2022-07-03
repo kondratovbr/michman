@@ -31,6 +31,7 @@
         "http-interop/http-factory-guzzle": "^1.1",
         "jenssegers/agent": "^2.6",
         "kevinrob/guzzle-cache-middleware": "^4.0",
+        "larabug/larabug": "^2.5",
         "laravel/framework": "^9.0",
         "laravel/jetstream": "^2.7",
         "laravel/sanctum": "^2.15",
