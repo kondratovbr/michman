@@ -1,4 +1,4 @@
--   hosts: app_servers
+-   hosts: production
     become: true
     tasks:
 
