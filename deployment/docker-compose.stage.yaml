@@ -47,7 +47,7 @@ services:
         # To reuse the whole base app service for other services, see below.
         &app-image
         image: kondorb/michman:0.9.1
-        platform: 'linux/x86_64'
+        platform: 'linux/amd64'
         read_only: true
         volumes:
             - 'app-public:/home/app/michman/public:ro'
@@ -91,14 +91,18 @@ services:
         read_only: true
         volumes:
             # Actual DB data
-            - mysql-db:/var/lib/mysql
+            - 'mysql-db:/var/lib/mysql'
             # Temporary directories needed to be writable to run read_only
-            - /run/mysqld
-            - /tmp
+            - '/run/mysqld'
+            - '/tmp'
             # Customized config with some sane defaults
             - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
+            # File with the root password for the initialization.
+            - './mysql-root:/run/secrets/mysql-root'
         ports:
             - '127.0.0.1:3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
         logging: *default-logging
         deploy: *default-deploy
         healthcheck:
