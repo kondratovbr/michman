@@ -106,6 +106,9 @@ RUN apt-get -y update && \
 # Copy a slightly customized and slightly hardened production PHP configuration.
 COPY deployment/app/php.ini-production "$PHP_INI_DIR/php.ini"
 
+# Symlink the currently configured PHP version to php-fpm.
+RUN ln -s /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm
+
 # Create a non-root user and group that will be used for running the app.
 RUN useradd -U -m $USER
 
@@ -206,7 +209,7 @@ ARG APP_VERSION
 RUN $APP_ROOT/verify-version.sh
 
 # Declare anonymous volumes for the writable directories requried to persist data and run containers in read-only mode.
-VOLUME "$APP_ROOT/bootstrap" "$APP_ROOT/storage"
+VOLUME "$APP_ROOT/bootstrap" "$APP_ROOT/storage" "/tmp"
 
 # This port may be used to access php-fpm.
 EXPOSE 9000
