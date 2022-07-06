@@ -104,7 +104,7 @@ RUN apt-get -y update && \
     rm -rf "$APP_ROOT/*"
 
 # Copy a slightly customized and slightly hardened production PHP configuration.
-COPY deployment/app/php.ini-production "$PHP_INI_DIR/php.ini"
+COPY deployment/app/php.ini "$PHP_INI_DIR/php.ini"
 
 # Symlink the currently configured PHP version to php-fpm.
 RUN ln -s /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm
