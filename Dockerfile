@@ -50,6 +50,8 @@ ENV TZ=UTC
 ENV USER=app
 ENV GROUP=app
 
+ENV PHP_INI_DIR=/usr/local/etc/php
+
 # Project source code root directory inside an image. Absolute path.
 ENV APP_ROOT="/home/$USER/michman"
 
@@ -104,6 +106,7 @@ RUN apt-get -y update && \
     rm -rf "$APP_ROOT/*"
 
 # Copy a slightly customized and slightly hardened production PHP configuration.
+COPY deployment/app/php-fpm.ini "$PHP_INI_DIR/php-fpm.ini"
 COPY deployment/app/php.ini "$PHP_INI_DIR/php.ini"
 
 # Symlink the currently configured PHP version to php-fpm.
@@ -218,4 +221,4 @@ EXPOSE 9000
 ENTRYPOINT [ "/usr/bin/tini", "--", "/home/app/michman/entrypoint" ]
 
 # By default - start by simply running php-fpm.
-CMD [ "php-fpm", "--nodaemonize" ]
+CMD [ "php-fpm", "--nodaemonize", "--fpm-config", "/usr/local/etc/php/php-fpm.ini" ]
