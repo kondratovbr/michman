@@ -3,6 +3,8 @@ version: '3'
 services:
 
     app:
+        # To reuse the whole base app service for other services, see below.
+        &app-image
         build:
             context: ./resources/docker/8.1
             dockerfile: Dockerfile
@@ -18,6 +20,19 @@ services:
         depends_on:
             - redis
             - mysql
+
+    queue:
+        <<: *app-image
+        command: [
+            "php", "artisan", "queue:work",
+            "--queue", "default,providers,servers,broadcasting",
+            "--sleep", "3",
+            "--tries", "3",
+            "--timeout", "300",
+            "--backoff", "5",
+            "--memory", "256"
+        ]
+        ports: []
 
     redis:
         image: 'redis:alpine'
@@ -50,10 +65,8 @@ services:
             test: ["CMD", "mysqladmin", "ping"]
 
     websockets:
-        image: michman-8.1/app
+        <<: *app-image
         command: 'php artisan websockets:serve'
-        volumes:
-            - '.:/var/www/html'
         ports:
             - '6001:6001'
         depends_on:
