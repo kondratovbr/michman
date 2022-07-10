@@ -200,7 +200,7 @@ RUN touch ./database/database.sqlite
 RUN composer dump-autoload \
     --optimize --classmap-authoritative \
     --no-interaction \
-    --no-plugins --no-scripts \
+    --no-plugins \
     --no-dev
 
 # Requested version of the app.

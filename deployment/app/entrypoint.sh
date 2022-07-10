@@ -5,7 +5,7 @@ set -e
 
 echo "Running Laravel entrypoint script..."
 
-# Run all available Laravel config caching and optimizations.
+# Run all available Laravel cachings and optimizations.
 php artisan optimize
 php artisan config:cache
 php artisan route:cache
