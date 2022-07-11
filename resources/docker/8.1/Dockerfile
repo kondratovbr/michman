@@ -10,7 +10,7 @@ WORKDIR /var/www/html
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git sqlite3 libcap2-bin libpng-dev python2 \
+    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git sqlite3 libcap2-bin libpng-dev python2 supervisor \
     && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN apt-get update && apt-get install -y software-properties-common \
@@ -57,6 +57,10 @@ ARG PCOV_CONFIG=/etc/php/8.1/mods-available/pcov.ini
 RUN echo "pcov.directory=./app" >> $PCOV_CONFIG \
     && echo "pcov.enabled=0" >> $PCOV_CONFIG
 
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
+#CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
