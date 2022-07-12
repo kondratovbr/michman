@@ -17,7 +17,7 @@ return [
 
         'domain' => env('WEBSOCKETS_DASHBOARD_DOMAIN'),
 
-        'path' => env('WEBSOCKETS_DASHBOARD_PATH', 'laravel-websockets'),
+        'path' => env('WEBSOCKETS_DASHBOARD_PATH', 'websockets'),
 
         'middleware' => [
             'web',
