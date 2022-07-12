@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\TestNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,12 @@ class DebugController extends AbstractController
     public function phpInfo(): void
     {
         phpinfo();
+    }
+
+    /** Try websockets with a notification for the currently authed user. */
+    public function websockets(): void
+    {
+        user()->notify(new TestNotification);
     }
 
     /** Show a completely empty HTML page. */
