@@ -82,6 +82,8 @@
 
         {{ $slot }}
 
+        @include('partials._js-env')
+
         @livewireScripts
 
         @include('cookie-consent::index')
