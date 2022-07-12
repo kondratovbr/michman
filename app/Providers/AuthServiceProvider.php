@@ -19,16 +19,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // TODO: CRITICAL! DEPLOYMENT. Make sure to protect all admin/support routes and properly configure this one as well. This one is a temporary solution.
+        // TODO: CRITICAL! DEPLOYMENT. Make sure to protect all admin/support routes and properly configure this one as well.
         // Authorization gate used by beyondcode/laravel-websockets for restricting access to the stats dashboard.
         Gate::define('viewWebSocketsDashboard', function (User $user = null) {
-            return config('app.env') == 'local'
-                && $user
-                && in_array($user->email, [
-                    'kondratovbr@gmail.com',
-                    'admin@example.com',
-                ])
-                && ! is_null($user->emailVerifiedAt);
+            return $user->isAdmin();
         });
 
         //
