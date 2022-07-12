@@ -22,15 +22,19 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    // TODO: CRITICAL! DEPLOYMENT. Don't forget to configure TLS for production!
-    //forceTLS: true,
-    forceTLS: window.location.protocol === 'https:',
+    key: window.PUSHER_APP_KEY,
+    cluster: window.PUSHER_APP_CLUSTER,
+    forceTLS: window.PUSHER_FORCE_TLS,
     // These two parameters are needed to make beyondcode/laravel-websockets work.
     // TODO: CRITICAL! DEPLOYMENT. Make sure it actually works in production with my Nginx setup and that the browser doesn't make any requests to pusher.com. The front-end library is a bit wonky on it.
-    wsHost: window.location.hostname,
-    wsPort: 8080,
+    wsHost: window.WEBSOCKETS_HOST,
+    wsPort: window.WEBSOCKETS_PORT,
     // This disables Pusher API statistics. beyondcode/laravel-websockets has its own statistic gathering engine.
     disableStats: true,
 });
+
+console.log(window.PUSHER_APP_KEY)
+console.log(window.PUSHER_APP_CLUSTER)
+console.log(window.PUSHER_FORCE_TLS)
+console.log(window.WEBSOCKETS_HOST)
+console.log(window.WEBSOCKETS_PORT)

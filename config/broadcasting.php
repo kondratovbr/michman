@@ -80,6 +80,11 @@ return [
      * Custom config values
      */
 
-    //
+    // These values will be passed to the frontend Echo library for websockets connections.
+    'echo' => [
+        'host' => env('PUSHER_HOST', '127.0.0.1'),
+        'port' => env('PUSHER_PORT', 6001),
+        'force_tls' => env('PUSHER_FORCE_TLS', false),
+    ],
 
 ];
