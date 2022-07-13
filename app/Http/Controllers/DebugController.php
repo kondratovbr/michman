@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Users\FlashMessageEvent;
 use App\Notifications\TestNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,7 @@ class DebugController extends AbstractController
     /** Try websockets with a notification for the currently authed user. */
     public function websockets(): void
     {
-        user()->notify(new TestNotification);
+        flash('If you see this - websockets work!', FlashMessageEvent::STYLE_SUCCESS);
     }
 
     /** Show a completely empty HTML page. */
