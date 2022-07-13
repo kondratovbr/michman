@@ -95,7 +95,9 @@ RUN apt-get -y update && \
         php${PHP_VERSION}-imagick \
     && \
     # Install the "event" PECL extension needed for the optimal performance of laravel-websockets.
-    pecl channel-update pecl.php.net && pecl install event && \
+    pecl channel-update pecl.php.net && pecl install \
+        event-3.0.8 \
+    && \
     # Install Composer using the official script.
     php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \
     # Remove apt packages which we don't need at runtime.
@@ -108,9 +110,6 @@ RUN apt-get -y update && \
 # Copy a slightly customized and slightly hardened production PHP configuration.
 COPY deployment/app/php-fpm.ini "$PHP_INI_DIR/php-fpm.ini"
 COPY deployment/app/php.ini "$PHP_INI_DIR/php.ini"
-
-# Enable PECL extensions in php.ini.
-RUN echo "extension=event" >> "$PHP_INI_DIR/php.ini"
 
 # Symlink the currently configured PHP version to php-fpm.
 RUN ln -s /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm
