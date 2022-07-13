@@ -58,21 +58,21 @@ ENV APP_ROOT="/home/$USER/michman"
 # Ensure the image is using UTC timezone.
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Copy a community script that eases installation of PHP extensions and Composer.
-# It downloads all dependencies, properly configures all extensions and removes unnecesary packages afterwards.
-# Docs: https://github.com/mlocati/docker-php-extension-installer
-#COPY --from=mlocati/php-extension-installer:latest /usr/bin/install-php-extensions /usr/local/bin/
+# apt packages that will be removed after building since we don't need them at runtime.
+ENV APT_BUILD_PACKAGES="software-properties-common php-pear"
 
 RUN apt-get -y update && \
     # Add tini to use as an entrypoint, cron for scheduling; git and zip are for composer downloads. \
     # software-properties-common comes with add-apt-repository command we're using.
     apt-get -y install tini cron git zip && \
     # Add apt packages required only for building.
-    apt-get -y install software-properties-common && \
+    apt-get -y install ${APT_BUILD_PACKAGES} && \
     # Install PHP and extensions from a ppa:ondrej/php repo.
     LC_ALL=C.UTF-8 add-apt-repository -y -u ppa:ondrej/php && \
     apt-get -y update && \
-    apt-get install -y php${PHP_VERSION} php${PHP_VERSION}-fpm \
+    # Install APT packages needed for PHP extensions to run.
+    apt-get -y install libevent-dev && \
+    apt-get install -y php${PHP_VERSION} php${PHP_VERSION}-fpm php${PHP_VERSION}-dev \
         # Required by Laravel
         php${PHP_VERSION}-intl  \
         php${PHP_VERSION}-readline \
@@ -94,12 +94,12 @@ RUN apt-get -y update && \
         php${PHP_VERSION}-ds \
         php${PHP_VERSION}-imagick \
     && \
+    # Install the "event" PECL extension needed for the optimal performance of laravel-websockets.
+    pecl channel-update pecl.php.net && pecl install event && \
     # Install Composer using the official script.
     php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \
-    # Remove apt packages we don't need at runtime.
-    apt-get -y remove software-properties-common && \
-    # Remove the script, we don't need it inside the image.
-    #rm /usr/local/bin/install-php-extensions && \
+    # Remove apt packages which we don't need at runtime.
+    apt-get -y remove ${APT_BUILD_PACKAGES} && \
     # Cleanup after ourselves.
     apt-get -y autoremove && apt-get -y clean && rm -rf /var/lib/{apt,dpkg,cache,log} /tmp/* /var/tmp/* && \
     # Remove whatever is inside app root, just in case.
@@ -108,6 +108,9 @@ RUN apt-get -y update && \
 # Copy a slightly customized and slightly hardened production PHP configuration.
 COPY deployment/app/php-fpm.ini "$PHP_INI_DIR/php-fpm.ini"
 COPY deployment/app/php.ini "$PHP_INI_DIR/php.ini"
+
+# Enable PECL extensions in php.ini.
+RUN echo "extension=event" >> "$PHP_INI_DIR/php.ini"
 
 # Symlink the currently configured PHP version to php-fpm.
 RUN ln -s /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm
