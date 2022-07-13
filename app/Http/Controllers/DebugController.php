@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\Users\FlashMessageEvent;
-use App\Notifications\TestNotification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 
@@ -52,5 +51,17 @@ class DebugController extends AbstractController
     public function pusher(): View
     {
         return view('debug.pusher');
+    }
+
+    /** Dump all environment values. */
+    public function env(): void
+    {
+        dump($_ENV);
+    }
+
+    /** Dump all config values. */
+    public function config(): void
+    {
+        dump(config()->all());
     }
 }

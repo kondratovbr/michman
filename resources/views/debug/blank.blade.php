@@ -17,10 +17,9 @@
     </head>
     <body>
 
-        <div x-data="select({})"></div>
-
-        <div x-data="focusableDialog({})"></div>
+        <p>url(request()->path()): {{ url(request()->path()) }}</p>
 
         @livewireScripts
+
     </body>
 </html>
