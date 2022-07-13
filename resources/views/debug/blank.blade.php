@@ -19,6 +19,8 @@
 
         <p>url(request()->path()): {{ url(request()->path()) }}</p>
 
+        <p>url()->secure(request()->path()): {{ url()->secure(request()->path()) }}</p>
+
         @livewireScripts
 
     </body>
