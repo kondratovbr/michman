@@ -185,6 +185,7 @@ return [
         |
         */
 
+        // TODO: DEPLOYMENT. Move this to a different database to separate it from the important stuff.
         'store' => \BeyondCode\LaravelWebSockets\Statistics\Stores\DatabaseStore::class,
 
         /*
