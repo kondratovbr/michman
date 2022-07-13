@@ -28,7 +28,7 @@ services:
         read_only: true
         ports:
             - '80:8080'
-            - '443:4443'
+#            - '443:4443'
         volumes:
             # Public static assets
             - 'app-public:/home/app/michman/public:ro'
@@ -79,7 +79,7 @@ services:
             "--tries", "3",
             "--timeout", "300",
             "--backoff", "5",
-            "--memory", "256"
+            "--memory", "256",
         ]
 
 #     scheduler:
@@ -93,7 +93,11 @@ services:
 
     websockets:
         <<: *app-image
-        command: 'php artisan websockets:serve'
+        command: [
+            "php", "artisan", "websockets:serve",
+            "--port", "6001",
+            "--host", "0.0.0.0",
+        ]
 
     mysql:
         image: mysql:8.0
