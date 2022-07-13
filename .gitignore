@@ -30,8 +30,8 @@ auth.json
 .env.*
 *.env.*
 !.env.example
-!.env.stage
-!.env.prod
+!.env.stage.example
+!.env.prod.example
 
 .phpunit.result.cache
 docker-compose.override.yml
