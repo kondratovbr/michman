@@ -50,8 +50,6 @@ ENV TZ=UTC
 ENV USER=app
 ENV GROUP=app
 
-ENV PHP_INI_DIR=/usr/local/etc/php
-
 # Project source code root directory inside an image. Absolute path.
 ENV APP_ROOT="/home/$USER/michman"
 
@@ -98,8 +96,6 @@ RUN apt-get -y update && \
     pecl channel-update pecl.php.net && pecl install \
         event-3.0.8 \
     && \
-    # Install Composer using the official script.
-    php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \
     # Remove apt packages which we don't need at runtime.
     apt-get -y remove ${APT_BUILD_PACKAGES} && \
     # Cleanup after ourselves.
@@ -107,9 +103,21 @@ RUN apt-get -y update && \
     # Remove whatever is inside app root, just in case.
     rm -rf "$APP_ROOT/*"
 
+# Install Composer using the official script.
+RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
+
+ENV PHP_INI_FPM_DIR=/etc/php/${PHP_VERSION}/fpm
+ENV PHP_INI_CLI_DIR=/etc/php/${PHP_VERSION}/cli
+
 # Copy a slightly customized and slightly hardened production PHP configuration.
-COPY deployment/app/php-fpm.ini "$PHP_INI_DIR/php-fpm.ini"
-COPY deployment/app/php.ini "$PHP_INI_DIR/php.ini"
+COPY deployment/app/php-fpm.ini "$PHP_INI_FPM_DIR/php-fpm.ini"
+COPY deployment/app/php.ini "$PHP_INI_FPM_DIR/php.ini"
+
+# Add configs for PECL extensions.
+RUN echo "extension=event" > "$PHP_INI_FPM_DIR/conf.d/30-event.ini"
+
+# And for the CLI as well.
+RUN echo "extension=event" > "$PHP_INI_CLI_DIR/conf.d/30-event.ini"
 
 # Symlink the currently configured PHP version to php-fpm.
 RUN ln -s /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm
@@ -159,6 +167,7 @@ RUN \
     echo "{\"http-basic\": {\"spark.laravel.com\": {\"username\": \"$SPARK_USERNAME\",\"password\": \"$SPARK_PASSWORD\"}}}" > auth.json && \
     composer install \
         --no-interaction --no-cache \
+        # Plugins are inherently unsafe to run as root and aren't needed here anyway.
         --no-plugins --no-scripts \
         # Do not install dev-dependencies.
         --no-dev \
@@ -168,7 +177,7 @@ RUN \
     composer check-platform-reqs \
         # Less junk in the console.
         --no-interaction \
-        # Plugins and scripts are inherently unsafe to run as root and aren't needed here anyway.
+        # Plugins are inherently unsafe to run as root and aren't needed here anyway.
         --no-plugins --no-scripts \
     && \
     rm auth.json
@@ -223,4 +232,4 @@ EXPOSE 9000
 ENTRYPOINT [ "/usr/bin/tini", "--", "/home/app/michman/entrypoint" ]
 
 # By default - start by simply running php-fpm.
-CMD [ "php-fpm", "--nodaemonize", "--fpm-config", "/usr/local/etc/php/php-fpm.ini" ]
+CMD [ "php-fpm", "--nodaemonize", "--fpm-config", "/etc/php/8.1/fpm/php-fpm.ini" ]

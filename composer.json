@@ -9,6 +9,7 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-ds": "*",
+        "ext-event": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",
         "ext-imagick": "*",
