@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\Users\FlashMessageEvent;
 use Exception;
 use Illuminate\Contracts\View\View;
-use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -77,22 +77,17 @@ class DebugController extends AbstractController
     /** Send a test email to the admin. */
     public function email(): void
     {
-        $address = config('app.admin_email');
-
-        $mail = new class extends Mailable {
-            public function build(): static
-            {
-                return $this
-                    ->from(config('mail.from'))
-                    ->subject('Test Email')
-                    ->html(
-                        '<p>This is a test email from ' .
-                        config('app.name') .
-                        '.<p><p>If can you see this - emailing works!</p>'
-                    );
+        Mail::raw(
+            'This is a test email from ' . config('app.name') . '. If you can see this - emailing works!',
+            function (Message $email) {
+                $email
+                    ->from(
+                        config('mail.from.address'),
+                        config('mail.from.name'),
+                    )
+                    ->to(config('app.admin_email'))
+                    ->subject('Test Email');
             }
-        };
-
-        Mail::to($address)->send($mail);
+        );
     }
 }
