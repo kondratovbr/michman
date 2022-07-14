@@ -25,3 +25,4 @@ Route::get('pusher', [DebugController::class, 'pusher']);
 Route::get('env', [DebugController::class, 'env']);
 Route::get('config', [DebugController::class, 'config']);
 Route::get('exception', [DebugController::class, 'exception']);
+Route::get('email', [DebugController::class, 'email']);
