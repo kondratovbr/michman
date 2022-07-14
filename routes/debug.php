@@ -24,3 +24,4 @@ Route::get('blank', [DebugController::class, 'blank']);
 Route::get('pusher', [DebugController::class, 'pusher']);
 Route::get('env', [DebugController::class, 'env']);
 Route::get('config', [DebugController::class, 'config']);
+Route::get('exception', [DebugController::class, 'exception']);

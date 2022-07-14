@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\Users\FlashMessageEvent;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Route;
 
@@ -63,5 +64,11 @@ class DebugController extends AbstractController
     public function config(): void
     {
         dump(config()->all());
+    }
+
+    /** Throw an exception. */
+    public function exception(): void
+    {
+        throw new Exception('This is a blank test exception.');
     }
 }
