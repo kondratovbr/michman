@@ -2,6 +2,18 @@
     become: true
     tasks:
 
+    -   name: Down the whole Docker Compose project
+        docker_compose:
+            project_src: &project_src /home/michman/michman
+            files: &files docker-compose.stage.yaml
+            project_name: &project_name michman-stage
+            state: absent
+
+    -   name: Remove the volume with public assets
+        docker_volume:
+            name: michman-stage_app-public
+            state: absent
+
     -   name: Update stage Docker Compose config
         synchronize:
             src: ../../deployment/
@@ -26,18 +38,6 @@
             password: "{{ docker_password }}"
 
 #  TODO: Add a step with docker-compose yaml files validation using "docker-compose config"
-
-    -   name: Down the whole Docker Compose project
-        docker_compose:
-            project_src: &project_src /home/michman/michman
-            files: &files docker-compose.stage.yaml
-            project_name: &project_name michman-stage
-            state: absent
-
-    -   name: Remove the volume with public assets
-        docker_volume:
-            name: michman-stage_app-public
-            state: absent
 
     -   name: Deploy Docker Compose project
         docker_compose:
