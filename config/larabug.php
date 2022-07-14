@@ -39,6 +39,7 @@ return [
 
     'environments' => [
         'production',
+        'stage',
     ],
 
     /*
