@@ -70,7 +70,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::middleware('guest')
             ->group(base_path('routes/guest.php'));
 
-        // Register auth'ed user routes
+        // Register authed user routes
         Route::middleware(['auth:sanctum', 'verified'])
             ->group(base_path('routes/app.php'));
 
