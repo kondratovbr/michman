@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('websockets:clean')->daily();
         $schedule->command('queue:prune-batches --hours=48')->daily();
         $schedule->command('telescope:prune --hours=720')->daily();
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /** Register the commands for the application. */
