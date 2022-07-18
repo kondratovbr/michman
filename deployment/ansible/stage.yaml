@@ -51,5 +51,15 @@
             remove_orphans: true
         register: output
 
-    -   name: Print output
+    -   name: Run migrations
+        become: true
+        shell:
+            cmd: "docker-compose -f docker-compose.stage.yaml -p michman-stage exec app php artisan migrate"
+            chdir: *project_src
+        register: migrate_output
+
+    -   name: Print Docker Compose output
         debug: var=output
+
+    -   name: Print artisan migrate output
+        debug: var=migrate_output.stdout_lines
