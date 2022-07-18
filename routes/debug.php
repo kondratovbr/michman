@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | This routes are loaded only when the application is in debug mode.
-| I.e. config app.env === 'debug'.
+| I.e. config('app.debug') === true
 | Feel free to add anything you need for development.
 |
 */
