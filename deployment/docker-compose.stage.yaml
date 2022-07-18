@@ -73,20 +73,14 @@ services:
 
     queue:
         <<: *app-image
-        command: [
-#             "dockerize", "-wait", "tcp://redis:6379", "-timeout", "5m", "--",
-            "php", "artisan", "horizon",
-        ],
+        command: ["php", "artisan", "horizon"]
         stop_grace_period: 30m # This should be at least as long as the longest job is allowed to run.
 
     scheduler:
         <<: *app-image
         # crond must be run as root.
         user: root
-        command: [
-#            "dockerize", "-wait", "tcp://redis:6379", "-timeout", "60s", "--",
-            "crond", "-f"
-        ]
+        command: ["crond", "-f"]
 
     websockets:
         <<: *app-image
