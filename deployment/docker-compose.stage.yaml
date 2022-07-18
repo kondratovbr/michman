@@ -132,11 +132,6 @@ services:
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
 
-    mailhog:
-        image: 'mailhog/mailhog:latest'
-        ports:
-            - '8025:8025'
-
 
 
 volumes:
