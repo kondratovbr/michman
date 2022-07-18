@@ -2,7 +2,13 @@
     become: true
     tasks:
 
+    -   name: Check if previously uploaded docker-compose file exists
+        stat:
+            path: /home/michman/michman/docker-compose.stage.yaml
+        register: docker_compose_file
+
     -   name: Down the whole Docker Compose project
+        when: docker_compose_file.stat.exists
         docker_compose:
             project_src: &project_src /home/michman/michman
             files: &files docker-compose.stage.yaml
