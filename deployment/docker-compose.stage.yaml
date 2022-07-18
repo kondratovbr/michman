@@ -78,14 +78,14 @@ services:
             "php", "artisan", "horizon",
         ]
 
-#     scheduler:
-#         <<: *app-image
-#         # crond must be run as root.
-#         user: root
-#         command: [
-# #             "dockerize", "-wait", "tcp://redis:6379", "-timeout", "60s", "--",
-#             "crond", "-f"
-#         ]
+    scheduler:
+        <<: *app-image
+        # crond must be run as root.
+        user: root
+        command: [
+#            "dockerize", "-wait", "tcp://redis:6379", "-timeout", "60s", "--",
+            "crond", "-f"
+        ]
 
     websockets:
         <<: *app-image
