@@ -9,7 +9,6 @@
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-ds": "*",
-        "ext-event": "*",
         "ext-fileinfo": "*",
         "ext-gd": "*",
         "ext-imagick": "*",
@@ -34,6 +33,7 @@
         "kevinrob/guzzle-cache-middleware": "^4.0",
         "larabug/larabug": "^2.5",
         "laravel/framework": "^9.0",
+        "laravel/horizon": "^5.9",
         "laravel/jetstream": "^2.7",
         "laravel/sanctum": "^2.15",
         "laravel/socialite": "^5.5",
@@ -92,7 +92,8 @@
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
             "@php artisan vendor:publish --force --tag=livewire:assets --ansi",
-            "@php artisan telescope:publish --ansi"
+            "@php artisan telescope:publish --ansi",
+            "@php artisan horizon:publish --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
