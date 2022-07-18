@@ -35,9 +35,6 @@ return [
         ],
 
         'database' => [
-
-            // TODO: CRITICAL! DEPLOYMENT. Make sure workers actually work all queues. I have a list of queues here at the bottom.
-
             'driver' => 'database',
             'table' => 'jobs',
             // Default queue to dispatch jobs
@@ -52,7 +49,7 @@ return [
 
         'redis' => [
             'driver' => 'redis',
-            'connection' => 'default',
+            'connection' => 'queue',
             'queue' => env('REDIS_QUEUE', 'default'),
             'retry_after' => 60 * 60, // 1 hour
             'block_for' => null,
