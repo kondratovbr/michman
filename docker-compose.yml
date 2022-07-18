@@ -24,15 +24,7 @@ services:
 
     queue:
         <<: *app-image
-        command: [
-            "php", "artisan", "queue:work",
-            "--queue", "default,providers,servers,broadcasting",
-            "--sleep", "3",
-            "--tries", "3",
-            "--timeout", "300",
-            "--backoff", "5",
-            "--memory", "256"
-        ]
+        command: ["php", "artisan", "horizon",]
         ports: []
 
     redis:
