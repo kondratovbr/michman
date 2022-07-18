@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\Users\FlashMessageEvent;
+use App\Facades\Auth;
+use App\Notifications\TestNotification;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Mail\Message;
@@ -32,10 +34,19 @@ class DebugController extends AbstractController
         phpinfo();
     }
 
-    /** Try websockets with a notification for the currently authed user. */
+    /** Try websockets with a flash message for the currently authed user. */
     public function websockets(): void
     {
         flash('If you see this - websockets work!', FlashMessageEvent::STYLE_SUCCESS);
+    }
+
+    /** Send a test notification to the currently authed user. */
+    public function notification(): void
+    {
+        if (Auth::guest())
+            throw new Exception('Authenticate to be able to send a test notification.');
+
+        user()->notify(new TestNotification);
     }
 
     /** Show a completely empty HTML page. */
