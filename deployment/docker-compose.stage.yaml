@@ -58,9 +58,11 @@ services:
         image: kondorb/michman:0.9.1
         platform: 'linux/amd64'
         read_only: true
+        environment:
+            APP_ENV: stage
         volumes:
             - 'app-public:/home/app/michman/public:ro'
-            - './.env.stage:/home/app/michman/.env:ro'
+            - './.env.stage:/home/app/michman/.env.stage:ro'
         depends_on:
             - mysql
             - redis
