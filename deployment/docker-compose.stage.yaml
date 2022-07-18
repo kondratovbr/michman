@@ -3,15 +3,6 @@
 # TODO: VERY IMPORTANT! Queue worker can easily make MySQL use 100% of available CPU when performing some heavy SQL queries.
 #       Should make sure the app can still work while at it and it cannot be abused.
 
-# TODO: Deploy policy is a stub. Make it to properly restart if failed and to use healthchecks.
-# Default reusable deployment policy
-x-deploy:
-    &default-deploy
-    mode: replicated
-    replicas: 1
-    restart_policy:
-        condition: unless-stopped
-
 # Reusable logging config
 x-logging:
     &default-logging
@@ -46,7 +37,7 @@ services:
             - /tmp
         depends_on:
             - app
-        deploy: *default-deploy
+        restart: unless-stopped
         logging: *default-logging
 
     # Example commands to build and push this image:
@@ -66,7 +57,7 @@ services:
         depends_on:
             - mysql
             - redis
-        deploy: *default-deploy
+        restart: unless-stopped
         logging: *default-logging
         healthcheck:
             test: ["CMD", "php", "artisan", "version"]
@@ -74,7 +65,8 @@ services:
     queue:
         <<: *app-image
         command: ["php", "artisan", "horizon"]
-        stop_grace_period: 30m # This should be at least as long as the longest job is allowed to run.
+        # This should be at least as long as the longest job is allowed to run.
+        stop_grace_period: 30m
 
     scheduler:
         <<: *app-image
@@ -108,7 +100,7 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
         logging: *default-logging
-        deploy: *default-deploy
+        restart: unless-stopped
         healthcheck:
             test: ["CMD", "mysqladmin", "ping"]
 
@@ -123,7 +115,7 @@ services:
         ports:
             - '127.0.0.1:6379:6379'
         logging: *default-logging
-        deploy: *default-deploy
+        restart: unless-stopped
         healthcheck:
             test: ["CMD", "redis-cli", "ping"]
 
