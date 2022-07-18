@@ -72,14 +72,8 @@ services:
     queue:
         <<: *app-image
         command: [
-#             "dockerize", "-wait", "tcp://redis:6379", "-wait", "tcp://bitcoind:8332", "-timeout", "5m", "--",
-            "php", "artisan", "queue:work",
-            "--queue", "default,providers,servers,broadcasting",
-            "--sleep", "3",
-            "--tries", "3",
-            "--timeout", "300",
-            "--backoff", "5",
-            "--memory", "256",
+#             "dockerize", "-wait", "tcp://redis:6379", "-timeout", "5m", "--",
+            "php", "artisan", "horizon",
         ]
 
 #     scheduler:
