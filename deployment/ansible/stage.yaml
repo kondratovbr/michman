@@ -8,6 +8,7 @@
             files: &files docker-compose.stage.yaml
             project_name: &project_name michman-stage
             state: absent
+            timeout: 1800 # 30 min, because that's how long Horizon is allowed to wait for the longest job to finish.
 
     -   name: Remove the volume with public assets
         docker_volume:

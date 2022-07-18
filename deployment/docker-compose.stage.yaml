@@ -10,7 +10,7 @@ x-deploy:
     mode: replicated
     replicas: 1
     restart_policy:
-        condition: any
+        condition: unless-stopped
 
 # Reusable logging config
 x-logging:
@@ -76,7 +76,8 @@ services:
         command: [
 #             "dockerize", "-wait", "tcp://redis:6379", "-timeout", "5m", "--",
             "php", "artisan", "horizon",
-        ]
+        ],
+        stop_grace_period: 30m # This should be at least as long as the longest job is allowed to run.
 
     scheduler:
         <<: *app-image
