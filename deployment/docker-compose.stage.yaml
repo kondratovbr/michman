@@ -68,11 +68,9 @@ services:
         # This should be at least as long as the longest job is allowed to run.
         stop_grace_period: 30m
 
-#    scheduler:
-#        <<: *app-image
-#        # crond must be run as root.
-#        user: root
-#        command: ["crond", "-f"]
+    scheduler:
+        <<: *app-image
+        command: ["php", "artisan", "schedule:work"]
 
     websockets:
         <<: *app-image
