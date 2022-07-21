@@ -7,7 +7,9 @@ use App\Facades\Auth;
 use App\Notifications\TestNotification;
 use Exception;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -100,5 +102,23 @@ class DebugController extends AbstractController
                     ->subject('Test Email');
             }
         );
+    }
+
+    /** Store a key-value pair in the default cache. */
+    public function cachePut(Request $request): void
+    {
+        Cache::put($request->get('key'), $request->get('value'), 60 * 60);
+    }
+
+    /** Dump a requested value from cache. */
+    public function cacheGet(Request $request): void
+    {
+        dump(Cache::get($request->get('key')));
+    }
+
+    /** Dump the default cache store instance. */
+    public function cacheStore(): void
+    {
+        dump(Cache::store());
     }
 }
