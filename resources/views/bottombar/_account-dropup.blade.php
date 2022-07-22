@@ -27,10 +27,11 @@
         {{ __('account.vcs.button') }}
     </x-dropdown.link>
 
-    <x-dropdown.link action="sub-page" subPage="api" route="account.show">
+    {{-- TODO: Get this back on when it's implemented. --}}
+{{--    <x-dropdown.link action="sub-page" subPage="api" route="account.show">--}}
 {{--        TODO: Maybe put a Michman logo or some other icon here.--}}
-        <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>
-        {{ __('account.api.button') }}
-    </x-dropdown.link>
+{{--        <x-slot name="icon"><i class="fa fa-ship"></i></x-slot>--}}
+{{--        {{ __('account.api.button') }}--}}
+{{--    </x-dropdown.link>--}}
 
 </x-dropdown.menu>
