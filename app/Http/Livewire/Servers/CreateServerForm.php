@@ -20,13 +20,13 @@ use Livewire\Component;
  */
 class CreateServerForm extends Component
 {
-    /** @var string Currently chosen server provider type. */
+    /** Currently chosen server provider type. */
     public string $provider = '';
 
     /** @var string[] Providers supported by the app where the user have credentials. */
     public array $availableProviders = [];
 
-    /** @var array|string[] Provider name to form component mapping. */
+    /** @var string[] Provider name to form component mapping. */
     private array $formComponents = [
         'digital_ocean_v2' => 'servers.digital-ocean-form',
     ];
