@@ -32,7 +32,7 @@ class InstallPythonScript extends AbstractServerScript
         $this->execPty('apt-get install -y python3.8 python3-pip python3-venv python3-virtualenv');
         $this->read();
 
-        $this->verifyPythonWorks('3.8');;
+        $this->verifyPythonWorks('3.8');
 
         $this->execPty('pip3.8 install --upgrade pip');
         $this->read();

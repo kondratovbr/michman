@@ -30,7 +30,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     protected function commonCacheKey(string $key): string
     {
-        return "providers.digital_ocean_v2.{$key}";
+        return "providers.digital_ocean_v2.$key";
     }
 
     protected function request(): PendingRequest
@@ -157,7 +157,7 @@ class DigitalOceanV2 extends AbstractServerProvider
 
     public function deleteServer(string $externalId): void
     {
-        $this->delete("/droplets/{$externalId}");
+        $this->delete("/droplets/$externalId");
     }
 
     public function getAvailableRegions(): RegionDataCollection
@@ -265,10 +265,10 @@ class DigitalOceanV2 extends AbstractServerProvider
     protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
         return new SshKeyDto(
+            name: $data->name,
+            publicKey: $data->public_key,
             id: (string) $data->id,
             fingerprint: $data->fingerprint,
-            publicKey: $data->public_key,
-            name: $data->name,
         );
     }
 

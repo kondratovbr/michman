@@ -18,15 +18,15 @@ class DeleteGunicornConfigScript extends AbstractServerScript
 
         $projectName = $project->projectName;
 
-        $this->systemdStopService("{$projectName}.service");
-        $this->systemdDisableService("{$projectName}.service");
+        $this->systemdStopService("$projectName.service");
+        $this->systemdDisableService("$projectName.service");
 
-        $this->systemdStopService("{$projectName}.socket");
-        $this->systemdDisableService("{$projectName}.socket");
+        $this->systemdStopService("$projectName.socket");
+        $this->systemdDisableService("$projectName.socket");
 
         $this->exec("rm -rf {$project->gunicornConfigFilePath}");
-        $this->exec("rm -rf /etc/systemd/system/{$projectName}.service");
-        $this->exec("rm -rf /etc/systemd/system/{$projectName}.socket");
+        $this->exec("rm -rf /etc/systemd/system/$projectName.service");
+        $this->exec("rm -rf /etc/systemd/system/$projectName.socket");
 
         $this->systemdReload();
     }

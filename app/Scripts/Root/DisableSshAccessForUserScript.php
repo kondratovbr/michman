@@ -14,8 +14,8 @@ class DisableSshAccessForUserScript extends AbstractServerScript
 
         $directory = $username === 'root'
             ? '/root/.ssh'
-            : "/home/{$username}/.ssh";
+            : "/home/$username/.ssh";
 
-        $this->exec("rm -rf {$directory}");
+        $this->exec("rm -rf $directory");
     }
 }

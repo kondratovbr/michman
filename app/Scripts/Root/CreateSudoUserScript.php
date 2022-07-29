@@ -14,20 +14,20 @@ class CreateSudoUserScript extends AbstractServerScript
 
         // Create a new user.
         $this->setTimeout(60 * 5);
-        $this->exec("useradd --create-home --shell /bin/bash {$username}");
+        $this->exec("useradd --create-home --shell /bin/bash $username");
         $this->exec(
-            "echo {$username}:{$password} | chpasswd",
+            "echo $username:$password | chpasswd",
             true,
             false,
-            "echo {$username}:PASSWORD | chpasswd",
+            "echo $username:PASSWORD | chpasswd",
         );
 
         // Add the user to sudo group.
-        $this->exec("usermod -aG sudo {$username}");
+        $this->exec("usermod -aG sudo $username");
 
         // Create the necessary directories upfront.
         foreach (['public'] as $dir) {
-            $this->exec("mkdir -p /home/{$username}/{$dir} && chown -R {$username}:{$username} /home/{$username}/{$dir}");
+            $this->exec("mkdir -p /home/$username/$dir && chown -R $username:{$username} /home/$username/$dir");
         }
     }
 }

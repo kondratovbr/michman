@@ -18,12 +18,12 @@ class DeleteDatabaseUserScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         if (! $this->mysqlUserExists($userName, 'root', $server->databaseRootPassword)) {
-            Log::warning("The MySQL user {$userName} that was requested to be deleted doesn't exist.");
+            Log::warning("The MySQL user $userName that was requested to be deleted doesn't exist.");
             return;
         }
 
         $this->execMysql(
-            "DROP USER '{$userName}'@'%'",
+            "DROP USER '$userName'@'%'",
             'root',
             $server->databaseRootPassword,
         );

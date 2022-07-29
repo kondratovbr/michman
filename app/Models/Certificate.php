@@ -87,7 +87,7 @@ class Certificate extends AbstractModel
     /** Get a directory where the files related to this certificate are stored on a server. */
     protected function getDirectoryAttribute(): string
     {
-        return "/etc/letsencrypt/live/{$this->name}";
+        return "/etc/letsencrypt/live/$this->name";
     }
 
     /** Get the certificate domain wrapped in a set for compatibility with some unrefactored code. */

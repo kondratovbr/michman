@@ -105,7 +105,7 @@ class CreateWorkerForm extends LivewireComponent
     {
         $workers = Arr::keys(config('projects.workers'));
 
-        return Arr::mapAssoc($workers, fn(int $index, string $type) => [$type, __("projects.queue.types.{$type}")]);
+        return Arr::mapAssoc($workers, fn(int $index, string $type) => [$type, __("projects.queue.types.$type")]);
     }
 
     /** Get an array of available servers types and their names for the server select field. */
@@ -123,10 +123,10 @@ class CreateWorkerForm extends LivewireComponent
 
         $action->execute(new WorkerDto(
             type: $state['type'],
+            stop_seconds: int($state['stop_seconds']),
             app: $state['app'],
             processes: int($state['processes']),
             queues: $state['queues'],
-            stop_seconds: int($state['stop_seconds']),
             max_tasks_per_child: int($state['max_tasks_per_child']),
             max_memory_per_child: empty($state['max_memory_per_child'])
                 ? null

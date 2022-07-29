@@ -41,10 +41,10 @@ class AddServerSshKeyToVcsJobTest extends AbstractFeatureTest
                     )
                     ->once()
                     ->andReturn(new SshKeyDto(
+                        name: $server->name . ' - server key',
+                        publicKey: SshKeyFormatter::format($key->getPublicKey()),
                         id: '100500',
                         fingerprint: Str::random(),
-                        publicKey: SshKeyFormatter::format($key->getPublicKey()),
-                        name: $server->name . ' - server key',
                     ));
                 $mock->shouldReceive('supportsSshKeys')
                     ->once()

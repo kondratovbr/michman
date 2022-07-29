@@ -65,12 +65,12 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public function commitUrl(string $repo, string $commit): string
     {
-        return "https://bitbucket.org/{$repo}/commits/{$commit}";
+        return "https://bitbucket.org/$repo/commits/$commit";
     }
 
     public function repoUrl(string $repo): string
     {
-        return "https://bitbucket.org/{$repo}";
+        return "https://bitbucket.org/$repo";
     }
 
     public function credentialsAreValid(): bool
@@ -146,9 +146,9 @@ class BitbucketV2 extends AbstractVcsProvider
         string $username = null,
         string $repo = null,
     ): string {
-        $fullRepoName ??= "{$username}/{$repo}";
+        $fullRepoName ??= "$username/$repo";
 
-        $response = $this->get("/repositories/{$fullRepoName}/commits/{$branch}");
+        $response = $this->get("/repositories/$fullRepoName/commits/$branch");
         $data = $this->decodeJson($response->body());
 
         return $data->values[0]->hash;
@@ -156,13 +156,13 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public static function getFullSshString(string $repo): string
     {
-        return "git@bitbucket.org:{$repo}.git";
+        return "git@bitbucket.org:$repo.git";
     }
 
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-get */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        $response = $this->get("/repositories/{$repo}/hooks/{$webhookExternalId}");
+        $response = $this->get("/repositories/$repo/hooks/{$webhookExternalId}");
         $data = $this->decodeJson($response->body());
 
         return $this->webhookDataFromResponseData($data);
@@ -171,7 +171,7 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-get */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        return $this->get("/repositories/{$repo}/hooks", [],
+        return $this->get("/repositories/$repo/hooks", [],
             function (WebhookDataCollection $carry, object $data) {
                 /** @var object $key */
                 foreach ($data->values as $key) {
@@ -187,7 +187,7 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-post */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
-        $response = $this->post("/repositories/{$repo}/hooks",
+        $response = $this->post("/repositories/$repo/hooks",
             $this->pushWebhookRequestData($payloadUrl),
         );
         $data = $this->decodeJson($response->body());
@@ -198,7 +198,7 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-put */
     public function updateWebhookPush(string $repo, string $webhookExternalId, string $payloadUrl, string $secret): WebhookDto
     {
-        $response = $this->put("/repositories/{$repo}/hooks/{$webhookExternalId}",
+        $response = $this->put("/repositories/$repo/hooks/$webhookExternalId",
             $this->pushWebhookRequestData($payloadUrl),
         );
         $data = $this->decodeJson($response->body());
@@ -209,7 +209,7 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-delete */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
-        $this->delete("/repositories/{$repo}/hooks/{$webhookExternalId}");
+        $this->delete("/repositories/$repo/hooks/$webhookExternalId");
     }
 
     public function dispatchesPingWebhookCalls(): bool
@@ -221,9 +221,9 @@ class BitbucketV2 extends AbstractVcsProvider
     protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
         return new SshKeyDto(
-            id: (string) $data->uuid,
-            publicKey: $data->key,
             name: $data->label,
+            publicKey: $data->key,
+            id: (string) $data->uuid,
         );
     }
 

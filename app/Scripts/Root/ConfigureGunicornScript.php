@@ -21,17 +21,17 @@ class ConfigureGunicornScript extends AbstractServerScript
         $projectName = $project->projectName;
 
         if (! $this->sendString(
-            "/etc/systemd/system/{$projectName}.socket",
+            "/etc/systemd/system/$projectName.socket",
             ConfigView::render('gunicorn.socket', ['project' => $project]),
         )) {
-            throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/{$projectName}.socket");
+            throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/$projectName.socket");
         }
 
         if (! $this->sendString(
-            "/etc/systemd/system/{$projectName}.service",
+            "/etc/systemd/system/$projectName.service",
             ConfigView::render('gunicorn.service', ['project' => $project]),
         )) {
-            throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/{$projectName}.service");
+            throw new ServerScriptException("Failed to send string to file: /etc/systemd/system/$projectName.service");
         }
 
         $this->systemdReload();

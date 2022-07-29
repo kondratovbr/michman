@@ -22,12 +22,12 @@ class CreateDatabaseUserScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         if ($this->mysqlUserExists($userName, 'root', $server->databaseRootPassword)) {
-            Log::warning("The MySQL user {$userName} that was requested to be created already exists.");
+            Log::warning("The MySQL user $userName that was requested to be created already exists.");
             return;
         }
 
         $this->execMysql(
-            "CREATE USER '{$userName}'@'%' IDENTIFIED BY '{$password}'",
+            "CREATE USER '$userName'@'%' IDENTIFIED BY '$password'",
             'root',
             $server->databaseRootPassword,
         );

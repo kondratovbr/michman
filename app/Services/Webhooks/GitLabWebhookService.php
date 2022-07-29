@@ -35,9 +35,7 @@ class GitLabWebhookService implements WebhookServiceInterface
     /** https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html#push-events */
     public function getEventName(Request $request): string|null
     {
-        $event = $request->input('event_name');
-
-        return $event;
+        return $request->input('event_name');
     }
 
     public function eventIsSupported(Request $request): bool
@@ -58,9 +56,7 @@ class GitLabWebhookService implements WebhookServiceInterface
          * Should work, since we only use "push" event webhooks anyway.
          */
 
-        $after = $request->input('after');
-
-        return $after;
+        return $request->input('after');
     }
 
     public function pushedBranch(array $data): string|null

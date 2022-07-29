@@ -31,10 +31,10 @@ class DeleteSshKeyFromUserScript extends AbstractServerScript
 
         $remoteDirectory = $username === 'root'
             ? '/root/.ssh'
-            : "/home/{$username}/.ssh";
+            : "/home/$username/.ssh";
         $remoteFile = $remoteDirectory . '/authorized_keys';
 
-        $this->exec("test -w {$remoteFile}");
+        $this->exec("test -w $remoteFile");
 
         $this->sedRemoveString($remoteFile, $sshKeyString);
     }

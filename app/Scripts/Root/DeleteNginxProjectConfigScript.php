@@ -17,8 +17,8 @@ class DeleteNginxProjectConfigScript extends AbstractServerScript
         $enabled = "/etc/nginx/sites-enabled";
         $file = "{$project->projectName}.conf";
 
-        $this->exec("rm -rf {$enabled}/{$file}");
-        $this->exec("rm -rf {$available}/{$file}");
+        $this->exec("rm -rf $enabled/$file");
+        $this->exec("rm -rf $available/$file");
 
         $this->exec("rm -rf {$project->userNginxConfigFilePath}");
     }

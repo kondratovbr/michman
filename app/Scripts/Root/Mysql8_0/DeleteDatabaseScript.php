@@ -18,7 +18,7 @@ class DeleteDatabaseScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         $this->execMysql(
-            "DROP DATABASE IF EXISTS {$dbName}",
+            "DROP DATABASE IF EXISTS $dbName",
             'root',
             $server->databaseRootPassword,
         );

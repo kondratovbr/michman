@@ -29,7 +29,7 @@ trait HasTasksCounter
 
     public function setTasksAttribute(int|null $value): void
     {
-        $this->attributes[$this->tasksAttributeName] = (int) ($value ?? 0);
+        $this->attributes[$this->tasksAttributeName] = $value ?? 0;
     }
 
     public function tasksAttributeName(): string

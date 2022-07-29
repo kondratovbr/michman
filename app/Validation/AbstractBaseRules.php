@@ -6,6 +6,7 @@ use App\Exceptions\NotModelException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
+use Closure;
 
 abstract class AbstractBaseRules extends AbstractRules
 {
@@ -127,7 +128,7 @@ abstract class AbstractBaseRules extends AbstractRules
      *
      * If a closure is passed, it will be resolved through a service container.
      */
-    public function requiredIf(bool|\Closure $condition): static
+    public function requiredIf(bool|Closure $condition): static
     {
         if ($this->checkCondition($condition))
             $this->required();
@@ -138,7 +139,7 @@ abstract class AbstractBaseRules extends AbstractRules
     /** Required only when another field has a specific value. */
     public function requiredIfAnotherFieldIs(string $field, mixed $value): static
     {
-        return $this->addRule("required_if:{$field},{$value}");
+        return $this->addRule("required_if:$field,$value");
     }
 
     /**
@@ -146,7 +147,7 @@ abstract class AbstractBaseRules extends AbstractRules
      *
      * If a closure is passed, it will be resolved through a service container.
      */
-    public function nullableUnless(bool|\Closure $condition): static
+    public function nullableUnless(bool|Closure $condition): static
     {
         if(! $this->checkCondition($condition))
             $this->nullable();

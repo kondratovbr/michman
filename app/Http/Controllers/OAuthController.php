@@ -46,9 +46,9 @@ use Laravel\Socialite\Contracts\User as OauthUser;
 class OAuthController extends AbstractController
 {
     public function __construct(
-        private CreateNewUser $createNewUser,
-        private CreateOAuthUserAction $createOAuthUser,
-        private VcsProviderHandler $vcsProviderHandler,
+        private readonly CreateNewUser         $createNewUser,
+        private readonly CreateOAuthUserAction $createOAuthUser,
+        private readonly VcsProviderHandler    $vcsProviderHandler,
     ) {}
 
     /** Redirect the user to an external authentication page of an OAuth provider for auth purposes. */
@@ -59,7 +59,7 @@ class OAuthController extends AbstractController
         $vcsProviderName = $this->vcsProviderHandler->getVcsProviderName($oauthProvider);
 
         if (! is_null($vcsProviderName))
-            $socialite->scopes(config("vcs.list.{$vcsProviderName}.oauth_scopes"));
+            $socialite->scopes(config("vcs.list.$vcsProviderName.oauth_scopes"));
 
         return $socialite
             ->redirectUrl(route('oauth.auth-callback', $oauthProvider))
@@ -97,7 +97,7 @@ class OAuthController extends AbstractController
                  */
                 if (! is_null($user)) {
                     session()->flash('status', __('flash.oauth-failed-email-taken', [
-                        'oauth_provider' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                        'oauth_provider' => __("auth.oauth.providers.$oauthProvider.label"),
                     ]));
                     return redirect()->route('login');
                 }
@@ -148,7 +148,7 @@ class OAuthController extends AbstractController
             /** @var VcsProvider|null $vcsProvider */
             if (
                 $vcsProvider = $user->vcsProviders()
-                    ->where('provider', config("auth.oauth_providers.{$oauthProvider}.vcs_provider"))
+                    ->where('provider', config("auth.oauth_providers.$oauthProvider.vcs_provider"))
                     ->where('external_id', $oauthModel->oauthId)
                     ->latest()
                     ->first()
@@ -166,7 +166,7 @@ class OAuthController extends AbstractController
              *       Same thing in VcsProviderController.
              */
             flash(__('flash.oauth-linked', [
-                'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                'oauth' => __("auth.oauth.providers.$oauthProvider.label"),
             ]), FlashMessageEvent::STYLE_SUCCESS);
 
             return redirect()->route('account.show', 'profile');
@@ -200,11 +200,11 @@ class OAuthController extends AbstractController
 
             if (is_null($vcsProvider)) {
                 flash(__('flash.oauth-unlinked', [
-                    'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                    'oauth' => __("auth.oauth.providers.$oauthProvider.label"),
                 ]));
             } else {
                 flash(__('flash.oauth-unlinked-vcs-kept', [
-                    'oauth' => __("auth.oauth.providers.{$oauthProvider}.label"),
+                    'oauth' => __("auth.oauth.providers.$oauthProvider.label"),
                 ]));
             }
         }, 5);
@@ -285,7 +285,7 @@ class OAuthController extends AbstractController
         // the beginning for now.
         // TODO: Maybe show some message for the user in this case.
         if ($error === 'access_denied')
-            return redirect()->home();
+            return redirect()->route('home');
 
         throw match ($error) {
             'application_suspended' => new ApplicationSuspendedException($oauthProvider, $request->fullUrl()),

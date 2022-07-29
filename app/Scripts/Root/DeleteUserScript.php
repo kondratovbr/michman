@@ -16,8 +16,8 @@ class DeleteUserScript extends AbstractServerScript
         $users = $this->exec("cut -d: -f1 /etc/passwd");
 
         if (Str::contains($users, $username))
-            $this->exec("userdel -r -f {$username}");
+            $this->exec("userdel -r -f $username");
 
-        $this->exec("rm -rf /home/{$username}");
+        $this->exec("rm -rf /home/$username");
     }
 }

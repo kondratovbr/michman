@@ -57,15 +57,15 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
             'greeting',
         ] as $element) {
             if ($string = trans_try([
-                "notifications.mails.{$type}.{$element}",
-                "notifications.mails.default.{$element}",
+                "notifications.mails.$type.$element",
+                "notifications.mails.default.$element",
             ], $data)) {
                 $mail->$element($string);
             }
         }
 
-        foreach (trans()->get("notifications.mails.{$type}.lines") as $key => $line) {
-            $mail->line(__("notifications.mails.{$type}.lines.{$key}", $data));
+        foreach (trans()->get("notifications.mails.$type.lines") as $key => $line) {
+            $mail->line(__("notifications.mails.$type.lines.$key", $data));
         }
 
         $mail->action(__('notifications.mails.default.action'), route('home'));
@@ -78,7 +78,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     {
         $type = get_called_class();
 
-        return __("notifications.mails.{$type}.{$key}", $this->dataForMail());
+        return __("notifications.mails.$type.$key", $this->dataForMail());
     }
 
     /** Get the broadcastable representation of the notification. */
@@ -93,7 +93,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     {
         $type = get_called_class();
 
-        return __("notifications.messages.{$type}", static::dataForMessage($data));
+        return __("notifications.messages.$type", static::dataForMessage($data));
     }
 
     /** Get the data for localized message strings for this notification. */

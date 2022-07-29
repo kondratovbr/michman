@@ -202,8 +202,8 @@ class GitHubV3Test extends AbstractFeatureTest
         ]);
 
         $result = $this->api()->updateSshKey(new SshKeyDto(
-            publicKey: "2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234",
             name: 'Key name',
+            publicKey: "2Sg8iYjAxxmI2LvUXpJjkYrMxURPc8r+dB7TJyvv1234",
             id: '123',
         ));
 

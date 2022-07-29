@@ -23,21 +23,21 @@ class CloneGitRepoScript extends AbstractServerScript
         $domain = $project->domain;
         $sshHostKey = $vcs->getSshHostKey();
 
-        $homedir = "/home/{$username}";
-        $knownHostsFile = "{$homedir}/.ssh/known_hosts";
-        $projectDir = "{$homedir}/{$domain}";
+        $homedir = "/home/$username";
+        $knownHostsFile = "$homedir/.ssh/known_hosts";
+        $projectDir = "$homedir/$domain";
         $sshKeyName = $project->useDeployKey ? $project->deploySshKey->name : 'id_ed25519';
-        $sshKeyFile = "{$homedir}/.ssh/{$sshKeyName}";
+        $sshKeyFile = "$homedir/.ssh/$sshKeyName";
 
         $this->init($server, $ssh, $username);
 
         // Create the known_hosts file if it doesn't exist.
-        $this->exec("touch {$knownHostsFile}");
-        $this->exec("chmod 0644 {$knownHostsFile}");
+        $this->exec("touch $knownHostsFile");
+        $this->exec("chmod 0644 $knownHostsFile");
 
         // Use grep to check if the VCS's SSH host key is already added to the known_hosts file
         // and add if it isn't.
-        $this->exec("grep -qxF '{$sshHostKey}' {$knownHostsFile} || echo '{$sshHostKey}' >> {$knownHostsFile}");
+        $this->exec("grep -qxF '$sshHostKey' $knownHostsFile || echo '$sshHostKey' >> $knownHostsFile");
 
         // This script is for the initial repo cloning, so we can safely delete the directory.
         // It may already exist if the cloning was already tried before and failed,
@@ -47,7 +47,7 @@ class CloneGitRepoScript extends AbstractServerScript
         // TODO: IMPORTANT! Figure out file permissions here. Project files shouldn't be modifiable and directories
         //       shouldn't be writable by other users. Same thing when we pull changes during deployment.
         $this->exec(
-            "git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" clone --single-branch --branch {$project->branch} --depth 1 {$repoSshString} {$projectDir}"
+            "git -c core.sshCommand=\"ssh -i $sshKeyFile\" clone --single-branch --branch $project->branch --depth 1 $repoSshString $projectDir"
         );
     }
 }

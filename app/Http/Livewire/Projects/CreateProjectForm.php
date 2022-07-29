@@ -119,7 +119,7 @@ class CreateProjectForm extends LivewireComponent
 
         $this->types = Arr::mapKeys(
             config('projects.types'),
-            fn(string $type) => __("projects.types.{$type}"),
+            fn(string $type) => __("projects.types.$type"),
             true
         );
         $this->pythonVersions = Arr::mapAssoc(

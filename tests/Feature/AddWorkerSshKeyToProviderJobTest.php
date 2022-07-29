@@ -33,10 +33,10 @@ class AddWorkerSshKeyToProviderJobTest extends AbstractFeatureTest
                     )
                     ->once()
                     ->andReturn(new SshKeyDto(
+                        name: $server->name . ' - Michman worker key',
+                        publicKey: SshKeyFormatter::format($key->getPublicKey()),
                         id: '100500',
                         fingerprint: Str::random(),
-                        publicKey: SshKeyFormatter::format($key->getPublicKey()),
-                        name: $server->name . ' - Michman worker key',
                     ));
             }
         );

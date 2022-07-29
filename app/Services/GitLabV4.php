@@ -230,9 +230,9 @@ class GitLabV4 extends AbstractVcsProvider
     protected function sshKeyDataFromResponseData(object $data): SshKeyDto
     {
         return new SshKeyDto(
-            id: (string) $data->id,
-            publicKey: $data->key,
             name: $data->title,
+            publicKey: $data->key,
+            id: (string) $data->id,
         );
     }
 

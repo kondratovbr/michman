@@ -23,9 +23,9 @@ abstract class AbstractVcsProvider extends AbstractProvider implements VcsProvid
                 return $duplicatedAddedKey;
 
             return $this->updateSshKey(new SshKeyDto(
-                id: $duplicatedAddedKey->id,
-                publicKey: $publicKey,
                 name: $name,
+                publicKey: $publicKey,
+                id: $duplicatedAddedKey->id,
             ));
         }
 
