@@ -150,7 +150,10 @@ abstract class AbstractServerScript
         $this->initialize();
 
         try {
-            return $result = $this->ssh->write($input);
+            $this->ssh->write($input);
+            return true;
+        } catch (RuntimeException) {
+            return false;
         } finally {
             $this->server->log(
                 type: 'write',
@@ -257,7 +260,7 @@ abstract class AbstractServerScript
             $this->server->log(
                 type: 'get_string',
                 remoteFile: $remotePath,
-                success: $result !== false,
+                success: $result ?? null !== false,
             );
         }
     }
@@ -299,7 +302,9 @@ abstract class AbstractServerScript
             return $output = $this->ssh->read();
 
         } finally {
-            $outputToLog = is_bool($output) ? null : $output;
+            $outputToLog = is_bool($output ?? null)
+                ? null
+                : ($output ?? false);
             $exitCode = $this->ssh->getExitStatus();
             if ($exitCode === false)
                 $exitCode = null;
