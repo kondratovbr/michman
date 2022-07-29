@@ -81,3 +81,8 @@
 
     -   name: Ensure server is using UTC timezone
         include_role: name=configure-timezone
+
+    -   name: Change the hostname if provided
+        when: hostname is defined
+        shell:
+            cmd: "hostnamectl set-hostname {{ hostname }}"
