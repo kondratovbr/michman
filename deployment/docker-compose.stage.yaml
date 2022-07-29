@@ -17,9 +17,11 @@ services:
         user: nginx
         command: ["nginx", "-g", "daemon off;"]
         read_only: true
+        networks:
+            - backend
         ports:
-            - '80:8080'
-#            - '443:4443'
+#            - '80:8080'
+            - '443:4443'
         volumes:
             # Public static assets
             - 'app-public:/home/app/michman/public:ro'
@@ -31,6 +33,8 @@ services:
             # Staging-specific
             - './nginx/stage/app.conf:/etc/nginx/conf.d/app.conf:ro'
             - './nginx/stage/websockets.conf:/etc/nginx/conf.d/websockets.conf:ro'
+            # SSL key
+            - './stage.michman.dev.crt:/etc/nginx/stage.michman.dev.crt:ro'
             # Disposable volumes for temporary files
             - /var/cache
             - /var/run
@@ -51,12 +55,11 @@ services:
         read_only: true
         environment:
             APP_ENV: stage
+        networks:
+            - backend
         volumes:
             - 'app-public:/home/app/michman/public:ro'
             - './.env.stage:/home/app/michman/.env.stage:ro'
-        depends_on:
-            - mysql
-            - redis
         restart: unless-stopped
         logging: *default-logging
         healthcheck:
@@ -80,52 +83,16 @@ services:
             "--host", "0.0.0.0",
         ]
 
-    mysql:
-        image: mysql:8.0
-        read_only: true
-        volumes:
-            # Actual DB data
-            - 'mysql-db:/var/lib/mysql'
-            # Temporary directories needed to be writable to run read_only
-            - '/run/mysqld'
-            - '/tmp'
-            # Customized config with some sane defaults
-            - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
-            # File with the root password for the initialization.
-            - './mysql-root:/run/secrets/mysql-root'
-        ports:
-            - '127.0.0.1:3306:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
-        logging: *default-logging
-        restart: unless-stopped
-        healthcheck:
-            test: ["CMD", "mysqladmin", "ping"]
-
-    redis:
-        image: redis:6-alpine
-        read_only: true
-        # Command is overridden to explicitly put in a config that has a password configured.
-        command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
-        volumes:
-            - 'redis-data:/data'
-            - './redis.stage.conf:/usr/local/etc/redis/redis.conf:ro'
-        ports:
-            - '127.0.0.1:6379:6379'
-        logging: *default-logging
-        restart: unless-stopped
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-
 
 
 volumes:
-    # Redis can store some data on disc.
-    redis-data:
-        driver: local
-    # The actual MySQL database stored.
-    mysql-db:
-        driver: local
     # Application public directory with static assets.
     app-public:
         driver: local
+
+
+
+networks:
+    backend:
+        external: true
+        name: michman-stage_backend-network

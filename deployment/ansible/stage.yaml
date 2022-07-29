@@ -7,7 +7,7 @@
             path: /home/michman/michman/docker-compose.stage.yaml
         register: docker_compose_file
 
-    -   name: Down the whole Docker Compose project
+    -   name: Down the whole Docker Compose Application project
         when: docker_compose_file.stat.exists
         docker_compose:
             project_src: &project_src /home/michman/michman
@@ -46,7 +46,17 @@
 
 #  TODO: Add a step with docker-compose yaml files validation using "docker-compose config"
 
-    -   name: Deploy Docker Compose project
+    -   name: Update Docker Compose Databases project
+        docker_compose:
+            project_src: *project_src
+            files: docker-compose.db.stage.yaml
+            project_name: michman-db-stage
+            build: false
+            pull: true
+            remove_orphans: true
+        register: output_db
+
+    -   name: Deploy Docker Compose Application project
         docker_compose:
             project_src: *project_src
             files: *files
@@ -55,7 +65,7 @@
             pull: true
             recreate: always
             remove_orphans: true
-        register: output
+        register: output_app
 
     -   name: Run migrations
         become: true
@@ -64,8 +74,11 @@
             chdir: *project_src
         register: migrate_output
 
-    -   name: Print Docker Compose output
-        debug: var=output
+    -   name: Print Docker Compose Database output
+        debug: var=output_db
+
+    -   name: Print Docker Compose Application output
+        debug: var=output_app
 
     -   name: Print artisan migrate output
         debug: var=migrate_output.stdout_lines
