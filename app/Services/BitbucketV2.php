@@ -114,7 +114,7 @@ class BitbucketV2 extends AbstractVcsProvider
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
     {
-        $response = $this->get("/users/{$this->userId()}/ssh-keys/{$sshKeyExternalId}");
+        $response = $this->get("/users/{$this->userId()}/ssh-keys/$sshKeyExternalId");
         $data = $this->decodeJson($response->body());
 
         return $this->sshKeyDataFromResponseData($data);
@@ -162,7 +162,7 @@ class BitbucketV2 extends AbstractVcsProvider
     /** https://developer.atlassian.com/cloud/bitbucket/rest/api-group-repositories/#api-repositories-workspace-repo-slug-hooks-uid-get */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        $response = $this->get("/repositories/$repo/hooks/{$webhookExternalId}");
+        $response = $this->get("/repositories/$repo/hooks/$webhookExternalId");
         $data = $this->decodeJson($response->body());
 
         return $this->webhookDataFromResponseData($data);

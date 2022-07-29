@@ -14,7 +14,7 @@ class OAuthException extends Exception
         $code = 0,
         Throwable $previous = null,
     ) {
-        $message ??= "OAuth callback via {$oauthProvider} failed with an error. Callback URL: {$redirectedUrl}";
+        $message ??= "OAuth callback via $oauthProvider failed with an error. Callback URL: $redirectedUrl";
 
         parent::__construct($message, $code, $previous);
     }

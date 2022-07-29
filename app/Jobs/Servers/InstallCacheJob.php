@@ -38,7 +38,7 @@ class InstallCacheJob extends AbstractRemoteServerJob
                 return;
             }
 
-            $scriptClass = (string) config("servers.caches.{$this->cache}.scripts_namespace") . '\InstallCacheScript';
+            $scriptClass = config("servers.caches.{$this->cache}.scripts_namespace") . '\InstallCacheScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this cache.');

@@ -25,7 +25,7 @@ class UpdateDatabaseUserPasswordScript extends AbstractServerScript
         $authPlugin = static::MYSQL_AUTH_PLUGIN;
 
         $this->execMysql(
-            "ALTER USER '{$userName}'@'%' IDENTIFIED WITH '{$authPlugin}' BY '{$password}'; flush privileges;",
+            "ALTER USER '$userName'@'%' IDENTIFIED WITH '$authPlugin' BY '$password'; flush privileges;",
             'root',
             $server->databaseRootPassword,
         );

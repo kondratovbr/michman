@@ -36,12 +36,12 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function commitUrl(string $repo, string $commit): string
     {
-        return "https://gitlab.com/{$repo}/-/commit/{$commit}";
+        return "https://gitlab.com/$repo/-/commit/$commit";
     }
 
     public function repoUrl(string $repo): string
     {
-        return "https://gitlab.com/{$repo}";
+        return "https://gitlab.com/$repo";
     }
 
     public function credentialsAreValid(): bool
@@ -72,7 +72,7 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
     {
-        $response = $this->get("/user/keys/{$sshKeyExternalId}");
+        $response = $this->get("/user/keys/$sshKeyExternalId");
         $data = $this->decodeJson($response->body());
 
         return $this->sshKeyDataFromResponseData($data);
@@ -98,7 +98,7 @@ class GitLabV4 extends AbstractVcsProvider
 
     public function deleteSshKey(string $id): void
     {
-        $this->delete("/user/keys/{$id}");
+        $this->delete("/user/keys/$id");
     }
 
     public function getSshHostKey(): string
@@ -114,9 +114,9 @@ class GitLabV4 extends AbstractVcsProvider
         string $repo = null,
     ): string {
 
-        $repo = urlencode($fullRepoName ?? "{$username}/{$repo}");
+        $repo = urlencode($fullRepoName ?? "$username/$repo");
 
-        $response = $this->get("/projects/{$repo}/repository/commits/{$branch}");
+        $response = $this->get("/projects/$repo/repository/commits/$branch");
         $data = $this->decodeJson($response->body());
 
         return $data->id;
@@ -124,7 +124,7 @@ class GitLabV4 extends AbstractVcsProvider
 
     public static function getFullSshString(string $repo): string
     {
-        return "git@gitlab.com:{$repo}.git";
+        return "git@gitlab.com:$repo.git";
     }
 
     /** https://docs.gitlab.com/ee/api/projects.html#get-project-hook */
@@ -132,7 +132,7 @@ class GitLabV4 extends AbstractVcsProvider
     {
         $repo = urlencode($repo);
 
-        $response = $this->get("/projects/{$repo}/hooks/{$webhookExternalId}");
+        $response = $this->get("/projects/$repo/hooks/$webhookExternalId");
         $data = $this->decodeJson($response->body());
 
         return $this->webhookDataFromResponseData($data);
@@ -143,7 +143,7 @@ class GitLabV4 extends AbstractVcsProvider
     {
         $repo = urlencode($repo);
 
-        return $this->get("/projects/{$repo}/hooks", [],
+        return $this->get("/projects/$repo/hooks", [],
             function (WebhookDataCollection $carry, array $data) {
                 /** @var object $key */
                 foreach ($data as $key) {
@@ -161,7 +161,7 @@ class GitLabV4 extends AbstractVcsProvider
         $repo = urlencode($repo);
 
         $response = $this->post(
-            "/projects/{$repo}/hooks",
+            "/projects/$repo/hooks",
             $this->pushWebhookRequestData($payloadUrl, $secret),
         );
         $data = $this->decodeJson($response->body());
@@ -175,7 +175,7 @@ class GitLabV4 extends AbstractVcsProvider
         $repo = urlencode($repo);
 
         $response = $this->put(
-            "/projects/{$repo}/hooks/{$webhookExternalId}",
+            "/projects/$repo/hooks/$webhookExternalId",
             $this->pushWebhookRequestData($payloadUrl, $secret),
         );
         $data = $this->decodeJson($response->body());
@@ -188,7 +188,7 @@ class GitLabV4 extends AbstractVcsProvider
     {
         $repo = urlencode($repo);
 
-        $this->delete("/projects/{$repo}/hooks/{$webhookExternalId}");
+        $this->delete("/projects/$repo/hooks/$webhookExternalId");
     }
 
     public function dispatchesPingWebhookCalls(): bool

@@ -27,7 +27,7 @@ class ProjectChannel implements BroadcastingChannelInterface
             ? $project->getKey()
             : $project;
 
-        return "projects.{$projectKey}";
+        return "projects.$projectKey";
     }
 
     /** Get an instance of Laravel's Channel class corresponding with this broadcasting class. */
@@ -35,7 +35,7 @@ class ProjectChannel implements BroadcastingChannelInterface
     {
         if (is_null($project))
             return null;
-        
+
         return new PrivateChannel(static::name($project));
     }
 }

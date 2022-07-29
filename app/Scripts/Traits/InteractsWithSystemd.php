@@ -23,14 +23,14 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl stop {$service}");
+        $this->exec("systemctl stop $service");
     }
 
     protected function systemdDisableService(string $service): void
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl disable {$service}");
+        $this->exec("systemctl disable $service");
     }
 
     /**
@@ -41,14 +41,14 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl restart {$service}");
+        $this->exec("systemctl restart $service");
 
         if (! $verify)
             return;
 
         // Wait a bit for the service to be started by systemd.
         $this->setTimeout($timeout + 5);
-        $this->exec("sleep {$timeout}");
+        $this->exec("sleep $timeout");
 
         $this->systemdVerifyServiceIsRunning($service);
     }
@@ -58,7 +58,7 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        $output = $this->exec("systemctl status {$service}");
+        $output = $this->exec("systemctl status $service");
 
         if ($this->failed())
             return false;
@@ -72,6 +72,6 @@ trait InteractsWithSystemd
         $service = Str::lower($service);
 
         if (! $this->systemdIsServiceRunning($service))
-            throw new ServerScriptException("Systemd service \"{$service}\" has failed.");
+            throw new ServerScriptException("Systemd service \"$service\" has failed.");
     }
 }

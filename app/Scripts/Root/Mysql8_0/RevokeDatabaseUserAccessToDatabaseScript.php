@@ -27,12 +27,12 @@ class RevokeDatabaseUserAccessToDatabaseScript extends AbstractServerScript
             'root',
             $server->databaseRootPassword,
         )) {
-            Log::warning("The dbUser '{$userName}' doesn't have privileges on database '{$dbName}' that were requested to be revoked.");
+            Log::warning("The dbUser '$userName' doesn't have privileges on database '$dbName' that were requested to be revoked.");
             return;
         }
 
         $this->execMysql(
-            "REVOKE ALL PRIVILEGES ON {$dbName}.* FROM '{$userName}'@'%'",
+            "REVOKE ALL PRIVILEGES ON $dbName.* FROM '$userName'@'%'",
             'root',
             $server->databaseRootPassword,
         );

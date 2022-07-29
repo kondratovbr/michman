@@ -18,7 +18,7 @@ trait HandlesDatabases
         if (empty($server->installedDatabase))
             throw new RuntimeException('No database installed on this server.');
 
-        $scriptClass = (string) config("servers.databases.{$server->installedDatabase}.scripts_namespace")
+        $scriptClass = config("servers.databases.{$server->installedDatabase}.scripts_namespace")
             . '\\' . $scriptName;
 
         if (! class_exists($scriptClass))

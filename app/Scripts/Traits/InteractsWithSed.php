@@ -15,6 +15,6 @@ trait InteractsWithSed
     {
         $string = $this->sedEscape($string);
 
-        return $this->exec("sed -i '/{$string}/d' {$file}");
+        return $this->exec("sed -i '/$string/d' $file");
     }
 }

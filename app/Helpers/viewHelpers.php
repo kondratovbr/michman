@@ -44,13 +44,13 @@ if (! function_exists('title')) {
         if (empty($title))
             return null;
 
-        return (string) config('view.page_title_separator') . $title;
+        return config('view.page_title_separator') . $title;
     }
 }
 
 if (! function_exists('user')) {
     /** Get the currently authenticated user. */
-    function user(): ?User
+    function user(): User|null
     {
         return Auth::user();
     }

@@ -98,7 +98,7 @@ class VcsProvider extends AbstractModel
      */
     public function mustUseDeployKey(): bool
     {
-        return ! (bool) config("vcs.list.{$this->provider}.supports_ssh_keys", false);
+        return ! config("vcs.list.{$this->provider}.supports_ssh_keys", false);
     }
 
     /** Get a relation with the user that owns this VCS provider account. */

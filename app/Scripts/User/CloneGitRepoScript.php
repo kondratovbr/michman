@@ -42,7 +42,7 @@ class CloneGitRepoScript extends AbstractServerScript
         // This script is for the initial repo cloning, so we can safely delete the directory.
         // It may already exist if the cloning was already tried before and failed,
         // or if the user was tinkering on the server manually.
-        $this->exec("rm -rf {$projectDir}");
+        $this->exec("rm -rf $projectDir");
 
         // TODO: IMPORTANT! Figure out file permissions here. Project files shouldn't be modifiable and directories
         //       shouldn't be writable by other users. Same thing when we pull changes during deployment.

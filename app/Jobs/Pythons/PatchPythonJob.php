@@ -28,7 +28,7 @@ class PatchPythonJob extends AbstractRemoteServerJob
             if (! $python->isUpdating())
                 return;
 
-            $scriptClass = (string) config("servers.python.{$python->version}.scripts_namespace") . '\PatchPythonScript';
+            $scriptClass = config("servers.python.{$python->version}.scripts_namespace") . '\PatchPythonScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No patching script exists for this version of Python.');

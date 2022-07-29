@@ -27,7 +27,7 @@ class Translator extends BaseTranslator
             $main = parent::get($key, $replace, $locale, false);
 
             if ($main === $key)
-                Log::notice("Translation doesn't exist. Key: '{$key}', locale: '" . ($locale ?? $this->locale()) . "'");
+                Log::notice("Translation doesn't exist. Key: '$key', locale: '" . ($locale ?? $this->locale()) . "'");
         }
 
         return parent::get($key, $replace, $locale, $fallback);

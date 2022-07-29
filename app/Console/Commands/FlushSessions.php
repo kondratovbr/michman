@@ -30,7 +30,7 @@ class FlushSessions extends AbstractCommand
                 return 1;
             }
         } else {
-            $this->error("Sorry, I don't know how to clean the sessions of the driver '{$driver}'.");
+            $this->error("Sorry, I don't know how to clean the sessions of the driver '$driver'.");
             return 1;
         }
 

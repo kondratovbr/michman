@@ -27,7 +27,7 @@ class CreateSudoUserScript extends AbstractServerScript
 
         // Create the necessary directories upfront.
         foreach (['public'] as $dir) {
-            $this->exec("mkdir -p /home/$username/$dir && chown -R $username:{$username} /home/$username/$dir");
+            $this->exec("mkdir -p /home/$username/$dir && chown -R $username:$username /home/$username/$dir");
         }
     }
 }

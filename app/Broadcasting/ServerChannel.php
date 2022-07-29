@@ -27,7 +27,7 @@ class ServerChannel implements BroadcastingChannelInterface
             ? $server->getKey()
             : $server;
 
-        return "servers.{$serverKey}";
+        return "servers.$serverKey";
     }
 
     /** Get an instance of Laravel's Channel class corresponding with this broadcasting class. */
@@ -35,7 +35,7 @@ class ServerChannel implements BroadcastingChannelInterface
     {
         if (is_null($server))
             return null;
-        
+
         return new PrivateChannel(static::name($server));
     }
 }

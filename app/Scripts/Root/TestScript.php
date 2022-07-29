@@ -16,14 +16,14 @@ class TestScript extends AbstractServerScript
     ): void {
         $username = $project->serverUsername;
         $domain = $project->domain;
-        $workdir = "/home/{$username}/{$domain}";
+        $workdir = "/home/$username/$domain";
 
         $this->init($server, $ssh, $username);
 
         $this->enablePty();
         $this->setTimeout(60);
 
-        $this->execPty("cd {$workdir} && source venv/bin/activate && pip --quiet install -r requirements.txt");
+        $this->execPty("cd $workdir && source venv/bin/activate && pip --quiet install -r requirements.txt");
         dump($this->read());
 
         $this->disablePty();

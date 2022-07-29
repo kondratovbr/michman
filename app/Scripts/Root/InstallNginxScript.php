@@ -48,11 +48,11 @@ class InstallNginxScript extends AbstractServerScript
             'uwsgi_params',
             'win-utf',
         ] as $file) {
-            $this->exec("rm -f {$nginxDir}/{$file}");
+            $this->exec("rm -f $nginxDir/$file");
         }
 
         // Remove all "sites" that exist in Nginx config out of the box.
-        $this->exec("rm -rf {$nginxDir}/sites-enabled/* && rm -rf {$nginxDir}/sites-available/*");
+        $this->exec("rm -rf $nginxDir/sites-enabled/* && rm -rf $nginxDir/sites-available/*");
 
         // Send all the custom Nginx config files to their intended locations.
         foreach ([
@@ -68,7 +68,7 @@ class InstallNginxScript extends AbstractServerScript
             'ssl_params' => 'ssl_params',
             'ssl-dhparams.pem' => 'ssl-dhparams',
         ] as $file => $view) {
-            $this->sendString("{$nginxDir}/{$file}", ConfigView::render("nginx.{$view}"));
+            $this->sendString("$nginxDir/$file", ConfigView::render("nginx.$view"));
         }
 
         // TODO: IMPORTANT! Have a Michman-branded static page showing up when there's no project set up on a server (I already have one when there is.), if that server is "app" or "web".

@@ -20,7 +20,7 @@ trait InteractsWithCertbot
 
         $publicDir = '/home/' . config('servers.worker_user') . '/public';
 
-        $this->execPty("certbot certonly -n --expand --allow-subset-of-names -m {$userEmail} --agree-tos -d {$domain} --cert-name {$domain} --webroot --webroot-path {$publicDir}");
+        $this->execPty("certbot certonly -n --expand --allow-subset-of-names -m $userEmail --agree-tos -d $domain --cert-name $domain --webroot --webroot-path $publicDir");
 
         $output = $this->read();
 
@@ -43,6 +43,6 @@ trait InteractsWithCertbot
 
     protected function certbotDeleteCertificate(string $name): string|bool
     {
-        return $this->exec("certbot -n delete --cert-name {$name}");
+        return $this->exec("certbot -n delete --cert-name $name");
     }
 }

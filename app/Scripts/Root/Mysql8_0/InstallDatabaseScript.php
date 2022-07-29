@@ -60,7 +60,7 @@ class InstallDatabaseScript extends AbstractServerScript
         }
 
         $output = $this->execMysql(
-            "ALTER USER 'root'@'localhost' IDENTIFIED WITH '{$authPlugin}' BY '{$server->databaseRootPassword}'; flush privileges;"
+            "ALTER USER 'root'@'localhost' IDENTIFIED WITH '$authPlugin' BY '{$server->databaseRootPassword}'; flush privileges;"
         );
 
         if (

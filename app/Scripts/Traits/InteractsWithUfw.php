@@ -15,6 +15,6 @@ trait InteractsWithUfw
         if (empty($fromIp))
             $fromIp = 'any';
 
-        return "{$type} from {$fromIp} to any port {$port} proto tcp";
+        return "$type from $fromIp to any port $port proto tcp";
     }
 }

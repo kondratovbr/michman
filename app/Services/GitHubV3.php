@@ -40,19 +40,19 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function commitUrl(string $repo, string $commit): string
     {
-        return "https://github.com/{$repo}/commit/{$commit}";
+        return "https://github.com/$repo/commit/$commit";
     }
 
     public function repoUrl(string $repo): string
     {
-        return "https://github.com/{$repo}";
+        return "https://github.com/$repo";
     }
 
     public function credentialsAreValid(): bool
     {
         try {
             $response = $this->get('/user');
-        } catch (RequestException $e) {
+        } catch (RequestException) {
             return false;
         }
 
@@ -75,7 +75,7 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function getSshKey(string $sshKeyExternalId): SshKeyDto
     {
-        $response = $this->get("/user/keys/{$sshKeyExternalId}");
+        $response = $this->get("/user/keys/$sshKeyExternalId");
         $data = $this->decodeJson($response->body());
 
         return $this->sshKeyDataFromResponseData($data);
@@ -101,7 +101,7 @@ class GitHubV3 extends AbstractVcsProvider
 
     public function deleteSshKey(string $id): void
     {
-        $this->delete("/user/keys/{$id}");
+        $this->delete("/user/keys/$id");
     }
 
     /** https://docs.github.com/en/rest/reference/repos#get-a-commit */
@@ -111,9 +111,9 @@ class GitHubV3 extends AbstractVcsProvider
         string $username = null,
         string $repo = null,
     ): string {
-        $fullRepoName ??= "{$username}/{$repo}";
+        $fullRepoName ??= "$username/$repo";
 
-        $response = $this->get("/repos/{$fullRepoName}/commits/{$branch}");
+        $response = $this->get("/repos/$fullRepoName/commits/$branch");
         $data = $this->decodeJson($response->body());
 
         return $data->sha;
@@ -136,13 +136,13 @@ class GitHubV3 extends AbstractVcsProvider
 
     public static function getFullSshString(string $repo): string
     {
-        return "git@github.com:{$repo}.git";
+        return "git@github.com:$repo.git";
     }
 
     /** https://docs.github.com/en/rest/reference/repos#list-repository-webhooks */
     public function getRepoWebhooks(string $repo): WebhookDataCollection
     {
-        return $this->get("/repos/{$repo}/hooks", [],
+        return $this->get("/repos/$repo/hooks", [],
             function (WebhookDataCollection $carry, array $data) {
                 /** @var object $key */
                 foreach ($data as $key) {
@@ -157,7 +157,7 @@ class GitHubV3 extends AbstractVcsProvider
     /** https://docs.github.com/en/rest/reference/repos#get-a-repository-webhook */
     public function getWebhook(string $repo, string $webhookExternalId): WebhookDto
     {
-        $response = $this->get("/repos/{$repo}/hooks/{$webhookExternalId}");
+        $response = $this->get("/repos/$repo/hooks/$webhookExternalId");
         $data = $this->decodeJson($response->body());
 
         return $this->webhookDataFromResponseData($data);
@@ -166,7 +166,7 @@ class GitHubV3 extends AbstractVcsProvider
     /** https://docs.github.com/en/rest/reference/repos#create-a-repository-webhook */
     public function addWebhookPush(string $repo, string $payloadUrl, string $secret): WebhookDto
     {
-        $response = $this->post("/repos/{$repo}/hooks", [
+        $response = $this->post("/repos/$repo/hooks", [
             'config' => $this->webhookConfigArray('push', $payloadUrl, $secret),
         ]);
         $data = $this->decodeJson($response->body());
@@ -181,7 +181,7 @@ class GitHubV3 extends AbstractVcsProvider
         string $payloadUrl,
         string $secret,
     ): WebhookDto {
-        $response = $this->patch("/repos/{$repo}/hooks/{$webhookExternalId}", [
+        $response = $this->patch("/repos/$repo/hooks/$webhookExternalId", [
             'config' => $this->webhookConfigArray('push', $payloadUrl, $secret),
         ]);
         $data = $this->decodeJson($response->body());
@@ -192,7 +192,7 @@ class GitHubV3 extends AbstractVcsProvider
     /** https://docs.github.com/en/rest/reference/repos#delete-a-repository-webhook */
     public function deleteWebhook(string $repo, string $webhookExternalId): void
     {
-        $this->delete("/repos/{$repo}/hooks/{$webhookExternalId}");
+        $this->delete("/repos/$repo/hooks/$webhookExternalId");
     }
 
     public function dispatchesPingWebhookCalls(): bool
@@ -217,7 +217,7 @@ class GitHubV3 extends AbstractVcsProvider
             config('services.github.client_secret'),
         )
             ->accept(static::ACCEPT)
-            ->delete("/applications/{$clientId}/grant", [
+            ->delete("/applications/$clientId/grant", [
                 'access_token' => $this->token->token,
             ])
             ->throw();
