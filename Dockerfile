@@ -39,10 +39,6 @@ FROM ubuntu:22.04 as app
 
 ARG PHP_VERSION=8.1
 
-ARG APP_VERSION
-ARG SPARK_USERNAME
-ARG SPARK_PASSWORD
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV PHP_VERSION ${PHP_VERSION}
 ENV TZ=UTC
@@ -139,6 +135,9 @@ RUN echo "* * * * * php $APP_ROOT/artisan schedule:run > /dev/stdout 2>/dev/stde
 #
 # Application stage
 #
+
+ARG SPARK_USERNAME
+ARG SPARK_PASSWORD
 
 # Composer needs to be run from the app user,
 # the app itself will be run from an arbitrary user as well for security reasons.
