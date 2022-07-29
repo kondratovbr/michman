@@ -1,5 +1,7 @@
 <?php
 
+use App\Support\Websockets\DatabaseStore;
+
 return [
 
     /*
@@ -185,8 +187,7 @@ return [
         |
         */
 
-        // TODO: DEPLOYMENT. Move this to a different database to separate it from the important stuff.
-        'store' => \BeyondCode\LaravelWebSockets\Statistics\Stores\DatabaseStore::class,
+        'store' => DatabaseStore::class,
 
         /*
         |--------------------------------------------------------------------------
@@ -232,18 +233,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | By default, the configuration allows only on HTTP. For SSL, you need
-    | to set up the the certificate, the key, and optionally, the passphrase
+    | to set up the certificate, the key, and optionally, the passphrase
     | for the private key.
     | You will need to restart the server for the settings to take place.
     |
     */
 
-    /*
-     * TODO: CRITICAL! DEPLOYMENT. Configure SSL for Websockets on production.
-     *       https://beyondco.de/docs/laravel-websockets/basic-usage/ssl
-     *       Don't forget to also configure SSL for the main app,
-     *       make sure it works with Livewire as well.
-     */
     'ssl' => [
 
         'local_cert' => env('LARAVEL_WEBSOCKETS_SSL_LOCAL_CERT', null),
