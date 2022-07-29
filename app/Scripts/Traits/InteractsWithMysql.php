@@ -102,12 +102,12 @@ trait InteractsWithMysql
     ): bool {
         return Str::contains(
             $this->execMysql(
-                "SHOW GRANTS FOR '{$userName}'@'%'",
+                "SHOW GRANTS FOR '$userName'@'%'",
                 $dbUser,
                 $password,
             ),
             // Notice that syntax here is a bit different from the query above - MySQL outputs with backticks.
-            "GRANT ALL PRIVILEGES ON `{$dbName}`.* TO `{$userName}`@`%`"
+            "GRANT ALL PRIVILEGES ON `$dbName`.* TO `$userName`@`%`"
         );
     }
 
@@ -134,7 +134,7 @@ trait InteractsWithMysql
     private function mysqlCommand(string $query, string $dbUser, string $password = null): string
     {
         return isset($password)
-            ? "mysql -u {$dbUser} -p{$password} -e \"{$query}\""
-            : "mysql -u {$dbUser} -e \"{$query}\"";
+            ? "mysql -u $dbUser -p$password -e \"$query\""
+            : "mysql -u $dbUser -e \"$query\"";
     }
 }

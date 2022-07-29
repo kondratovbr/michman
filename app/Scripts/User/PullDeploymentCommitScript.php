@@ -26,7 +26,7 @@ class PullDeploymentCommitScript extends AbstractServerScript
         // Fetch and merge replace pull, which is done to ensure the exact specific commit is being deployed.
 
         $this->exec(
-            "cd {$project->projectDir} && git -c core.sshCommand=\"ssh -i {$sshKeyFile}\" fetch --quiet --force origin {$deployment->branch}"
+            "cd {$project->projectDir} && git -c core.sshCommand=\"ssh -i $sshKeyFile\" fetch --quiet --force origin {$deployment->branch}"
         );
 
         $this->exec("cd {$project->projectDir} && git merge --quiet -X theirs {$deployment->commit}");

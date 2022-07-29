@@ -27,12 +27,12 @@ class GrantDatabaseUserAccessToDatabaseScript extends AbstractServerScript
             'root',
             $server->databaseRootPassword,
         )) {
-            Log::warning("The dbUser '{$userName}' already has privileges on database '{$dbName}' that were requested to be granted.");
+            Log::warning("The dbUser '$userName' already has privileges on database '$dbName' that were requested to be granted.");
             return;
         }
 
         $this->execMysql(
-            "GRANT ALL PRIVILEGES ON {$dbName}.* TO '{$userName}'@'%'",
+            "GRANT ALL PRIVILEGES ON $dbName.* TO '$userName'@'%'",
             'root',
             $server->databaseRootPassword,
         );

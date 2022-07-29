@@ -25,7 +25,7 @@ trait ListensForEchoes
             // 'echo:CHANNEL_NAME,.FULLY_QUALIFIED_EVENT_CLASS_NAME' => 'METHOD_NAME',
             // 'echo:foo-channel,.App\Events\FoobarEvent' => 'foobar',
             // NOTE: Dot is not a typo. Livewire prepends the event name with the default event namespace if omitted.
-            $this->broadcastListeners["echo:{$channelName},.{$eventClass}"] = $method;
+            $this->broadcastListeners["echo:$channelName,.$eventClass"] = $method;
         }
     }
 
@@ -41,7 +41,7 @@ trait ListensForEchoes
             // 'echo-private:CHANNEL_NAME,.FULLY_QUALIFIED_EVENT_CLASS_NAME' => 'METHOD_NAME',
             // 'echo-private:foo-channel,.App\Events\FoobarEvent' => 'foobar',
             // NOTE: Dot is not a typo. Livewire prepends the event name with the default event namespace if omitted.
-            $this->broadcastListeners["echo-private:{$channelName},.{$eventClass}"] = $method;
+            $this->broadcastListeners["echo-private:$channelName,.$eventClass"] = $method;
         }
     }
 
@@ -57,7 +57,7 @@ trait ListensForEchoes
             // 'echo-presence:CHANNEL_NAME,.FULLY_QUALIFIED_EVENT_CLASS_NAME' => 'METHOD_NAME',
             // 'echo-presence:foo-channel,.App\Events\FoobarEvent' => 'foobar',
             // NOTE: Dot is not a typo. Livewire prepends the event name with the default event namespace if omitted.
-            $this->broadcastListeners["echo-presence:{$channelName},.{$eventClass}"] = $method;
+            $this->broadcastListeners["echo-presence:$channelName,.$eventClass"] = $method;
         }
     }
 

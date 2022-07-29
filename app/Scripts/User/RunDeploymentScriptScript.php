@@ -32,7 +32,7 @@ class RunDeploymentScriptScript extends AbstractServerScript
 
         $this->exec(
             implode(' ', Arr::mapWithKeys($michmanVars,
-                fn(string $name, $value) => static::PREFIX . $name . "=\"{$value}\""
+                fn(string $name, $value) => static::PREFIX . $name . "=\"$value\""
             )) . " && source {$project->envFilePath} && cd {$project->projectDir} && {$project->deployScriptFilePath}"
         );
     }
