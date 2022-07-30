@@ -1,0 +1,84 @@
+-   hosts: prod
+    become: true
+    tasks:
+
+    -   name: Check if previously uploaded docker-compose file exists
+        stat:
+            path: /home/michman/michman/docker-compose.yaml
+        register: docker_compose_file
+
+    -   name: Down the whole Docker Compose Application project
+        when: docker_compose_file.stat.exists
+        docker_compose:
+            project_src: &project_src /home/michman/michman
+            files: &files docker-compose.yaml
+            project_name: &project_name michman
+            state: absent
+            timeout: 1800 # 30 min, because that's how long Horizon is allowed to wait for the longest job to finish.
+
+    -   name: Remove the volume with public assets
+        docker_volume:
+            name: michman_app-public
+            state: absent
+
+    -   name: Update production Docker Compose config
+        synchronize:
+            src: ../../deployment/
+            dest: /home/michman/michman
+            archive: false
+            recursive: true
+            checksum: true
+            delete: true
+
+    -   name: Chown Docker Compose config files
+        file:
+            path: /home/michman/michman
+            state: directory
+            recurse: yes
+            owner: michman
+            group: michman
+
+    -   name: Login to Docker Hub
+        when: (docker_username is defined) and (docker_password is defined)
+        docker_login:
+            username: "{{ docker_username }}"
+            password: "{{ docker_password }}"
+
+#  TODO: Add a step with docker-compose yaml files validation using "docker-compose config"
+
+    -   name: Update Docker Compose Databases project
+        docker_compose:
+            project_src: *project_src
+            files: docker-compose.db.yaml
+            project_name: michman-db
+            build: false
+            pull: true
+            remove_orphans: true
+        register: output_db
+
+    -   name: Deploy Docker Compose Application project
+        docker_compose:
+            project_src: *project_src
+            files: *files
+            project_name: *project_name
+            build: false
+            pull: true
+            recreate: always
+            remove_orphans: true
+        register: output_app
+
+    -   name: Run migrations
+        become: true
+        shell:
+            cmd: "docker-compose -f docker-compose.yaml -p michman exec app php artisan migrate"
+            chdir: *project_src
+        register: migrate_output
+
+    -   name: Print Docker Compose Database output
+        debug: var=output_db
+
+    -   name: Print Docker Compose Application output
+        debug: var=output_app
+
+    -   name: Print artisan migrate output
+        debug: var=migrate_output.stdout_lines

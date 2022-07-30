@@ -1,0 +1,74 @@
+#
+
+# TODO: VERY IMPORTANT! Queue worker can easily make MySQL use 100% of available CPU when performing some heavy SQL queries.
+#       Should make sure the app can still work while at it and it cannot be abused.
+
+# Reusable logging config
+x-logging:
+    &default-logging
+    driver: "local"
+
+
+
+services:
+
+    mysql:
+        image: mysql:8.0
+        read_only: true
+        volumes:
+            # Actual DB data
+            - 'mysql-db:/var/lib/mysql'
+            # Temporary directories needed to be writable to run read_only
+            - '/run/mysqld'
+            - '/tmp'
+            # Customized config with some sane defaults
+            - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
+            # File with the root password for the initialization.
+            - './mysql-root-prod:/run/secrets/mysql-root'
+        networks:
+            - backend
+        ports:
+            - '127.0.0.1:3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root
+        logging: *default-logging
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping"]
+
+    redis:
+        image: redis:6-alpine
+        read_only: true
+        # Command is overridden to explicitly put in a config that has a password configured.
+        command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+        volumes:
+            - 'redis-data:/data'
+            - './redis.prod.conf:/usr/local/etc/redis/redis.conf:ro'
+        networks:
+            - backend
+        ports:
+            - '127.0.0.1:6379:6379'
+        logging: *default-logging
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+
+
+
+volumes:
+    # Redis can store some data on disc.
+    redis-data:
+        driver: local
+        name: michman_redis-data
+    # The actual MySQL database stored.
+    mysql-db:
+        driver: local
+        name: michman_mysql-db
+
+
+
+networks:
+    backend:
+        driver: bridge
+        attachable: true
+        name: michman_backend

@@ -29,9 +29,9 @@ services:
             - './nginx/gzip.conf:/etc/nginx/gzip.conf:ro'
             - './nginx/mime.types:/etc/nginx/mime.types:ro'
             - './nginx/fastcgi_params:/etc/nginx/fastcgi_params:ro'
-            # Staging-specific
-            - './nginx/stage/app.conf:/etc/nginx/conf.d/app.conf:ro'
-            - './nginx/stage/websockets.conf:/etc/nginx/conf.d/websockets.conf:ro'
+            # Production-specific
+            - './nginx/prod/app.conf:/etc/nginx/conf.d/app.conf:ro'
+            - './nginx/prod/websockets.conf:/etc/nginx/conf.d/websockets.conf:ro'
             # SSL key
             - './michman.dev.crt:/etc/nginx/michman.dev.crt:ro'
             # Disposable volumes for temporary files
@@ -53,12 +53,12 @@ services:
         platform: 'linux/amd64'
         read_only: true
         environment:
-            APP_ENV: stage
+            APP_ENV: production
         networks:
             - backend
         volumes:
             - 'app-public:/home/app/michman/public:ro'
-            - './.env.stage:/home/app/michman/.env.stage:ro'
+            - './.env.prod:/home/app/michman/.env:ro'
         restart: unless-stopped
         logging: *default-logging
         healthcheck:
@@ -94,4 +94,4 @@ volumes:
 networks:
     backend:
         external: true
-        name: michman-stage_backend-network
+        name: michman_backend
