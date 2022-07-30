@@ -1,4 +1,5 @@
-.env.stage
-mysql-root
+.env.*
+mysql-root*
 redis.stage.conf
+redis.prod.conf
 *.crt
