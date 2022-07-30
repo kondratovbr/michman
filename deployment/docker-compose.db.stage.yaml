@@ -24,7 +24,7 @@ services:
             # Customized config with some sane defaults
             - './mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro'
             # File with the root password for the initialization.
-            - './mysql-root:/run/secrets/mysql-root'
+            - './mysql-root-stage:/run/secrets/mysql-root'
         networks:
             - backend
         ports:
