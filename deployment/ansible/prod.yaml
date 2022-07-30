@@ -70,7 +70,7 @@
     -   name: Run migrations
         become: true
         shell:
-            cmd: "docker-compose -f docker-compose.yaml -p michman exec app php artisan migrate"
+            cmd: "docker-compose -f docker-compose.yaml -p michman exec app php artisan migrate --force"
             chdir: *project_src
         register: migrate_output
 
