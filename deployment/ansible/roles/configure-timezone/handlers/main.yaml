@@ -1,4 +1,5 @@
 -   name: restart crond
+    ignore_errors: true
     service:
         name: cron.service
         state: restarted
