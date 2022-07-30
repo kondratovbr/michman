@@ -34,7 +34,7 @@ services:
             - './nginx/stage/app.conf:/etc/nginx/conf.d/app.conf:ro'
             - './nginx/stage/websockets.conf:/etc/nginx/conf.d/websockets.conf:ro'
             # SSL key
-            - './stage.michman.dev.crt:/etc/nginx/stage.michman.dev.crt:ro'
+            - './michman.dev.crt:/etc/nginx/stage.michman.dev.crt:ro'
             # Disposable volumes for temporary files
             - /var/cache
             - /var/run
