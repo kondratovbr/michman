@@ -3,7 +3,7 @@ all:
         prod:
             hosts:
                 michman-app-1:
-                    ansible_host: 167.99.217.206
+                    ansible_host: 176.124.213.171
         stage:
             hosts:
                 michman-stage:
