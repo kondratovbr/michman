@@ -25,15 +25,14 @@
 
     -   name: "Install packages I'm used to"
         apt:
-            name: "{{ item }}"
+            name:
+                - tmux
+                - ruby
+                - rsync
+                - curl
+                - git
             state: latest
             update_cache: true
-        loop:
-            - tmux
-            - ruby
-            - rsync
-            - curl
-            - git
 
     -   name: Install rmate
         gem:
