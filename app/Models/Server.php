@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\App;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
+use RuntimeException;
 use Spatie\ModelStates\HasStates;
 
 /**
@@ -217,7 +218,7 @@ class Server extends AbstractModel
 
         // TODO: IMPORTANT! Figure out what to do if the host key verification fails. Read about why it may happen in normal operation. Probably will have to notify the user and then ask them to confirm that everything is OK.
         if ($ssh->getServerPublicHostKey() != $this->sshHostKey)
-            throw new \RuntimeException('Host key verification failed.');
+            throw new RuntimeException('Host key verification failed.');
 
         if (! $ssh->login($user, $this->workerSshKey->privateKey))
             throw new SshAuthFailedException('Key authentication failed.');
@@ -236,7 +237,7 @@ class Server extends AbstractModel
 
         // SSH2::getServerPublicHostKey() may return false if the key received wasn't signed correctly.
         if ($hostKey === false)
-            throw new \RuntimeException('Server\'s SSH host key wasn\'t received correctly.');
+            throw new RuntimeException('Server\'s SSH host key wasn\'t received correctly.');
 
         $this->update(['ssh_host_key' => $hostKey]);
     }

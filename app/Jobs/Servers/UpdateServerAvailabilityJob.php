@@ -9,7 +9,6 @@ use App\Scripts\Root\VerifyServerAvailabilityScript;
 use App\States\Servers\Configuring;
 use Illuminate\Support\Facades\DB;
 use DateTimeInterface;
-use Throwable;
 
 class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
 {
@@ -38,7 +37,7 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
 
             try {
                 $ssh = $server->sftp();
-            } catch (SshAuthFailedException $exception) {
+            } catch (SshAuthFailedException) {
                 $server->available = false;
                 $server->save();
                 return;
@@ -61,7 +60,7 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
         }, 5);
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(): void
     {
         $this->server->available = false;
         $this->server->save();
