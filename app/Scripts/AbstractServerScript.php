@@ -91,6 +91,7 @@ abstract class AbstractServerScript
                 content: $scrubOutput
                     ? '[Output is scrubbed for security reasons.]'
                     : ($outputToLog ?? null),
+                success: $exitCode === 0,
             );
         }
     }
