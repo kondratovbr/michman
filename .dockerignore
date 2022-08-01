@@ -19,6 +19,8 @@ public/storage/*
 !routes
 !tests
 
+!servers
+
 !storage
 storage/app/*
 storage/framework/cache/*
