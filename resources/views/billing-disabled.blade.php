@@ -35,6 +35,8 @@
 
                     <p>In the mean time I would much appreciate your feedback or any suggestions you have for Michman.</p>
 
+                    <p class="text-right">- Bogdan</p>
+
                 </div>
 
                 <x-buttons.primary
