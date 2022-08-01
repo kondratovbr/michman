@@ -96,6 +96,55 @@ abstract class AbstractServerScript
         }
     }
 
+    /**
+     * Execute a long-running command on a remote server over SSH using a PTY mode.
+     *
+     * Run one read() to get the output afterwards.
+     */
+    protected function execLong(
+        string $command,
+        int $timeout = 60, // 60 sec by default
+        bool $scrubCommand = false,
+        bool $scrubOutput = false,
+        string $logCommand = null,
+        bool $throw = true,
+    ): string {
+        $this->initialize();
+
+        if (! $this->ssh->isPTYEnabled())
+            $this->enablePty();
+
+        $this->setTimeout($timeout);
+
+        try {
+            $this->ssh->exec($command);
+            $output = $this->read();
+
+            if ($throw && $this->failed())
+                throw new ServerScriptException('Shell command has failed.');
+
+            return $output ?? '';
+        } finally {
+            $output ??= null;
+            $outputToLog = $output === false ? null : $output;
+            $exitCode = $this->ssh->getExitStatus();
+            if ($exitCode === false)
+                $exitCode = null;
+
+            $this->server->log(
+                type: 'exec_long',
+                command: $scrubCommand
+                    ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
+                    : $command,
+                exitCode: $exitCode,
+                content: $scrubOutput
+                    ? '[Output is scrubbed for security reasons.]'
+                    : ($outputToLog ?? null),
+                success: $exitCode === 0,
+            );
+        }
+    }
+
     /** Execute a command on a remote server over SSH using a PTY mode. */
     protected function execPty(
         string $command,

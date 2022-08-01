@@ -3,7 +3,6 @@
 namespace App\Scripts\Traits;
 
 use App\Scripts\AbstractServerScript;
-use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Arr;
 
 /*
@@ -38,42 +37,22 @@ trait InteractsWithApt
      * it's a long-running thing and may get stuck due to external factors.
      */
 
-    private int $aptTimeout = 60 * 30; // 30 min
+    private int $timeout = 60 * 30; // 30 min
 
     protected function aptUpdate(): string
     {
-        $this->enablePty();
-        $this->setTimeout($this->aptTimeout);
-
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get update -y');
-
-        $output = $this->read();
-
-        if ($this->failed())
-            throw new ServerScriptException('apt-get update command has failed.');
-
-        $this->disablePty();
-
-        return $output;
+        return $this->execLong(
+            'DEBIAN_FRONTEND=noninteractive apt-get update -y',
+            $this->timeout,
+        );
     }
 
     protected function aptInstall(array|string $packages): string
     {
-        $this->enablePty();
-        $this->setTimeout($this->aptTimeout);
-
-        $this->execPty(
+        return $this->execLong(
             'DEBIAN_FRONTEND=noninteractive apt-get install -y ' .
-            implode(' ', Arr::wrap($packages))
+            implode(' ', Arr::wrap($packages)),
+            $this->timeout,
         );
-
-        $output = $this->read();
-
-        if ($this->failed())
-            throw new ServerScriptException('apt-get install command has failed.');
-
-        $this->disablePty();
-
-        return $output;
     }
 }
