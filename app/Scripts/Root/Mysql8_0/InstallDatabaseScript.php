@@ -5,6 +5,7 @@ namespace App\Scripts\Root\Mysql8_0;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Scripts\Traits\InteractsWithApt;
 use App\Scripts\Traits\InteractsWithMysql;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
@@ -12,6 +13,7 @@ use phpseclib3\Net\SFTP;
 class InstallDatabaseScript extends AbstractServerScript
 {
     use InteractsWithMysql;
+    use InteractsWithApt;
 
     /** @var string MySQL authentication plugin to configure for root. */
     protected const MYSQL_AUTH_PLUGIN = 'caching_sha2_password';
@@ -22,13 +24,13 @@ class InstallDatabaseScript extends AbstractServerScript
 
         $this->init($server, $ssh);
 
-        $this->enablePty();
-        $this->setTimeout(60 * 30); // 30 min
-        $this->execPty('apt-get update -y');
-        $this->read();
-        $this->execPty('apt-get install -y mysql-server-8.0 mysql-client-8.0 libmysqlclient-dev');
-        $this->read();
-        $this->disablePty();
+        $this->aptUpdate();
+
+        $this->aptInstall([
+            'mysql-server-8.0',
+            'mysql-client-8.0',
+            'libmysqlclient-dev',
+        ]);
 
         $this->exec('systemctl start mysql');
 

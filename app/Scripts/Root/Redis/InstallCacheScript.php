@@ -5,22 +5,20 @@ namespace App\Scripts\Root\Redis;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Scripts\Traits\InteractsWithApt;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 class InstallCacheScript extends AbstractServerScript
 {
+    use InteractsWithApt;
+
     public function execute(Server $server, SFTP $ssh = null): void
     {
         $this->init($server, $ssh);
 
-        $this->enablePty();
-        $this->setTimeout(60 * 30); // 30 min
-        $this->execPty('apt-get update -y');
-        $this->read();
-        $this->execPty('apt-get install -y redis-server');
-        $this->read();
-        $this->disablePty();
+        $this->aptUpdate();
+        $this->aptInstall('redis-server');
 
         $this->sendFile(
             '/etc/redis/redis.conf',

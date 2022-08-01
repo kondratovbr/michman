@@ -5,10 +5,13 @@ namespace App\Scripts\Root;
 use App\Facades\ConfigView;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Traits\InteractsWithApt;
 use phpseclib3\Net\SFTP;
 
 class InstallNginxScript extends AbstractServerScript
 {
+    use InteractsWithApt;
+
     public function execute(Server $server, SFTP $ssh = null): void
     {
         $nginxDir = '/etc/nginx';
@@ -20,16 +23,9 @@ class InstallNginxScript extends AbstractServerScript
          *       Also, figure out what to do if something fails here, like in all other scripts.
          */
 
-        $this->enablePty();
-        $this->setTimeout(60 * 30); // 30 min
+        $this->aptUpdate();
 
-        $this->execPty('apt-get update -y');
-        $this->read();
-
-        $this->execPty('apt-get install -y nginx');
-        $this->read();
-
-        $this->disablePty();
+        $this->aptInstall('nginx');
 
         // Create a nologin system user to run Nginx workers as configured in nginx.conf.
         $this->exec('useradd -r -s /usr/sbin/nologin nginx');
