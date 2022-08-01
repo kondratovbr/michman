@@ -2,6 +2,7 @@
 
 namespace App\Rules\Providers;
 
+use App\DataTransferObjects\AuthTokenDto;
 use App\Services\ServerProviderInterface;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\App;
@@ -19,7 +20,12 @@ class ProviderTokenValid implements Rule
             return false;
 
         /** @var ServerProviderInterface $api */
-        $api = App::make("{$this->providerName}_servers", ['token' => $value]);
+        $api = App::make("{$this->providerName}_servers", [
+            'token' => new AuthTokenDto(
+                id: null,
+                token: $value,
+            ),
+        ]);
 
         return $api->credentialsAreValid();
     }
