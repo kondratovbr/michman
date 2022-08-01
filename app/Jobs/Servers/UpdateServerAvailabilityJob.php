@@ -12,7 +12,7 @@ use DateTimeInterface;
 
 class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
 {
-    // Override the normal job parameters to speed up the process.
+    // Override normal job parameters to speed up the process.
     public int $timeout = 60; // 1 min
     public int $backoff = 10; // 10 sec
     public function retryUntil(): DateTimeInterface
