@@ -107,7 +107,7 @@ abstract class AbstractServerScript
             $this->enablePty();
 
         try {
-            return $this->ssh->exec($command);
+            return (bool) $this->ssh->exec($command);
         } finally {
             $this->server->log(
                 type: 'exec_pty',
