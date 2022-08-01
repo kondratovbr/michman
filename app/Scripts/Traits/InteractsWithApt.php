@@ -33,7 +33,7 @@ use App\Support\Arr;
 trait InteractsWithApt
 {
     /*
-     * The PTY and timeout are here to kill the script if apt-get gets stuck at some point -
+     * The timeout is here to kill the script if apt-get gets stuck at some point -
      * it's a long-running thing and may get stuck due to external factors.
      */
 
