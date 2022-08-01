@@ -55,10 +55,4 @@ abstract class AbstractRemoteServerJob extends AbstractJob
                 ->expireAfter($this->timeout + 60),
         ];
     }
-
-    /** Reload the Server model from the DB and lock it for update. */
-    protected function lockServer(): Server
-    {
-        return $this->server = $this->server->freshLockForUpdate();
-    }
 }

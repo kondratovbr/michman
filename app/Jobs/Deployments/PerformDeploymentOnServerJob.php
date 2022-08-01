@@ -59,7 +59,7 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
             $updateEnvironment, $updateDeployScript, $updateGunicornConfig, $updateNginxConfig,
             $pullCommit, $runDeploymentScript, $restartGunicorn, $enableProjectNginxConfig, $restartNginx,
         ) {
-            $server = $this->lockServer();
+            $server = $this->server->freshLockForUpdate();
             /** @var Deployment $deployment */
             $deployment = Deployment::query()->lockForUpdate()->findOrFail($this->deployment->getKey());
             $project = $deployment->project;
