@@ -1853,7 +1853,7 @@ return [
         'Qui-Gon Jinn',
         'Nute Gunray',
         'Finis Valorum',
-        'Padmé Amidala',
+        'Padme Amidala',
         'Jar Jar Binks',
         'Roos Tarpals',
         'Rugor Nass',
