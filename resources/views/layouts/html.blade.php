@@ -28,7 +28,7 @@
         @livewireStyles
 
         {{-- Scripts --}}
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script defer src="{{ mix('js/app.js') }}"></script>
         {{--
         TODO: IMPORTANT! Should I keep these Ace Editor sources here like that for production?
               Is there a better way? Google how to install the Ace Editor for production in general. And see how Forge does it.
