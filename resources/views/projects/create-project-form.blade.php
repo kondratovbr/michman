@@ -35,7 +35,6 @@
                     :options="$types"
                     :default="true"
                     wire:model="state.type"
-                    wire:key="select-type"
                 />
                 <x-input-error for="state.type" />
             </x-field>
@@ -47,7 +46,6 @@
                     :options="$pythonVersions"
                     :default="true"
                     wire:model="state.python_version"
-                    wire:key="select-python-version"
                 />
                 <x-input-error for="state.python_version" />
             </x-field>

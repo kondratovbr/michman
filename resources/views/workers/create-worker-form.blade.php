@@ -12,7 +12,6 @@
                     :options="$this->types"
                     :default="true"
                     wire:model="state.type"
-                    wire:key="select-type"
                 />
                 <x-input-error for="state.type" />
             </x-field>
@@ -25,7 +24,6 @@
                         :options="$this->servers"
                         :default="true"
                         wire:model="state.serverId"
-                        wire:key="select-server"
                     />
                     <x-input-error for="state.serverId" />
                     <x-help>{{ __('projects.queue.create.server.help') }}</x-help>

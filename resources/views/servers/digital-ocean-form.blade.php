@@ -9,7 +9,6 @@
             :options="$providers"
             :default="isset($state['provider_id'])"
             wire:model="state.provider_id"
-            wire:key="search-select-provider_id"
             placeholder="Select API credentials"
         />
         <x-input-error for="state.provider_id" />
@@ -42,7 +41,6 @@
                     :options="$availableRegions"
                     :default="isset($state['region'])"
                     wire:model="state.region"
-                    wire:key="search-select-region-{{ $state['provider_id'] }}"
                     placeholder="Select region"
                 />
                 <x-input-error for="state.region" />
@@ -56,7 +54,6 @@
                         :options="$availableSizes"
                         :default="isset($state['size'])"
                         wire:model="state.size"
-                        wire:key="search-select-size-{{ $state['region'] }}"
                         placeholder="Select size"
                     />
                     <x-input-error for="state.size" />
@@ -70,7 +67,6 @@
                             :options="$types"
                             :default="isset($state['type'])"
                             wire:model="state.type"
-                            wire:key="select-type-{{ $state['size'] }}"
                             placeholder="Select server type"
                         />
                         @error('state.type')
@@ -91,7 +87,6 @@
                                     :options="$pythonVersions"
                                     :default="isset($state['python_version'])"
                                     wire:model="state.python_version"
-                                    wire:key="select-python_version-{{ $state['type'] }}"
                                 />
                                 <x-input-error for="state.python_version" />
                             </x-field>
@@ -104,7 +99,6 @@
                                     :options="$databases"
                                     :default="isset($state['database'])"
                                     wire:model="state.database"
-                                    wire:key="select-database-{{ $state['type'] }}"
                                 />
                                 <x-input-error for="state.database" />
                             </x-field>
@@ -117,7 +111,6 @@
                                     :options="$caches"
                                     :default="isset($state['cache'])"
                                     wire:model="state.cache"
-                                    wire:key="select-cache-{{ $state['type'] }}"
                                 />
                                 <x-input-error for="state.cache" />
                             </x-field>
