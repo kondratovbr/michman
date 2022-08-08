@@ -29,7 +29,7 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
         DB::transaction(function () {
             $server = $this->server->freshLockForUpdate();
 
-            if (! Arr::hasValue(config("servers.types.{$server->type}.install"), 'database')) {
+            if (! Arr::hasValue(config("servers.types.$server->type.install"), 'database')) {
                 $this->fail(new RuntimeException('This type of server should not have a database installed.'));
                 return;
             }
@@ -49,7 +49,7 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
                 return;
             }
 
-            $scriptClass = config("servers.databases.{$this->database}.scripts_namespace") . '\InstallDatabaseScript';
+            $scriptClass = config("servers.databases.$this->database.scripts_namespace") . '\InstallDatabaseScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this database.');
