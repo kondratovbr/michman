@@ -12,12 +12,13 @@ class CreateGenericUserScript extends AbstractServerScript
     {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
-        $michmanDir = "/home/$username/.michman";
-
         $this->setTimeout(60);
 
         $this->exec("useradd --create-home --shell /bin/bash $username");
 
-        $this->exec("mkdir -p $michmanDir && chown $username:$username $michmanDir && chmod 0755 $michmanDir");
+        $homeDir = "/home/$username";
+        $michmanDir = "$homeDir/.michman";
+
+        $this->exec("mkdir -p $michmanDir && chown -R $username:$username $homeDir && chmod 0755 $homeDir && chmod 0755 $michmanDir");
     }
 }
