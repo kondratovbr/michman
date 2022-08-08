@@ -73,6 +73,7 @@ return [
             'name' => 'App Server',
             'description' => 'Application servers include everything you need to deploy your Python / Django application. If you don\'t want to install a database, you may disable its installation below.',
             'badge' => 'App',
+            'not-enough-ram' => 'App servers require at least 1024 Mb of RAM to run.',
         ],
         'web' => [
             'name' => 'Web Server',

@@ -56,7 +56,13 @@
                         wire:model="state.size"
                         placeholder="Select size"
                     />
+                    @error('state.size')
                     <x-input-error for="state.size" />
+                    @elseif(! $this->hasEnoughRam())
+                        <x-message class="mt-3" colors="danger">
+                            <p class="max-w-prose">{{ __('servers.types.app.not-enough-ram') }}</p>
+                        </x-message>
+                    @endif
                 </x-field>
 
                 @isset($state['size'])

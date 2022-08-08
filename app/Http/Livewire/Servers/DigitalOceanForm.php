@@ -278,15 +278,17 @@ class DigitalOceanForm extends Component
     }
 
     /** Wrap any external API calls into an exception handler to gracefully handle possible errors. */
-    protected function handleApiErrors(callable $closure): void
+    protected function handleApiErrors(callable $closure): mixed
     {
         try {
-            $closure();
+            return $closure();
         } catch (RequestException $exception) {
             $this->apiErrorCode = $exception->response->status();
             $this->reset(['state']);
             $this->state['name'] = generateRandomName();
         }
+
+        return null;
     }
 
     /** Determine if we should install a certain program based on the currently chosen server type. */
@@ -298,12 +300,31 @@ class DigitalOceanForm extends Component
         return Arr::hasValue(config('servers.types.' . $this->state['type'] . '.install'), $program);
     }
 
+    /** Check if the chosen server size has enough RAM for the chosen type. */
+    public function hasEnoughRam(): bool
+    {
+        // Only 'app' type has any limitations at the moment.
+        if ($this->state['type'] != 'app')
+            return false;
+
+        return $this->handleApiErrors(function (): bool {
+            /** @var SizeDto $size */
+            $size = $this->api->getSizesAvailableInRegion($this->state['region'])
+                ->firstWhere('slug', $this->state['size']);
+
+            return $size->memoryMb > 1000;
+        });
+    }
+
     /** Validate and store a new server. */
     public function store(StoreServerAction $action): void
     {
         $this->authorize('create', Server::class);
 
         $state = $this->validate()['state'];
+
+        if (! $this->hasEnoughRam())
+            return;
 
         $this->server = $action->execute(
             NewServerDto::fromArray($state),
