@@ -251,27 +251,26 @@ class DigitalOceanForm extends Component
         $this->handleApiErrors(function () {
             $sizes = $this->api->getSizesAvailableInRegion($this->state['region']);
 
-            $this->availableSizes = $sizes->mapWithKeys(fn(SizeDto $size) =>
-            [$size->slug => $size->description == ''
-                ? trans_choice('account.providers.digital_ocean_v2.size-name',
-                    $size->cpus,
-                    [
-                        'ramGb' => round($size->memoryMb / 1024, 1),
-                        'disk' => sizeForHumansRounded($size->diskGb * 1024 * 1024 * 1024, 1),
-                        'price' => $size->priceMonthly,
-                    ]
-                )
-                : trans_choice('account.providers.digital_ocean_v2.size-name-description',
-                    $size->cpus,
-                    [
-                        'ramGb' => round($size->memoryMb / 1024, 1),
-                        'disk' => sizeForHumansRounded($size->diskGb * 1024 * 1024 * 1024, 1),
-                        'price' => $size->priceMonthly,
-                        'description' => $size->description,
-                    ]
-                )
-            ]
-            )->toArray();
+            $this->availableSizes = $sizes->mapWithKeys(fn(SizeDto $size) => [
+                $size->slug => $size->description == ''
+                    ? trans_choice('account.providers.digital_ocean_v2.size-name',
+                        $size->cpus,
+                        [
+                            'ramGb' => round($size->memoryMb / 1024, 1),
+                            'disk' => sizeForHumansRounded($size->diskGb * 1024 * 1024 * 1024, 1),
+                            'price' => $size->priceMonthly,
+                        ]
+                    )
+                    : trans_choice('account.providers.digital_ocean_v2.size-name-description',
+                        $size->cpus,
+                        [
+                            'ramGb' => round($size->memoryMb / 1024, 1),
+                            'disk' => sizeForHumansRounded($size->diskGb * 1024 * 1024 * 1024, 1),
+                            'price' => $size->priceMonthly,
+                            'description' => $size->description,
+                        ]
+                    )
+            ])->toArray();
 
             $this->state['size'] = Arr::firstKey($this->availableSizes);
         });

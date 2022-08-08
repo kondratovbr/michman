@@ -161,10 +161,10 @@ class Server extends AbstractModel
         }
 
         if (! empty($this->installedDatabase))
-            $info[] = __("servers.databases.{$this->installedDatabase}");
+            $info[] = __("servers.databases.$this->installedDatabase");
 
         if (! empty($this->installedCache))
-            $info[] = __("servers.caches.{$this->installedCache}");
+            $info[] = __("servers.caches.$this->installedCache");
 
         return implode(', ', $info);
     }
