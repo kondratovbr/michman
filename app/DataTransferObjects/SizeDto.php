@@ -11,7 +11,7 @@ class SizeDto extends AbstractDto
         public int $memoryMb,
         public int $cpus,
         public int $diskGb,
-        /** @var string[] */
+        /** @var string[] $regions */
         public array $regions,
         public bool $available,
         public string $description = '',
