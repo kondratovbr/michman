@@ -21,6 +21,6 @@
         x-tooltip.keep-on-click="copied ? success : tooltip"
     @endif
 >
-    <span>{{ $slot }}</span>
+    <span {{ $attributes }}>{{ $slot }}</span>
     <x-icon class="ml-1"><i class="far fa-clipboard"></i></x-icon>
 </div>
