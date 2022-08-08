@@ -55,4 +55,12 @@ trait InteractsWithApt
             $this->timeout,
         );
     }
+
+    protected function aptUpgrade(): string
+    {
+        return $this->execLong(
+            'DEBIAN_FRONTEND=noninteractive apt-get upgrade --with-new-pkgs -y',
+            $this->timeout,
+        );
+    }
 }

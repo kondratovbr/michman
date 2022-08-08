@@ -5,38 +5,25 @@ namespace App\Scripts\Root;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
+use App\Scripts\Traits\InteractsWithApt;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
 class UpgradePackagesScript extends AbstractServerScript
 {
+    use InteractsWithApt;
+
     public function execute(Server $server, SFTP $ssh = null): void
     {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
-        $this->enablePty();
-        $this->setTimeout(60 * 30); // 30 min
+        $this->aptUpdate();
 
-        $this->execPty('apt-get update -y');
-        $this->read();
+        $output = $this->aptUpgrade();
 
-        if ($this->failed())
-            throw new ServerScriptException('apt-get update has failed.');
-
-        $this->execPty('DEBIAN_FRONTEND=noninteractive apt-get upgrade --with-new-pkgs -y');
-
-        if (Str::contains($this->read(), 'dpkg was interrupted')) {
-            $this->execPty('DEBIAN_FRONTEND=noninteractive dpkg --configure -a');
-            $this->read();
-            $this->disablePty();
+        if (Str::contains($output, 'dpkg was interrupted')) {
+            $this->execLong('DEBIAN_FRONTEND=noninteractive dpkg --configure -a', 60 * 30);
             throw new ServerScriptException('E: dpkg was interrupted, had to repair.');
         }
-
-        if ($this->failed()) {
-            $this->disablePty();
-            throw new ServerScriptException('apt-get upgrade has failed.');
-        }
-
-        $this->disablePty();
     }
 }
