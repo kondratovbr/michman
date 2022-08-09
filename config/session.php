@@ -31,7 +31,7 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 120),
+    'lifetime' => env('SESSION_LIFETIME', 24 * 60), // 24 hours by default
 
     'expire_on_close' => false,
 
@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'encrypt' => (bool) env('APP_DEBUG', false),
+    'encrypt' => ! env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -163,12 +163,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | By setting this option to true, session cookies will only be sent back
-    | to the server if the browser has a HTTPS connection. This will keep
+    | to the server if the browser has an HTTPS connection. This will keep
     | the cookie from being sent to you if it can not be done securely.
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------
