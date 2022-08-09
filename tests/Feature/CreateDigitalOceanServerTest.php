@@ -3,11 +3,16 @@
 namespace Tests\Feature;
 
 use App\Actions\Servers\StoreServerAction;
+use App\Collections\RegionDataCollection;
+use App\Collections\SizeDataCollection;
 use App\DataTransferObjects\NewServerDto;
+use App\DataTransferObjects\RegionDto;
+use App\DataTransferObjects\SizeDto;
 use App\Http\Livewire\Servers\DigitalOceanForm;
 use App\Models\Provider;
 use App\Models\Server;
 use App\Policies\ServerPolicy;
+use App\Services\ServerProviderInterface;
 use App\Support\Str;
 use Livewire\Livewire;
 use Tests\AbstractFeatureTest;
@@ -28,7 +33,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
             'provider_id' => $provider->id,
             'name' => $serverName,
             'region' => 'nyc_1',
-            'size' => 'size_1',
+            'size' => 'size_2',
             'type' => 'app',
             'python_version' => '3_9',
             'database' => 'mysql-8_0',
@@ -38,7 +43,7 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
         $serverData = new NewServerDto(
             name: $serverName,
             region: 'nyc_1',
-            size: 'size_1',
+            size: 'size_2',
             type: 'app',
             python_version: '3_9',
             database: 'mysql-8_0',
@@ -46,6 +51,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
         );
 
         $this->actingAs($user);
+
+        $this->mockDigitalOceanClient();
 
         $this->mock(ServerPolicy::class, function (MockInterface $mock) use ($user) {
             $mock->shouldReceive('create')
@@ -104,6 +111,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
+        $this->mockDigitalOceanClient();
+
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
             ->set('availableRegions', ['nyc_1' => 'New York 1', 'nyc_2' => 'New York 2'])
@@ -133,6 +142,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
         ];
 
         $this->actingAs($user);
+
+        $this->mockDigitalOceanClient();
 
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
@@ -164,6 +175,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
+        $this->mockDigitalOceanClient();
+
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
             ->set('availableRegions', ['nyc_1' => 'New York 1', 'nyc_2' => 'New York 2'])
@@ -193,6 +206,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
         ];
 
         $this->actingAs($user);
+
+        $this->mockDigitalOceanClient();
 
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
@@ -225,6 +240,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
+        $this->mockDigitalOceanClient();
+
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
             ->set('availableRegions', ['nyc_1' => 'New York 1', 'nyc_2' => 'New York 2'])
@@ -254,6 +271,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
         ];
 
         $this->actingAs($user);
+
+        $this->mockDigitalOceanClient();
 
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
@@ -285,6 +304,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
+        $this->mockDigitalOceanClient();
+
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
             ->set('availableRegions', ['nyc_1' => 'New York 1', 'nyc_2' => 'New York 2'])
@@ -315,6 +336,8 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
 
         $this->actingAs($user);
 
+        $this->mockDigitalOceanClient();
+
         Livewire::test(DigitalOceanForm::class)
             ->set('providers', [$provider->id => 'Provider 1', 666 => 'Provider 666'])
             ->set('availableRegions', ['nyc_1' => 'New York 1', 'nyc_2' => 'New York 2'])
@@ -322,5 +345,60 @@ class CreateDigitalOceanServerTest extends AbstractFeatureTest
             ->set('state', $state)
             ->call('store', Mockery::mock(StoreServerAction::class))
             ->assertHasErrors(['state.name']);
+    }
+
+    private function mockDigitalOceanClient(): void
+    {
+        $this->mockBind(
+            'digital_ocean_v2_servers',
+            ServerProviderInterface::class,
+            function (MockInterface $mock) {
+                $mock
+                    ->expects('getAvailableRegions')
+                    ->zeroOrMoreTimes()
+                    ->andReturns(new RegionDataCollection([
+                        new RegionDto(
+                            name: 'New York 1',
+                            slug: 'nyc_1',
+                            sizes: ['size_1', 'size_2'],
+                            available: true,
+                        ),
+                        new RegionDto(
+                            name: 'New York 2',
+                            slug: 'nyc_2',
+                            sizes: ['size_1', 'size_2'],
+                            available: true,
+                        ),
+                    ]));
+
+                $mock
+                    ->expects('getSizesAvailableInRegion')
+                    ->zeroOrMoreTimes()
+                    ->andReturns(new SizeDataCollection([
+                        new SizeDto(
+                            slug: 'size_1',
+                            transfer: 1000.0,
+                            priceMonthly: 5.0,
+                            memoryMb: 500,
+                            cpus: 1,
+                            diskGb: 10,
+                            regions: ['nyc_1', 'nyc_2'],
+                            available: true,
+                            description: 'Foobar 1',
+                        ),
+                        new SizeDto(
+                            slug: 'size_2',
+                            transfer: 1000.0,
+                            priceMonthly: 10.0,
+                            memoryMb: 1024,
+                            cpus: 2,
+                            diskGb: 30,
+                            regions: ['nyc_1', 'nyc_2'],
+                            available: true,
+                            description: 'Foobar 2',
+                        ),
+                    ]));
+            },
+        );
     }
 }
