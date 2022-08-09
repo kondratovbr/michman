@@ -27,6 +27,7 @@ return [
             'add_ssh_key_to_vcs' => true,
             'configuration_job_class' => ConfigureAppServerJob::class,
             'enabled' => true,
+            'min_ram' => 1000,
         ],
         'web' => [
             'install' => [

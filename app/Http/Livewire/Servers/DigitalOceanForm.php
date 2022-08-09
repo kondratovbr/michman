@@ -222,11 +222,10 @@ class DigitalOceanForm extends Component
     protected function loadApi(): void
     {
         if (isset($this->state['provider_id'])) {
-            $this->api = optional(
-                Auth::user()->providers()
-                    ->whereKey($this->state['provider_id'])
-                    ->first()
-                )->api();
+            $this->api = Auth::user()->providers()
+                ->whereKey($this->state['provider_id'])
+                ->first()
+                ?->api();
         }
     }
 
@@ -276,7 +275,11 @@ class DigitalOceanForm extends Component
         });
     }
 
-    /** Wrap any external API calls into an exception handler to gracefully handle possible errors. */
+    /**
+     * Wrap any external API calls into an exception handler to gracefully handle possible errors.
+     *
+     * @return mixed|null
+     */
     protected function handleApiErrors(callable $closure): mixed
     {
         try {
@@ -302,16 +305,17 @@ class DigitalOceanForm extends Component
     /** Check if the chosen server size has enough RAM for the chosen type. */
     public function hasEnoughRam(): bool
     {
-        // Only 'app' type has any limitations at the moment.
-        if ($this->state['type'] != 'app')
-            return false;
+        // Only some server types have a minimum RAM limitation.
+        if (! Arr::hasKey(config("servers.types.{$this->state['type']}", []), 'min_ram'))
+            return true;
 
-        return $this->handleApiErrors(function (): bool {
+        return (bool) $this->handleApiErrors(function (): bool {
             /** @var SizeDto $size */
-            $size = $this->api->getSizesAvailableInRegion($this->state['region'])
-                ->firstWhere('slug', $this->state['size']);
+            $size = $this->api
+                ?->getSizesAvailableInRegion($this->state['region'])
+                ?->firstWhere('slug', $this->state['size']);
 
-            return $size->memoryMb > 1000;
+            return $size && $size->memoryMb > (int) config("servers.types.{$this->state['type']}.min_ram", 0);
         });
     }
 
