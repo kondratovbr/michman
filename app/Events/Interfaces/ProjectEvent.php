@@ -6,5 +6,6 @@ use App\Models\Project;
 
 interface ProjectEvent
 {
+    /** Get the project that this was related to. */
     public function project(): Project|null;
 }
