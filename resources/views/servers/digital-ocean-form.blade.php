@@ -158,10 +158,10 @@
             <p>{{ __('servers.create.modal.explanation-1') }}</p>
             <p class="mt-3">{{ __('servers.create.modal.explanation-2') }}</p>
             <span class="mt-3">{{ __('servers.create.modal.sudo-password') }}</span>
-            <x-copy-code-block class="mt-1">{{ optional($server)->sudoPassword }}</x-copy-code-block>
+            <x-copy-code-block class="mt-1">{{ $server?->sudoPassword }}</x-copy-code-block>
             @if(! empty($server->databaseRootPassword))
                 <span class="mt-3">{{ __('servers.create.modal.db-password') }}</span>
-                <x-copy-code-block class="mt-1">{{ optional($server)->databaseRootPassword }}</x-copy-code-block>
+                <x-copy-code-block class="mt-1">{{ $server?->databaseRootPassword }}</x-copy-code-block>
             @endif
         </x-slot>
 
