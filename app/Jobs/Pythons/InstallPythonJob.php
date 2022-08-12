@@ -28,7 +28,7 @@ class InstallPythonJob extends AbstractRemoteServerJob
             if ($python->isInstalled())
                 return;
 
-            $scriptClass = config("servers.python.{$python->version}.scripts_namespace") . '\InstallPythonScript';
+            $scriptClass = config("servers.python.versions.$python->version.scripts_namespace") . '\InstallPythonScript';
 
             if (! class_exists($scriptClass))
                 throw new RuntimeException('No installation script exists for this version of Python.');

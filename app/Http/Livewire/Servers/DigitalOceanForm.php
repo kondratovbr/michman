@@ -52,7 +52,7 @@ class DigitalOceanForm extends Component
         'region' => null,
         'size' => null,
         'type' => 'app',
-        'python_version' => '3_9',
+        'python_version' => '3_10',
         'database' => 'mysql-8_0',
         'cache' => 'redis',
     ];

@@ -71,20 +71,28 @@ return [
         ],
     ],
 
-    // NOTE: The order of versions here is important - it is the order the versions will be shown in the UI.
     'python' => [
-        '3_9' => [
-            'scripts_namespace' => 'App\Scripts\Root\Python3_9',
-            'cli' => 'python3.9',
+        // NOTE: The order of versions here is important - it is the order the versions will be shown in the UI.
+        'versions' => [
+            '3_10' => [
+                'scripts_namespace' => 'App\Scripts\Root\Python3_10',
+                'cli' => 'python3.10',
+            ],
+            '3_9' => [
+                'scripts_namespace' => 'App\Scripts\Root\Python3_9',
+                'cli' => 'python3.9',
+            ],
+            '3_8' => [
+                'scripts_namespace' => 'App\Scripts\Root\Python3_8',
+                'cli' => 'python3.8',
+            ],
+            '2_7' => [
+                'scripts_namespace' => 'App\Scripts\Root\Python2_7',
+                'cli' => 'python2.7',
+            ],
         ],
-        '3_8' => [
-            'scripts_namespace' => 'App\Scripts\Root\Python3_8',
-            'cli' => 'python3.8',
-        ],
-        '2_7' => [
-            'scripts_namespace' => 'App\Scripts\Root\Python2_7',
-            'cli' => 'python2.7',
-        ],
+
+        'default_version' => '3_10',
     ],
 
     'databases' => [

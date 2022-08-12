@@ -29,7 +29,7 @@
                     'Python ' . __("servers.pythons.versions.{$version}") .
                     (is_null($python) ? '' : " ({$python->patchVersion})")
                 ) }}</x-td>
-                <x-td show="md"><x-code class="text-sm">{{ config("servers.python.{$version}.cli") }}</x-code></x-td>
+                <x-td show="md"><x-code class="text-sm">{{ config("servers.python.versions.$version.cli") }}</x-code></x-td>
                 @if(! is_null($python))
                     <x-td><x-pythons.status-badge :python="$python" /></x-td>
                     <x-td class="min-w-14 flex justify-end items-center">

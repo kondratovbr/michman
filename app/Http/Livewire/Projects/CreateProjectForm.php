@@ -35,7 +35,7 @@ class CreateProjectForm extends LivewireComponent
         'domain' => '',
         'aliases' => '',
         'type' => 'django',
-        'python_version' => '3_9',
+        'python_version' => '3_10',
         'allow_sub_domains' => false,
         'create_database' => true,
         'db_name' => '',
