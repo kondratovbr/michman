@@ -7,9 +7,11 @@ use App\Services\Traits\HasConfig;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
 use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+use Throwable;
 
 abstract class AbstractProvider implements ProviderInterface
 {
@@ -125,9 +127,22 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $pendingRequest ??= $this->request();
 
-        return $pendingRequest
+        $response = $pendingRequest
             ->baseUrl($this->basePath)
-            ->delete($path, $data)
-            ->throw();
+            ->delete($path, $data);
+
+        // 404 Not Found can be gracefully handled for DELETE requests.
+        if ($response->status() == 404) {
+            Log::warning(static::class . ' delete() got 404 Not Found.', [
+                'path' => $path,
+                'data' => $data,
+            ]);
+            return $response;
+        }
+
+        if ($response->failed())
+            $response->throw();
+
+        return $response;
     }
 }
