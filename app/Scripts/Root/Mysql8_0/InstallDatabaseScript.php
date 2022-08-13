@@ -7,6 +7,7 @@ use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\InteractsWithApt;
 use App\Scripts\Traits\InteractsWithMysql;
+use App\Scripts\Traits\InteractsWithSystemd;
 use App\Support\Str;
 use phpseclib3\Net\SFTP;
 
@@ -14,6 +15,7 @@ class InstallDatabaseScript extends AbstractServerScript
 {
     use InteractsWithMysql;
     use InteractsWithApt;
+    use InteractsWithSystemd;
 
     /** @var string MySQL authentication plugin to configure for root. */
     protected const MYSQL_AUTH_PLUGIN = 'caching_sha2_password';
@@ -32,20 +34,9 @@ class InstallDatabaseScript extends AbstractServerScript
             'libmysqlclient-dev',
         ]);
 
-        $this->exec('systemctl start mysql');
+        $this->systemdStartService('mysql');
 
-        // Wait a bit in case MySQL needs some time to start.
-        $this->setTimeout(60);
-        $this->exec("sleep 30");
-
-        // Verify that MySQL has started.
-        $output = $this->exec('systemctl status mysql');
-        if (
-            ! Str::contains(Str::lower($output), 'active (running)')
-            || $this->failed()
-        ) {
-            throw new ServerScriptException('MySQL failed to start.');
-        }
+        $this->systemdVerifyServiceIsRunning('mysql', 60);
 
         $authPlugin = static::MYSQL_AUTH_PLUGIN;
 

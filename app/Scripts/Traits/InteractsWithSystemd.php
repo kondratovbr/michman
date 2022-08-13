@@ -19,6 +19,13 @@ trait InteractsWithSystemd
         $this->exec('systemctl reset-failed');
     }
 
+    protected function systemdStartService(string $service): void
+    {
+        $service = Str::lower($service);
+
+        $this->exec("systemctl start $service");
+    }
+
     protected function systemdStopService(string $service): void
     {
         $service = Str::lower($service);
@@ -66,10 +73,16 @@ trait InteractsWithSystemd
         return Str::contains(Str::lower($output), ['active (running)', 'active (listening)']);
     }
 
-    /** Check if a service is running and throw an exception is it doesn't. */
-    protected function systemdVerifyServiceIsRunning(string $service): void
+    /**
+     * Check if a service is running and throw an exception is it doesn't.
+     *
+     * @param int $wait Wait for a service to start for this number of seconds.
+     */
+    protected function systemdVerifyServiceIsRunning(string $service, int|null $wait = null): void
     {
         $service = Str::lower($service);
+
+        sleep($wait ?? 0);
 
         if (! $this->systemdIsServiceRunning($service))
             throw new ServerScriptException("Systemd service \"$service\" has failed.");
