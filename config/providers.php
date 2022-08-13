@@ -21,7 +21,7 @@ return [
             'auth_type' => 'token',
             'icon' => 'fab fa-digital-ocean',
             'disabled' => false,
-            'default_image' => 'ubuntu-20-04-x64',
+            'default_image' => 'ubuntu-22-04-x64',
             'dev_ssh_key_identifier' => env('DO_DEV_SSH_KEY'),
         ],
 
