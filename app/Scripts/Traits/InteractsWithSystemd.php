@@ -44,7 +44,7 @@ trait InteractsWithSystemd
      * Restart a systemd service with an option to verify that is started
      * and throw an exception otherwise.
      */
-    protected function systemdRestartService(string $service, bool $verify = true, int $timeout = 60): void
+    protected function systemdRestartService(string $service, bool $verify = true, int $wait = 60): void
     {
         $service = Str::lower($service);
 
@@ -54,8 +54,8 @@ trait InteractsWithSystemd
             return;
 
         // Wait a bit for the service to be started by systemd.
-        $this->setTimeout($timeout + 5);
-        $this->exec("sleep $timeout");
+        $this->setTimeout($wait + 5);
+        $this->exec("sleep $wait");
 
         $this->systemdVerifyServiceIsRunning($service);
     }
@@ -82,7 +82,9 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        sleep($wait ?? 0);
+        // Wait a bit in case the service is still starting up.
+        $this->setTimeout($wait + 5);
+        $this->exec("sleep $wait");
 
         if (! $this->systemdIsServiceRunning($service))
             throw new ServerScriptException("Systemd service \"$service\" has failed.");
