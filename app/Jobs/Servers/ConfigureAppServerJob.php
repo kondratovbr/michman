@@ -43,6 +43,8 @@ class ConfigureAppServerJob extends AbstractJob
              *       chain all the jobs created downstream in one chain.
              *
              * Rethinking actions is an option, but then nested actions are still a massive hassle.
+             *
+             * There is ->prependToChain() and ->appendToChain() on jobs.
              */
 
             $storeFirewallRule->execute(new FirewallRuleDto(

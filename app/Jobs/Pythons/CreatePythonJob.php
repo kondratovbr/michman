@@ -8,6 +8,8 @@ use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use Illuminate\Support\Facades\DB;
 
+// TODO: Is this job even needed? Should I just use actions?
+
 class CreatePythonJob extends AbstractJob
 {
     use IsInternal;
