@@ -16,6 +16,7 @@ class CreatePythonJob extends AbstractJob
     protected string $version;
     protected bool $sync;
 
+    // TODO: Rewrite constructors in all jobs into PHP8 syntax.
     public function __construct(Server $server, string $version, bool $sync = false)
     {
         parent::__construct();
