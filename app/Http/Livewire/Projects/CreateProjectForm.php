@@ -123,7 +123,7 @@ class CreateProjectForm extends LivewireComponent
             true
         );
         $this->pythonVersions = Arr::mapAssoc(
-            Arr::keys(config('servers.python')),
+            Arr::keys(config('servers.python.versions')),
             fn(int $index, string $type) => new Pair($type, Str::replace('_', '.', $type))
         );
     }

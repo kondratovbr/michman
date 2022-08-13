@@ -52,7 +52,7 @@ class PythonsIndexTable extends LivewireComponent
     {
         $this->authorize('index', [Python::class, $this->server]);
 
-        $this->pythonVersions = Arr::keys(config('servers.python'));
+        $this->pythonVersions = Arr::keys(config('servers.python.versions'));
     }
 
     /** Install a new instance of Python on the server. */
@@ -61,7 +61,7 @@ class PythonsIndexTable extends LivewireComponent
         $version = Validator::make(
             ['version' => $version],
             ['version' => Rules::string(1, 8)
-                ->in(Arr::keys(config('servers.python')))
+                ->in(Arr::keys(config('servers.python.versions')))
                 ->required()],
         )->validate()['version'];
 

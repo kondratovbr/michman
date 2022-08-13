@@ -120,7 +120,7 @@ class DigitalOceanForm extends Component
         $this->types = $this->getServerTypeOptions();
         $this->databases = $this->getDatabaseOptions();
         $this->pythonVersions = Arr::mapAssoc(
-            Arr::keys(config('servers.python')),
+            Arr::keys(config('servers.python.versions')),
             fn(int $index, string $type) => new Pair($type, Str::replace('_', '.', $type))
         );
         $this->caches = $this->getCacheOptions();

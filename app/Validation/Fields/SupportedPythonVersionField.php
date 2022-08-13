@@ -12,6 +12,6 @@ class SupportedPythonVersionField extends AbstractField
 
         $this
             ->lengthBetween(1, 10)
-            ->in(Arr::keys(config('servers.python')));
+            ->in(Arr::keys(config('servers.python.versions')));
     }
 }
