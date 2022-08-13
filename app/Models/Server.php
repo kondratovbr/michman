@@ -260,29 +260,6 @@ class Server extends AbstractModel
         ]);
     }
 
-    /** Create a ServerLog entry for this server. */
-    public function log(
-        string $type,
-        string $command = null,
-        int $exitCode = null,
-        string $content = null,
-        string $localFile = null,
-        string $remoteFile = null,
-        bool $success = null,
-        CarbonInterface $timestamp = null,
-    ): void {
-        $this->logs()->create([
-            'type' => $type,
-            'command' => $command,
-            'exit_code' => $exitCode,
-            'content' => $content,
-            'local_file' => $localFile,
-            'remote_file' => $remoteFile,
-            'success' => $success,
-            'created_at' => $timestamp ?? now(),
-        ]);
-    }
-
     /** Get this server's logs between the timestamps. */
     public function getLogs(CarbonInterface|string $from, CarbonInterface|string $to): Collection
     {

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $serverId
  *
  * @property string $type
+ * @property string|null $script
  * @property string|null $command
  * @property int|null $exitCode
  * @property string|null $content

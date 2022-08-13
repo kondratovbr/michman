@@ -6,6 +6,7 @@ use App\Models\Server;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Scripts\Traits\RunsStatically;
 use App\Support\Str;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Log;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
@@ -82,7 +83,7 @@ abstract class AbstractServerScript
             if ($exitCode === false)
                 $exitCode = null;
 
-            $this->server->log(
+            $this->log(
                 type: 'exec',
                 command: $scrubCommand
                     ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
@@ -135,7 +136,7 @@ abstract class AbstractServerScript
         try {
             return (bool) $this->ssh->exec($command);
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'exec_pty',
                 command: $scrubCommand
                     ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
@@ -158,7 +159,7 @@ abstract class AbstractServerScript
         try {
             return $output = $this->ssh->read($expected, $mode);
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'read',
                 content: $scrubOutput
                     ? '[Output is scrubbed for security reasons.]'
@@ -181,7 +182,7 @@ abstract class AbstractServerScript
         } catch (RuntimeException) {
             return false;
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'write',
                 content: $scrubInput
                     ? ($logInput ?? '[Input is scrubbed for security reasons.]')
@@ -227,7 +228,7 @@ abstract class AbstractServerScript
                 SFTP::SOURCE_LOCAL_FILE,
             );
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'send_file',
                 localFile: $localPath,
                 remoteFile: $remotePath,
@@ -248,7 +249,7 @@ abstract class AbstractServerScript
                 SFTP::SOURCE_STRING,
             );
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'send_string',
                 remoteFile: $remotePath,
                 success: (bool) ($success ?? false),
@@ -268,7 +269,7 @@ abstract class AbstractServerScript
                 SFTP::RESUME,
             );
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'append_string',
                 remoteFile: $remotePath,
                 success: (bool) ($success ?? false),
@@ -283,7 +284,7 @@ abstract class AbstractServerScript
             $result = $this->ssh->get($remotePath);
             return $result === false ? null : $result;
         } finally {
-            $this->server->log(
+            $this->log(
                 type: 'get_string',
                 remoteFile: $remotePath,
                 success: $result ?? null !== false,
@@ -335,7 +336,7 @@ abstract class AbstractServerScript
             if ($exitCode === false)
                 $exitCode = null;
 
-            $this->server->log(
+            $this->log(
                 type: 'exec_sudo',
                 command: $scrubCommandLog
                     ? ($logCommand ?? '[Command is scrubbed for security reasons.]')
@@ -356,5 +357,29 @@ abstract class AbstractServerScript
 
         $this->setServer($server);
         $this->setSsh($ssh ?? $server->sftp($user));
+    }
+
+    /** Create a ServerLog entry for the server. */
+    private function log(
+        string $type,
+        string $command = null,
+        int $exitCode = null,
+        string $content = null,
+        string $localFile = null,
+        string $remoteFile = null,
+        bool $success = null,
+        CarbonInterface $timestamp = null,
+    ): void {
+        $this->server->logs()->create([
+            'type' => $type,
+            'script' => static::class,
+            'command' => $command,
+            'exit_code' => $exitCode,
+            'content' => $content,
+            'local_file' => $localFile,
+            'remote_file' => $remoteFile,
+            'success' => $success,
+            'created_at' => $timestamp ?? now(),
+        ]);
     }
 }
