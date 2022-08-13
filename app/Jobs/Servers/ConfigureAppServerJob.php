@@ -43,6 +43,12 @@ class ConfigureAppServerJob extends AbstractJob
                 port: '443',
             ), $server);
 
+            /*
+             * // TODO: IMPORTANT! Right now Python installation job is running outside of this chain,
+             *          so if it fails the server is still marked as ready.
+             *          Should fix this somehow.
+             */
+
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
                 new InstallCacheJob($server, $this->data->cache),
