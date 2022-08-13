@@ -54,6 +54,11 @@ trait InteractsWithSystemd
             return;
 
         // Wait a bit for the service to be started by systemd.
+        /*
+         * We're doing it this way because if we just say
+         * sleep(60) the server receives no packets over SSH at all
+         * during this time and may cut connection prematurely.
+         */
         $this->setTimeout($wait + 5);
         $this->exec("sleep $wait");
 
