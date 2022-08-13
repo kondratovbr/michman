@@ -34,6 +34,17 @@ class ConfigureAppServerJob extends AbstractJob
         DB::transaction(function () use ($storeFirewallRule) {
             $server = $this->server->freshLockForUpdate();
 
+            /*
+             * TODO: IMPORTANT! Right now Python installation job is running outside of this chain,
+             *       so if it fails the server is still marked as ready.
+             *       Same story with firewall rules.
+             *       Should fix this somehow.
+             * TODO: The actual way to solve this problem is to have my own job dispatching logic that can
+             *       chain all the jobs created downstream in one chain.
+             *
+             * Rethinking actions is an option, but then nested actions are still a massive hassle.
+             */
+
             $storeFirewallRule->execute(new FirewallRuleDto(
                 name: 'HTTP',
                 port: '80',
@@ -42,12 +53,6 @@ class ConfigureAppServerJob extends AbstractJob
                 name: 'HTTPS',
                 port: '443',
             ), $server);
-
-            /*
-             * // TODO: IMPORTANT! Right now Python installation job is running outside of this chain,
-             *          so if it fails the server is still marked as ready.
-             *          Should fix this somehow.
-             */
 
             Bus::chain([
                 new InstallDatabaseJob($server, $this->data->database),
