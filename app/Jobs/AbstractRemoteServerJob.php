@@ -22,7 +22,6 @@ abstract class AbstractRemoteServerJob extends AbstractJob
         return now()->addMinutes(60);
     }
 
-    /** @return $this */
     public function __construct(Server $server, bool $sync = false)
     {
         parent::__construct();
@@ -30,8 +29,6 @@ abstract class AbstractRemoteServerJob extends AbstractJob
         $this->sync($sync);
 
         $this->server = $server->withoutRelations();
-
-        return $this;
     }
 
     protected function getQueue(): string
