@@ -10,12 +10,17 @@ use Carbon\CarbonInterface;
  * Represents a key added to a VCS provider account.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverSshKeyId
  * @property int $vcsProviderId
- *
  * @property string|null $externalId
+ *
+ * Properties
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @mixin IdeHelperServerSshKeyVcsProviderPivot
  */
 class ServerSshKeyVcsProviderPivot extends AbstractPivot
 {

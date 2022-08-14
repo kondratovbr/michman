@@ -17,16 +17,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * and added to a specific VCS repository to be used for deployment.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $projectId
  *
+ * Properties
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read string $name
  *
+ * Relations
  * @property-read Project $project
  *
  * @method static DeploySshKeyFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperDeploySshKey
  */
 class DeploySshKey extends AbstractModel implements SshKeyInterface
 {

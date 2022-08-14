@@ -16,8 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * FirewallRule Eloquent model
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $name
  * @property string $port
  * @property string $fromIp
@@ -25,11 +28,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
- *
  * @property-read Server $server
  *
  * @method static FirewallRuleFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperFirewallRule
  */
 class FirewallRule extends AbstractModel
 {

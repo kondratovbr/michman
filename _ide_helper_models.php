@@ -27,7 +27,6 @@ namespace App\Models{
  * @property-read Set $domains
  * @property-read Server $server
  * @method static CertificateFactory factory(...$parameters)
- * @mixin IdeHelperCertificate
  * @property int $server_id
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
@@ -46,8 +45,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Certificate whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Certificate whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Certificate whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class Certificate extends \Eloquent {}
+	class IdeHelperCertificate {}
 }
 
 namespace App\Models{
@@ -72,7 +72,6 @@ namespace App\Models{
  * @property-read string $shortDirectory
  * @property-read Server $server
  * @method static DaemonFactory factory(...$parameters)
- * @mixin IdeHelperDaemon
  * @property int $server_id
  * @property int $start_seconds
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -95,8 +94,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Daemon whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Daemon whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Daemon whereUsername($value)
+ * @mixin \Eloquent
  */
-	class Daemon extends \Eloquent {}
+	class IdeHelperDaemon {}
 }
 
 namespace App\Models{
@@ -113,7 +113,6 @@ namespace App\Models{
  * @property-read Collection $databaseUsers
  * @property-read Project|null $project
  * @method static DatabaseFactory factory(...$parameters)
- * @mixin IdeHelperDatabase
  * @property int $server_id
  * @property int $tasks
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -130,8 +129,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Database whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Database whereTasks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Database whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class Database extends \Eloquent implements \App\Models\Interfaces\HasTasksCounterInterface {}
+	class IdeHelperDatabase {}
 }
 
 namespace App\Models{
@@ -149,7 +149,6 @@ namespace App\Models{
  * @property-read Collection $databases
  * @property-read Project|null $project
  * @method static DatabaseUserFactory factory(...$parameters)
- * @mixin IdeHelperDatabaseUser
  * @property int $server_id
  * @property int $tasks
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -167,8 +166,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|DatabaseUser whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatabaseUser whereTasks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DatabaseUser whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class DatabaseUser extends \Eloquent implements \App\Models\Interfaces\HasTasksCounterInterface {}
+	class IdeHelperDatabaseUser {}
 }
 
 namespace App\Models{
@@ -185,7 +185,6 @@ namespace App\Models{
  * @property-read string $name
  * @property-read Project $project
  * @method static DeploySshKeyFactory factory(...$parameters)
- * @mixin IdeHelperDeploySshKey
  * @property int $project_id
  * @property \phpseclib3\Crypt\Common\PublicKey $public_key
  * @property \phpseclib3\Crypt\Common\PrivateKey|null $private_key
@@ -205,8 +204,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|DeploySshKey whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DeploySshKey wherePublicKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DeploySshKey whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class DeploySshKey extends \Eloquent implements \App\Models\Interfaces\SshKeyInterface {}
+	class IdeHelperDeploySshKey {}
 }
 
 namespace App\Models{
@@ -243,7 +243,6 @@ namespace App\Models{
  * @property-read DeploymentServerPivot|null $serverDeployment
  * @method static DeploymentQueryBuilder query()
  * @method static DeploymentFactory factory(...$parameters)
- * @mixin IdeHelperDeployment
  * @property int $project_id
  * @property string|null $deploy_script
  * @property string|null $gunicorn_config
@@ -268,8 +267,9 @@ namespace App\Models{
  * @method static \App\QueryBuilders\DeploymentQueryBuilder|Deployment whereProjectId($value)
  * @method static \App\QueryBuilders\DeploymentQueryBuilder|Deployment whereType($value)
  * @method static \App\QueryBuilders\DeploymentQueryBuilder|Deployment whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class Deployment extends \Eloquent {}
+	class IdeHelperDeployment {}
 }
 
 namespace App\Models{
@@ -289,12 +289,12 @@ namespace App\Models{
  * @property-read bool $started
  * @property-read bool $finished
  * @property-read CarbonInterval|null $duration
- * @mixin IdeHelperDeploymentServerPivot
  * @method static \Illuminate\Database\Eloquent\Builder|DeploymentServerPivot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DeploymentServerPivot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DeploymentServerPivot query()
+ * @mixin \Eloquent
  */
-	class DeploymentServerPivot extends \Eloquent {}
+	class IdeHelperDeploymentServerPivot {}
 }
 
 namespace App\Models{
@@ -312,7 +312,6 @@ namespace App\Models{
  * @property-read User $user
  * @property-read Server $server
  * @method static FirewallRuleFactory factory(...$parameters)
- * @mixin IdeHelperFirewallRule
  * @property int $server_id
  * @property string|null $from_ip
  * @property bool|null $can_delete
@@ -333,15 +332,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|FirewallRule whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FirewallRule whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|FirewallRule whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class FirewallRule extends \Eloquent {}
+	class IdeHelperFirewallRule {}
 }
 
 namespace App\Models{
 /**
  * App\Models\Membership
  *
- * @mixin IdeHelperMembership
  * @property int $id
  * @property int $team_id
  * @property int $user_id
@@ -357,8 +356,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Membership whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Membership whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Membership whereUserId($value)
+ * @mixin \Eloquent
  */
-	class Membership extends \Eloquent {}
+	class IdeHelperMembership {}
 }
 
 namespace App\Models{
@@ -372,7 +372,6 @@ namespace App\Models{
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  * @property-read Model $notifiable
- * @mixin IdeHelperNotification
  * @property string $notifiable_type
  * @property int $notifiable_id
  * @property \Carbon\CarbonImmutable|null $read_at
@@ -393,8 +392,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereReadAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Notification whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class Notification extends \Eloquent {}
+	class IdeHelperNotification {}
 }
 
 namespace App\Models{
@@ -414,7 +414,6 @@ namespace App\Models{
  * @property-read Provider|null $serverProvider
  * @property-read VcsProvider|null $vcsProvider
  * @method static OAuthUserFactory factory(...$parameters)
- * @mixin IdeHelperOAuthUser
  * @property string $oauth_id
  * @property int $user_id
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -431,8 +430,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|OAuthUser whereProvider($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OAuthUser whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OAuthUser whereUserId($value)
+ * @mixin \Eloquent
  */
-	class OAuthUser extends \Eloquent {}
+	class IdeHelperOAuthUser {}
 }
 
 namespace App\Models{
@@ -484,7 +484,6 @@ namespace App\Models{
  * @property-read Collection $workers
  * @property-read Webhook|null $webhook
  * @method static ProjectFactory factory(...$parameters)
- * @mixin IdeHelperProject
  * @property int $user_id
  * @property int|null $vcs_provider_id
  * @property int $allow_sub_domains
@@ -530,8 +529,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUseDeployKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereVcsProviderId($value)
+ * @mixin \Eloquent
  */
-	class Project extends \Eloquent {}
+	class IdeHelperProject {}
 }
 
 namespace App\Models{
@@ -543,12 +543,12 @@ namespace App\Models{
  * @property int $serverId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
- * @mixin IdeHelperProjectServerPivot
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectServerPivot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectServerPivot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProjectServerPivot query()
+ * @mixin \Eloquent
  */
-	class ProjectServerPivot extends \Eloquent {}
+	class IdeHelperProjectServerPivot {}
 }
 
 namespace App\Models{
@@ -570,7 +570,6 @@ namespace App\Models{
  * @property-read Collection $servers
  * @property-read OAuthUser|null $oauthUser
  * @method static ProviderFactory factory(...$parameters)
- * @mixin IdeHelperProvider
  * @property int $user_id
  * @property \App\DataTransferObjects\AbstractDto $token
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -591,8 +590,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Provider whereToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Provider whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Provider whereUserId($value)
+ * @mixin \Eloquent
  */
-	class Provider extends \Eloquent {}
+	class IdeHelperProvider {}
 }
 
 namespace App\Models{
@@ -609,7 +609,6 @@ namespace App\Models{
  * @property-read User $user
  * @property-read Server $server
  * @method static PythonFactory factory(...$parameters)
- * @mixin IdeHelperPython
  * @property int $server_id
  * @property string|null $patch_version
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -626,8 +625,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Python whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Python whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Python whereVersion($value)
+ * @mixin \Eloquent
  */
-	class Python extends \Eloquent {}
+	class IdeHelperPython {}
 }
 
 namespace App\Models{
@@ -679,7 +679,6 @@ namespace App\Models{
  * @property-read Collection $workers
  * @property-read Collection $daemons
  * @method static ServerFactory factory(...$parameters)
- * @mixin IdeHelperServer
  * @property int $provider_id
  * @property string|null $external_id
  * @property string|null $public_ip
@@ -729,8 +728,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Server whereSuitable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Server whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Server whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class Server extends \Eloquent {}
+	class IdeHelperServer {}
 }
 
 namespace App\Models{
@@ -740,6 +740,7 @@ namespace App\Models{
  * @property int $id
  * @property int $serverId
  * @property string $type
+ * @property string|null $script
  * @property string|null $command
  * @property int|null $exitCode
  * @property string|null $content
@@ -750,7 +751,6 @@ namespace App\Models{
  * @property-read bool $renderable
  * @property-read Server $server
  * @method static ServerLogFactory factory(...$parameters)
- * @mixin IdeHelperServerLog
  * @property int $server_id
  * @property int|null $exit_code
  * @property string|null $local_file
@@ -771,8 +771,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ServerLog whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServerLog whereSuccess($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServerLog whereType($value)
+ * @mixin \Eloquent
  */
-	class ServerLog extends \Eloquent {}
+	class IdeHelperServerLog {}
 }
 
 namespace App\Models{
@@ -790,7 +791,6 @@ namespace App\Models{
  * @property-read Server $server
  * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
  * @method static ServerSshKeyFactory factory(...$parameters)
- * @mixin IdeHelperServerSshKey
  * @property int $server_id
  * @property \phpseclib3\Crypt\Common\PublicKey $public_key
  * @property \phpseclib3\Crypt\Common\PrivateKey|null $private_key
@@ -813,8 +813,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ServerSshKey wherePublicKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServerSshKey whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServerSshKey whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class ServerSshKey extends \Eloquent implements \App\Models\Interfaces\SshKeyInterface {}
+	class IdeHelperServerSshKey {}
 }
 
 namespace App\Models{
@@ -829,12 +830,12 @@ namespace App\Models{
  * @property string|null $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
- * @mixin IdeHelperServerSshKeyVcsProviderPivot
  * @method static \Illuminate\Database\Eloquent\Builder|ServerSshKeyVcsProviderPivot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServerSshKeyVcsProviderPivot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServerSshKeyVcsProviderPivot query()
+ * @mixin \Eloquent
  */
-	class ServerSshKeyVcsProviderPivot extends \Eloquent {}
+	class IdeHelperServerSshKeyVcsProviderPivot {}
 }
 
 namespace App\Models{
@@ -846,19 +847,18 @@ namespace App\Models{
  * @property int $serverId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
- * @mixin IdeHelperServerUserSshKeyPivot
  * @method static \Illuminate\Database\Eloquent\Builder|ServerUserSshKeyPivot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServerUserSshKeyPivot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServerUserSshKeyPivot query()
+ * @mixin \Eloquent
  */
-	class ServerUserSshKeyPivot extends \Eloquent {}
+	class IdeHelperServerUserSshKeyPivot {}
 }
 
 namespace App\Models{
 /**
  * App\Models\Team
  *
- * @mixin IdeHelperTeam
  * @property int $id
  * @property int $user_id
  * @property string $name
@@ -880,15 +880,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Team wherePersonalTeam($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Team whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Team whereUserId($value)
+ * @mixin \Eloquent
  */
-	class Team extends \Eloquent {}
+	class IdeHelperTeam {}
 }
 
 namespace App\Models{
 /**
  * App\Models\TeamInvitation
  *
- * @mixin IdeHelperTeamInvitation
  * @property int $id
  * @property int $team_id
  * @property string $email
@@ -905,8 +905,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|TeamInvitation whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TeamInvitation whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TeamInvitation whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class TeamInvitation extends \Eloquent {}
+	class IdeHelperTeamInvitation {}
 }
 
 namespace App\Models{
@@ -930,7 +931,6 @@ namespace App\Models{
  * @property-read Collection $oauthUsers
  * @property-read Collection $webhooks
  * @method static UserFactory factory(...$parameters)
- * @mixin IdeHelperUser
  * @property \Carbon\CarbonImmutable|null $email_verified_at
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
@@ -979,8 +979,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorRecoveryCodes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail, \Illuminate\Contracts\Translation\HasLocalePreference {}
+	class IdeHelperUser {}
 }
 
 namespace App\Models{
@@ -999,7 +1000,6 @@ namespace App\Models{
  * @property-read User $user
  * @property-read Collection $servers
  * @method static UserSshKeyFactory factory(...$parameters)
- * @mixin IdeHelperUserSshKey
  * @property int $user_id
  * @property \phpseclib3\Crypt\Common\PublicKey $public_key
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -1020,8 +1020,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|UserSshKey wherePublicKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserSshKey whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserSshKey whereUserId($value)
+ * @mixin \Eloquent
  */
-	class UserSshKey extends \Eloquent implements \App\Models\Interfaces\SshKeyInterface {}
+	class IdeHelperUserSshKey {}
 }
 
 namespace App\Models{
@@ -1044,7 +1045,6 @@ namespace App\Models{
  * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
  * @property-read OAuthUser|null $oauthUser
  * @method static VcsProviderFactory factory(...$parameters)
- * @mixin IdeHelperVcsProvider
  * @property int $user_id
  * @property string $external_id
  * @property \App\DataTransferObjects\AbstractDto $token
@@ -1069,8 +1069,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|VcsProvider whereToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VcsProvider whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VcsProvider whereUserId($value)
+ * @mixin \Eloquent
  */
-	class VcsProvider extends \Eloquent {}
+	class IdeHelperVcsProvider {}
 }
 
 namespace App\Models{
@@ -1093,7 +1094,6 @@ namespace App\Models{
  * @property-read Project $project
  * @property-read Collection $calls
  * @method static WebhookFactory factory(...$parameters)
- * @mixin IdeHelperWebhook
  * @property int $project_id
  * @property string|null $external_id
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -1118,8 +1118,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUuid($value)
+ * @mixin \Eloquent
  */
-	class Webhook extends \Eloquent {}
+	class IdeHelperWebhook {}
 }
 
 namespace App\Models{
@@ -1139,7 +1140,6 @@ namespace App\Models{
  * @property CarbonInterface $updatedAt
  * @property-read Webhook $webhook
  * @method static WebhookCallFactory factory(...$parameters)
- * @mixin IdeHelperWebhookCall
  * @property int $webhook_id
  * @property string $external_id
  * @property \Carbon\CarbonImmutable|null $created_at
@@ -1160,8 +1160,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WebhookCall whereWebhookId($value)
+ * @mixin \Eloquent
  */
-	class WebhookCall extends \Eloquent {}
+	class IdeHelperWebhookCall {}
 }
 
 namespace App\Models{
@@ -1188,7 +1189,6 @@ namespace App\Models{
  * @property-read Project $project
  * @property-read Server $server
  * @method static WorkerFactory factory(...$parameters)
- * @mixin IdeHelperWorker
  * @property int $server_id
  * @property int $project_id
  * @property int|null $stop_seconds
@@ -1217,8 +1217,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Worker whereStopSeconds($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Worker whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Worker whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class Worker extends \Eloquent {}
+	class IdeHelperWorker {}
 }
 
 namespace App\Models{
@@ -1236,7 +1237,6 @@ namespace App\Models{
  * @property-read User $user
  * @property-read Server $server
  * @method static WorkerSshKeyFactory factory(...$parameters)
- * @mixin IdeHelperWorkerSshKey
  * @property int $server_id
  * @property \phpseclib3\Crypt\Common\PublicKey $public_key
  * @property \phpseclib3\Crypt\Common\PrivateKey|null $private_key
@@ -1259,15 +1259,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|WorkerSshKey wherePublicKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WorkerSshKey whereServerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WorkerSshKey whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
-	class WorkerSshKey extends \Eloquent implements \App\Models\Interfaces\SshKeyInterface {}
+	class IdeHelperWorkerSshKey {}
 }
 
 namespace App\Support\Websockets{
 /**
  * App\Support\Websockets\StatisticsEntry
  *
- * @mixin IdeHelperStatisticsEntry
  * @property int $id
  * @property string $app_id
  * @property int $peak_connections_count
@@ -1285,7 +1285,8 @@ namespace App\Support\Websockets{
  * @method static \Illuminate\Database\Eloquent\Builder|StatisticsEntry wherePeakConnectionsCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|StatisticsEntry whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|StatisticsEntry whereWebsocketMessagesCount($value)
+ * @mixin \Eloquent
  */
-	class StatisticsEntry extends \Eloquent {}
+	class IdeHelperStatisticsEntry {}
 }
 

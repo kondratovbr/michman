@@ -26,11 +26,12 @@ use Spatie\ModelStates\HasStates;
 /**
  * Server Eloquent model
  *
- * Database IDs:
  * @property int $id
+ *
+ * IDs
  * @property int $providerId
  *
- * Database-stored properties:
+ * Properties
  * @property string $externalId
  * @property string $region
  * @property string $size
@@ -49,11 +50,11 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $updatedAt
  * @property CarbonInterface $createdAt
  *
- * Derived properties:
+ * Custom attributes
  * @property-read User $user
  * @property-read string $publicWorkerDir
  *
- * Relations:
+ * Relations
  * @property-read Provider $provider
  * @property-read WorkerSshKey $workerSshKey
  * @property-read Collection $logs
@@ -71,6 +72,8 @@ use Spatie\ModelStates\HasStates;
  * @property-read Collection $daemons
  *
  * @method static ServerFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperServer
  */
 class Server extends AbstractModel
 {

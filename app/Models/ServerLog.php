@@ -21,8 +21,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Server Log Eloquent model to store SSH logs in the database
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $type
  * @property string|null $script
  * @property string|null $command
@@ -33,11 +36,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property bool|null $success
  * @property CarbonInterface $createdAt
  *
+ * Custom attributes
  * @property-read bool $renderable
- *
  * @property-read Server $server
  *
  * @method static ServerLogFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperServerLog
  */
 class ServerLog extends AbstractModel
 {

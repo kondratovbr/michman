@@ -24,22 +24,29 @@ use RuntimeException;
  * like GitHub or GitLab.
  *
  * @property int $id
- * @property int $userId
  *
+ * IDs
+ * @property int $userId
  * @property string $provider
+ *
+ * Properties
  * @property string $externalId
  * @property string $nickname
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read string $webhookProvider
  *
+ * Relations
  * @property-read User $user
  * @property-read Collection $projects
  * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
  * @property-read OAuthUser|null $oauthUser
  *
  * @method static VcsProviderFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperVcsProvider
  */
 class VcsProvider extends AbstractModel
 {

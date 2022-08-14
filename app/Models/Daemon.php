@@ -20,8 +20,11 @@ use Spatie\ModelStates\HasStates;
  * Represents a supervisord-managed program running on a server.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $command
  * @property string $username
  * @property string|null $directory
@@ -31,14 +34,16 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
  * @property-read string $name
  * @property-read string $shortCommand
  * @property-read string $shortDirectory
- *
  * @property-read Server $server
  *
  * @method static DaemonFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperDaemon
  */
 class Daemon extends AbstractModel
 {

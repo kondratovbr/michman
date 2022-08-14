@@ -6,6 +6,9 @@ use App\Models\Traits\HasModelHelpers;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use Laravel\Jetstream\Membership as JetstreamMembership;
 
+/**
+ * @mixin IdeHelperMembership
+ */
 class Membership extends JetstreamMembership
 {
     use UsesCamelCaseAttributes;

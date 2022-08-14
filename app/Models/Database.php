@@ -30,8 +30,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read Server $server
  * @property-read Collection $databaseUsers
  * @property-read Project|null $project
- *
  * @method static DatabaseFactory factory(...$parameters)
+ * @mixin IdeHelperDatabase
  */
 class Database extends AbstractModel implements HasTasksCounterInterface
 {

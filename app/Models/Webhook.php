@@ -24,8 +24,11 @@ use Spatie\ModelStates\HasStates;
  * Webhook Eloquent model
  *
  * @property int $id
+ *
+ * IDs
  * @property int $projectId
  *
+ * Properties
  * @property string $uuid
  * @property string $provider
  * @property string $type
@@ -36,13 +39,15 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
  * @property-read string $repo
- *
  * @property-read Project $project
  * @property-read Collection $calls
  *
  * @method static WebhookFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperWebhook
  */
 class Webhook extends AbstractModel
 {

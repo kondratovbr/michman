@@ -14,19 +14,25 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Represents an OAuth account linked to some User model.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $userId
  *
+ * Properties
  * @property string $provider
  * @property string $oauthId
  * @property string $nickname
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
  * @property-read Provider|null $serverProvider
  * @property-read VcsProvider|null $vcsProvider
  *
  * @method static OAuthUserFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperOAuthUser
  */
 class OAuthUser extends AbstractModel
 {

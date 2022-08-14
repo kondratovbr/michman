@@ -14,15 +14,21 @@ use Illuminate\Notifications\DatabaseNotification;
 // TODO: IMPORTANT! Cleanup old notification marked as read?
 
 /**
+ * Notification Eloquent model
+ *
  * @property string $id
  *
+ * Properties
  * @property string $type
  * @property array $data
  * @property CarbonInterface $readAt
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read Model $notifiable
+ *
+ * @mixin IdeHelperNotification
  */
 class Notification extends DatabaseNotification
 {

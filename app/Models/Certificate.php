@@ -26,22 +26,29 @@ use Spatie\ModelStates\HasStates;
  * Certificate Eloquent model
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $type
  * @property string $domain
  * @property CertificateState $state
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read User $user
  * @property-read string $name
  * @property-read string $directory
  * @property-read Set $domains
  *
+ * Relations
  * @property-read Server $server
  *
  * @method static CertificateFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperCertificate
  */
 class Certificate extends AbstractModel
 {

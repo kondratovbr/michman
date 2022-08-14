@@ -17,16 +17,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * to access project repositories during deployment.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read Server $server
  * @property-read ServerSshKeyVcsProviderPivot|null $vcsProviderKey
  *
  * @method static ServerSshKeyFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperServerSshKey
  */
 class ServerSshKey extends AbstractModel implements SshKeyInterface
 {

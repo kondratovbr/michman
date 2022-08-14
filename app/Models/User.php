@@ -35,6 +35,7 @@ use Spark\Billable;
  *
  * @property int $id
  *
+ * Properties
  * @property string $email
  * @property string|null $password
  * @property CarbonInterface $emailVerifiedAt
@@ -42,9 +43,11 @@ use Spark\Billable;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read string $name
  * @property-read string $avatarUrl
  *
+ * Relations
  * @property-read Collection $providers
  * @property-read Collection $servers
  * @property-read Collection $userSshKeys
@@ -54,6 +57,8 @@ use Spark\Billable;
  * @property-read Collection $webhooks
  *
  * @method static UserFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperUser
  */
 class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
 {

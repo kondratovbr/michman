@@ -19,21 +19,28 @@ use RuntimeException;
  * like DigitalOcean or Linode.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $userId
  *
+ * Properties
  * @property string $provider
  * @property string|null $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read string $status
  * @property-read string $localName
  *
+ * Relations
  * @property-read User $user
  * @property-read Collection $servers
  * @property-read OAuthUser|null $oauthUser
  *
  * @method static ProviderFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperProvider
  */
 class Provider extends AbstractModel
 {
@@ -128,7 +135,7 @@ class Provider extends AbstractModel
     public function purge(): bool|null
     {
         $this->servers->each->purge();
-        
+
         return $this->delete();
     }
 }

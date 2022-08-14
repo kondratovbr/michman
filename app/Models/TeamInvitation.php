@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\TeamInvitation as JetstreamTeamInvitation;
 
+/**
+ * @mixin IdeHelperTeamInvitation
+ */
 class TeamInvitation extends JetstreamTeamInvitation
 {
     use UsesCamelCaseAttributes;

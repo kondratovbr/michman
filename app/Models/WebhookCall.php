@@ -13,8 +13,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * WebhookCall Eloquent model
  *
  * @property int $id
+ *
+ * IDs
  * @property int $webhookId
  *
+ * Properties
  * @property string $type
  * @property string $url
  * @property string $externalId
@@ -25,9 +28,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read Webhook $webhook
  *
  * @method static WebhookCallFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperWebhookCall
  */
 class WebhookCall extends AbstractModel
 {

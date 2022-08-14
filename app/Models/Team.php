@@ -10,11 +10,14 @@ use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
 use Laravel\Jetstream\Team as JetstreamTeam;
 
+/**
+ * @mixin IdeHelperTeam
+ */
 class Team extends JetstreamTeam
 {
-    use HasFactory,
-        UsesCamelCaseAttributes,
-        HasModelHelpers;
+    use HasFactory;
+    use UsesCamelCaseAttributes;
+    use HasModelHelpers;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

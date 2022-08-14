@@ -19,19 +19,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * Represents an SSH key that the user added to their account to be able to access their servers manually.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $userId
  *
+ * Properties
  * @property string $name
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read null $privateKey
  * @property-read null $privateKeyString
  *
+ * Relations
  * @property-read User $user
  * @property-read Collection $servers
  *
  * @method static UserSshKeyFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperUserSshKey
  */
 class UserSshKey extends AbstractModel implements SshKeyInterface
 {

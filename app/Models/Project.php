@@ -22,8 +22,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Project Eloquent model
  *
  * @property int $id
+ *
+ * IDs
  * @property int $userId
  *
+ * Properties
  * @property string $domain
  * @property Set<string> $aliases
  * @property bool $allowSubDomains
@@ -43,6 +46,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read string $fullDomainName
  * @property-read string $serverUsername
  * @property-read string|null $projectName
@@ -59,6 +63,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string|null $vcsProviderName
  * @property-read bool $repoInstalled
  *
+ * Relations
  * @property-read User $user
  * @property-read Collection $servers
  * @property-read DeploySshKey|null $deploySshKey
@@ -70,6 +75,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read Webhook|null $webhook
  *
  * @method static ProjectFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperProject
  */
 class Project extends AbstractModel
 {
@@ -209,7 +216,7 @@ class Project extends AbstractModel
     {
         return $this->deployments()->latest()->first();
     }
-    
+
     /** Get the latest successful deployment of this project. */
     public function getCurrentDeployment(): Deployment|null
     {

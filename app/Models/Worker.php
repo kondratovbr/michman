@@ -23,8 +23,11 @@ use Spatie\ModelStates\HasStates;
  * Represents a server queue worker.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $projectId
  *
+ * Properties
  * @property string $type
  * @property string|null $app
  * @property int|null $processes
@@ -36,14 +39,16 @@ use Spatie\ModelStates\HasStates;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
  * @property-read string $debugLevel
  * @property-read string $name
- *
  * @property-read Project $project
  * @property-read Server $server
  *
  * @method static WorkerFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperWorker
  */
 class Worker extends AbstractModel
 {

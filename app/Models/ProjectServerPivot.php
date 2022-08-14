@@ -8,11 +8,16 @@ use Carbon\CarbonInterface;
  * Pivot model for Project to Server relation
  *
  * @property int $id
+ *
+ * IDs
  * @property int $projectId
  * @property int $serverId
  *
+ * Properties
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
+ *
+ * @mixin IdeHelperProjectServerPivot
  */
 class ProjectServerPivot extends AbstractPivot
 {

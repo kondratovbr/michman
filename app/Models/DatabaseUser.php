@@ -18,21 +18,25 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * DatabaseUser Eloquent model
  *
+ * IDs
  * @property int $id
  * @property int $serverId
  *
+ * Properties
  * @property string $name
  * @property string|null $password
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
- *
  * @property-read Server $server
  * @property-read Collection $databases
  * @property-read Project|null $project
  *
  * @method static DatabaseUserFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperDatabaseUser
  */
 class DatabaseUser extends AbstractModel implements HasTasksCounterInterface
 {

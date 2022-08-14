@@ -20,8 +20,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * DeploymentServerPivot contains information about that process on a single server.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $projectId
  *
+ * Properties
  * @property string $type
  * @property string $branch
  * @property string|null $commit
@@ -32,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
  * @property-read bool $started
  * @property-read bool $finished
  * @property-read bool|null $successful
@@ -43,6 +47,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read string $createdAtFormatted
  * @property-read string $commitUrl
  *
+ * Relations
  * @property-read User $user
  * @property-read Project $project
  * @property-read Collection $servers
@@ -50,6 +55,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  *
  * @method static DeploymentQueryBuilder query()
  * @method static DeploymentFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperDeployment
  */
 class Deployment extends AbstractModel
 {

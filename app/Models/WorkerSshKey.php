@@ -15,18 +15,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Represents an SSH key that our worker process uses to access the server.
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $name
  * @property string|null $externalId
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
- *
  * @property-read Server $server
  *
  * @method static WorkerSshKeyFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperWorkerSshKey
  */
 class WorkerSshKey extends AbstractModel implements SshKeyInterface
 {

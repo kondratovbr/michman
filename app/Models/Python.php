@@ -11,19 +11,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Python Eloquent model
  *
  * @property int $id
+ *
+ * IDs
  * @property int $serverId
  *
+ * Properties
  * @property string $version
  * @property string|null $status
  * @property string|null $patchVersion
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Relations
  * @property-read User $user
- *
  * @property-read Server $server
  *
  * @method static PythonFactory factory(...$parameters)
+ *
+ * @mixin IdeHelperPython
  */
 class Python extends AbstractModel
 {
