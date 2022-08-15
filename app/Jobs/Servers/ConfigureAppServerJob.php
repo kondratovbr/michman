@@ -30,7 +30,8 @@ class ConfigureAppServerJob extends AbstractJob
         $this->data = $data;
     }
 
-    public function handle(StoreFirewallRuleAction $storeFirewallRule): void {
+    public function handle(StoreFirewallRuleAction $storeFirewallRule): void
+    {
         DB::transaction(function () use ($storeFirewallRule) {
             $server = $this->server->freshLockForUpdate();
 
