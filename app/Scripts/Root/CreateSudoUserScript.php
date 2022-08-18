@@ -4,26 +4,20 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Traits\HandlesUnixUsers;
 use phpseclib3\Net\SFTP;
 
 class CreateSudoUserScript extends AbstractServerScript
 {
+    use HandlesUnixUsers;
+
     public function execute(Server $server, string $username, string $password, SFTP $ssh = null)
     {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
-        // Create a new user.
-        $this->setTimeout(60 * 5);
-        $this->exec("useradd --create-home --shell /bin/bash $username");
-        $this->exec(
-            "echo $username:$password | chpasswd",
-            true,
-            false,
-            "echo $username:PASSWORD | chpasswd",
-        );
+        $this->createUser($username, true);
 
-        // Add the user to sudo group.
-        $this->exec("usermod -aG sudo $username");
+        $this->changeUserPassword($username, $password);
 
         // Create the necessary directories upfront.
         foreach (['public'] as $dir) {

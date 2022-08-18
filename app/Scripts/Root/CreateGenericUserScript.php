@@ -4,17 +4,18 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Traits\HandlesUnixUsers;
 use phpseclib3\Net\SFTP;
 
 class CreateGenericUserScript extends AbstractServerScript
 {
+    use HandlesUnixUsers;
+
     public function execute(Server $server, string $username, SFTP $ssh = null)
     {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
-        $this->setTimeout(60);
-
-        $this->exec("useradd --create-home --shell /bin/bash $username");
+        $this->createUser($username);
 
         $homeDir = "/home/$username";
         $michmanDir = "$homeDir/.michman";
