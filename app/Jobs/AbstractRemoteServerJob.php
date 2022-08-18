@@ -47,8 +47,7 @@ abstract class AbstractRemoteServerJob extends AbstractJob
             return [];
 
         return [
-            (new ThrottlesExceptions(5, 5))
-                ->backoff($this->backoff ?? 5),
+            new ThrottlesExceptions(5, 5),
 
             (new WithoutOverlappingOnModel($this->server))
                 // If another job already works with the same server - retry this one 30 seconds later.
