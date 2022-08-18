@@ -27,6 +27,7 @@ Route::get('env', [DebugController::class, 'env']);
 Route::get('config', [DebugController::class, 'config']);
 Route::get('exception', [DebugController::class, 'exception']);
 Route::get('email', [DebugController::class, 'email']);
+Route::get('log', [DebugController::class, 'log']);
 Route::prefix('cache')->group(function () {
     Route::get('put', [DebugController::class, 'cachePut']);
     Route::get('get', [DebugController::class, 'cacheGet']);

@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -120,5 +121,11 @@ class DebugController extends AbstractController
     public function cacheStore(): void
     {
         dump(Cache::store());
+    }
+
+    /** Write something to logs. */
+    public function log(): void
+    {
+        Log::info('If you see this - logging works! This is an "info" level log message.');
     }
 }
