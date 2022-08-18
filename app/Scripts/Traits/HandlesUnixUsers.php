@@ -14,7 +14,8 @@ trait HandlesUnixUsers
     protected function createUser(string $username, bool $sudo = false): void
     {
         // useradd fails if the user already exists, so we check for it.
-        if (! $this->exec("id -u $username", throw: false))
+        $this->exec("id -u $username", throw: false);
+        if ($this->failed())
             $this->exec("useradd --create-home --shell /bin/bash $username");
 
         if ($sudo)
