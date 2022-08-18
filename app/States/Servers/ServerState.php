@@ -16,6 +16,7 @@ class ServerState extends AbstractModelState
             ->allowTransition(Creating::class, Preparing::class)
             ->allowTransition(Preparing::class, Configuring::class)
             ->allowTransition(Configuring::class, Ready::class)
-            ->allowTransition(Ready::class, Deleting::class);
+            ->allowTransition(Ready::class, Deleting::class)
+            ->allowTransition([Creating::class, Preparing::class, Configuring::class], Failed::class);
     }
 }

@@ -21,6 +21,7 @@ return [
         Servers\Configuring::class => 'Configuring',
         Servers\Ready::class => 'Ready',
         Servers\Deleting::class => 'Deleting',
+        Servers\Failed::class => 'Failed',
     ],
 
     'index' => [

@@ -10,8 +10,10 @@ use App\Jobs\Pythons\CreatePythonJob;
 use App\Jobs\Traits\IsInternal;
 use App\Models\Server;
 use App\Notifications\Servers\FailedToConfigureServerNotification;
+use App\States\Servers\Failed;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 // TODO: IMPORTANT! Cover with tests!
 
@@ -64,13 +66,16 @@ class ConfigureAppServerJob extends AbstractJob
                 new InstallNginxJob($server),
                 new InstallPlaceholderPageJob($server),
                 new MarkServerAsReadyJob($server),
-            ])->dispatch();
+            ])->catch(function (Throwable $exception) {
+                $this->failed();
+            })->dispatch();
 
         }, 5);
     }
 
     public function failed(): void
     {
+        $this->server->state->transitionTo(Failed::class);
         $this->server->user->notify(new FailedToConfigureServerNotification($this->server));
     }
 }

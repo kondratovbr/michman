@@ -16,6 +16,8 @@ use App\Scripts\Root\InstallSnapAppsScript;
 use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpdateSnapScript;
 use App\Scripts\Root\UpgradePackagesScript;
+use App\States\Servers\Failed;
+use App\States\Servers\Ready;
 use Illuminate\Support\Facades\DB;
 
 // TODO: IMPORTANT! Cover with tests!
@@ -80,6 +82,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
 
     public function failed(): void
     {
+        $this->server->state->transitionTo(Failed::class);
         $this->server->user->notify(new FailedToPrepareServerNotification($this->server));
     }
 }

@@ -17,10 +17,13 @@ use App\Jobs\Servers\UpdateServerAvailabilityJob;
 use App\Models\Provider;
 use App\Models\Server;
 use App\Models\UserSshKey;
+use App\Notifications\Servers\FailedToConfigureServerNotification;
+use App\States\Servers\Failed;
 use App\Support\Str;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
+use Throwable;
 
 class StoreServerAction
 {
@@ -64,7 +67,7 @@ class StoreServerAction
             foreach ($server->userSshKeys as $key) {
                 $jobs[] = new UploadUserSshKeyToServerJob($key, $server);
             }
-            
+
             $configurationJobClass = (string) config("servers.types.{$server->type}.configuration_job_class");
 
             if (empty($configurationJobClass))
@@ -72,7 +75,11 @@ class StoreServerAction
 
             $jobs[] = new $configurationJobClass($server, $data);
 
-            Bus::chain($jobs)->dispatch();
+            Bus::chain($jobs)->catch(function (Throwable $exception) use ($user, $server) {
+                $server->refresh();
+                $server->state->transitionTo(Failed::class);
+                $user->notify(new FailedToConfigureServerNotification($server));
+            })->dispatch();
 
             return $server;
         }, 5);
