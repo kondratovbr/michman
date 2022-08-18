@@ -31,6 +31,6 @@ class DeleteWorkerJob extends AbstractRemoteServerJob
             $script->execute($server, $worker);
 
             $worker->purge();
-        }, 5);
+        });
     }
 }

@@ -45,6 +45,6 @@ class RestartDaemonJob extends AbstractRemoteServerJob
             }
 
             UpdateDaemonStateJob::dispatch($daemon);
-        }, 5);
+        });
     }
 }

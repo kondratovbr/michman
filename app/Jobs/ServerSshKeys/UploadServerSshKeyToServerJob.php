@@ -29,11 +29,13 @@ class UploadServerSshKeyToServerJob extends AbstractRemoteServerJob
                 $server->serverSshKey,
                 $this->username,
             );
-        }, 5);
+        });
     }
 
     public function failed(): void
     {
-        $this->server->user->notify(new FailedToUploadServerSshKeyToServerNotification($this->server));
+        $this->server->user->notify(
+            new FailedToUploadServerSshKeyToServerNotification($this->server)
+        );
     }
 }

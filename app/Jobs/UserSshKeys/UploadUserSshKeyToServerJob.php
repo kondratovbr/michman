@@ -49,7 +49,7 @@ class UploadUserSshKeyToServerJob extends AbstractRemoteServerJob
                     $ssh,
                 );
             }
-        }, 5);
+        });
     }
 
     public function failed(): void

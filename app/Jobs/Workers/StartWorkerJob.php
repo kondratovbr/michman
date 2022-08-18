@@ -37,6 +37,6 @@ class StartWorkerJob extends AbstractRemoteServerJob
             } catch (ServerScriptException) {
                 $worker->state->transitionTo(Failed::class);
             }
-        }, 5);
+        });
     }
 }

@@ -54,6 +54,6 @@ class DeleteServerSshKeyFromVcsJob extends AbstractJob
             $api->deleteSshKey($serverSshKey->vcsProviderKey->externalId);
 
             $serverSshKey->vcsProviders()->detach($vcsProvider);
-        }, 5);
+        });
     }
 }

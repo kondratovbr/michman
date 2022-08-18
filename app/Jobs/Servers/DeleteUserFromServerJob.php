@@ -26,6 +26,6 @@ class DeleteUserFromServerJob extends AbstractRemoteServerJob
             $server = $this->server->freshLockForUpdate();
 
             $deleteUser->execute($server, $this->username);
-        }, 5);
+        });
     }
 }

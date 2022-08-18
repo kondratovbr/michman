@@ -49,7 +49,7 @@ class EnableWebhookJob extends AbstractJob
                 // If the service doesn't dispatch "ping" calls we'll just consider webhook enabled right now and hope for the best.
                 $hook->state->transitionToIfCan(Enabled::class);
             }
-        }, 5);
+        });
     }
 
     public function failed(): void
@@ -61,6 +61,6 @@ class EnableWebhookJob extends AbstractJob
 
             $hook->calls()->delete();
             $hook->purge();
-        }, 10);
+        }, 5);
     }
 }

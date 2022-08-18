@@ -58,7 +58,7 @@ class DeleteUserJob extends AbstractJob
             $user->subscription()?->cancel();
 
             $user->purge();
-        }, 5);
+        });
     }
 
     protected function revokeOAuthAuthorizations(User $user): void

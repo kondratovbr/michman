@@ -31,6 +31,6 @@ class DeleteDaemonJob extends AbstractRemoteServerJob
             $stop->execute($server, $daemon);
 
             $daemon->purge();
-        }, 5);
+        });
     }
 }

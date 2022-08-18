@@ -33,6 +33,6 @@ class DeleteDeploySshKeyFromServerJob extends AbstractRemoteServerJob
                 $project->serverUsername,
                 $project->deploySshKey
             );
-        }, 5);
+        });
     }
 }

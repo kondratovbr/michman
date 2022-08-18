@@ -32,6 +32,6 @@ class InstallPlaceholderPageJob extends AbstractRemoteServerJob
             $enablePlaceholderSite->execute($server, $rootSsh);
 
             $restartNginx->execute($server, $rootSsh);
-        }, 5);
+        });
     }
 }

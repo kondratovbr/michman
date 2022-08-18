@@ -31,6 +31,6 @@ class DeleteProjectDeploymentsJob extends AbstractJob
                 $deployment->servers()->detach();
                 $deployment->purge();
             }
-        }, 5);
+        });
     }
 }

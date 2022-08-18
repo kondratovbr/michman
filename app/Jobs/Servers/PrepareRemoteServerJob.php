@@ -76,8 +76,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
             $configureSshServer->execute($server, $ssh);
 
             $rebootServer->execute($server, $ssh);
-
-        }, 5);
+        });
     }
 
     public function failed(): void

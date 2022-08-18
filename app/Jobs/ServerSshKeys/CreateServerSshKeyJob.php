@@ -27,6 +27,6 @@ class CreateServerSshKeyJob extends AbstractJob
             $server = $this->server->freshSharedLock();
 
             $action->execute($server);
-        }, 5);
+        });
     }
 }

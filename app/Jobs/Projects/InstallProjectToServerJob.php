@@ -53,7 +53,7 @@ class InstallProjectToServerJob extends AbstractRemoteServerJob
             $createVenv->execute($server, $project, $userSsh);
 
             $configureGunicorn->execute($server, $project, $rootSsh);
-        }, 5);
+        });
     }
 
     public function failed(): void

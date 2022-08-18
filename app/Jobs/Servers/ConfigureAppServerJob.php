@@ -70,7 +70,7 @@ class ConfigureAppServerJob extends AbstractJob
                 $this->failed();
             })->dispatch();
 
-        }, 5);
+        });
     }
 
     public function failed(): void

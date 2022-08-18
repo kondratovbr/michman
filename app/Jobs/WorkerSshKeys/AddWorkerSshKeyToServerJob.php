@@ -42,7 +42,7 @@ class AddWorkerSshKeyToServerJob extends AbstractRemoteServerJob
                     $ssh,
                 );
             }
-        }, 5);
+        });
     }
 
     public function failed(): void

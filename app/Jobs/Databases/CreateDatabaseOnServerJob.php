@@ -37,6 +37,6 @@ class CreateDatabaseOnServerJob extends AbstractRemoteServerJob
             );
 
             $database->decrementTasks();
-        }, 5);
+        });
     }
 }

@@ -107,6 +107,6 @@ class PerformDeploymentOnServerJob extends AbstractRemoteServerJob
                 $server->touch();
             }
 
-        }, 5);
+        });
     }
 }

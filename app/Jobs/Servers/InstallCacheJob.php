@@ -11,9 +11,9 @@ use RuntimeException;
 
 class InstallCacheJob extends AbstractRemoteServerJob
 {
-    protected string $cache;
+    protected string|null $cache;
 
-    public function __construct(Server $server, string $cache)
+    public function __construct(Server $server, string|null $cache)
     {
         parent::__construct($server);
 
@@ -22,7 +22,7 @@ class InstallCacheJob extends AbstractRemoteServerJob
 
     public function handle(): void
     {
-        if (is_null($this->cache) || $this->cache === 'none')
+        if (empty($this->cache) || $this->cache === 'none')
             return;
 
         DB::transaction(function () {
@@ -50,6 +50,6 @@ class InstallCacheJob extends AbstractRemoteServerJob
             $server->installedCache = $this->cache;
 
             $server->save();
-        }, 5);
+        });
     }
 }

@@ -40,6 +40,6 @@ class InstallPythonJob extends AbstractRemoteServerJob
             $python->save();
 
             event(new PythonInstalledEvent($python));
-        }, 5);
+        });
     }
 }

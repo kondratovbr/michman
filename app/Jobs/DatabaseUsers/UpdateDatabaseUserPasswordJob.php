@@ -48,6 +48,6 @@ class UpdateDatabaseUserPasswordJob extends AbstractRemoteServerJob
             $databaseUser->save();
 
             $databaseUser->decrementTasks();
-        }, 5);
+        });
     }
 }

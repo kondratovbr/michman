@@ -30,6 +30,6 @@ class InstallNginxJob extends AbstractRemoteServerJob
             $installNginx->execute($server, $ssh);
 
             $restartNginx->execute($server, $ssh);
-        }, 5);
+        });
     }
 }

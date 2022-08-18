@@ -44,6 +44,6 @@ class DeleteDatabaseUserJob extends AbstractRemoteServerJob
             }
 
             $databaseUser->purge();
-        }, 5);
+        });
     }
 }

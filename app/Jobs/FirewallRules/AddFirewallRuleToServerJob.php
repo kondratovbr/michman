@@ -35,6 +35,6 @@ class AddFirewallRuleToServerJob extends AbstractRemoteServerJob
 
             $rule->status = FirewallRule::STATUS_ADDED;
             $rule->save();
-        }, 5);
+        });
     }
 }

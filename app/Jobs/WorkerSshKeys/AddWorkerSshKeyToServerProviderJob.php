@@ -40,7 +40,7 @@ class AddWorkerSshKeyToServerProviderJob extends AbstractJob
 
             $sshKey->externalId = $addedKey->id;
             $sshKey->save();
-        }, 5);
+        });
     }
 
     public function failed(): void

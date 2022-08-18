@@ -57,6 +57,6 @@ class UpdateDaemonStateJob extends AbstractRemoteServerJob
             // repeat this job a bit later.
             if ($daemon->state->is(Starting::class))
                 $this->release(30);
-        }, 5);
+        });
     }
 }

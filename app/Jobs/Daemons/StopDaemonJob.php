@@ -32,6 +32,6 @@ class StopDaemonJob extends AbstractRemoteServerJob
             $script->execute($server, $daemon);
 
             $daemon->state->transitionTo(Stopped::class);
-        }, 5);
+        });
     }
 }

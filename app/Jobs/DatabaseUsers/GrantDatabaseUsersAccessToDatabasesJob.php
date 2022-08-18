@@ -68,6 +68,6 @@ class GrantDatabaseUsersAccessToDatabasesJob extends AbstractRemoteServerJob
 
             $databaseUsers->decrementTasks();
             $databases->decrementTasks();
-        }, 5);
+        });
     }
 }

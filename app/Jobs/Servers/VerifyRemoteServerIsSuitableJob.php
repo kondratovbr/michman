@@ -46,7 +46,7 @@ class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
             }
 
             $server->state->transitionTo(Preparing::class);
-        }, 5);
+        });
     }
 
     /** Notify the user that the server isn't suitable. */

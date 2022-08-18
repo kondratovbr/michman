@@ -32,7 +32,7 @@ class UploadDeploySshKeyToServerJob extends AbstractRemoteServerJob
                 $project->serverUsername,
                 $project->deploySshKey->name,
             );
-        }, 5);
+        });
     }
 
     public function failed(): void

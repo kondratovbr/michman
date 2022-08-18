@@ -68,6 +68,6 @@ class RevokeDatabaseUsersAccessToDatabasesJob extends AbstractRemoteServerJob
 
             $databaseUsers->decrementTasks();
             $databases->decrementTasks();
-        }, 5);
+        });
     }
 }

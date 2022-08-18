@@ -59,6 +59,6 @@ class DeleteLetsEncryptCertificateJob extends AbstractRemoteServerJob
             }
 
             $restartNginx->execute($server, $rootSsh);
-        }, 5);
+        });
     }
 }

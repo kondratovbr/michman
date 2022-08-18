@@ -37,7 +37,7 @@ class DeleteWebhookJob extends AbstractJob
 
             $hook->calls()->delete();
             $hook->purge();
-        }, 5);
+        });
     }
 
     public function failed(): void

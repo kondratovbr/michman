@@ -75,7 +75,7 @@ class InstallLetsEncryptCertificateJob extends AbstractRemoteServerJob
             $this->logTo = now();
 
             $certificate->state->transitionTo(Installed::class);
-        }, 5);
+        });
     }
 
     public function handleFailure(): void

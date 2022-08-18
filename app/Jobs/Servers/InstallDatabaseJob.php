@@ -23,7 +23,7 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
 
     public function handle(): void
     {
-        if (is_null($this->database) || $this->database === 'none')
+        if (empty($this->database) || $this->database === 'none')
             return;
 
         DB::transaction(function () {
@@ -60,6 +60,6 @@ class InstallDatabaseJob extends AbstractRemoteServerJob
 
             $server->installedDatabase = $this->database;
             $server->save();
-        }, 5);
+        });
     }
 }

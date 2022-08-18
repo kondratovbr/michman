@@ -49,11 +49,13 @@ class AddServerSshKeyToVcsJob extends AbstractJob
             );
 
             $serverSshKey->vcsProviders()->attach($vcsProvider, ['external_id' => $keyData->id]);
-        }, 5);
+        });
     }
 
     public function failed(): void
     {
-        $this->server->provider->user->notify(new AddingSshKeyToProviderFailedNotification($this->server->provider));
+        $this->server->provider->user->notify(
+            new AddingSshKeyToProviderFailedNotification($this->server->provider)
+        );
     }
 }

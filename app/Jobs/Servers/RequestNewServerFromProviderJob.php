@@ -49,6 +49,8 @@ class RequestNewServerFromProviderJob extends AbstractJob
 
     public function failed(): void
     {
-        $this->server->user->notify(new RequestingNewServerFromProviderFailedNotification($this->server->provider));
+        $this->server->user->notify(
+            new RequestingNewServerFromProviderFailedNotification($this->server->provider)
+        );
     }
 }

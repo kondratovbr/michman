@@ -34,6 +34,6 @@ class CreatePythonJob extends AbstractJob
             $server = $this->server->freshSharedLock();
 
             $storePython->execute($this->version, $server, $this->sync);
-        }, 5);
+        });
     }
 }

@@ -44,6 +44,6 @@ class DeleteUserSshKeyFromServerJob extends AbstractRemoteServerJob
                     $ssh,
                 );
             }
-        }, 5);
+        });
     }
 }

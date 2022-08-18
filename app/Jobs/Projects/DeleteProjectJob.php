@@ -32,6 +32,6 @@ class DeleteProjectJob extends AbstractJob
             $project->deploySshKey()->delete();
 
             $project->purge();
-        }, 5);
+        });
     }
 }

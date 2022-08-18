@@ -46,6 +46,6 @@ class UninstallProjectFromServerJob extends AbstractRemoteServerJob
             $deleteGunicornConfig->execute($server, $project, $rootSsh);
 
             $deleteProjectFiles->execute($server, $project, $userSsh);
-        }, 5);
+        });
     }
 }

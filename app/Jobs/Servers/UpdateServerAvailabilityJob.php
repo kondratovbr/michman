@@ -57,7 +57,7 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
             }
 
             $server->state->transitionTo(Configuring::class);
-        }, 5);
+        });
     }
 
     public function failed(): void

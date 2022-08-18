@@ -40,6 +40,6 @@ class PatchPythonJob extends AbstractRemoteServerJob
             $python->save();
 
             event(new PythonPatchedEvent($python));
-        }, 5);
+        });
     }
 }

@@ -45,6 +45,6 @@ class RemoveRepoDataFromProjectJob extends AbstractJob
             $project->removingRepo = false;
 
             $project->save();
-        }, 5);
+        });
     }
 }
