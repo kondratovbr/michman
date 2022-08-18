@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class VerifyRemoteServerIsSuitableJob extends AbstractRemoteServerJob
 {
     // Override the normal backoff time to speed up the server creation process for users.
-    public int $backoff = 10; // 10 sec
+    public int|null $backoff = 10; // 10 sec
 
     public function handle(VerifyServerIsSuitableScript $verifyServerIsSuitable): void
     {

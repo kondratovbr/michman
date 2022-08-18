@@ -14,7 +14,7 @@ class UpdateServerAvailabilityJob extends AbstractRemoteServerJob
 {
     // Override normal job parameters to speed up the process.
     public int $timeout = 60; // 1 min
-    public int $backoff = 10; // 10 sec
+    public int|null $backoff = 10; // 10 sec
     public function retryUntil(): DateTimeInterface
     {
         return now()->addMinutes(5);
