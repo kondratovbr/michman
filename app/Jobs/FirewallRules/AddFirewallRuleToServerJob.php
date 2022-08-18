@@ -13,7 +13,7 @@ class AddFirewallRuleToServerJob extends AbstractRemoteServerJob
 
     public function __construct(FirewallRule $rule, bool $sync = false)
     {
-        parent::__construct($rule->server)->sync($sync);
+        parent::__construct($rule->server, $sync);
 
         $this->rule = $rule->withoutRelations();
     }

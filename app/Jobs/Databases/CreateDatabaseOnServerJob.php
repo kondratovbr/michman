@@ -15,7 +15,7 @@ class CreateDatabaseOnServerJob extends AbstractRemoteServerJob
 
     public function __construct(Database $database, bool $sync = false)
     {
-        parent::__construct($database->server)->sync($sync);
+        parent::__construct($database->server, $sync);
 
         $this->database = $database->withoutRelations();
 

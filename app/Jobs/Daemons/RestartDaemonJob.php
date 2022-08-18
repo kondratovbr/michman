@@ -15,7 +15,8 @@ class RestartDaemonJob extends AbstractRemoteServerJob
 {
     protected Daemon $daemon;
 
-    public function __construct(Daemon $daemon) {
+    public function __construct(Daemon $daemon)
+    {
         parent::__construct($daemon->server);
 
         $this->daemon = $daemon->withoutRelations();
