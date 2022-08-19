@@ -66,8 +66,10 @@ class ConfigureAppServerJob extends AbstractJob
                 new InstallNginxJob($server),
                 new InstallPlaceholderPageJob($server),
                 new MarkServerAsReadyJob($server),
-            ])->catch(function (Throwable $exception) {
-                $this->failed();
+            ])->catch(function (Throwable $exception) use ($server) {
+                // This closure will be serialized for the queue,
+                // so we cannot use $this here.
+                static::handleFailure($server);
             })->dispatch();
 
         });
@@ -75,7 +77,12 @@ class ConfigureAppServerJob extends AbstractJob
 
     public function failed(): void
     {
-        $this->server->state->transitionTo(Failed::class);
-        $this->server->user->notify(new FailedToConfigureServerNotification($this->server));
+        static::handleFailure($this->server);
+    }
+
+    public static function handleFailure(Server $server): void
+    {
+        $server->state->transitionTo(Failed::class);
+        $server->user->notify(new FailedToConfigureServerNotification($server));
     }
 }
