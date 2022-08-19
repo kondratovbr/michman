@@ -28,13 +28,13 @@
                             <x-app-link href="{{ route('servers.show', $server) }}">
                                 {{ $server->name }}
                             </x-app-link>
-                            <p class="text-sm">{{ $server->shortInfo() }}</p>
+                            <p class="text-xs sm:text-sm">{{ $server->shortInfo() }}</p>
                         </div>
                     </div>
                 </x-td>
                 <x-td>
                     @isset($server->publicIp)
-                        <x-clipboard class="text-xs md:text-sm">{{ $server->publicIp }}</x-clipboard>
+                        <x-clipboard class="text-xs sm:text-sm">{{ $server->publicIp }}</x-clipboard>
                     @else
                         {{ __('misc.n/a') }}
                     @endisset

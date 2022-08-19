@@ -1,4 +1,4 @@
-{{-- TODO: Update this so I can put badges/buttons inside and have them properlu aligned. --}}
+{{-- TODO: Update this so I can put badges/buttons inside and have them properly aligned. --}}
 
 @props(['show' => null])
 

@@ -172,6 +172,9 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
                 serif: ['IBM Plex Serif', ...defaultTheme.fontFamily.serif]
             },
+            gridTemplateColumns: {
+                '24': 'repeat(24, minmax(0, 1fr))',
+            },
             // Some specific additional inset (top/right/bottom/left) values
             inset: {
                 '2px': '2px',
