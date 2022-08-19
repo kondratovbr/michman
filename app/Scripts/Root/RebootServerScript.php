@@ -4,6 +4,7 @@ namespace App\Scripts\Root;
 
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use phpseclib3\Exception\ConnectionClosedException;
 use phpseclib3\Net\SFTP;
 
 class RebootServerScript extends AbstractServerScript
@@ -12,6 +13,10 @@ class RebootServerScript extends AbstractServerScript
     {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
-        $this->exec('reboot');
+        try {
+            $this->exec('reboot');
+        } catch (ConnectionClosedException) {
+            // We're rebooting the server, so this exception is almost guaranteed to be thrown.
+        }
     }
 }
