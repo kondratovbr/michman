@@ -24,7 +24,7 @@ class ServersIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            UserChannel::name(Auth::user()),
+            UserChannel::name(user()),
             [
                 ServerCreatedEvent::class,
                 ServerUpdatedEvent::class,
@@ -36,12 +36,12 @@ class ServersIndexTable extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('index', [Server::class, Auth::user()]);
+        $this->authorize('index', [Server::class, user()]);
     }
 
     public function render(): View
     {
-        $this->servers = Auth::user()->servers()
+        $this->servers = user()->servers()
             ->with('pythons')
             ->oldest()
             ->get();

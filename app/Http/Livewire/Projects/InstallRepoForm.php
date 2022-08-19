@@ -59,7 +59,7 @@ class InstallRepoForm extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            UserChannel::name(Auth::user()),
+            UserChannel::name(user()),
             [
                 VcsProviderCreatedEvent::class,
                 VcsProviderUpdatedEvent::class,
@@ -82,7 +82,7 @@ class InstallRepoForm extends LivewireComponent
     public function rules(): array
     {
         return [
-            'state.vcsProviderKey' => Rules::integer()->in(Auth::user()->vcsProviders->modelKeys())->required(),
+            'state.vcsProviderKey' => Rules::integer()->in(user()->vcsProviders->modelKeys())->required(),
             'state.repo' => Rules::gitRepoName()->required(),
             'state.branch' => Rules::alphaNumDashString(1, 255)->required(),
             'state.package' => Rules::relativePath()->required(),
@@ -108,7 +108,7 @@ class InstallRepoForm extends LivewireComponent
         $vcsProviderKey = $this->validateOnly('state.vcsProviderKey')['state']['vcsProviderKey'];
 
         /** @var VcsProvider|null $vcs */
-        $vcs = Auth::user()->vcsProviders()->find($vcsProviderKey);
+        $vcs = user()->vcsProviders()->find($vcsProviderKey);
 
         return $vcs;
     }
@@ -117,7 +117,7 @@ class InstallRepoForm extends LivewireComponent
     {
         $this->reset('state');
 
-        $this->state['vcsProviderKey'] = Auth::user()->vcsProviders->first()->getKey();
+        $this->state['vcsProviderKey'] = user()->vcsProviders->first()->getKey();
     }
 
     public function updatedStatePackage(string $value): void
@@ -154,7 +154,7 @@ class InstallRepoForm extends LivewireComponent
 
         $installAction->execute(
             $this->project,
-            Auth::user()->vcsProviders()->findOrFail($state['vcsProviderKey']),
+            user()->vcsProviders()->findOrFail($state['vcsProviderKey']),
             new ProjectRepoDto(
                 root: $state['root'],
                 repo: $state['repo'],
@@ -175,7 +175,7 @@ class InstallRepoForm extends LivewireComponent
 
     public function render(): View
     {
-        $this->vcsProviders = Auth::user()->vcsProviders()->oldest()->get();
+        $this->vcsProviders = user()->vcsProviders()->oldest()->get();
 
         return view('projects.install-repo-form');
     }

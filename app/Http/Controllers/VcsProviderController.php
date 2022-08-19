@@ -39,7 +39,7 @@ class VcsProviderController extends AbstractController
     public function link(string $vcsProviderOauthName): RedirectResponse
     {
         DB::transaction(function () use ($vcsProviderOauthName) {
-            $user = Auth::user();
+            $user = user();
 
             /** @var OauthUser $oauthUser */
             $oauthUser = Socialite::driver($vcsProviderOauthName)
@@ -84,7 +84,7 @@ class VcsProviderController extends AbstractController
 
         DB::transaction(function () use ($vcsProviderName) {
             /** @var VcsProvider $vcs */
-            $vcs = Auth::user()->vcsProviders()
+            $vcs = user()->vcsProviders()
                 ->where('provider', $vcsProviderName)
                 ->latest()
                 ->lockForUpdate()

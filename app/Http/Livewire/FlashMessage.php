@@ -27,7 +27,7 @@ class FlashMessage extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            UserChannel::name(Auth::user()),
+            UserChannel::name(user()),
             [
                 FlashMessageEvent::class,
             ],

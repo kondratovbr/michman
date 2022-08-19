@@ -84,7 +84,7 @@ class CreateProviderForm extends Component
                     token: $validated['token'],
                 ),
             ),
-            Auth::user(),
+            user(),
         );
 
         $this->reset();

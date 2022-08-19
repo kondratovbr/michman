@@ -51,7 +51,7 @@ class LogoutSessionsForm extends Component
     {
         $this->validate();
 
-        $this->authorize('logoutOtherSessions', [Auth::user()]);
+        $this->authorize('logoutOtherSessions', [user()]);
 
         DB::beginTransaction();
 
@@ -89,7 +89,7 @@ class LogoutSessionsForm extends Component
 
         DB::connection(config('session.connection'))
             ->table(config('session.table', 'sessions'))
-            ->where('user_id', Auth::user()->getAuthIdentifier())
+            ->where('user_id', user()->getAuthIdentifier())
             ->where('id', '!=', request()->session()->getId())
             ->delete();
     }
@@ -107,7 +107,7 @@ class LogoutSessionsForm extends Component
         return collect(
             DB::connection(config('session.connection'))
                 ->table(config('session.table', 'sessions'))
-                ->where('user_id', Auth::user()->getAuthIdentifier())
+                ->where('user_id', user()->getAuthIdentifier())
                 ->orderBy('last_activity', 'desc')
                 ->get()
         )->map(function ($session) {

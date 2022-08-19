@@ -105,7 +105,7 @@
 
     {{-- Team Settings --}}
     <x-burger.link
-        href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
+        href="{{ route('teams.show', user()->currentTeam->id) }}"
         :active="request()->routeIs('teams.show')"
     >{{ __('Team Settings') }}</x-burger.link>
 

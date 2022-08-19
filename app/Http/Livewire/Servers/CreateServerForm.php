@@ -43,7 +43,7 @@ class CreateServerForm extends Component
 
     public function mount(): void
     {
-        $usersProviders = Auth::user()->providers()
+        $usersProviders = user()->providers()
             ->pluck('provider')
             ->unique();
 

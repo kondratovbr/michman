@@ -53,11 +53,11 @@ class DeleteAccountForm extends Component
     /** Delete the current user. */
     public function deleteUser(DeleteUserAction $deleteUser, StatefulGuard $auth): void
     {
-        $this->authorize('delete', [Auth::user()]);
+        $this->authorize('delete', [user()]);
 
         $this->validate();
 
-        $deleteUser->execute(Auth::user()->fresh());
+        $deleteUser->execute(user()->fresh());
 
         $auth->logout();
 

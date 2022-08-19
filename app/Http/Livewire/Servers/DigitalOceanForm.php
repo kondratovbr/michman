@@ -75,7 +75,7 @@ class DigitalOceanForm extends Component
                 ->required(),
             'state.name' => Rules::string(1, 255)
                 ->addRule(Rule::unique('providers', 'name')->where(
-                    fn(Builder $query) => $query->where('user_id', Auth::user()->getKey())
+                    fn(Builder $query) => $query->where('user_id', user()->getKey())
                 ))
                 ->required(),
             'state.region' => Rules::string(1, 255)
@@ -110,7 +110,7 @@ class DigitalOceanForm extends Component
 
     public function mount(): void
     {
-        $this->providers = Auth::user()->providers()
+        $this->providers = user()->providers()
             ->where('provider', 'digital_ocean_v2')
             ->oldest()
             ->get()
@@ -222,7 +222,7 @@ class DigitalOceanForm extends Component
     protected function loadApi(): void
     {
         if (isset($this->state['provider_id'])) {
-            $this->api = Auth::user()->providers()
+            $this->api = user()->providers()
                 ->whereKey($this->state['provider_id'])
                 ->first()
                 ?->api();
@@ -331,7 +331,7 @@ class DigitalOceanForm extends Component
 
         $this->server = $action->execute(
             NewServerDto::fromArray($state),
-            Auth::user()->providers()->findOrFail($this->state['provider_id']),
+            user()->providers()->findOrFail($this->state['provider_id']),
         );
 
         $this->successModalOpen = true;

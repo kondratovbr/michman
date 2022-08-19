@@ -17,7 +17,7 @@ class ConnectionSection extends Component
     {
         $this->oauthProvider = $oauthProvider;
         $this->vcsProviderName = (string) config("auth.oauth_providers.$oauthProvider.vcs_provider");
-        $this->vcsProvider = Auth::user()->vcsProviders()
+        $this->vcsProvider = user()->vcsProviders()
             ->where('provider', $this->vcsProviderName)
             ->with('projects')
             ->first();

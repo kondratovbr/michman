@@ -29,7 +29,7 @@ class Navbar extends Component
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            UserChannel::name(Auth::user()),
+            UserChannel::name(user()),
             [
                 ServerCreatedEvent::class,
                 ServerUpdatedEvent::class,

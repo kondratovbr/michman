@@ -26,7 +26,7 @@ class Notifications extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            UserChannel::name(Auth::user()),
+            UserChannel::name(user()),
             BroadcastNotificationCreated::class,
             '$refresh',
         );
@@ -74,7 +74,7 @@ class Notifications extends LivewireComponent
     public function render(): View
     {
         // TODO: Can I use caching here somehow so we don't reload this each time? And how to invalidate it then?
-        $this->notifications = Auth::user()->unreadNotifications()->latest()->get();
+        $this->notifications = user()->unreadNotifications()->latest()->get();
 
         return view('livewire.notifications');
     }

@@ -22,10 +22,10 @@ class ProvidersIndexTable extends Component
 
     public function render(): View
     {
-        $this->authorize('indexUser', [Provider::class, Auth::user()]);
+        $this->authorize('indexUser', [Provider::class, user()]);
 
         return view('providers.index-table', [
-            'providers' => Auth::user()->providers()->oldest()->get(),
+            'providers' => user()->providers()->oldest()->get(),
         ]);
     }
 }

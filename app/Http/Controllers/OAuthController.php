@@ -119,7 +119,7 @@ class OAuthController extends AbstractController
     public function link(Request $request, string $oauthProvider): RedirectResponse
     {
         return DB::transaction(function () use ($request, $oauthProvider): RedirectResponse {
-            $user = Auth::user()->freshLockForUpdate();
+            $user = user()->freshLockForUpdate();
 
             $oauthModel = $user->oauth($oauthProvider);
 
@@ -177,7 +177,7 @@ class OAuthController extends AbstractController
     public function unlink(string $oauthProvider): RedirectResponse
     {
         DB::transaction(function () use ($oauthProvider) {
-            $user = Auth::user()->freshLockForUpdate();
+            $user = user()->freshLockForUpdate();
 
             $oauthModel = $user->oauth($oauthProvider);
 

@@ -32,7 +32,7 @@ class CreateUserSshKeyForm extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('create', [UserSshKey::class, Auth::user()]);
+        $this->authorize('create', [UserSshKey::class, user()]);
     }
 
     /** Store a new user's SSH key. */
@@ -40,9 +40,9 @@ class CreateUserSshKeyForm extends LivewireComponent
     {
         $state = $this->validate()['state'];
 
-        $this->authorize('create', [UserSshKey::class, Auth::user()]);
+        $this->authorize('create', [UserSshKey::class, user()]);
 
-        $action->execute(UserSshKeyDto::fromArray($state), Auth::user());
+        $action->execute(UserSshKeyDto::fromArray($state), user());
 
         $this->reset();
 

@@ -31,9 +31,9 @@ class ChangePasswordForm extends Component
     {
         $validated = $this->validate();
 
-        $this->authorize('changePassword', [Auth::user()]);
+        $this->authorize('changePassword', [user()]);
 
-        $updater->update(Auth::user(), [
+        $updater->update(user(), [
             'current_password' => $validated['current_password'],
             'password' => $validated['password'],
             'password_confirmation' => $validated['password_confirmation'],
@@ -47,7 +47,7 @@ class ChangePasswordForm extends Component
     /** Get the current user of the application. */
     public function getUserProperty(): User
     {
-        return Auth::user();
+        return user();
     }
 
     public function render(): View

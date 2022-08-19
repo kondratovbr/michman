@@ -31,14 +31,14 @@ class TfaForm extends Component
     /** Enable two-factor authentication for the user. */
     public function enableTwoFactorAuthentication(EnableTwoFactorAuthentication $enable): void
     {
-        $this->authorize('enableTfa', [Auth::user()]);
+        $this->authorize('enableTfa', [user()]);
 
         if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
             $this->ensurePasswordIsConfirmed();
         }
 
         // We're just going to use a built-int action class by Fortify.
-        $enable(Auth::user());
+        $enable(user());
 
         $this->showingQrCode = true;
         $this->showingRecoveryCodes = true;
@@ -61,7 +61,7 @@ class TfaForm extends Component
             $this->ensurePasswordIsConfirmed();
         }
 
-        $generate(Auth::user());
+        $generate(user());
 
         $this->showingRecoveryCodes = true;
     }
@@ -69,20 +69,20 @@ class TfaForm extends Component
     /** Disable two-factor authentication for the user. */
     public function disableTwoFactorAuthentication(DisableTwoFactorAuthentication $disable): void
     {
-        $this->authorize('disableTfa', [Auth::user()]);
+        $this->authorize('disableTfa', [user()]);
 
         if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
             $this->ensurePasswordIsConfirmed();
         }
 
         // We're just going to use a built-int action class by Fortify.
-        $disable(Auth::user());
+        $disable(user());
     }
 
     /** Get the current user of the application. */
     public function getUserProperty(): User
     {
-        return Auth::user();
+        return user();
     }
 
     /** Determine if two-factor authentication is enabled. */

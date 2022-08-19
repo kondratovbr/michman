@@ -133,7 +133,7 @@ if (! function_exists('flash')) {
     function flash(string $message, string $style = null, User $user = null): void
     {
         event(new FlashMessageEvent(
-            $user ?? Auth::user(),
+            $user ?? user(),
             $message,
             $style,
         ));

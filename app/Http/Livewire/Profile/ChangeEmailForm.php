@@ -17,7 +17,7 @@ class ChangeEmailForm extends Component
 
     public function mount(): void
     {
-        $this->email = Auth::user()->email;
+        $this->email = user()->email;
     }
 
     /** Save the new user's email address. */
@@ -27,11 +27,11 @@ class ChangeEmailForm extends Component
         // which is currently an instance of
         // App\Actions\Fortify\UpdateUserProfileInformation
 
-        $this->authorize('changeEmail', [Auth::user()]);
+        $this->authorize('changeEmail', [user()]);
 
         $this->resetErrorBag();
 
-        $updater->update(Auth::user(), [
+        $updater->update(user(), [
             'email' => $this->email,
         ]);
 

@@ -16,7 +16,7 @@ class OAuthLinkForm extends LivewireComponent
     /** Check if the user can unlink an OAuth provider. */
     public function getCanUnlinkProperty(): bool
     {
-        $user = Auth::user();
+        $user = user();
 
         if ($user->usesPassword())
             return true;

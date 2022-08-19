@@ -32,7 +32,7 @@ class UserSshKeysIndexTable extends LivewireComponent
     protected function configureEchoListeners(): void
     {
         $this->echoPrivate(
-            UserChannel::name(Auth::user()),
+            UserChannel::name(user()),
             [
                 UserSshKeyCreatedEvent::class,
                 UserSshKeyDeletedEvent::class,
@@ -43,7 +43,7 @@ class UserSshKeysIndexTable extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('index', [UserSshKey::class, Auth::user()]);
+        $this->authorize('index', [UserSshKey::class, user()]);
     }
 
     /** Add an existing key to all existing servers of the user. */
@@ -78,7 +78,7 @@ class UserSshKeysIndexTable extends LivewireComponent
 
     public function render(): View
     {
-        $this->keys = Auth::user()->userSshKeys()->oldest()->get();
+        $this->keys = user()->userSshKeys()->oldest()->get();
 
         return view('user-ssh-keys.user-ssh-keys-index-table');
     }
