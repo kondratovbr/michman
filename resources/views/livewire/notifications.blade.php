@@ -22,7 +22,7 @@
                     <x-tr>
 {{--                        TODO: Should make this to show diff only when the notification is recent. For older ones it would be more convenient to see the exact date and time.--}}
                         <x-td>{{ $notification->createdAt->diffForHumans() }}</x-td>
-                        <x-td>{{ $notification->message }}</x-td>
+                        <x-td>{!! $notification->message !!}</x-td>
                         <x-td>
                             <div class="flex justify-end items-center space-x-2">
                                 @if($notification->viewable())

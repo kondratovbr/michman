@@ -25,6 +25,9 @@ use Illuminate\Notifications\DatabaseNotification;
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
+ * Custom attributes
+ * @property-read string $message
+ *
  * Relations
  * @property-read Model $notifiable
  *

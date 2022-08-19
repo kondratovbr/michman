@@ -18,30 +18,30 @@ return [
     'messages' => [
         TestNotification::class => ':message',
 
-        Deployments\DeploymentFailedNotification::class => 'We were unable to deploy project :project.',
-        Deployments\DeploymentCompletedNotification::class => 'Project :project was successfully deployed.',
+        Deployments\DeploymentFailedNotification::class => 'We were unable to deploy project <strong>:project.</strong>',
+        Deployments\DeploymentCompletedNotification::class => 'Project <strong>:project</strong> was successfully deployed.',
 
-        Projects\ProjectInstallationFailedNotification::class => 'We were unable to install your project :project to a server.',
+        Projects\ProjectInstallationFailedNotification::class => 'We were unable to install your project <strong>:project</strong> to a server.',
 
         Providers\AddingSshKeyToProviderFailedNotification::class => 'We were unable to add an SSH key to your server provider account.',
         Providers\RequestingNewServerFromProviderFailedNotification::class => 'We were unable to request a new server for you from a server provider.',
 
-        Servers\FailedToAddSshKeyToServerNotification::class => 'We were unable to add an SSH key to server :server.',
-        Servers\FailedToConfigureServerNotification::class => 'We were unable to complete server configuration for server :server.',
-        Servers\FailedToCreateNewUserOnServerNotification::class => 'We were unable to create new user on server :server.',
-        Servers\FailedToPrepareServerNotification::class => 'We were unable to prepare server :server.',
-        Servers\FailedToUploadServerSshKeyToServerNotification::class => 'We were unable to upload a server SSH key to server :server.',
-        Servers\ServerIsNotSuitableNotification::class => 'The server :server is not suitable for Michman operations.',
-        Servers\ServerNotAvailableNotification::class => 'We were unable to connect to server :server.',
+        Servers\FailedToAddSshKeyToServerNotification::class => 'We were unable to add an SSH key to server <strong>:server.</strong>',
+        Servers\FailedToConfigureServerNotification::class => 'We were unable to complete server configuration for server <strong>:server.</strong>',
+        Servers\FailedToCreateNewUserOnServerNotification::class => 'We were unable to create new user on server <strong>:server.</strong>',
+        Servers\FailedToPrepareServerNotification::class => 'We were unable to prepare server <strong>:server.</strong>',
+        Servers\FailedToUploadServerSshKeyToServerNotification::class => 'We were unable to upload a server SSH key to server <strong>:server.</strong>',
+        Servers\ServerIsNotSuitableNotification::class => 'The server <strong>:server</strong> is not suitable for Michman operations.',
+        Servers\ServerNotAvailableNotification::class => 'We were unable to connect to server <strong>:server.</strong>',
 
-        Projects\WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook (Quick Deploy) for project :project',
-        Projects\WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook (Quick Deploy) for project :project from your repository.',
+        Projects\WebhookEnablingFailedNotification::class => 'We were unable to set up a webhook (Quick Deploy) for project <strong>:project.</strong>',
+        Projects\WebhookDeletingFailedNotification::class => 'We were unable to delete a webhook (Quick Deploy) for project <strong>:project</strong> from your repository.',
 
-        Daemons\DaemonFailedNotification::class => 'A daemon failed to start on a server :server.',
+        Daemons\DaemonFailedNotification::class => 'A daemon failed to start on a server <strong>:server.</strong>',
 
-        Workers\WorkerFailedNotification::class => 'A queue worker for a project :project failed to start.',
+        Workers\WorkerFailedNotification::class => 'A queue worker for a project <strong>:project</strong> failed to start.',
 
-        Servers\FailedToInstallCertificateNotification::class => 'We were unable to install an SSL certificate on your server :server',
+        Servers\FailedToInstallCertificateNotification::class => 'We were unable to install an SSL certificate on your server <strong>:server.</strong>',
     ],
 
     'mails' => [
