@@ -11,12 +11,17 @@ use App\Scripts\AbstractServerScript;
  */
 trait HandlesUnixUsers
 {
-    protected function createUser(string $username, bool $sudo = false): void
-    {
+    protected function createUser(
+        string $username,
+        bool $sudo = false,
+        bool $nologin = false,
+    ): void {
+        $shell = $nologin ? '/usr/sbin/nologin' : '/bin/bash';
+
         // useradd fails if the user already exists, so we check for it.
         $this->exec("id -u $username", throw: false);
         if ($this->failed())
-            $this->exec("useradd --create-home --shell /bin/bash $username");
+            $this->exec("useradd --create-home --shell $shell $username");
 
         if ($sudo)
             $this->makeUserSudo($username);

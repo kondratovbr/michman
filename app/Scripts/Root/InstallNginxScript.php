@@ -5,12 +5,14 @@ namespace App\Scripts\Root;
 use App\Facades\ConfigView;
 use App\Models\Server;
 use App\Scripts\AbstractServerScript;
+use App\Scripts\Traits\HandlesUnixUsers;
 use App\Scripts\Traits\InteractsWithApt;
 use phpseclib3\Net\SFTP;
 
 class InstallNginxScript extends AbstractServerScript
 {
     use InteractsWithApt;
+    use HandlesUnixUsers;
 
     public function execute(Server $server, SFTP $ssh = null): void
     {
@@ -28,7 +30,10 @@ class InstallNginxScript extends AbstractServerScript
         $this->aptInstall('nginx');
 
         // Create a nologin system user to run Nginx workers as configured in nginx.conf.
-        $this->exec('useradd -r -s /usr/sbin/nologin nginx');
+        $this->createUser(
+            username: 'nginx',
+            nologin: true,
+        );
 
         // Carefully remove the default config files that we don't need.
         foreach ([
