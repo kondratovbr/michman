@@ -34,7 +34,7 @@
                 </x-td>
                 <x-td>
                     @isset($server->publicIp)
-                        <x-clipboard class="text-sm xl:text-base">{{ $server->publicIp }}</x-clipboard>
+                        <x-clipboard class="text-xs md:text-sm">{{ $server->publicIp }}</x-clipboard>
                     @else
                         {{ __('misc.n/a') }}
                     @endisset
