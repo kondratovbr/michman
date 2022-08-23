@@ -87,9 +87,11 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        // Wait a bit in case the service is still starting up.
-        $this->setTimeout($wait + 5);
-        $this->exec("sleep $wait");
+        if ($wait) {
+            // Wait a bit in case the service is still starting up.
+            $this->setTimeout($wait + 5);
+            $this->exec("sleep $wait");
+        }
 
         if (! $this->systemdIsServiceRunning($service))
             throw new ServerScriptException("Systemd service \"$service\" has failed.");
