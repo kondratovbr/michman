@@ -8,6 +8,10 @@ all:
             hosts:
                 michman-stage:
                     ansible_host: 176.124.200.69
+        dev:
+            hosts:
+                michman-dev:
+                    ansible_host: 176.124.217.190
     vars:
         ansible_port: 22
         ansible_user: ansible
