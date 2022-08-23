@@ -5,6 +5,7 @@ namespace App\Scripts\Traits;
 use App\Scripts\AbstractServerScript;
 use App\Scripts\Exceptions\ServerScriptException;
 use App\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Trait InteractsWithSystemd for server scripts.
@@ -30,14 +31,30 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl stop $service");
+        $this->exec("systemctl stop $service", throw: false);
+
+        if ($this->getExitStatus() === 5) {
+            Log::info("Tried to stop non-existing systemd service: $service");
+            return;
+        }
+
+        if ($this->failed())
+            throw new ServerScriptException("Failed to stop systemd service: $service");
     }
 
     protected function systemdDisableService(string $service): void
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl disable $service");
+        $this->exec("systemctl disable $service", throw: false);
+
+        if ($this->getExitStatus() === 5) {
+            Log::info("Tried to disable non-existing systemd service: $service");
+            return;
+        }
+
+        if ($this->failed())
+            throw new ServerScriptException("Failed to disable systemd service: $service");
     }
 
     /**
