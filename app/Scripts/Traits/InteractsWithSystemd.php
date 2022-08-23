@@ -31,10 +31,13 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl stop $service", throw: false);
+        $output = $this->exec("systemctl stop $service", throw: false);
+
+        if ($output === false)
+            $output = '[false]';
 
         if ($this->getExitStatus() === 5) {
-            Log::info("Tried to stop non-existing systemd service: $service");
+            Log::info("Tried to stop non-existing systemd service: $service. Output: $output");
             return;
         }
 
@@ -46,10 +49,13 @@ trait InteractsWithSystemd
     {
         $service = Str::lower($service);
 
-        $this->exec("systemctl disable $service", throw: false);
+        $output = $this->exec("systemctl disable $service", throw: false);
 
-        if ($this->getExitStatus() === 5) {
-            Log::info("Tried to disable non-existing systemd service: $service");
+        if ($output === false)
+            $output = '[false]';
+
+        if ($this->getExitStatus() === 1) {
+            Log::info("Tried to disable non-existing systemd service or possibly another issue: $service. Output: $output");
             return;
         }
 
