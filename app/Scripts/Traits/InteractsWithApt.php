@@ -39,6 +39,14 @@ trait InteractsWithApt
 
     private int $timeout = 60 * 30; // 30 min
 
+    protected function aptPrepare(): string
+    {
+        // This is a workaround for the recent DigitalOcean bug in their Ubuntu 22.04 image.
+        // The repo listed in that file comes with no GPG key, so apt refuses to do anything.
+        // TODO: Check if the bug is still present and if we can have a different workaround.
+        return $this->exec("rm /etc/apt/sources.list.d/digitalocean-agent.list");
+    }
+
     protected function aptUpdate(): string
     {
         return $this->execLong(

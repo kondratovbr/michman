@@ -17,6 +17,8 @@ class UpgradePackagesScript extends AbstractServerScript
     {
         $this->init($server, $ssh ?? $server->sftp('root'));
 
+        $this->aptPrepare();
+
         $this->aptUpdate();
 
         $output = $this->aptUpgrade();
