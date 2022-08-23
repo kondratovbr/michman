@@ -21,7 +21,7 @@ return [
         Deployments\DeploymentFailedNotification::class => 'We were unable to deploy project <strong>:project.</strong>',
         Deployments\DeploymentCompletedNotification::class => 'Project <strong>:project</strong> was successfully deployed.',
 
-        Projects\ProjectInstallationFailedNotification::class => 'We were unable to install your project <strong>:project</strong> to a server.',
+        Projects\ProjectInstallationFailedNotification::class => 'We were unable to install your project <strong>:project</strong> on a server.',
 
         Providers\AddingSshKeyToProviderFailedNotification::class => 'We were unable to add an SSH key to your server provider account.',
         Providers\RequestingNewServerFromProviderFailedNotification::class => 'We were unable to request a new server for you from a server provider.',
