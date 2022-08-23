@@ -29,7 +29,7 @@ class CreateProjectVenvScript extends AbstractServerScript
 
         if (! empty($project->requirementsFile)) {
 
-            $this->execPty("cd $workdir && source venv/bin/activate && pip --quiet install -r $project->requirementsFile --ignore-installed && deactivate");
+            $this->execPty("cd $workdir && source venv/bin/activate && pip install -r $project->requirementsFile --ignore-installed && deactivate");
             $this->read();
 
             if ($this->failed())
