@@ -44,7 +44,7 @@ trait InteractsWithApt
         // This is a workaround for the recent DigitalOcean bug in their Ubuntu 22.04 image.
         // The repo listed in that file comes with no GPG key, so apt refuses to do anything.
         // TODO: Check if the bug is still present and if we can have a different workaround.
-        return $this->exec("rm /etc/apt/sources.list.d/digitalocean-agent.list");
+        return $this->exec("rm -f /etc/apt/sources.list.d/digitalocean-agent.list");
     }
 
     protected function aptUpdate(): string
