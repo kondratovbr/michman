@@ -62,6 +62,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property-read string|null $repoUrl
  * @property-read string|null $vcsProviderName
  * @property-read bool $repoInstalled
+ * @property-read string|null $pythonExecutable
  *
  * Relations
  * @property-read User $user
@@ -197,6 +198,14 @@ class Project extends AbstractModel
             return false;
 
         return $this->webhook->isEnabled();
+    }
+
+    public function getPythonExecutableAttribute(): string|null
+    {
+        if (empty($this->pythonVersion))
+            return null;
+
+        return "python" . Str::replace('_', '.', $this->pythonVersion);
     }
 
     /** Check if the project has a configured Git repository. */

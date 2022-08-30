@@ -22,7 +22,7 @@ class CreateProjectVenvScript extends AbstractServerScript
 
         $this->init($server, $ssh, $project->serverUsername);
 
-        $this->exec("cd $workdir && virtualenv venv");
+        $this->exec("cd $workdir && virtualenv --python $project->pythonExecutable venv");
 
         $this->enablePty();
         $this->setTimeout(60 * 30); // 30 min - pip install may take a long time if there's a lot of stuff to install.
