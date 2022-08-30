@@ -12,6 +12,7 @@ use App\Scripts\Root\ConfigureSshServerScript;
 use App\Scripts\Root\ConfigureUnattendedUpgradesScript;
 use App\Scripts\Root\CreateSudoUserScript;
 use App\Scripts\Root\InstallBasePackagesScript;
+use App\Scripts\Root\InstallPythonRepoScript;
 use App\Scripts\Root\InstallSnapAppsScript;
 use App\Scripts\Root\RebootServerScript;
 use App\Scripts\Root\UpdateSnapScript;
@@ -30,6 +31,7 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
         UpgradePackagesScript $upgradePackages,
         UpdateSnapScript $updateSnap,
         InstallBasePackagesScript $installBasePackages,
+        InstallPythonRepoScript $installPythonRepo,
         InstallSnapAppsScript $installSnapApps,
         ConfigureUnattendedUpgradesScript $configureUnattendedUpgrades,
         InitializeFirewallScript $initializeFirewall,
@@ -40,8 +42,17 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
     ): void {
         try {
             DB::transaction(function () use (
-                $upgradePackages, $updateSnap, $installBasePackages, $installSnapApps, $configureUnattendedUpgrades,
-                $initializeFirewall, $enableFirewall, $createSudoUser, $configureSshServer, $rebootServer,
+                $upgradePackages,
+                $updateSnap,
+                $installBasePackages,
+                $installPythonRepo,
+                $installSnapApps,
+                $configureUnattendedUpgrades,
+                $initializeFirewall,
+                $enableFirewall,
+                $createSudoUser,
+                $configureSshServer,
+                $rebootServer,
                 $storeFirewallRule,
             ) {
                 $server = $this->server->freshLockForUpdate();
@@ -53,6 +64,8 @@ class PrepareRemoteServerJob extends AbstractRemoteServerJob
                 $updateSnap->execute($server, $ssh);
 
                 $installBasePackages->execute($server, $ssh);
+
+                $installPythonRepo->execute($server, $ssh);
 
                 $installSnapApps->execute($server, $ssh);
 

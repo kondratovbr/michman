@@ -71,4 +71,12 @@ trait InteractsWithApt
             $this->timeout,
         );
     }
+
+    protected function aptAddRepo(string $repo): string
+    {
+        return $this->execLong(
+            "DEBIAN_FRONTEND=noninteractive add-apt-repository -y $repo",
+            $this->timeout,
+        );
+    }
 }
