@@ -16,6 +16,7 @@ class InstallPythonRepoScript extends AbstractServerScript
         $this->init($server, $ssh);
 
         // Community repo with literally all versions of Python pre-built.
+        // https://askubuntu.com/a/682875
         $this->aptAddRepo('ppa:deadsnakes/ppa');
     }
 }
