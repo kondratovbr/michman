@@ -32,8 +32,8 @@ class UploadSshKeyToServerScript extends AbstractServerScript
         $this->exec("rm -f {$remotePublicKeyFile}");
 
         // Put a private and public part of the SSH key to corresponding identity files.
-        $this->exec("echo \"{$key->privateKeyString}\" >> {$remotePrivateKeyFile}");
-        $this->exec("echo \"{$key->publicKeyString}\" >> {$remotePublicKeyFile}");
+        $this->exec("echo \"{$key->privateKeyString}\" >> {$remotePrivateKeyFile}", scrubCommand: true);
+        $this->exec("echo \"{$key->publicKeyString}\" >> {$remotePublicKeyFile}", scrubCommand: true);
 
         // // Set proper permissions on the files and directory.
         $this->exec("chmod 0700 {$remotePrivateKeyFile}");
