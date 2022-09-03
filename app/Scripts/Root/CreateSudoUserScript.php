@@ -19,9 +19,8 @@ class CreateSudoUserScript extends AbstractServerScript
 
         $this->changeUserPassword($username, $password);
 
-        // Create the necessary directories upfront.
-        foreach (['public'] as $dir) {
-            $this->exec("mkdir -p /home/$username/$dir && chown -R $username:$username /home/$username/$dir");
-        }
+        // Create the public directory upfront.
+        $dir = "/home/$username/public";
+        $this->exec("mkdir -p $dir && chown -R $username:$username $dir && chmod 0755 $dir");
     }
 }
