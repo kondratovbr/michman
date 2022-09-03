@@ -23,12 +23,13 @@ class InstallPythonScript extends AbstractServerScript
             'build-essential',
             'libssl-dev',
             'libffi-dev',
-            'python3-dev',
         ]);
 
         $this->aptInstall([
             "'^python3.10$'",
+            'python3.10-dev',
             'python3.10-distutils',
+            'libpython3.10-dev',
             'python3-pip',
             'python3-venv',
             'python3-virtualenv',
