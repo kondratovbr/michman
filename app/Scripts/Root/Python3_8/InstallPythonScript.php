@@ -37,7 +37,7 @@ class InstallPythonScript extends AbstractServerScript
 
         $this->verifyPythonWorks('3.8');
 
-        $this->execPty('pip3.8 install --upgrade pip');
+        $this->execPty('pip3 install --upgrade pip');
         $this->read();
 
         return $this->getPythonVersion('3.8');

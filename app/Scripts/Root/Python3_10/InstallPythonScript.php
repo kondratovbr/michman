@@ -37,7 +37,7 @@ class InstallPythonScript extends AbstractServerScript
 
         $this->verifyPythonWorks('3.10');
 
-        $this->execPty('pip3.10 install --upgrade pip');
+        $this->execPty('pip3 install --upgrade pip');
         $this->read();
 
         return $this->getPythonVersion('3.10');

@@ -28,14 +28,24 @@ class InstallPythonScript extends AbstractServerScript
 
         $this->aptInstall([
             "'^python2.7$'",
-            'python2-pip',
-            'python2-venv',
-            'python2-virtualenv',
+            'python-pip',
+        ]);
+
+        // We will be using Python 3 for our own needs,
+        // specifically venv.
+        $this->aptInstall([
+            "'^python3.8$'",
+            'python3.8-dev',
+            'python3.8-distutils',
+            'libpython3.8-dev',
+            'python3-pip',
+            'python3-venv',
+            'python3-virtualenv',
         ]);
 
         $this->verifyPythonWorks('2.7');
 
-        $this->execPty('pip2.7 install --upgrade pip');
+        $this->execPty('pip2 install --upgrade pip');
         $this->read();
 
         return $this->getPythonVersion('2.7');
