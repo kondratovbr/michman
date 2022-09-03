@@ -28,7 +28,7 @@ class InstallPythonScript extends AbstractServerScript
 
         $this->aptInstall([
             "'^python3.10$'",
-            'python3-distutils',
+            'python3.10-distutils',
             'python3-pip',
             'python3-venv',
             'python3-virtualenv',
