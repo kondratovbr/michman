@@ -23,6 +23,8 @@ trait HandlesUnixUsers
         if ($this->failed())
             $this->exec("useradd --create-home --shell $shell $username");
 
+        $this->exec("chmod 0755 /home/$username");
+
         if ($sudo)
             $this->makeUserSudo($username);
     }
