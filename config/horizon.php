@@ -85,6 +85,9 @@ return [
 
     'waits' => [
         'redis:default' => 60,
+        'redis:providers' => 60,
+        'redis:servers' => 60 * 15,
+        'redis:broadcasting' => 5,
     ],
 
     /*
