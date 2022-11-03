@@ -1,6 +1,7 @@
 {
     "license": "proprietary",
     "private": true,
+    "name": "michman-app",
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
