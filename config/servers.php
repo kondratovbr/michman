@@ -74,10 +74,12 @@ return [
     'python' => [
         // NOTE: The order of versions here is important - it is the order the versions will be shown in the UI.
         'versions' => [
-            '3_10' => [
-                'scripts_namespace' => 'App\Scripts\Root\Python3_10',
-                'cli' => 'python3.10',
-            ],
+            // TODO: Fix 3.10 support. Last issue was - Numpy (and maybe others) failing to build on
+            //       our Ubuntu setups.
+            // '3_10' => [
+            //     'scripts_namespace' => 'App\Scripts\Root\Python3_10',
+            //     'cli' => 'python3.10',
+            // ],
             '3_9' => [
                 'scripts_namespace' => 'App\Scripts\Root\Python3_9',
                 'cli' => 'python3.9',
