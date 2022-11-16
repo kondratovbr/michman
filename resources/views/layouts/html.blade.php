@@ -71,9 +71,13 @@
         ></script>
 
         {{-- Page-specific --}}
+        {{-- TODO: Make this title page-specific. --}}
         <title>{{ config('app.name', 'App') }}</title>
         <link rel="canonical" href="{{ url()->current() }}">
-        <meta name="description" content="">
+        <meta name="description" content="{{ __('general.description') }}">
+
+        @include('partials._socials')
+
 {{--        TODO: CRITICAL! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! --}}
     </head>
     <body class="relative font-sans antialiased w-screen overflow-x-hidden bg-navy-100 text-gray-100 {{ isDebug() ? 'debug-screens' : null }}">

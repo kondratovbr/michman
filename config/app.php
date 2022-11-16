@@ -272,4 +272,7 @@ return [
 
     // Email to provide for customer support.
     'support_email' => 'contact@michman.dev',
+
+    // Twitter that will be referenced in some places
+    'twitter_account' => '@michman_dev',
 ];
