@@ -32,7 +32,9 @@ class CreateUserSshKeyForm extends LivewireComponent
 
     public function mount(): void
     {
-        $this->authorize('create', [UserSshKey::class, user()]);
+        // Causes a 403 when opening a page with no active subscription.
+        // TODO: Need a better error popup or page in such cases.
+        // $this->authorize('create', [UserSshKey::class, user()]);
     }
 
     /** Store a new user's SSH key. */
