@@ -94,7 +94,7 @@ return [
             ],
         ],
 
-        'default_version' => '3_10',
+        'default_version' => '3_9',
     ],
 
     'databases' => [

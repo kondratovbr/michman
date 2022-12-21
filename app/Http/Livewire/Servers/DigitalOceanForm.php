@@ -52,7 +52,7 @@ class DigitalOceanForm extends Component
         'region' => null,
         'size' => null,
         'type' => 'app',
-        'python_version' => '3_10',
+        'python_version' => '',
         'database' => 'mysql-8_0',
         'cache' => 'redis',
     ];
@@ -192,6 +192,8 @@ class DigitalOceanForm extends Component
         $this->loadRegionData();
 
         $this->state['size'] = Arr::firstKey($this->availableSizes);
+
+        $this->state['python_version'] = config('servers.python.default_version');
     }
 
     public function hydrate(): void

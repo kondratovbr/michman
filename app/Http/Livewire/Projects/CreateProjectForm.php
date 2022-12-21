@@ -35,7 +35,7 @@ class CreateProjectForm extends LivewireComponent
         'domain' => '',
         'aliases' => '',
         'type' => 'django',
-        'python_version' => '3_10',
+        'python_version' => '',
         'allow_sub_domains' => false,
         'create_database' => true,
         'db_name' => '',
@@ -126,6 +126,14 @@ class CreateProjectForm extends LivewireComponent
             Arr::keys(config('servers.python.versions')),
             fn(int $index, string $type) => new Pair($type, Str::replace('_', '.', $type))
         );
+
+        $this->loadDefaults();
+    }
+
+    /** Put default values for user inputs. */
+    protected function loadDefaults(): void
+    {
+        $this->state['python_version'] = config('servers.python.default_version');
     }
 
     /** Store a new project. */
