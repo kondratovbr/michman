@@ -78,6 +78,10 @@
 
         @include('partials._socials')
 
+        @production
+            @include('partials._reddit-pixel')
+        @endproduction
+
 {{--        TODO: CRITICAL! Add SEO and misc metas. Don't forget to fill out these "canonical" and "description"! --}}
     </head>
     <body class="relative font-sans antialiased w-screen overflow-x-hidden bg-navy-100 text-gray-100 {{ isDebug() ? 'debug-screens' : null }}">
