@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Broadcasting\UserChannel;
 use App\Casts\ForceBooleanCast;
 use App\Models\Traits\HasModelHelpers;
+use App\Models\Traits\HasUuid;
 use App\Models\Traits\IsLockable;
 use App\Models\Traits\UsesCamelCaseAttributes;
 use App\Notifications\VerifyEmailNotification;
@@ -72,6 +73,7 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     use HasModelHelpers;
     use IsLockable;
     use Billable;
+    use HasUuid;
 
     /** @var string[] The attributes that are mass assignable. */
     protected $fillable = [

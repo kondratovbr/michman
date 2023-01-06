@@ -2,19 +2,19 @@
 
 namespace App\Models\Traits;
 
-use App\Models\AbstractModel;
 use App\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
-// TODO: IMPORTANT! Cover with tests!
+// TODO: Cover with tests.
 
 /**
- * Trait to have UUID as a model attribute and use it for route binding.
+ * Trait to have UUID as a model attribute.
  *
  * @property string $uuid
  *
- * @mixin AbstractModel
+ * @mixin Model
  */
-trait UsesUuid
+trait HasUuid
 {
     /**
      * Boot the trait, adding a creating observer.
@@ -22,16 +22,11 @@ trait UsesUuid
      * When persisting a new model instance, we resolve the UUID field,
      * then set a fresh UUID.
      */
-    public static function bootUsesUuid(): void
+    public static function bootHasUuid(): void
     {
-        static::creating(function (AbstractModel $model) {
+        static::creating(function (Model $model) {
             if (empty($model->uuid))
                 $model->uuid = Str::uuid()->toString();
         });
-    }
-
-    public function getRouteKeyName(): string
-    {
-        return 'uuid';
     }
 }

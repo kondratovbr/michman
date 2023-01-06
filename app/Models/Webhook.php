@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Events\Webhooks\WebhookCreatedEvent;
 use App\Events\Webhooks\WebhookDeletedEvent;
 use App\Events\Webhooks\WebhookUpdatedEvent;
-use App\Models\Traits\UsesUuid;
+use App\Models\Traits\UsesUuidKey;
 use App\Services\Webhooks\WebhookServiceInterface;
 use App\States\Webhooks\Deleting;
 use App\States\Webhooks\Enabled;
@@ -52,7 +52,7 @@ use Spatie\ModelStates\HasStates;
 class Webhook extends AbstractModel
 {
     use HasFactory;
-    use UsesUuid;
+    use UsesUuidKey;
     use HasStates;
 
     /** @var string[] The attributes that are mass assignable. */
