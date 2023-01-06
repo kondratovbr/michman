@@ -76,4 +76,11 @@
         </x-slot>
 
     </x-auth-box>
+
+    @push('scripts')
+        {{-- Reddit pixel event --}}
+        <script>
+            rdt('track', 'ViewContent');
+        </script>
+    @endpush
 </x-layouts.guest>
