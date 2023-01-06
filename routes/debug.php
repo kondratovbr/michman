@@ -22,6 +22,7 @@ Route::get('websockets', [DebugController::class, 'websockets']);
 Route::get('notification', [DebugController::class, 'notification']);
 Route::get('empty', [DebugController::class, 'empty']);
 Route::get('blank', [DebugController::class, 'blank']);
+Route::get('blank-app', [DebugController::class, 'blankApp']);
 Route::get('pusher', [DebugController::class, 'pusher']);
 Route::get('env', [DebugController::class, 'env']);
 Route::get('config', [DebugController::class, 'config']);

@@ -64,6 +64,12 @@ class DebugController extends AbstractController
         return view('debug.blank');
     }
 
+    /** Show an empty page with the main app layout. */
+    public function blankApp(): View
+    {
+        return view('debug.blank-app');
+    }
+
     /** Show a Pusher test page. */
     public function pusher(): View
     {
