@@ -78,7 +78,7 @@
     </x-auth-box>
 
     @push('scripts')
-        {{-- Reddit pixel event --}}
+        {{-- Reddit pixel event - signup page opened. --}}
         <script>
             rdt('track', 'ViewContent');
         </script>
