@@ -41,6 +41,7 @@ use Spark\Billable;
  * @property string|null $password
  * @property CarbonInterface $emailVerifiedAt
  * @property bool $isDeleting
+ * @property array|null $browserEvents
  * @property CarbonInterface $createdAt
  * @property CarbonInterface $updatedAt
  *
@@ -88,6 +89,7 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_deleting' => ForceBooleanCast::class,
+        'browser_events' => 'json',
     ];
 
     /** @var string[] The accessors to append to the model's array form. */
