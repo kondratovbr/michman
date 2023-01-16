@@ -313,4 +313,16 @@ class Arr extends IlluminateArr
     {
         return array_intersect($first, $second);
     }
+
+    /**
+     * Append items to the end of an array.
+     *
+     * Wrapper for the built-in array_push() function.
+     */
+    public static function append(array &$array, ...$items): array
+    {
+        array_push($array, ...$items);
+
+        return $array;
+    }
 }

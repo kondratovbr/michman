@@ -242,6 +242,20 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return ! $this->subscriptionRequired() || $this->onTrial() || $this->subscribed();
     }
 
+    /** Store a browser event to send to the front-end. */
+    public function addBrowserEvent(string $type, string $name, array|null $payload = null): void
+    {
+        $events = $this->browserEvents;
+
+        $events[] = [
+            'type' => $type,
+            'name' => $name,
+            'payload' => $payload,
+        ];
+
+        $this->browserEvents = $events;
+    }
+
     /** Get a relation with server providers owned by this user. */
     public function providers(): HasMany
     {
