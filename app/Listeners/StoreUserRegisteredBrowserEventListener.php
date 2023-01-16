@@ -18,7 +18,7 @@ class StoreUserRegisteredBrowserEventListener extends AbstractEventListener
         $user = $event->user;
 
         $user->addBrowserEvent(
-            'reddit',
+            'reddit-event',
             'SignUp',
             [
                 'transactionId' => $user->uuid,

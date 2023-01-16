@@ -30,4 +30,6 @@
 
     </div>
 
+    <livewire:browser-events/>
+
 </x-layouts.html>

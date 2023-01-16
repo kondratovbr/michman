@@ -96,6 +96,8 @@
 
         @livewireScripts
 
+        @stack('livewire')
+
         @include('cookie-consent::index')
 
     </body>

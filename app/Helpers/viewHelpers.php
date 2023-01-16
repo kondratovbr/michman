@@ -56,6 +56,14 @@ if (! function_exists('user')) {
     }
 }
 
+if (! function_exists('guest')) {
+    /** Check if the current user is not authenticated. */
+    function guest(): bool
+    {
+        return Auth::guest();
+    }
+}
+
 if (! function_exists('classes')) {
     // TODO: Would be nice to also properly "merge" them?
     /** Combine all provided CSS classes into a single space-separated string. */
