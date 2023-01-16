@@ -80,7 +80,13 @@
     @push('scripts')
         {{-- Reddit pixel event - signup page opened. --}}
         <script>
-            rdt('track', 'ViewContent');
+            try {
+
+                rdt('track', 'ViewContent');
+
+            } catch (e) {
+                console.log(e);
+            }
         </script>
     @endpush
 </x-layouts.guest>
