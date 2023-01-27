@@ -97,7 +97,10 @@ class OAuthControllerTest extends AbstractFeatureTest
         /** @var User $user */
         $user = User::query()->firstWhere('email', 'foo@bar.com');
 
-        $this->assertNull($user->emailVerifiedAt);
+        // TODO: IMPORTANT! Allow users to get into the app before validating the email, but nag with a colorful bar up top
+        //       and deny some features that depend on the email, like email notifications.
+        // $this->assertNull($user->emailVerifiedAt);
+        $this->assertNotNull($user->emailVerifiedAt);
         $this->assertNotNull($user->getRememberToken());
 
         $oauthUser = $user->oauth('github');

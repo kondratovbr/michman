@@ -259,6 +259,9 @@ class OAuthController extends AbstractController
                 'terms' => true,
             ]);
 
+            $user->emailVerifiedAt = now();
+            $user->save();
+
             $oauthModel = $user->oauth($oauthProvider);
 
             $vcsProvider = $this->vcsProviderHandler->createViaOAuth($oauthProvider, $oauthUser, $user);
