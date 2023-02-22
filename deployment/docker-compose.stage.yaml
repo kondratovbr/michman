@@ -49,7 +49,7 @@ services:
     app:
         # To reuse the whole base app service for other services, see below.
         &app-image
-        image: kondorb/michman:1.0.0
+        image: kondorb/michman:1.1.0
         platform: 'linux/amd64'
         read_only: true
         environment:
