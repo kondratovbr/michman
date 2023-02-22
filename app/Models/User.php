@@ -165,6 +165,12 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return ! empty($this->password);
     }
 
+    /** Check if we can email this user. */
+    public function canReceiveEmails(): bool
+    {
+        return $this->hasVerifiedEmail();
+    }
+
     /** Get this user's preferred locale, which will be used to localize notifications and emails. */
     public function preferredLocale(): string
     {

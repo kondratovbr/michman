@@ -35,7 +35,7 @@ abstract class AbstractNotification extends Notification implements ShouldQueue
     {
         $via = ['database'];
 
-        if ($this->mail)
+        if ($this->mail && $notifiable->canReceiveEmails())
             $via[] = 'mail';
 
         if ($this->broadcast)
