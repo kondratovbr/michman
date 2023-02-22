@@ -242,6 +242,12 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return ! $this->subscriptionRequired() || $this->onTrial() || $this->subscribed();
     }
 
+    /** Check if user is currently on the free plan. */
+    public function isOnFreePlan(): bool
+    {
+        return $this->sparkPlan()->options['free'] ?? false;
+    }
+
     /** Store a browser event to send to the front-end. */
     public function addBrowserEvent(string $type, string $name, array|null $payload = null): void
     {

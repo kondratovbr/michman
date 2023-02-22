@@ -4,12 +4,8 @@
 
     <div class="min-h-screen">
 
-        @if(user()->subscriptionRequired())
-            @if(user()->onTrial())
-                <x-trial-bar/>
-            @elseif(! user()->subscribed())
-                <x-not-subscribed-bar/>
-            @endif
+        @if(user()->subscriptionRequired() && user()->isOnFreePlan())
+            <x-free-plan-bar/>
         @endif
 
         <livewire:navbar/>

@@ -96,6 +96,7 @@ return [
                         'Automatic Deployments',
                     ],
                     'options' => [
+                        'free' => true,
                         'servers' => 1,
                         'projects' => 1,
                     ],
