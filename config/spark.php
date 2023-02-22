@@ -86,6 +86,21 @@ return [
 
             'plans' => [
                 [
+                    'name' => 'Jet-ski',
+                    'short_description' => 'Perfect for a quick takeoff.',
+                    'monthly_id' => 1000,
+                    'features' => [
+                        'One Server',
+                        'One Project',
+                        'Unlimited Deployments',
+                        'Automatic Deployments',
+                    ],
+                    'options' => [
+                        'servers' => 1,
+                        'projects' => 1,
+                    ],
+                ],
+                [
                     'name' => 'Yacht',
                     'short_description' => 'Start your voyage strong.',
                     'monthly_id' => env('SPARK_STANDARD_MONTHLY_PLAN'),
@@ -96,6 +111,10 @@ return [
                         'Unlimited Projects',
                         'Unlimited Deployments',
                         'Automatic Deployments',
+                    ],
+                    'options' => [
+                        'servers' => 3,
+                        'unlimited_projects' => true,
                     ],
                     'archived' => false,
                 ],
@@ -113,6 +132,7 @@ return [
                     ],
                     'options' => [
                         'unlimited_servers' => true,
+                        'unlimited_projects' => true,
                     ],
                     'archived' => false,
                 ],
@@ -130,6 +150,7 @@ return [
                         '...',
                     ],
                     'options' => [
+                        'unlimited_projects' => true,
                         'unlimited_servers' => true,
                     ],
                     'archived' => false,

@@ -22,12 +22,27 @@ class SparkServiceProvider extends ServiceProvider
                    $request->user()->id == $billable->id;
         });
 
-        Spark::billable(User::class)->checkPlanEligibility(function (User $billable, Plan $plan) {
-            if ($billable->servers()->count() > 0 && ! ($plan->options['unlimited_servers'] ?? false)) {
+        Spark::billable(User::class)->checkPlanEligibility(function (User $billable, Plan $newPlan) {
+            $unlimitedProjects = $newPlan->options['unlimited_projects'] ?? false;
+            $unlimitedServers = $newPlan->options['unlimited_servers'] ?? false;
+
+            if ($unlimitedServers && $unlimitedProjects) {
+                return true;
+            }
+
+            if ( ! $unlimitedProjects && $billable->projects()->count() > $newPlan->options['projects']) {
+                throw ValidationException::withMessages([
+                    'plan' => __('billing.too-many-projects'),
+                ]);
+            }
+
+            if ( ! $unlimitedServers && $billable->servers()->count() > $newPlan->options['servers']) {
                 throw ValidationException::withMessages([
                     'plan' => __('billing.too-many-servers'),
                 ]);
             }
+
+            return true;
         });
     }
 }

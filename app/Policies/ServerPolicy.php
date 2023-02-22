@@ -17,16 +17,13 @@ class ServerPolicy
 
     public function create(User $user): bool
     {
-        if (! $user->subscriptionRequired())
-            return true;
-
-        if ($user->onTrial())
-            return true;
-
-        if (! $user->subscribed())
+        if (! $user->appEnabled())
             return false;
 
-        if ($user->servers()->count() > 0 && ! ($user->sparkPlan()->options['unlimited_servers'] ?? false))
+        if ($user->sparkPlan()->options['unlimited_servers'] ?? false)
+            return true;
+
+        if ($user->servers()->count() >= $user->sparkPlan()->options['servers'])
             return false;
 
         return true;
