@@ -20,10 +20,10 @@ class ServerPolicy
         if (! $user->appEnabled())
             return false;
 
-        if ($user->sparkPlan()->options['unlimited_servers'] ?? false)
+        if ($user->getPlan()->options['unlimited_servers'] ?? false)
             return true;
 
-        if ($user->servers()->count() >= $user->sparkPlan()->options['servers'])
+        if ($user->servers()->count() >= $user->getPlan()->options['servers'])
             return false;
 
         return true;

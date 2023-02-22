@@ -30,6 +30,8 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use App\Facades\QrCode;
 use Spark\Billable;
+use Spark\Plan;
+use Spark\Spark;
 
 /**
  * User Eloquent model
@@ -230,6 +232,14 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return $this->email === $adminEmail && $this->hasVerifiedEmail();
     }
 
+    public function getPlan(): Plan
+    {
+        return $this->sparkPlan() ?? Spark::plans('user')
+            ->where('active', true)
+            ->where('options.free', true)
+            ->firstOrFail();
+    }
+
     /** Check if an active subscription is required for this user to use all the features. */
     public function subscriptionRequired(): bool
     {
@@ -239,13 +249,15 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
     /** Check if this user should have general application features enabled. */
     public function appEnabled(): bool
     {
-        return ! $this->subscriptionRequired() || $this->onTrial() || $this->subscribed();
+        // We used to have only a time-limited free trial,
+        // but now there's a free tier so all users have the app enabled.
+        return true;
     }
 
     /** Check if user is currently on the free plan. */
     public function isOnFreePlan(): bool
     {
-        return $this->sparkPlan()->options['free'] ?? false;
+        return $this->getPlan()->options['free'] ?? false;
     }
 
     /** Store a browser event to send to the front-end. */

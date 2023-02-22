@@ -21,10 +21,10 @@ class ProjectPolicy
         if (! $user->appEnabled())
             return false;
 
-        if ($user->sparkPlan()->options['unlimited_projects'] ?? false)
+        if ($user->getPlan()->options['unlimited_projects'] ?? false)
             return true;
 
-        if ($user->projects()->count() >= $user->sparkPlan()->options['projects'])
+        if ($user->projects()->count() >= $user->getPlan()->options['projects'])
             return false;
 
         return $user->is($server->user);

@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <p>{{ __('projects.create.no-subscription') }}</p>
+        <x-lang key="projects.project-limit-reached" />
 
         <x-buttons.primary
             class="mt-5"
