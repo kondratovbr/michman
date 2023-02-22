@@ -100,6 +100,7 @@ return [
                         'servers' => 1,
                         'projects' => 1,
                     ],
+                    'archived' => false,
                 ],
                 [
                     'name' => 'Yacht',
