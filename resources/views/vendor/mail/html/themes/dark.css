@@ -11,7 +11,6 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 body {
     -webkit-text-size-adjust: none;
     background-color: #ffffff;
-    /*color: #718096;*/
     color: #F3F4F6;
     height: 100%;
     line-height: 1.4;
@@ -126,10 +125,8 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    /*background-color: #edf2f7;*/
+    color: #F3F4F6;
     background-color: #001429;
-    /*border-bottom: 1px solid #edf2f7;*/
-    /*border-top: 1px solid #edf2f7;*/
     border-bottom: 1px solid #001429;
     border-top: 1px solid #001429;
     margin: 0;
@@ -141,11 +138,8 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 570px;
-    /*background-color: #ffffff;*/
-    /*border-color: #e8e5ef;*/
     background-color: #002952;
     border-color: #002952;
-    /*border-radius: 2px;*/
     border-radius: 8px;
     border-width: 1px;
     box-shadow: 0 2px 0 rgba(0, 0, 150, 0.025), 2px 4px 0 rgba(0, 0, 150, 0.015);
@@ -179,14 +173,12 @@ img {
 }
 
 .footer p {
-    /*color: #b0adc5;*/
     color: #9CA3AF;
     font-size: 12px;
     text-align: center;
 }
 
 .footer a {
-    /*color: #b0adc5;*/
     color: #9CA3AF;
     text-decoration: underline;
 }
@@ -245,13 +237,8 @@ img {
 
 .button-blue,
 .button-primary {
-    /*background-color: #2d3748;*/
     background-color: #e6c200;
     color: #111827;
-    /*border-bottom: 8px solid #2d3748;*/
-    /*border-left: 18px solid #2d3748;*/
-    /*border-right: 18px solid #2d3748;*/
-    /*border-top: 8px solid #2d3748;*/
     border-bottom: 8px solid #e6c200;
     border-left: 18px solid #e6c200;
     border-right: 18px solid #e6c200;
@@ -260,13 +247,8 @@ img {
 
 .button-green,
 .button-success {
-    /*background-color: #48bb78;*/
     background-color: #e6c200;
     color: #111827;
-    /*border-bottom: 8px solid #48bb78;*/
-    /*border-left: 18px solid #48bb78;*/
-    /*border-right: 18px solid #48bb78;*/
-    /*border-top: 8px solid #48bb78;*/
     border-bottom: 8px solid #e6c200;
     border-left: 18px solid #e6c200;
     border-right: 18px solid #e6c200;
@@ -275,13 +257,8 @@ img {
 
 .button-red,
 .button-error {
-    /*background-color: #e53e3e;*/
     background-color: #DC2626;
     color: #F3F4F6;
-    /*border-bottom: 8px solid #e53e3e;*/
-    /*border-left: 18px solid #e53e3e;*/
-    /*border-right: 18px solid #e53e3e;*/
-    /*border-top: 8px solid #e53e3e;*/
     border-bottom: 8px solid #DC2626;
     border-left: 18px solid #DC2626;
     border-right: 18px solid #DC2626;
@@ -296,14 +273,11 @@ img {
 }
 
 .panel-content {
-    /*background-color: #edf2f7;*/
     background-color: #001429;
-    /*color: #718096;*/
     padding: 16px;
 }
 
 .panel-content p {
-    /*color: #718096;*/
 }
 
 .panel-item {
