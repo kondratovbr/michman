@@ -240,10 +240,13 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
 
     public function getPlan(): Plan
     {
-        return $this->sparkPlan() ?? Spark::plans('user')
-            ->where('active', true)
-            ->where('options.free', true)
-            ->firstOrFail();
+        $config = config('spark.billables.user.free_plan');
+
+        return $this->sparkPlan() ?? (new Plan($config['name'], ''))
+            ->shortDescription($config['short_description'])
+            ->features($config['features'])
+            ->options($config['options'] ?? [])
+            ->status(! ($config['archived'] ?? false));
     }
 
     /** Check if an active subscription is required for this user to use all the features. */

@@ -84,24 +84,28 @@ return [
 
             'default_interval' => 'monthly',
 
-            'plans' => [
-                [
-                    'name' => 'Jet-ski',
-                    'short_description' => 'Perfect for a quick takeoff.',
-                    'monthly_id' => 1000,
-                    'features' => [
-                        'One Server',
-                        'One Project',
-                        'Unlimited Deployments',
-                        'Automatic Deployments',
-                    ],
-                    'options' => [
-                        'free' => true,
-                        'servers' => 1,
-                        'projects' => 1,
-                    ],
-                    'archived' => false,
+            /*
+             * Custom plan not shown by Spark, but used internally for users
+             * who have no active subscription.
+             */
+            'free_plan' => [
+                'name' => 'Jet-ski',
+                'short_description' => 'Perfect for a quick takeoff.',
+                'features' => [
+                    'One Server',
+                    'One Project',
+                    'Unlimited Deployments',
+                    'Automatic Deployments',
                 ],
+                'options' => [
+                    'free' => true,
+                    'servers' => 1,
+                    'projects' => 1,
+                ],
+                'archived' => false,
+            ],
+
+            'plans' => [
                 [
                     'name' => 'Yacht',
                     'short_description' => 'Start your voyage strong.',
