@@ -37,7 +37,10 @@ class ProviderSeeder extends Seeder
         // Seed fake tokens.
         Provider::factory()
             ->forRandomUserFrom(User::query()
-                ->whereNotIn('email', [(string) config('app.dev_email')])
+                ->whereNotIn('email', [
+                    (string) config('app.dev_email'),
+                    'empty@example.com',
+                ])
                 ->get()
             )
             ->count(static::NUM_PROVIDERS)

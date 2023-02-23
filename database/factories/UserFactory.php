@@ -131,6 +131,18 @@ class UserFactory extends Factory
     }
 
     /**
+     * Create a predefined user with an empty account.
+     *
+     * @return $this
+     */
+    public function theEmptyOne(): static
+    {
+        return $this->state([
+            'email' => 'empty@example.com',
+        ]);
+    }
+
+    /**
      * Create a user that is registered via GitHub OAuth.
      *
      * @return $this

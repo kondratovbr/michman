@@ -20,12 +20,15 @@ class UserSeeder extends Seeder
             ->withPersonalTeam()
             ->create();
 
-        // Seed a predefined generic user useful for development.
+        // Seed predefined generic users useful for development.
         User::factory()
             ->theUser()
             ->withPersonalTeam()
-            ->trialExpired()
-            // ->withSubscription((int) env('SPARK_STANDARD_MONTHLY_PLAN'))
+            ->create();
+
+        User::factory()
+            ->theEmptyOne()
+            ->withPersonalTeam()
             ->create();
 
         if (static::SEED_DEV_USER) {
