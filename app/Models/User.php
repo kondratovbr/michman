@@ -283,6 +283,12 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         $this->browserEvents = $events;
     }
 
+    /** Check if this user has a usable server provider account connected. */
+    public function hasActiveProvider(): bool
+    {
+        return $this->providers()->exists();
+    }
+
     /** Get a relation with server providers owned by this user. */
     public function providers(): HasMany
     {

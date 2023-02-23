@@ -9,6 +9,9 @@ class ServerController extends AbstractController
     /** Show the list of user's servers. */
     public function index(): View
     {
-        return view('servers.index');
+        return view('servers.index', [
+            'user' => user(),
+            'serversCount' => user()->servers()->count(),
+        ]);
     }
 }

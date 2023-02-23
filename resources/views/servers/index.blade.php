@@ -12,15 +12,23 @@
 
     <div class="space-y-10 sm:space-y-0">
 
-        <livewire:servers.servers-index-table/>
+        @if($serversCount > 0)
 
-        <x-section-separator/>
+            <livewire:servers.servers-index-table/>
 
-        @can('create', App\Models\Server::class)
-            <livewire:servers.create-server-form/>
+            <x-section-separator/>
+
+            @include('servers._new-server-section')
+
         @else
-            <x-servers.upgrade-subscription/>
-        @endcan
+
+            @include('servers._new-server-section')
+
+            <x-section-separator/>
+
+            <livewire:servers.servers-index-table/>
+
+        @endif
 
     </div>
 
