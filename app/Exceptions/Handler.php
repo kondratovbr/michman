@@ -33,10 +33,5 @@ class Handler extends ExceptionHandler
 
         //
 
-        // This breaks horribly on local when installing the project.
-        // And also spams exceptions.
-        // $this->reportable(function (Throwable $throwable) {
-        //     Mail::to(config('app.alert_email'))->send(new UncaughtThrowableAdminMail($throwable));
-        // });
     }
 }
