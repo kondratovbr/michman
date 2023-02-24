@@ -10,9 +10,15 @@
     @endisset
 
     <x-box>
-        <x-slot name="content">
-            {{ $content ?? $slot }}
-        </x-slot>
+
+        {{ $slot }}
+
+        @isset($content)
+            <x-slot name="content">
+                {{ $content }}
+            </x-slot>
+        @endisset
+
     </x-box>
 
 </div>

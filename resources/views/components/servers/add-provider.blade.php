@@ -4,7 +4,6 @@
     </x-slot>
 
     <x-slot name="content">
-
         <x-lang key="servers.add-provider" />
 
         <x-buttons.primary
