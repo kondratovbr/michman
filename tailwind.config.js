@@ -94,9 +94,9 @@ module.exports = {
 
     content: [
         './app/**/*.php',
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/**/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
-        './storage/framework/views/*.php',
+        './storage/framework/views/**/*.php',
         './resources/views/**/*.blade.php',
         './resources/**/*.pcss',
         './resources/**/*.css',
@@ -105,6 +105,8 @@ module.exports = {
         './resource/**/*.php',
         './config/**/*.php',
     ],
+
+    darkMode: 'class',
 
     theme: {
 
@@ -251,6 +253,10 @@ module.exports = {
         debugScreens: {
             position: ['bottom', 'right'],
         },
+    },
+
+    corePlugins: {
+        aspectRatio: false,
     },
 
     plugins: [
