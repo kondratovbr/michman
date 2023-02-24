@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" id="app">
+<html
+    lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    id="app"
+    class="dark"
+>
     <head>
         {{-- Technical Metas --}}
         <meta charset="UTF-8">
