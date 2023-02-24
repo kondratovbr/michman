@@ -6,11 +6,9 @@
         <livewire:notifications/>
     </x-slot>
 
-    {{--
     <x-slot name="above">
-        <x-onboarding.section/>
+        <x-onboarding/>
     </x-slot>
-    --}}
 
     <x-slot name="header">
         <x-page-title>{{ __('servers.title') }}</x-page-title>
