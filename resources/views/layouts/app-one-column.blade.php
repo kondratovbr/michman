@@ -9,11 +9,11 @@
             @endisset
 
             {{-- A place to put a section that should be positioned above the header. --}}
-            <section>
-                @isset($above)
+            @isset($above)
+                <section>
                     {{ $above }}
-                @endisset
-            </section>
+                </section>
+            @endisset
 
             {{-- Page Heading --}}
             <header class="py-8 pl-4 sm:pl-0">

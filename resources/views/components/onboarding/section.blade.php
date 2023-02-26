@@ -1,92 +1,69 @@
+@if($completedSteps < $totalSteps)
+
 <x-action-section>
     <x-slot name="title">
-        ⛵️ Complete your account! (1/4)
+        {{ __('onboarding.title') }} ({{ $completedSteps }}/{{ $totalSteps }})
     </x-slot>
 
     <div class="divide-y divide-navy-100 rounded-lg shadow relative z-10 mb-6">
         <ul class="divide-y divide-navy-100">
 
-            <li class="flex items-center space-x-4 p-4">
+            <x-onboarding.step step="1" :completed="$steps[1]['completed']">
+                <x-slot name="title">{{ __('onboarding.steps.1.title') }}</x-slot>
+                <x-slot name="subtitle">{{ __('onboarding.steps.1.subtitle') }}</x-slot>
 
-                <x-onboarding.step-number :completed="true" />
-
-                <div class="flex-1">
-                    <h3 class="text-md font-medium">Add a Git provider</h3>
-                    <p class="max-w-prose text-sm text-gray-400">
-                        Add a Git provider to easily clone your repositories,
-                        we support GitHub, Bitbucket &amp; GitLab.
-                    </p>
-                </div>
                 <x-buttons.secondary :link="true" href="{{ route('account.show', 'vcs') }}">
-                    Link Git provider
+                    {{ __('onboarding.steps.1.button') }}
                 </x-buttons.secondary>
-            </li>
+            </x-onboarding.step>
 
-            <li class="flex items-center space-x-4 p-4">
-                <x-onboarding.step-number>2</x-onboarding.step-number>
-                <div class="flex-1">
-                    <h3 class="text-md font-medium">Add a server provider</h3>
-                    <p class="max-w-prose text-sm text-gray-400">
-                        Michman manages your cloud servers for you,
-                        so you need to connect a server provider.
-                        Currently, DigitalOcean is the only supported provider.
-                    </p>
-                </div>
+            <x-onboarding.step step="2" :completed="$steps[2]['completed']">
+                <x-slot name="title">{{ __('onboarding.steps.2.title') }}</x-slot>
+                <x-slot name="subtitle">{{ __('onboarding.steps.2.subtitle') }}</x-slot>
+
                 <x-buttons.secondary :link="true" href="{{ route('account.show', 'providers') }}">
-                    Link server provider
+                    {{ __('onboarding.steps.2.button') }}
                 </x-buttons.secondary>
-            </li>
+            </x-onboarding.step>
 
-            <li class="flex items-center space-x-4 p-4">
-                <x-onboarding.step-number>3</x-onboarding.step-number>
-                <div class="flex-1">
-                    <h3 class="text-md font-medium">Create your first server</h3>
-                    <p class="max-w-prose text-sm text-gray-400">
-                        This is the key step. Everything starts with a server.
-                        You can do it on this page down below. 👇
-                    </p>
-                </div>
-            </li>
+            <x-onboarding.step step="3" :completed="$steps[3]['completed']">
+                <x-slot name="title">{{ __('onboarding.steps.3.title') }}</x-slot>
+                <x-slot name="subtitle">{{ __('onboarding.steps.3.subtitle') }}</x-slot>
+            </x-onboarding.step>
 
-            <li class="flex items-center space-x-4 p-4">
-                <x-onboarding.step-number>4</x-onboarding.step-number>
-                <div class="flex-1">
-                    <h3 class="text-md font-medium">Add your first project</h3>
-                    <p class="max-w-prose text-sm text-gray-400">
-                        Add a project to Michman to deploy it on your server.
-                    </p>
-                </div>
+            <x-onboarding.step step="4" :completed="$steps[4]['completed']">
+                <x-slot name="title">{{ __('onboarding.steps.4.title') }}</x-slot>
+                <x-slot name="subtitle">{{ __('onboarding.steps.4.subtitle') }}</x-slot>
 
-                //
+                @if(isset($steps[4]['server_id']))
+                    <x-buttons.secondary :link="true" href="{{ route('servers.show', $steps[4]['server_id']) }}">
+                        {{ __('onboarding.steps.4.button') }}
+                    </x-buttons.secondary>
+                @endunless
+            </x-onboarding.step>
 
-            </li>
+            <x-onboarding.step step="5" :completed="$steps[5]['completed']">
+                <x-slot name="title">{{ __('onboarding.steps.5.title') }}</x-slot>
+                <x-slot name="subtitle">{{ __('onboarding.steps.5.subtitle') }}</x-slot>
 
-            <li class="flex items-center space-x-4 p-4">
-                <x-onboarding.step-number>5</x-onboarding.step-number>
-                <div class="flex-1">
-                    <h3 class="text-md font-medium">Configure your project</h3>
-                    <p class="max-w-prose text-sm text-gray-400">
-                        Point us to your Git repo, so we could deploy your project on your server.
-                    </p>
-                </div>
+                @if(isset($steps[5]['project_id']))
+                    <x-buttons.secondary :link="true" href="{{ route('projects.show', $steps[5]['project_id']) }}">
+                        {{ __('onboarding.steps.5.button') }}
+                    </x-buttons.secondary>
+                @endunless
+            </x-onboarding.step>
 
-                //
+            <x-onboarding.step step="6" :completed="$steps[6]['completed']">
+                <x-slot name="title">{{ __('onboarding.steps.6.title') }}</x-slot>
+                <x-slot name="subtitle">{{ __('onboarding.steps.6.subtitle') }}</x-slot>
 
-            </li>
-
-            <li class="flex items-center space-x-4 p-4">
-                <x-onboarding.step-number>5</x-onboarding.step-number>
-                <div class="flex-1">
-                    <h3 class="text-md font-medium">Upgrade your plan</h3>
-                    <p class="max-w-prose text-sm text-gray-400">
-                        Upgrade your plan to lift restrictions and enjoy the most out of managing your services.
-                    </p>
-                </div>
                 <x-buttons.secondary :link="true" href="/billing">
-                    Upgrade plan
+                    {{ __('onboarding.steps.6.button') }}
                 </x-buttons.secondary>
-            </li>
+            </x-onboarding.step>
+
         </ul>
+
         <div
             class="border-primary-100 absolute inset-y-0 left-8 -ml-px border-l-2 border-dashed"
             style="z-index: -1;"
@@ -94,3 +71,5 @@
     </div>
 
 </x-action-section>
+
+@endif

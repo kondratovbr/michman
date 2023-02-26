@@ -11,6 +11,7 @@ use App\Support\Str;
 use Carbon\CarbonInterface;
 use Database\Factories\ProjectFactory;
 use Ds\Set;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -330,6 +331,18 @@ class Project extends AbstractModel
     public function webhook(): HasOne
     {
         return $this->hasOne(Webhook::class);
+    }
+
+    /** Limit query to projects that are configured, i.e. ready to be deployed. */
+    public function scopeConfigured(Builder $query): Builder
+    {
+        return $query->whereNotNull('repo');
+    }
+
+    /** Limit query to projects that are not configured, i.e. not ready to be deployed. */
+    public function scopeUnconfigured(Builder $query): Builder
+    {
+        return $query->whereNull('repo');
     }
 
     public function purge(): bool|null
