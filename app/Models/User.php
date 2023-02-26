@@ -289,6 +289,15 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         return $this->providers()->exists();
     }
 
+    /** Check if this user has access to a feature. */
+    public function hasFeature(string $feature): bool
+    {
+        if ($this->isAdmin())
+            return true;
+
+        return config($feature);
+    }
+
     /** Get a relation with server providers owned by this user. */
     public function providers(): HasMany
     {
