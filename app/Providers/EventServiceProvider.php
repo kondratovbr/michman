@@ -7,9 +7,11 @@ use App\Events\Deployments\DeploymentFailedEvent;
 use App\Listeners\DispatchProjectUpdatedEventListener;
 use App\Listeners\HandleFinishedDeploymentListener;
 use App\Listeners\SendFailedDeploymentNotificationListener;
+use App\Listeners\SendWelcomeEmail;
 use App\Listeners\StorePurchaseBrowserEventListener;
 use App\Listeners\StoreUserRegisteredBrowserEventListener;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Laravel\Paddle\Events\SubscriptionCreated;
@@ -21,6 +23,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
             StoreUserRegisteredBrowserEventListener::class,
+            SendWelcomeEmail::class,
+        ],
+
+        Verified::class => [
+            SendWelcomeEmail::class,
         ],
 
         DeploymentFinishedEvent::class => [
