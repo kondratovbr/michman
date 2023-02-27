@@ -38,7 +38,6 @@ a img {
 /* Typography */
 
 h1 {
-    /*color: #3d4852;*/
     font-size: 18px;
     font-weight: bold;
     margin-top: 0;
@@ -80,7 +79,6 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    /*background-color: #edf2f7;*/
     background-color: #001429;
     margin: 0;
     padding: 0;
@@ -104,7 +102,6 @@ img {
 }
 
 .header a {
-    /*color: #3d4852;*/
     color: #F3F4F6;
     font-size: 19px;
     font-weight: bold;
@@ -113,10 +110,12 @@ img {
 
 /* Logo */
 
-.logo {
-    height: 75px;
-    max-height: 75px;
-    width: 75px;
+.header a.logo {
+    /*height: 75px;*/
+    /*max-height: 75px;*/
+    /*width: 75px;*/
+    font-size: 30px;
+    color: #e6c200;
 }
 
 /* Body */
@@ -181,6 +180,31 @@ img {
 .footer a {
     color: #9CA3AF;
     text-decoration: underline;
+}
+
+.footer .footer-left p {
+    text-align: left;
+}
+
+.footer .footer-center p {
+    text-align: center;
+}
+
+.footer .footer-right p {
+    text-align: right;
+}
+
+.footer .footer-left a {
+    margin-right: 12px;
+}
+
+.footer .footer-center a {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.footer .footer-right a {
+    margin-left: 12px;
 }
 
 /* Tables */

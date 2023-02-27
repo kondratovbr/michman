@@ -2,8 +2,7 @@
 
     {{-- Header --}}
     @slot('header')
-        @component('mail::header', ['url' => config('app.url')])
-            {{ config('app.name') }}
+        @component('mail::header')
         @endcomponent
     @endslot
 
@@ -22,7 +21,19 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            {{ config('app.name') }} {{ date('Y') }}
+
+            @component('mail::footer-section')
+                @slot('left')
+                    [Twitter](https://twitter.com/michman_dev)
+                    [Reddit](https://www.reddit.com/r/michman/)
+                    [GitHub](https://github.com/michman-dev)
+                    [Terms of Service](https://michman.dev/terms-of-service)
+                @endslot
+                @slot('right')
+                    {{ config('app.name') }} {{ date('Y') }}
+                @endslot
+            @endcomponent
+
         @endcomponent
     @endslot
 
