@@ -6,9 +6,9 @@
 # {{ $greeting }}
 @else
 @if (($level ?? null) === 'error')
-# @lang('notifications.whoops')
+# {{ __('notifications.whoops') }}
 @else
-# @lang('notifications.hello')
+# {{ __('notifications.hello') }}
 @endif
 @endif
 
@@ -40,13 +40,13 @@ $color = match ($level ?? null) {
 {{ $salutation }}
 @else
 {{ config('app.name') }},<br>
-@lang('notifications.over')
+{{ __('notifications.over') }}
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
 @slot('subcopy')
-@lang('notifications.cant-click') <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
+{{ __('notifications.cant-click') }} <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
 @endslot
 @endisset
 
