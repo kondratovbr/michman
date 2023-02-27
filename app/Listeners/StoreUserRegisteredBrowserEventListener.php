@@ -26,7 +26,5 @@ class StoreUserRegisteredBrowserEventListener extends AbstractEventListener
         );
 
         $user->save();
-
-        ray('Stored:', $user, $user->browserEvents);
     }
 }
