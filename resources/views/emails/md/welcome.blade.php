@@ -11,8 +11,8 @@ developing your applications.
 Rapidly deploy your Python apps on virtual servers provided by DigitalOcean, manage databases, backups,
 automate deployments and so much more!
 
-You are currently on a free plan, which limits you to one server and one project but you still get access to
-all features of Michman!
+You are currently on a free plan, which limits you to one server and one project,
+but you still get access to all features of Michman!
 
 The first step to getting started is connecting your server provider.
 This will allow us to create virtual servers for your apps.
