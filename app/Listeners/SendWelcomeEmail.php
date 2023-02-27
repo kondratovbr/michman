@@ -15,6 +15,9 @@ class SendWelcomeEmail extends AbstractEventListener
         /** @var User $user */
         $user = $event->user;
 
+        if (! $user->hasFeature('onboarding_emails'))
+            return;
+
         if (is_null($user->emailVerifiedAt))
             return;
 

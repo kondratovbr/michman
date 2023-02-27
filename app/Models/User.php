@@ -295,7 +295,7 @@ class User extends BaseUser implements MustVerifyEmail, HasLocalePreference
         if ($this->isAdmin())
             return true;
 
-        return config($feature);
+        return config("features.$feature");
     }
 
     /** Get a relation with server providers owned by this user. */
