@@ -5,6 +5,7 @@ use App\Notifications\Deployments;
 use App\Notifications\Projects;
 use App\Notifications\Providers;
 use App\Notifications\Servers;
+use App\Notifications\TestEmailNotification;
 use App\Notifications\TestNotification;
 use App\Notifications\Workers;
 
@@ -73,6 +74,13 @@ return [
                 'Your project :project was successfully deployed.',
             ],
             'action' => 'View Deployments',
+        ],
+
+        TestEmailNotification::class => [
+            'subject' => 'TestEmailNotification',
+            'lines' => [
+                ':message'
+            ],
         ],
     ],
 
