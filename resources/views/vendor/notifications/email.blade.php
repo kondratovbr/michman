@@ -1,4 +1,4 @@
-{{--NOTE: There's no indentations here because the content will be rendered as Markdown.--}}
+{{--NOTE: There's no indentations here because the content will be rendered as Markdown which relies on indentations for formatting.--}}
 @component('mail::message')
 
 {{-- Greeting --}}
