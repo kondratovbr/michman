@@ -41,7 +41,7 @@ use Spark\Spark;
  * Properties
  * @property string $email
  * @property string|null $password
- * @property CarbonInterface $emailVerifiedAt
+ * @property CarbonInterface|null $emailVerifiedAt
  * @property bool $isDeleting
  * @property array|null $browserEvents
  * @property CarbonInterface $createdAt
