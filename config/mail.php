@@ -112,10 +112,4 @@ return [
         ],
     ],
 
-    /*
-     * Custom properties
-     */
-
-    'mailerlite_api_key' => env('MAILERLITE_API_KEY'),
-
 ];

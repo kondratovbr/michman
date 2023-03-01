@@ -11,7 +11,8 @@ class MailingServiceProvider extends ServiceProvider
     {
         $this->app->bind(MailerLite::class, function () {
             return new MailerLite(
-                token: (string) config('mail.mailerlite_api_key')
+                token: (string) config('services.mailerlite.api_key'),
+                usersGroupId: (string) config('services.mailerlite.users_group_id'),
             );
         });
     }

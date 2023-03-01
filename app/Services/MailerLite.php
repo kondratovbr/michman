@@ -11,6 +11,7 @@ class MailerLite
 
     public function __construct(
         private readonly string $token,
+        private readonly string $usersGroupId,
     ) {}
 
     public function upsertSubscriber(string $email): void
@@ -18,6 +19,9 @@ class MailerLite
         $this->request()
             ->post('/api/subscribers', [
                 'email' => $email,
+                'groups' => [
+                    $this->usersGroupId,
+                ],
             ])
             ->throw();
     }
