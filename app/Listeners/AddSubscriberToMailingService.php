@@ -2,14 +2,17 @@
 
 namespace App\Listeners;
 
-use App\Mail\WelcomeEmail;
 use App\Models\User;
+use App\Services\MailerLite;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
 
-class SendWelcomeEmail extends AbstractEventListener implements ShouldQueue
+class AddSubscriberToMailingService extends AbstractEventListener implements ShouldQueue
 {
+    public function __construct(
+        private readonly MailerLite $mailer,
+    ) {}
+
     public function handle(Verified $event): void
     {
         /** @var User $user */
@@ -21,6 +24,6 @@ class SendWelcomeEmail extends AbstractEventListener implements ShouldQueue
         if (! $user->canReceiveEmails())
             return;
 
-        Mail::to($user)->send(new WelcomeEmail);
+        $this->mailer->upsertSubscriber($user->email);
     }
 }

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\OAuthUser as OauthModel;
 use App\Models\VcsProvider;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -270,6 +271,7 @@ class OAuthController extends AbstractController
             $vcsProvider->oauthUser()->associate($oauthModel)->save();
 
             event(new Registered($user));
+            event(new Verified($user));
 
             return $user;
         }, 5);

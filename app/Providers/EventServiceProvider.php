@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\Deployments\DeploymentFinishedEvent;
 use App\Events\Deployments\DeploymentFailedEvent;
+use App\Listeners\AddSubscriberToMailingService;
 use App\Listeners\DispatchProjectUpdatedEventListener;
 use App\Listeners\HandleFinishedDeploymentListener;
 use App\Listeners\SendFailedDeploymentNotificationListener;
@@ -23,11 +24,11 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
             StoreUserRegisteredBrowserEventListener::class,
-            SendWelcomeEmail::class,
         ],
 
         Verified::class => [
-            SendWelcomeEmail::class,
+            // SendWelcomeEmail::class,
+            AddSubscriberToMailingService::class,
         ],
 
         DeploymentFinishedEvent::class => [
