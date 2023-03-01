@@ -12,4 +12,6 @@ return [
 
     'onboarding_emails' => false,
 
+    'add_users_to_mailerlite' => true,
+
 ];

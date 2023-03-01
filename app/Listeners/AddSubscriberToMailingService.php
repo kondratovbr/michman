@@ -18,7 +18,7 @@ class AddSubscriberToMailingService extends AbstractEventListener implements Sho
         /** @var User $user */
         $user = $event->user;
 
-        if (! $user->hasFeature('onboarding_emails'))
+        if (! $user->hasFeature('add_users_to_mailerlite'))
             return;
 
         if (! $user->canReceiveEmails())
