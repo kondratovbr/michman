@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
+/*
+ * TODO: Refactor incoming webhook handling into using Laravel event system
+ */
 class WebhookController extends AbstractController
 {
     /** Handle a received webhook. */
