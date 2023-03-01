@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Http;
 
 class MailerLite
 {
+    private const BASE_URL = 'https://connect.mailerlite.com';
+
     public function __construct(
         private readonly string $token,
-        private readonly string $baseUrl,
     ) {}
 
     public function upsertSubscriber(string $email): void
@@ -24,7 +25,7 @@ class MailerLite
     private function request(): PendingRequest
     {
         return Http::withToken($this->token)
-            ->baseUrl($this->baseUrl)
+            ->baseUrl(static::BASE_URL)
             ->asJson()
             ->acceptJson();
     }

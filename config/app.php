@@ -208,6 +208,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
+        App\Providers\MailingServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
         App\Providers\ServerProviderServiceProvider::class,
