@@ -1,5 +1,6 @@
 FROM ubuntu:22.04
 
+ARG PHP_VERSION=8.2
 ARG NODE_VERSION=18
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -16,16 +17,34 @@ RUN apt-get update \
 RUN apt-get update && apt-get install -y software-properties-common \
     && LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php \
     && apt-get update \
-    && apt-get install -y php8.1-cli php8.1-dev \
+    && apt-get install -y php$PHP_VERSION-cli php$PHP_VERSION-dev \
         # Required by Laravel
-        php8.1-intl php8.1-readline php8.1-ldap php8.1-gd php8.1-curl php8.1-mbstring php8.1-imap \
-        php8.1-xml php8.1-zip php8.1-soap php8.1-msgpack php8.1-igbinary php8.1-ds \
-        # Unused, but just in case
-        php8.1-pgsql php8.1-sqlite3 php8.1-memcached \
+        php$PHP_VERSION-intl  \
+        php$PHP_VERSION-readline  \
+        php$PHP_VERSION-ldap  \
+        php$PHP_VERSION-gd  \
+        php$PHP_VERSION-curl \
+        php$PHP_VERSION-mbstring \
+        php$PHP_VERSION-imap \
+        php$PHP_VERSION-xml \
+        php$PHP_VERSION-zip \
+        php$PHP_VERSION-soap \
+        php$PHP_VERSION-msgpack \
+        php$PHP_VERSION-igbinary \
+        # Unused atm, but just in case
+        php$PHP_VERSION-pgsql \
+        php$PHP_VERSION-sqlite3 \
+        php$PHP_VERSION-memcached \
         # Application-specific
-        php8.1-mysql php8.1-redis php8.1-bcmath php8.1-ds php8.1-imagick \
+        php$PHP_VERSION-mysql \
+        php$PHP_VERSION-redis \
+        php$PHP_VERSION-bcmath \
+        php$PHP_VERSION-ds \
+        php$PHP_VERSION-imagick \
+        php$PHP_VERSION-ds \
         # Dev-only
-        php8.1-xdebug php8.1-pcov \
+        php$PHP_VERSION-xdebug \
+        php$PHP_VERSION-pcov \
     && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
@@ -36,11 +55,11 @@ RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
 
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
-COPY php.ini /etc/php/8.1/cli/conf.d/99-docker.ini
+COPY php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-docker.ini
 
 ARG XDEBUG=true
 ARG XDEBUG_PORT=9003
-ARG XDEBUG_CONFIG=/etc/php/8.1/mods-available/xdebug.ini
+ARG XDEBUG_CONFIG=/etc/php/$PHP_VERSION/mods-available/xdebug.ini
 RUN echo "xdebug.max_nesting_level=512" >> $XDEBUG_CONFIG
 RUN if [ "${XDEBUG}" = 'true' ]; then \
     echo "xdebug.client_port=${XDEBUG_PORT}" >> $XDEBUG_CONFIG \
@@ -53,14 +72,12 @@ RUN if [ "${XDEBUG}" = 'false' ]; then \
     echo "xdebug.mode=off" >> $XDEBUG_CONFIG ;\
 fi;
 
-ARG PCOV_CONFIG=/etc/php/8.1/mods-available/pcov.ini
+ARG PCOV_CONFIG=/etc/php/$PHP_VERSION/mods-available/pcov.ini
 RUN echo "pcov.directory=./app" >> $PCOV_CONFIG \
     && echo "pcov.enabled=0" >> $PCOV_CONFIG
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 8000
-
-#CMD ["php", "artisan", "serve", "--host", "0.0.0.0", "--port", "8000"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
