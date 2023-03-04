@@ -4,20 +4,18 @@ namespace App\Console\Commands\Users;
 
 use App\Console\Commands\AbstractCommand;
 use App\Console\Commands\Traits\ProtectedOnProduction;
-use App\Mail\WelcomeEmail;
 use App\Models\User;
 use App\Services\MailerLite;
-use Illuminate\Support\Facades\Mail;
 
 class SyncUsersToMailingService extends AbstractCommand
 {
     use ProtectedOnProduction;
 
     /** @var string The name and signature of the console command. */
-    protected $signature = 'michman:users:send-welcome-emails';
+    protected $signature = 'michman:users:sync-to-mailer';
 
     /** @var string The console command description. */
-    protected $description = 'Send welcome emails to all existing users who have verified emails.';
+    protected $description = 'Sync users with verified emails into a mailing service.';
 
     /**
      * Perform the console command.

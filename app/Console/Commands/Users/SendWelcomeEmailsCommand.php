@@ -3,14 +3,14 @@
 namespace App\Console\Commands\Users;
 
 use App\Console\Commands\AbstractCommand;
-use App\Console\Commands\Traits\ProtectedOnProduction;
+use App\Console\Commands\Traits\ForbiddenOnProduction;
 use App\Mail\WelcomeEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
 class SendWelcomeEmailsCommand extends AbstractCommand
 {
-    use ProtectedOnProduction;
+    use ForbiddenOnProduction;
 
     /** @var string The name and signature of the console command. */
     protected $signature = 'michman:users:send-welcome-emails';
