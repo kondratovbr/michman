@@ -9,7 +9,7 @@ abstract class AbstractCommand extends Command
     /**
      * A wrapper for any inherited command.
      */
-    public function handle(): int
+    final public function handle(): int
     {
         if ($this->isForbiddenOnProduction() && $this->isInProduction()) {
             $this->error('This command cannot be run in production!');
@@ -51,9 +51,4 @@ abstract class AbstractCommand extends Command
 
         return $this->confirm('Are you sure you want to run this command on production?');
     }
-
-    /**
-     * Perform the console command.
-     */
-    abstract public function perform(): int;
 }
