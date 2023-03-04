@@ -14,7 +14,7 @@ class SyncUsersToMailingService extends AbstractCommand
     use ProtectedOnProduction;
 
     /** @var string The name and signature of the console command. */
-    protected $signature = 'users:send-welcome-emails';
+    protected $signature = 'michman:users:send-welcome-emails';
 
     /** @var string The console command description. */
     protected $description = 'Send welcome emails to all existing users who have verified emails.';
