@@ -14,7 +14,7 @@
 #
 # Static assets building stage
 #
-FROM node:17 AS static
+FROM node:18 AS static
 
 RUN mkdir /root/michman
 
@@ -37,7 +37,7 @@ RUN \
 #
 FROM ubuntu:22.04 as app
 
-ARG PHP_VERSION=8.1
+ARG PHP_VERSION=8.2
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PHP_VERSION ${PHP_VERSION}
@@ -53,11 +53,11 @@ ENV APP_ROOT="/home/$USER/michman"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # apt packages that will be removed after building since we don't need them at runtime.
+# software-properties-common comes with add-apt-repository command we're using.
 ENV APT_BUILD_PACKAGES="software-properties-common php-pear"
 
 RUN apt-get -y update && \
-    # Add tini to use as an entrypoint, cron for scheduling; git and zip are for composer downloads. \
-    # software-properties-common comes with add-apt-repository command we're using.
+    # Add tini to use as an entrypoint, cron for scheduling; git and zip are for composer downloads.
     apt-get -y install tini cron git zip && \
     # Add apt packages required only for building.
     apt-get -y install ${APT_BUILD_PACKAGES} && \
@@ -89,9 +89,7 @@ RUN apt-get -y update && \
         php${PHP_VERSION}-imagick \
     && \
     # Install the "event" PECL extension needed for the optimal performance of laravel-websockets.
-    pecl channel-update pecl.php.net && pecl install \
-        event-3.0.8 \
-    && \
+    pecl channel-update pecl.php.net && pecl install event-3.0.8 && \
     # Remove apt packages which we don't need at runtime.
     apt-get -y remove ${APT_BUILD_PACKAGES} && \
     # Cleanup after ourselves.
@@ -108,6 +106,9 @@ ENV PHP_INI_CLI_DIR=/etc/php/${PHP_VERSION}/cli
 # Copy a slightly customized and slightly hardened production PHP configuration.
 COPY deployment/app/php-fpm.ini "$PHP_INI_FPM_DIR/php-fpm.ini"
 COPY deployment/app/php.ini "$PHP_INI_FPM_DIR/php.ini"
+
+# Make a symlink for the FPM config to use it in the CMD below.
+RUN ln -s "$PHP_INI_FPM_DIR/php-fpm.ini" /etc/php/php-fpm.ini
 
 # Add configs for PECL extensions.
 RUN echo "extension=event" > "$PHP_INI_FPM_DIR/conf.d/30-event.ini"
@@ -231,4 +232,4 @@ EXPOSE 9000
 ENTRYPOINT [ "/usr/bin/tini", "--", "/home/app/michman/entrypoint" ]
 
 # By default - start by simply running php-fpm.
-CMD [ "php-fpm", "--nodaemonize", "--fpm-config", "/etc/php/8.1/fpm/php-fpm.ini" ]
+CMD [ "php-fpm", "--nodaemonize", "--fpm-config", "/etc/php/php-fpm.ini" ]
