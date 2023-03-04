@@ -8,6 +8,10 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+/*
+ * NOTE: This email was never used and kept for reference.
+ */
+
 class WelcomeEmail extends Mailable
 {
     use Queueable, SerializesModels;

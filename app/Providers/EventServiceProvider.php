@@ -8,7 +8,6 @@ use App\Listeners\AddSubscriberToMailingService;
 use App\Listeners\DispatchProjectUpdatedEventListener;
 use App\Listeners\HandleFinishedDeploymentListener;
 use App\Listeners\SendFailedDeploymentNotificationListener;
-use App\Listeners\SendWelcomeEmail;
 use App\Listeners\StorePurchaseBrowserEventListener;
 use App\Listeners\StoreUserRegisteredBrowserEventListener;
 use Illuminate\Auth\Events\Registered;
@@ -27,7 +26,6 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         Verified::class => [
-            // SendWelcomeEmail::class,
             AddSubscriberToMailingService::class,
         ],
 
