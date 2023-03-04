@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\VcsProvider;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Laravel\Socialite\Facades\Socialite;
 use Mockery;
@@ -112,10 +113,13 @@ class OAuthControllerTest extends AbstractFeatureTest
         $this->assertEquals('foobar', $oauthUser->nickname);
 
         Event::assertDispatched(Registered::class);
+        Event::assertDispatched(Verified::class);
     }
 
     public function test_vcs_provider_gets_created_when_user_registers_via_oauth()
     {
+        Event::fake();
+
         Socialite::shouldReceive('driver')
             ->once()
             ->with('github')
