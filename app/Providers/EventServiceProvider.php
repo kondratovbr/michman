@@ -4,10 +4,12 @@ namespace App\Providers;
 
 use App\Events\Deployments\DeploymentFinishedEvent;
 use App\Events\Deployments\DeploymentFailedEvent;
+use App\Events\Interfaces\Snaggable;
 use App\Listeners\AddSubscriberToMailingService;
 use App\Listeners\DispatchProjectUpdatedEventListener;
 use App\Listeners\HandleFinishedDeploymentListener;
 use App\Listeners\SendFailedDeploymentNotificationListener;
+use App\Listeners\SnagEventListener;
 use App\Listeners\StorePurchaseBrowserEventListener;
 use App\Listeners\StoreUserRegisteredBrowserEventListener;
 use Illuminate\Auth\Events\Registered;
@@ -27,6 +29,7 @@ class EventServiceProvider extends ServiceProvider
 
         Verified::class => [
             AddSubscriberToMailingService::class,
+            SnagEventListener::class,
         ],
 
         DeploymentFinishedEvent::class => [
@@ -41,6 +44,10 @@ class EventServiceProvider extends ServiceProvider
 
         SubscriptionCreated::class => [
             StorePurchaseBrowserEventListener::class,
+        ],
+
+        Snaggable::class => [
+            SnagEventListener::class,
         ],
     ];
 

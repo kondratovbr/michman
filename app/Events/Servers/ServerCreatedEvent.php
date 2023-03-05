@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class ServerCreatedEvent extends AbstractServerEvent implements ShouldBroadcast, Snaggable
 {
     public bool $snagNotify = true;
-    public string|null $snagIcon = "🖥️";
+    public string|null $snagIcon = '🖥️';
 
     public function getSnagChannel(): SnagChannel
     {

@@ -19,10 +19,10 @@ class LogSnag
 
     public function publishEvent(
         SnagChannel $channel,
-        SnagEvent   $event,
+        SnagEvent $event,
         string|null $description = null,
         string|null $icon = null,
-        bool        $notify = false,
+        bool $notify = false,
     ): void {
         $this->request()->post(
             url: "/log",

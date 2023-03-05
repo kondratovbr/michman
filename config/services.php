@@ -70,4 +70,8 @@ return [
         'api_key' => env('MAILERLITE_API_KEY'),
         'users_group_id' => env('MAILERLITE_USERS_GROUP_ID'),
     ],
+
+    'logsnag' => [
+        'api_key' => env('LOGSNAG_API_KEY'),
+    ],
 ];

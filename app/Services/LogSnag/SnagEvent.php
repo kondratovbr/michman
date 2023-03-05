@@ -12,5 +12,5 @@ enum SnagEvent: string
 
     // Projects
     case PROJECT_CREATED = 'project-created';
-    case PROJECT_DEPLOYED = 'project-deployed';
+    case DEPLOYMENT_FINISHED = 'deployment-finished';
 }
