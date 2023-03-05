@@ -2,13 +2,17 @@
 
 namespace App\Events;
 
+use App\Events\Traits\Snaggable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 abstract class AbstractEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
+    use Snaggable;
 
     /**
      * https://laravel.com/docs/8.x/broadcasting#broadcasting-and-database-transactions

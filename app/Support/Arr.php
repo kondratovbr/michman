@@ -325,4 +325,12 @@ class Arr extends IlluminateArr
 
         return $array;
     }
+
+    /**
+     * Filter out empty values using empty() function.
+     */
+    public static function whereNotEmpty(array $array): array
+    {
+        return static::filter($array, fn(mixed $item) => ! empty($item));
+    }
 }
