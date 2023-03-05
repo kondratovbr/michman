@@ -19,6 +19,8 @@
 
         <x-forms.vertical method="POST" action="{{ route('password.email') }}">
 
+            <x-honeypot/>
+
             <x-field>
                 <x-label for="email">Email</x-label>
                 <x-inputs.email

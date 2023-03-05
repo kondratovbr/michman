@@ -17,6 +17,7 @@ use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::group(['middleware' => config('fortify.middleware', ['web'])], function () {
     $enableViews = config('fortify.views', true);
@@ -35,6 +36,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         ->middleware(array_filter([
             'guest',
             $limiter ? 'throttle:'.$limiter : null,
+            ProtectAgainstSpam::class,
         ]));
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -53,11 +55,11 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         }
 
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-            ->middleware(['guest'])
+            ->middleware(['guest', ProtectAgainstSpam::class])
             ->name('password.email');
 
         Route::post('/reset-password', [NewPasswordController::class, 'store'])
-            ->middleware(['guest'])
+            ->middleware(['guest', ProtectAgainstSpam::class])
             ->name('password.update');
     }
 
@@ -70,7 +72,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
         }
 
         Route::post('/register', [RegisteredUserController::class, 'store'])
-            ->middleware(['guest']);
+            ->middleware(['guest', ProtectAgainstSpam::class]);
     }
 
     // Email Verification

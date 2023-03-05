@@ -46,6 +46,7 @@
         "pusher/pusher-php-server": "^7.0",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-cookie-consent": "^3.2",
+        "spatie/laravel-honeypot": "^4.3",
         "spatie/laravel-model-states": "^2.4",
         "spatie/laravel-ray": "^1.30",
         "spatie/laravel-view-models": "^1.5",

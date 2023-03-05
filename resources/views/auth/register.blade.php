@@ -9,6 +9,8 @@
 
         <x-forms.vertical method="POST" action="{{ route('register') }}">
 
+            <x-honeypot/>
+
             <x-field>
                 <x-label for="email">{{ __('forms.email.label') }}</x-label>
                 <x-inputs.email

@@ -7,6 +7,8 @@
 
         <x-forms.vertical method="POST" action="{{ route('password.update') }}">
 
+            <x-honeypot/>
+
             <x-url-token/>
 
             <x-field>
