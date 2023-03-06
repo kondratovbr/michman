@@ -212,6 +212,7 @@ return [
         Jenssegers\Agent\AgentServiceProvider::class,
         App\Providers\HelperServiceProvider::class,
         App\Providers\ServerProviderServiceProvider::class,
+        App\Providers\SnaggerServiceProvider::class,
         App\Providers\VcsProviderServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
         App\Providers\WebhooksServiceProvider::class,

@@ -18,6 +18,9 @@ class SnagEventListener extends AbstractEventListener implements ShouldQueue
 
     public function handle(Snaggable|Verified $event): void
     {
+        if (App::isLocal())
+            return;
+
         if ($event instanceof Snaggable) {
             $this->snagGenericEvent($event);
             return;
