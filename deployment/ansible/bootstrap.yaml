@@ -25,6 +25,7 @@
                 - apt-transport-https
                 - ufw
                 - rsync
+                - certbot
             state: latest
             update_cache: true
 

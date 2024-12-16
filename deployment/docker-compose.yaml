@@ -32,8 +32,8 @@ services:
             # Production-specific
             - './nginx/prod/app.conf:/etc/nginx/conf.d/app.conf:ro'
             - './nginx/prod/websockets.conf:/etc/nginx/conf.d/websockets.conf:ro'
-            # SSL key
-            - './michman.dev.crt:/etc/nginx/michman.dev.crt:ro'
+            # SSL keys
+            - '/etc/letsencrypt:/etc/nginx/letsencrypt:ro'
             # Disposable volumes for temporary files
             - /var/cache
             - /var/run

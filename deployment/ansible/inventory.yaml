@@ -3,15 +3,7 @@ all:
         prod:
             hosts:
                 michman-app-1:
-                    ansible_host: 176.124.213.171
-        stage:
-            hosts:
-                michman-stage:
-                    ansible_host: 176.124.200.69
-        dev:
-            hosts:
-                michman-dev:
-                    ansible_host: 176.124.217.190
+                    ansible_host: 159.223.223.15
     vars:
         ansible_port: 22
         ansible_user: ansible

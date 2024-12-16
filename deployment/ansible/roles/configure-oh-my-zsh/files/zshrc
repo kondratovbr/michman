@@ -66,3 +66,4 @@ unset HISTFILE
 # Useful ls alias. Overrides the built-in one, which has no --group-directories-first.
 # NOTE: Doesn't work on Busybox-based distros, which have a simplified ls utility without that function.
 alias lsa="ls -lha --group-directories-first"
+alias dco="docker compose"

@@ -12,6 +12,8 @@
 worker_dev_ssh_key
 worker_dev_ssh_key.pub
 
+# Ansible
+/**/ansible.log
 
 
 ### Laravel ###

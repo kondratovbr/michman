@@ -9,7 +9,7 @@
 
     -   name: Down the whole Docker Compose Application project
         when: docker_compose_file.stat.exists
-        docker_compose:
+        community.docker.docker_compose_v2:
             project_src: &project_src /home/michman/michman
             files: &files docker-compose.yaml
             project_name: &project_name michman
@@ -47,22 +47,22 @@
 #  TODO: Add a step with docker-compose yaml files validation using "docker-compose config"
 
     -   name: Update Docker Compose Databases project
-        docker_compose:
+        community.docker.docker_compose_v2:
             project_src: *project_src
             files: docker-compose.db.yaml
             project_name: michman-db
-            build: false
-            pull: true
+            build: never
+            pull: always
             remove_orphans: true
         register: output_db
 
     -   name: Deploy Docker Compose Application project
-        docker_compose:
+        community.docker.docker_compose_v2:
             project_src: *project_src
             files: *files
             project_name: *project_name
-            build: false
-            pull: true
+            build: never
+            pull: always
             recreate: always
             remove_orphans: true
         register: output_app
@@ -70,7 +70,7 @@
     -   name: Run migrations
         become: true
         shell:
-            cmd: "docker-compose -f docker-compose.yaml -p michman exec app php artisan migrate --force"
+            cmd: "docker compose -f docker-compose.yaml -p michman exec app php artisan migrate --force"
             chdir: *project_src
         register: migrate_output
 
