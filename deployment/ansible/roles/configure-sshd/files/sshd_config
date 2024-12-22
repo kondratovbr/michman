@@ -8,7 +8,7 @@ Port 22
 PermitRootLogin no
 StrictModes yes
 # Limit auth attempts to a low number
-MaxAuthTries 6
+MaxAuthTries 60
 MaxSessions 10
 
 # Allow authentication using SSH identity keys.
