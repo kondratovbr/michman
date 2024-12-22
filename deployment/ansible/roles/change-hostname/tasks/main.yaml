@@ -1,0 +1,21 @@
+-   become: true
+    block:
+
+        -   name: Set the hostname
+            hostname:
+                name: "{{ hostname }}"
+            when: hostname is defined
+
+        -   name: Update /etc/hosts
+            lineinfile:
+                path: /etc/hosts
+                regexp: '^127\\.0\\.1\\.1\\s'
+                line: "127.0.1.1 {{ hostname }}"
+                state: present
+            when: hostname is defined
+
+        -   name: Restart the hostname service
+            systemd:
+                name: systemd-hostnamed
+                state: restarted
+            when: hostname is defined

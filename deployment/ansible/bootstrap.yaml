@@ -29,6 +29,9 @@
             state: latest
             update_cache: true
 
+    -   name: Change hostname if provided
+        include_role: name=change-hostname
+
     -   name: Create user "ansible"
         user:
             name: ansible
