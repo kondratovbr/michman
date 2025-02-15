@@ -21,6 +21,7 @@ services:
             - backend
         ports:
             - '443:4443'
+            - '80:8080'
         volumes:
             # Public static assets
             - 'app-public:/home/app/michman/public:ro'
@@ -32,6 +33,7 @@ services:
             # Production-specific
             - './nginx/prod/app.conf:/etc/nginx/conf.d/app.conf:ro'
             - './nginx/prod/websockets.conf:/etc/nginx/conf.d/websockets.conf:ro'
+            - './nginx/prod/umami.conf:/etc/nginx/conf.d/umami.conf:ro'
             # SSL keys
             - '/etc/letsencrypt:/etc/nginx/letsencrypt:ro'
             # Disposable volumes for temporary files
